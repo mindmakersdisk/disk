@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=3D Slash
+Comment=Atalho para 3D Slash
+Type=Application
+Terminal=false
+Exec=/usr/local/3DSlash/3DSlash-pi
+Icon=/usr/share/pixmaps/3DSlash.png
+StartupNotify=true
+Categories=Application;Game;
