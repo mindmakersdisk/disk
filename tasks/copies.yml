@@ -1,0 +1,4 @@
+- name: copy images
+  copy: src=files/images dest=/usr/share/icons owner=root group=root mode=0440
+  copy: src=files/shortcuts dest=/home/pi/Desktop owner=root group=root mode=0440
+  copy: src=files/programs dest=/home/mindmakers/programs owner=root group=root mode=0440
