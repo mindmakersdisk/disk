@@ -2,5 +2,4 @@
   apt: name=python-psutil
 
 - name: Set GNOME Wallpaper
-  become_user: jay
-  dconf: key="/org/gnome/desktop/background/picture-uri" value="'file:///home/mindmakers/images/fundo_v1.jpg'"
+  dconf: key="/org/gnome/desktop/background/picture-uri" value="'file:///home/mindmakers/images/fundo_v1.png'"
