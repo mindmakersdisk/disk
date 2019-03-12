@@ -14,5 +14,5 @@
 - name: Copia arquivo de versao para SO em portugues
   copy: 
     src:files/v2-0
-    dest:/home/pi/Área de Trabalho
+    dest:"/home/pi/Área de Trabalho"
   when: linguagem == "pt"
