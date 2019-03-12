@@ -6,9 +6,9 @@
       changed_when: False
   tasks:
   - name: Ansible grep pattern basic example
-    shell: "env | grep LANG"
+    shell: "grep -ir 'Pattern' *"
     args:
-      chdir: "/home/PI/Desktop"
+      chdir: "/home/PI/Desktop/"
     register: grep_output
 
   - debug:
