@@ -1,7 +1,5 @@
 - name: Copia arquivos de imagens
   copy: src=files/icons dest=/usr/share 
-- name: Copia arquivos de atalhos
-  copy: src=files/desktop/ dest=/home/pi
 - name: Sincroniza programas
   synchronize: src=files/programs dest=/home/mindmakers 
 - name: Copia o tema de fundo
