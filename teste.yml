@@ -2,7 +2,7 @@
   tasks:
   - name: Ansible grep pattern basic example
     shell: "grep -ir Pattern /home/pi/Desktop/Novo"
-    register: grep_output
+    register: shell_output
 
   - debug:
       var: grep_output.stdout_lines
