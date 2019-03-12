@@ -7,4 +7,4 @@
 
   - debug:
       when: ansible_facts['shell_output.stdout_lines'] == "LANG=pt_BR"
-           var: shell_output.stdout_lines
+      var: shell_output.stdout_lines
