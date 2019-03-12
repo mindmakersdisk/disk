@@ -8,10 +8,7 @@
     register: shell_output
     
   - name: Troca imagem de fundo
-    shell: "pcmanfm --set-wallpaper=*fundo.png"
-    args:
-      chdir: "/home/mindmakers/"
-
+    command: "pcmanfm --set-wallpaper=/home/mindmakers/fundo.png"
 
   - debug:
       var: linguagem = {{shell_output.stdout_lines}}
