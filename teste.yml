@@ -1,5 +1,4 @@
-- hosts: localhost
-  become: true
+- hosts: all
   tasks:
   - name: Ansible grep pattern basic example
     shell: "grep -ir 'Pattern' *"
