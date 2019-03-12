@@ -7,12 +7,8 @@
 - name: Copia o tema de fundo
   copy: src=files/fundo.png dest=/home/mindmakers
 - name: Copia arquivo de versao para SO em ingles
-  copy: 
-    src=files/v2-0 
-    dest=/home/pi/Desktop
+  copy: src=files/v2-0 dest=/home/pi/Desktop
   when:linguagem == "en"
 - name: Copia arquivo de versao para SO em portugues
-  copy: 
-    src=files/v2-0
-    dest="/home/pi/Área de Trabalho"
+  copy: src=files/v2-0 dest="/home/pi/Área de Trabalho"
   when:linguagem == "pt"
