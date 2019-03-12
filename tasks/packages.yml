@@ -22,4 +22,5 @@
 - name: Instala pacote node.js "serialport"
   npm:
     name: serialport
+    executable: /usr/bin/npm --unsafe-perm=true
     global: yes
