@@ -1,7 +1,7 @@
 [Desktop Entry]
 Version=1.0
 Name=Scratch 2
-Exec=chromium-browser https://scratch.mit.edu --allow-control-allow-origin --allow-running-insecure-content --incognito --start-fullscreen
+Exec=/usr/bin/scratch2
 Terminal=false
 X-MultipleArgs=false
 Type=Application
