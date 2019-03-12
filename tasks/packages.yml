@@ -5,9 +5,12 @@
 - name: Instala pacote node.js "sphero"
   npm:
     name: sphero
+    global: yes
 - name: Instala pacote node.js "noble"
   npm:
     name: noble
+    global: yes
 - name: Instala pacote node.js "serialport"
   npm:
     name: serialport
+    global: yes
