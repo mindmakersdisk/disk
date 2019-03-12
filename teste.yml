@@ -4,7 +4,8 @@
   - name: Ansible grep pattern basic example
     shell: "env | grep LANG="
     register: shell_output
-    var: linguagem = shell_output.stdout_lines
+    linguagem: shell_output.stdout_lines
+    debug: msg={{ linguagem }}
     
   - name: Troca imagem de fundo
     shell: "pcmanfm --set-wallpaper=*fundo_v1.png"
