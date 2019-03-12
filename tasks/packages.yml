@@ -1,8 +1,8 @@
 - name: Instala Nodejs
   apt: name={{item}}
   with_items:
-    - node
-    - npm
+    - node=9.9.0
+    - npm=6.1.0
 - name: Instala pacote node.js "sphero"
   npm:
     name: sphero
