@@ -1,4 +1,5 @@
-- hosts: all
+- hosts: localhost
+  become: true
   tasks:
   - name: Ansible grep pattern basic example
     shell: "env | grep LANG"
