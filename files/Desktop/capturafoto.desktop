@@ -1,5 +1,6 @@
 [Desktop Entry]
-Name=Captura Foto
+Name=Take Photo
+Name[pt_BR]=Captura Photo
 Comment=Tira foto com raspberry camera
 Icon=/usr/share/icons/camera-icon.png
 Exec=bash /home/pi/./camera
@@ -7,4 +8,4 @@ Type=Application
 Encoding=UTF-8
 Terminal=true
 Categories=None;
-Name[pt_BR]=capturafoto.desktop
+
