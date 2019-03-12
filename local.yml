@@ -9,7 +9,7 @@
  
 - stat:
   path: /home/pi/Desktop
-    register: p
+  register: p
 
  -  vars:
     linguagem: 'en' 
