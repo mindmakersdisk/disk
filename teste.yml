@@ -3,8 +3,7 @@
   tasks:
   - name: Ansible grep pattern basic example
     shell: "env | grep LANG="
-    register: shell_output = pt
-    when: ansible_facts['shell_output.stdout_lines'] == "LANG=pt_BR"
+    register: shell_output
 
   - debug:
-      var: shell_output
+      var: ansible_facts['shell_output.stdout_lines'] == "LANG=pt_BR"
