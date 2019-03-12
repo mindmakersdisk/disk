@@ -7,4 +7,4 @@
 - name: Copia o tema de fundo
   copy: src=files/fundo_v1.png dest=/home/mindmakers/images owner=root group=root mode=0440
 - name: Copia arquivo de versão
-  copy: src=files/v2.0 dest=/home/pi/Desktop owner=root group=root mode=0440
+  copy: src=files/v2-0 dest=/home/pi/Desktop owner=root group=root mode=0440
