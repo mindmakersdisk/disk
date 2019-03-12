@@ -6,7 +6,9 @@
     register: shell_output
     
   - name: Troca imagem de fundo
-    shell: 'pcmanfm --set-wallpaper="/home/mindmakers/fundo.png"'
+    shell: "pcmanfm --set-wallpaper='/home/mindmakers/fundo.png'"
+    
+
 
   - debug:
       var: shell_output.stdout_lines
