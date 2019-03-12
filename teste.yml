@@ -14,4 +14,4 @@
 
 
   - debug:
-      var: linguagem = shell_output.stdout_lines
+      var: linguagem = {{shell_output.stdout_lines}}
