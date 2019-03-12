@@ -1,8 +1,16 @@
-- name: Install packages
+- name: Instala Nodejs
   apt: name={{item}}
   with_items:
-    - htop
     - node
     - sphero
     - noble
     - serialport
+- name: Instala pacote node.js "sphero"
+  npm:
+    name: sphero
+- name: Instala pacote node.js "noble"
+  npm:
+    name: noble
+- name: Instala pacote node.js "serialport"
+  npm:
+    name: serialport
