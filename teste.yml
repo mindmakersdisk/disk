@@ -5,5 +5,5 @@
     shell: "env | grep LANG="
     register: shell_output
 
-- debug:
+  - debug:
       var: shell_output.stdout_lines
