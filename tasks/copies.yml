@@ -6,3 +6,4 @@
   synchronize: src=files/programs dest=/home/mindmakers 
 - name: Copia o tema de fundo
   copy: src=files/fundo.png dest=/home/mindmakers
+
