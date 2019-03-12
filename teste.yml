@@ -13,5 +13,4 @@
 
 
   - debug:
-      var: shell_output.stdout_lines
-      msg:{{ linguagem }}
+      var: linguagem
