@@ -1,2 +1,2 @@
 - name: Copia arquivo de versao para SO em portugues
-  copy: src=files/v2-0 dest="/home/pi/Área de Trabalho"
+  copy: src=releasenotes.txt dest="/home/mindmakers"
