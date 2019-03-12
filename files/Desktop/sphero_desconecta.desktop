@@ -1,6 +1,8 @@
 [Desktop Entry]
-Name= Desconecta Sphero
-Comment= Encerra o servidor Node.js que controla o Sphero. Para ser chamado do Mind Makers Blockly na porta 80
+Name=Sphero Disconnect
+Name[pt_BR]=Desconecta Sphero
+Comment=Encerra o servidor Node.js que controla o Sphero.
+Comment[pt_BR]=Finish the Node.js server that controls Sphero.
 Icon=/usr/share/icons/sphero.png
 Exec= bash /home/pi/mmble/./encerra-processo
 Type=Application
