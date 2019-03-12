@@ -12,4 +12,3 @@ MimeType=text/html;text/xml;application/xhtml_xml;x-scheme-handler/http;x-scheme
 StartupNotify=true
 Actions=NewWindow;Incognito;TempProfile;
 X-AppInstall-Package=chromium-browser
-Name[pt_BR]=pixlr.desktop
