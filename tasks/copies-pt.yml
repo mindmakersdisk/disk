@@ -2,3 +2,6 @@
   copy: src=releasenotes.txt dest="/home/mindmakers"
 - name: Copia as notas de liberacão
   copy: src=releasenotes.desktop dest="/home/pi/Área de Trabalho"
+- name: Copia arquivos de atalhos para Área de Trabalho
+  copy: src=files/desktop/ dest="/home/pi/Área de Trabalho" 
+
