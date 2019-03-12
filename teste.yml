@@ -3,7 +3,7 @@
   - name: Ansible grep pattern basic example
     shell: "grep -ir 'Pattern' *"
     args:
-      chdir: "/home/pi/Desktop"
+      chdir: "/home/pi/Desktop/"
     register: grep_output
 
   - debug:
