@@ -6,4 +6,5 @@
     register: shell_output
 
   - debug:
-      var: shell_output.stdout_lines
+      when: ansible_facts['shell_output.stdout_lines'] == "LANG=pt_BR"
+           var: shell_output.stdout_lines
