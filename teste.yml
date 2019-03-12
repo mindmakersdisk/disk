@@ -1,0 +1,8 @@
+- hosts: all
+  tasks:
+  - name: Ansible grep pattern basic example
+    shell: "env | grep LANG"
+    register: grep_output
+
+  - debug:
+      var: grep_output.stdout_lines
