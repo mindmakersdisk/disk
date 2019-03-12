@@ -7,6 +7,8 @@
   tasks:
   - name: Ansible grep pattern basic example
     shell: "env | grep LANG"
+    args:
+      chdir: "/home/PI/Desktop"
     register: grep_output
 
   - debug:
