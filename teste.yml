@@ -6,8 +6,9 @@
     register: shell_output
     
   - name: Troca imagem de fundo
-    shell: "sudo pcmanfm --set-wallpaper='/home/mindmakers/fundo.png'"
-    
+    shell: "pcmanfm --set-wallpaper=*"
+    args:
+      chdir: "/home/mindmakers/fundo.png"
 
 
   - debug:
