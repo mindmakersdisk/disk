@@ -1,4 +1,4 @@
 - name: Copia arquivo de versao para SO em ingles
   copy: src=releasenotes.txt dest=/home/mindmakers
 - name: Copia arquivos de atalhos para Desktop
-  copy: src=files/desktop/ dest=/home/pi/Desktop  
+  copy: src=files/desktop/ dest=/home/pi/Desktop  mode=preserve
