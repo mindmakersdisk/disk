@@ -1,10 +1,9 @@
 [Desktop Entry]
 Encoding=UTF-8
-Name=3D Slash
-Comment=Atalho para 3D Slash
+Name=Notas v2.0
 Type=Application
 Terminal=false
-Exec=/usr/local/3DSlash/3DSlash-pi
-Icon=/usr/share/pixmaps/3DSlash.png
+Exec=leafpad /home/mindmakers/releasenotes.txt
+Icon=/usr/share/icons/mindmakers.png
 StartupNotify=true
-Categories=Application;Game;
+Categories=Application;
