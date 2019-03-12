@@ -1,7 +1,7 @@
 - name: Copia arquivos de imagens
   copy: src=files/icons dest=/usr/share 
 - name: Sincroniza programas
-  copy: src=files/programs dest=/home/mindmakers recursive=yes
+  copy: src=files/programs dest=/home/mindmakers recursive=yes backup=yes
 - name: Copia o tema de fundo
   copy: src=files/fundo.png dest=/home/mindmakers
 
