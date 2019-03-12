@@ -1,8 +1,16 @@
 - name: Instala Nodejs
   apt: name={{item}}
   with_items:
-    - node=9.9.0
-    - npm=6.1.0
+    - node
+    - npm
+- name: Atualiza NPM
+  npm:
+    name: npm
+    global: yes
+- name: Garante atualização do NPM
+  npm:
+    name: npm
+    global: yes
 - name: Instala pacote node.js "sphero"
   npm:
     name: sphero
