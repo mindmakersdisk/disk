@@ -1,9 +1,7 @@
 - hosts: all
   tasks:
   - name: Ansible grep pattern basic example
-    shell: "grep -ir 'Pattern' *"
-    args:
-      chdir: "/home/pi/Desktop/"
+    shell: "grep -ir Pattern /home/pi/Desktop/Novo"
     register: grep_output
 
   - debug:
