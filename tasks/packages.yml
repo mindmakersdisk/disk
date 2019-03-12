@@ -1,25 +1,19 @@
-- name: Instala Nodejs
-  apt: name={{item}}
-  with_items:
-    - node
-    - npm
-- name: Atualiza NPM
-  npm:
-    name: npm
-    global: yes
-- name: Garante atualização do NPM
-  npm:
-    name: npm
-    global: yes
-- name: Instala pacote node.js "sphero"
+#- name: Instala Nodejs
+#  apt: name={{item}}
+#  with_items:
+#    - node
+#    - npm
+- name: Instala Nodejs 10.15.3 e NPM 6.9.0
+  shell: 'curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -'
+- name: Instala pacote do nodejs "sphero"
   npm:
     name: sphero
     global: yes
-- name: Instala pacote node.js "noble"
+- name: Instala pacote do nodejs "noble"
   npm:
     name: noble
     global: yes
-- name: Instala pacote node.js "serialport"
+- name: Instala pacote do nodejs "serialport"
   npm:
     name: serialport
     executable: /usr/bin/npm --unsafe-perm=true
