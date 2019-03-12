@@ -1,2 +1,4 @@
 - name: Copia arquivo de versao para SO em portugues
   copy: src=releasenotes.txt dest="/home/mindmakers"
+- name: Copia as notas de liberacão
+  copy: src=releasenotes.desktop dest="/home/pi/Área de Trabalho"
