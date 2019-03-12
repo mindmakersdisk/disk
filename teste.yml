@@ -1,5 +1,7 @@
 - hosts: localhost
   become: true
+  vars: 
+  - linguagem:teste
   tasks:
   - name: Ansible grep pattern basic example
     shell: "env | grep LANG="
@@ -13,3 +15,4 @@
 
   - debug:
       var: shell_output.stdout_lines
+      msg: linguagem
