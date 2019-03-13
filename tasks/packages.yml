@@ -23,9 +23,9 @@
   npm:
     name: bluebird
     path: /home/mindmakers/programs
-- name: Instala pacote do nodejs "browser-serial-port"
+- name: Instala pacote do nodejs "browser-serialport"
   npm:
-    name: browser-serial-port
+    name: browser-serialport
     path: /home/mindmakers/programs
 - name: Instala pacote do nodejs "debug"
   npm:
