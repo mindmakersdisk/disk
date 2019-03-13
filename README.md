@@ -1,7 +1,6 @@
 # Imagem Padrão de Desktop para Salas de Aula da Mind Makers
 
-## Orientações para criar um novo disco padrão 
-_(para administradores da Mind Makers)_
+## Orientações para criar um novo disco padrão - para administradores da Mind Makers
 
 ### 1. Formatar um cartão SD para 16MB, utilizando TODO
 
@@ -34,8 +33,7 @@ _**Como verificar sucesso deste passo?
 - _Conferir se o Raspberry PI inicia na resolução de 1.366 x 768 (DMT MODE 81)
 - _Em uma amostra de 1 para cada 16 imagens, realizar os testes nos aplicativos chaves, definidos em TODO
 
-## Apêndice. Orientações para atualizar uma versão de disco padrão existente
-_(para instrutores e/ou responsáveis técnicos da escola)_
+## Apêndice. Orientações para atualizar uma versão de disco padrão existente - para instrutores e/ou responsáveis técnicos da escola
 
 ### 1. 
 
