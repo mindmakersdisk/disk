@@ -4,7 +4,7 @@
   stat:
      path: /usr/bin/nodejs
   register: nodejs   
-- name: Instala Nodejs 10.15.3 e NPM 6.9.0
+- name: Instala Nodejs 8.15.3 e NPM 6.9.0
   apt: name={{item}}
   with_items:
     - nodejs
@@ -14,16 +14,47 @@
   with_items:
     - libudev-dev
     - build-essential
-- name: Instala pacote do nodejs "sphero"
+- name: Instala pacote do nodejs "bluetooth-hci-socket"
   npm:
-    name: sphero
-    global: yes
+    name: bluetooth-hci-socket
+    path: /home/mindmakers/programs
+- name: Instala pacote do nodejs "bluebird"
+  npm:
+    name: bluebird
+    path: /home/mindmakers/programs
+- name: Instala pacote do nodejs "browser-serial-port"
+  npm:
+    name: browser-serial-port
+    path: /home/mindmakers/programs
+- name: Instala pacote do nodejs "debug"
+  npm:
+    name: debug
+    path: /home/mindmakers/programs
+- name: Instala pacote do nodejs "express"
+  npm:
+    name: express
+    path: /home/mindmakers/programs
+- name: Instala pacote do nodejs "grunt"
+  npm:
+    name: grunt
+    path: /home/mindmakers/programs
+- name: Instala pacote do nodejs "keypress"
+  npm:
+    name: keypress
+    path: /home/mindmakers/programs
+- name: Instala pacote do nodejs "webworker-threads"
+  npm:
+    name: keypress
+    executable: /home/mindmakers/programs --unsafe-perm=true
 - name: Instala pacote do nodejs "noble"
   npm:
     name: noble
-    global: yes
+    executable: /home/mindmakers/programs --unsafe-perm=true
+- name: Instala pacote do nodejs "sphero"
+  npm:
+    name: sphero
+    path: /home/mindmakers/programs
 - name: Instala pacote do nodejs "serialport"
   npm:
     name: serialport
-    executable: /usr/bin/npm --unsafe-perm=true
-    global: yes
+    executable: /home/mindmakers/programs --unsafe-perm=true
