@@ -3,6 +3,6 @@
   with_items:
     - scratch
     - bluej
-    - Greenfoot
+    - greenfoot
     - claws-mail
     - claws-mail-i18n
