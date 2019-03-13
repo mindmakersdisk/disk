@@ -4,7 +4,8 @@
   apt: name={{item}}
   with_items:
     - nodejs
-    - build-essential  
+    - build-essential
+    - libudev-dev
 - name: Instala pacote do nodejs "sphero"
   npm:
     name: sphero
