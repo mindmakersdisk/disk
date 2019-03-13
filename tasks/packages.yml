@@ -1,9 +1,10 @@
-- name: Instala Nodejs 10.15.3 e NPM 6.9.0 PPA
-  shell: 'curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -' 
 - name: verifica se o Node.js já foi instalado
   stat:
-     path: /usr/bin/nodejs
-  register: nodejs   
+     path: /home/mindmakers/programs/node
+  register: nodejs 
+- name: Instala Nodejs 8.15.3 e NPM 6.9.0 PPA
+  shell: 'curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -' 
+  when: not nodejs.stat.exists
 - name: Instala Nodejs 8.15.3 e NPM 6.9.0
   apt: name={{item}}
   with_items:
