@@ -1,0 +1,25 @@
+{
+  "name": "programs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "mmsphero-server.js",
+  "dependencies": {
+    "bluebird": "^3.5.3",
+    "bluetooth-hci-socket": "^0.5.1",
+    "browser-serialport": "^2.1.0",
+    "debug": "^4.1.1",
+    "express": "^4.16.4",
+    "grunt": "^1.0.3",
+    "keypress": "^0.2.1",
+    "noble": "^1.9.1",
+    "serialport": "^7.1.4",
+    "sphero": "^0.9.2",
+    "webworker-threads": "^0.7.17"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
