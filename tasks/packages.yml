@@ -18,7 +18,8 @@
 - name: Instala pacote do nodejs "bluetooth-hci-socket"
   npm:
     name:  bluetooth-hci-socket
-    executable: /home/mindmakers/programs --unsafe-perm=true
+    path: /home/mindmakers/programs
+    executable: /usr/bin/npm --unsafe-perm=true
 - name: Instala pacote do nodejs "bluebird"
   npm:
     name: bluebird
@@ -46,11 +47,11 @@
 - name: Instala pacote do nodejs "webworker-threads"
   npm:
     name: keypress
-    executable: /home/mindmakers/programs --unsafe-perm=true
+    executable: /usr/bin/npm --unsafe-perm=true
 - name: Instala pacote do nodejs "noble"
   npm:
     name: noble
-    executable: /home/mindmakers/programs --unsafe-perm=true
+    executable: /usr/bin/npm --unsafe-perm=true
 - name: Instala pacote do nodejs "sphero"
   npm:
     name: sphero
@@ -58,4 +59,4 @@
 - name: Instala pacote do nodejs "serialport"
   npm:
     name: serialport
-    executable: /home/mindmakers/programs --unsafe-perm=true
+    executable: /usr/bin/npm --unsafe-perm=true
