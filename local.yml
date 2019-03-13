@@ -1,8 +1,8 @@
 - hosts: localhost
-  pre_tasks:
-    - name: update repositories
-      apt: update_cache=yes
-      changed_when: False
+#  pre_tasks:
+#    - name: update repositories
+#      apt: update_cache=yes
+#      changed_when: False
 #    - include_vars: local-en.yml
 #      when: p.stat.exists  
 #  vars:
@@ -13,10 +13,10 @@
       stat:
         path: /home/pi/Desktop
       register: p 
-    - include: tasks/copies.yml
-    - include: tasks/copies-pt.yml
-      when: not p.stat.exists
-    - include: tasks/copies-en.yml
-      when: p.stat.exists
-    - include: tasks/packages.yml
+#    - include: tasks/copies.yml
+#    - include: tasks/copies-pt.yml
+#      when: not p.stat.exists
+#    - include: tasks/copies-en.yml
+#      when: p.stat.exists
+#   - include: tasks/packages.yml
     - include: tasks/packages-uninstall.yml
