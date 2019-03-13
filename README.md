@@ -29,7 +29,7 @@ _**Como verificar sucesso dessa etapa?**_
 
 4.1. Abrir o terminal e executar a linha de comando "sudo ansible-pull https://mindmakersdisk@github.com/mindmakersdisk/disk.git", informando a senha apropriada
 
-_**Como verificar sucesso dessa etapa?**_ 
+_**Como verificar sucesso do novo disco padrão?**_ 
 - _Conferir se o Raspberry PI inicia na resolução de 1.366 x 768 (DMT MODE 81)_
 - _Em uma amostra de 1 para cada 16 imagens, realizar os testes nos aplicativos chaves, definidos em TODO_
 
