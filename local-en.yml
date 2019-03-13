@@ -1,3 +1,0 @@
-- name: Define ambiente com SO em inglês porque encontrou diretório Desktop
-   vars:
-      linguagem: 'en'
