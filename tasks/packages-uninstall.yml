@@ -2,3 +2,7 @@
   apt: name={{item}} state=absent
   with_items:
     - scratch
+    - bluej
+    - Greenfoot
+    - claws-mail
+    - claws-mail-i18n
