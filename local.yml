@@ -1,4 +1,4 @@
-- hosts: localhost
+- hosts: Mind Makers Disk
   become: true
   pre_tasks:
     - name: update repositories
