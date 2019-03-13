@@ -11,6 +11,7 @@
   vars:
     linguagem: 'en' 
   when: p.stat.exists and p.stat.isdir    
+  
   tasks:
     - include: tasks/copies.yml
     - include: tasks/copies-en.yml
