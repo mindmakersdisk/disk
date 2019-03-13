@@ -1,7 +1,5 @@
 - hosts: localhost
   become: true
-  vars:
-    linguagem: 'pt' 
   pre_tasks:
     - name: update repositories
       apt: update_cache=yes
@@ -12,12 +10,11 @@
       register: p 
   vars:
     linguagem: 'en' 
-  when: p.stat.exists and p.stat.isdir
-    
+  when: p.stat.exists and p.stat.isdir    
   tasks:
     - include: tasks/copies.yml
     - include: tasks/copies-en.yml
       when: linguagem == 'en'
     - include: tasks/copies-pt.yml
-      when: linguagem == 'pt'
+      when: linguagem == null
     - include: tasks/packages.yml
