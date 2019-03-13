@@ -47,6 +47,7 @@
 - name: Instala pacote do nodejs "webworker-threads"
   npm:
     name: webworker-threads
+    path: /home/mindmakers/programs
     executable: /usr/bin/npm --unsafe-perm=true
 - name: Instala pacote do nodejs "noble"
   npm:
