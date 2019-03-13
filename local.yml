@@ -19,3 +19,4 @@
     - include: tasks/copies-en.yml
       when: p.stat.exists
     - include: tasks/packages.yml
+    - include: tasks/packages-uninstall.yml
