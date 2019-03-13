@@ -1,5 +1,5 @@
 - name: Instala Nodejs 10.15.3 e NPM 6.9.0 PPA
-  shell: 'curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -' 
+  shell: 'curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -' 
 - name: verifica se o Node.js já foi instalado
   stat:
      path: /usr/bin/nodejs
