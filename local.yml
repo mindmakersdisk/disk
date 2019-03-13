@@ -8,9 +8,11 @@
       stat:
         path: /home/pi/Desktop
       register: p 
-    - include_vars: local-en.yml
-      when: p.stat.exists  
-  
+#    - include_vars: local-en.yml
+#      when: p.stat.exists  
+  vars:
+      linguagem: "{% if p.stat.exists %}'en'{% else %}'pt'{% endif %}"
+
   tasks:
     - include: tasks/copies.yml
     - include: tasks/copies-pt.yml
