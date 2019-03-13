@@ -1,16 +1,15 @@
 - hosts: localhost
   become: true
+  vars:
+    linguagem: 'pt' 
   pre_tasks:
     - name: update repositories
       apt: update_cache=yes
       changed_when: False
-  vars:
-    linguagem: 'pt' 
- 
-- name: verifica se diretório Desktop existe como indicação de SO em inglês.
-  stat:
-    path: /home/pi/Desktop
-  register: p 
+    - name: verifica se diretório Desktop existe como indicação de SO em inglês.
+      stat:
+        path: /home/pi/Desktop
+      register: p 
   vars:
     linguagem: 'en' 
   when: p.stat.exists and p.stat.isdir
