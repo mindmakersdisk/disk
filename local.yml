@@ -10,8 +10,7 @@
 - stat:
   path: /home/pi/Desktop
     register: p
-
- -  vars:
+  vars:
     linguagem: 'en' 
     when: p.stat.exists and p.stat.isdir
     
