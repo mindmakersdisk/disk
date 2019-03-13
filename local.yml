@@ -9,7 +9,7 @@
         path: /home/pi/Desktop
       register: p 
   vars:
-    - linguagem: 'en' 
+    linguagem: 'en' 
     when: p.stat.exists and p.stat.isdir    
   
   tasks:
