@@ -13,7 +13,7 @@ _Como verificar sucesso deste passo?
 
 2.1. TODO
 
-_**Como verificar sucesso deste passo? 
+_**Como verificar sucesso deste passo?**_ 
 - _Conferir se o Raspberry PI inicia com a interface gráfica (chamada LXDE)
 - _Conferir se configuração está no idioma correto, em inglês ou português, conforme o interesse específico
 - _Conferir se mouse, teclado e monitor estão corretamente configurados
