@@ -1,5 +1,4 @@
 - name: Desistala aplicações não utilizada dos softwares recomendados
-  apt: name={{item}}
-  state: absent
+  apt: name={{item}} state=absent
   with_items:
     - scratch
