@@ -1,7 +1,7 @@
 # Imagem Padrão de Desktop para Salas de Aula da Mind Makers
 
 ## Orientações para criar um novo disco padrão 
-_(para administradores da Mind Makers)
+_(para administradores da Mind Makers)_
 
 ### 1. Formatar um cartão SD para 16MB, utilizando TODO
 
@@ -35,7 +35,7 @@ _**Como verificar sucesso deste passo?
 - _Em uma amostra de 1 para cada 16 imagens, realizar os testes nos aplicativos chaves, definidos em TODO
 
 ## Apêndice. Orientações para atualizar uma versão de disco padrão existente
-_(para instrutores e/ou responsáveis técnicos da escola)
+_(para instrutores e/ou responsáveis técnicos da escola)_
 
 ### 1. 
 
