@@ -51,6 +51,7 @@
 - name: Instala pacote do nodejs "noble"
   npm:
     name: noble
+    path: /home/mindmakers/programs
     executable: /usr/bin/npm --unsafe-perm=true
 - name: Instala pacote do nodejs "sphero"
   npm:
@@ -59,4 +60,5 @@
 - name: Instala pacote do nodejs "serialport"
   npm:
     name: serialport
+    path: /home/mindmakers/programs
     executable: /usr/bin/npm --unsafe-perm=true
