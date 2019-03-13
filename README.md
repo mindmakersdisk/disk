@@ -9,9 +9,9 @@
 _**Como verificar sucesso dessa etapa?**_ 
 - _Conferir se espaço livre está acima de 14GB_
 
-### 2. Instalar o Sistema Operacional "Raspbian Stretch with desktop and recommended software", baixada de https://www.raspberrypi.org/downloads/raspbian/, versão 4.14 de 2018-11-13 (TODO Ver se é prudente copiarmos para drive próprio)
+### 2. Instalar o Sistema Operacional
 
-2.1. TODO
+2.1. Instalar o Sistema Operacional "Raspbian Stretch with desktop and recommended software", baixada de https://www.raspberrypi.org/downloads/raspbian/, versão 4.14 de 2018-11-13 (TODO Ver se é prudente copiarmos para drive próprio)
 
 _**Como verificar sucesso dessa etapa?**_ 
 - _Conferir se o Raspberry PI inicia com a interface gráfica (chamada LXDE)_
