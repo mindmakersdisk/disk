@@ -11,7 +11,7 @@
 #    - include_vars: local-en.yml
 #      when: p.stat.exists  
   vars:
-      linguagem: "{% if p.stat.exists %}'en'{% else %}'pt'{% endif %}"
+      linguagem: "{{'en' if (p.stat.exists) else 'pt'}}"
 
   tasks:
     - include: tasks/copies.yml
