@@ -4,16 +4,16 @@
     - name: update repositories
       apt: update_cache=yes
       changed_when: False
-    - name: verifica se diretório Desktop existe (usado como indicação de que o SO está em inglês).
-      stat:
-        path: /home/pi/Desktop
-      register: p 
 #    - include_vars: local-en.yml
 #      when: p.stat.exists  
 #  vars:
 #     linguagem: "{{'en' if (p.stat.exists) else 'pt'}}"
 
   tasks:
+    - name: verifica se diretório Desktop existe (usado como indicação de que o SO está em inglês).
+      stat:
+        path: /home/pi/Desktop
+      register: p 
     - include: tasks/copies.yml
     - include: tasks/copies-pt.yml
       when: not p.stat.exists
