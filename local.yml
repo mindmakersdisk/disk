@@ -13,7 +13,7 @@
   register: p 
   vars:
     linguagem: 'en' 
-    when: p.stat.exists and p.stat.isdir
+  when: p.stat.exists and p.stat.isdir
     
   tasks:
     - include: tasks/copies.yml
