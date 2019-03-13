@@ -14,8 +14,8 @@
   
   tasks:
     - include: tasks/copies.yml
+    - include: tasks/copies-pt.yml
+      when: linguagem is undefined
     - include: tasks/copies-en.yml
       when: linguagem == 'en'
-    - include: tasks/copies-pt.yml
-      when: linguagem == null
     - include: tasks/packages.yml
