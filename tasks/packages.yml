@@ -17,7 +17,7 @@
     - build-essential
 - name: Instala pacote do nodejs "bluetooth-hci-socket"
   npm:
-    name: bluetooth-hci-socket
+    name:  bluetooth-hci-socket
     path: /home/mindmakers/programs
     executable: /home/mindmakers/programs --unsafe-perm=true
 - name: Instala pacote do nodejs "bluebird"
