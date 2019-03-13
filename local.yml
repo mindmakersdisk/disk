@@ -1,5 +1,4 @@
 - hosts: localhost
-  become: true
   pre_tasks:
     - name: update repositories
       apt: update_cache=yes
@@ -10,7 +9,7 @@
 #     linguagem: "{{'en' if (p.stat.exists) else 'pt'}}"
 
   tasks:
-    - name: verifica se diretório Desktop existe (usado como indicação de que o SO está em inglês).
+    - name: verifica se diretorio Desktop existe (usado como indicacao de que o SO esta em ingles).
       stat:
         path: /home/pi/Desktop
       register: p 
