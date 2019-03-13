@@ -1,7 +1,7 @@
-- name: Copia arquivo de versao para SO em portugues
+- name: Copia arquivo de versão da imagem de disco para SO em português
   copy: src=releasenotes.txt dest="/home/mindmakers"
-- name: Copia as notas de liberacão
+- name: Copia as notas de liberacão para a Área de Trabalho em português
   copy: src=releasenotes.desktop dest="/home/pi/Área de Trabalho"
-- name: Copia arquivos de atalhos para Área de Trabalho
+- name: Copia arquivos de atalhos para Área de Trabalho em português
   copy: src=files/desktop/ dest="/home/pi/Área de Trabalho" 
 
