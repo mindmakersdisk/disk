@@ -9,8 +9,8 @@
         path: /home/pi/Desktop
       register: p 
   vars:
-    linguagem: 'en' 
-  when: p.stat.exists and p.stat.isdir    
+    - linguagem: 'en' 
+    when: p.stat.exists and p.stat.isdir    
   
   tasks:
     - include: tasks/copies.yml
