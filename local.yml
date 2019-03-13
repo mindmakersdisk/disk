@@ -10,7 +10,7 @@
       register: p 
   vars:
     linguagem: 'en' 
-  when: p.stat.exists  
+    when: p.stat.exists  
   
   tasks:
     - include: tasks/copies.yml
