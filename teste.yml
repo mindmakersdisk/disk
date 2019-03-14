@@ -1,6 +1,6 @@
 - hosts: localhost
   vars: 
-    - linguagem: teste
+    - ver: 6.9.0
   tasks:  
   - name: Verifica Versao npm
     shell: "npm --version"
@@ -10,6 +10,6 @@
       var: shell_output.stdout_lines
       assert:
         that:
-          - shell_output.stdout_lines == 6.9.0
+          - shell_output.stdout_lines == ver
         register: n
     when: n.stat.exists
