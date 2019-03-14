@@ -2,5 +2,4 @@
   become: true
   tasks:  
   - name: Troca imagem de fundo
-    command: "pcmanfm --set-wallpaper='/home/mindmakers/fundo.png'"
-    sudo: yes
+    copy: src=files/desktop-items-0.conf dest=/home/pi/.config/pcmanfm/FXDE-pi mode=01777
