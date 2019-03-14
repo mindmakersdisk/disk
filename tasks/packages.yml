@@ -26,6 +26,7 @@
   when: not npm.stat.exists
 - name: Atualiza npm para 6.9.0
   npm: name={{item}}
+  global:yes
   with_items:
     - npm
     - npm
