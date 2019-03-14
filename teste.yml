@@ -8,4 +8,4 @@
     
   - debug:
       var: shell_output.stdout_lines
-    when: shell_output.stdout_lines = 6.9.0
+    when: shell_output.stdout_lines == 6.9.0
