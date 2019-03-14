@@ -26,7 +26,7 @@ sleep 5
 echo -e 'discoverable on \n exit' | bluetoothctl
 
 sudo modprobe rfcomm
-sudo rfcomm bind rfcomm0 CD:09:66:4D:BD:24
+sudo rfcomm bind rfcomm0 68:86:E7:06:C8:13
 # o '&' faz com que o servidor fique em background para que o chromium possa ser executado
 sudo nodejs /home/mindmakers/programs/mmsphero-server.js /dev/rfcomm0 
 
