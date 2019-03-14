@@ -1,7 +1,7 @@
 - name: verifica se o Node.js já foi instalado
   stat:
 #     path: /home/mindmakers/programs/verify/node815
-     path:/usr/share/node-gyp
+     path: /usr/share/node-gyp
   register: nodejs
 - name: Instala Nodejs 8.15.3
   shell: 'curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -' 
