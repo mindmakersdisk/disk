@@ -1,4 +1,4 @@
 - name: Copia o atalho para notas de liberacão para o Desktop - SO em inglês
-  copy: src=releasenotes.desktop dest="/home/pi/Área de Trabalho" mode=01777
+  copy: src=releasenotes.desktop dest=/home/pi/Desktop mode=01777
 - name: Copia demais arquivos de atalho para o Desktop - SO em inglês
   copy: src=files/desktop/ dest=/home/pi/Desktop mode=01777
