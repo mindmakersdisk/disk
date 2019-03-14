@@ -1,14 +1,6 @@
 - hosts: localhost
   become: true
-  vars: 
-    - linguagem: teste
-  tasks:
-  - name: Ansible grep pattern basic example
-    shell: "env | grep LANG="
-    register: shell_output
-    
+  tasks:  
   - name: Troca imagem de fundo
     command: "pcmanfm --set-wallpaper='/home/mindmakers/fundo.png'"
-
-  - debug:
-      var: linguagem = {{shell_output.stdout_lines}}
+    sudo: yes
