@@ -1,22 +1,22 @@
 - hosts: localhost
-#  pre_tasks:
-#    - name: update repositories
-#      apt: update_cache=yes
-#      changed_when: False
-#    - include_vars: local-en.yml
-#      when: p.stat.exists  
-#  vars:
-#     linguagem: "{{'en' if (p.stat.exists) else 'pt'}}"
+  pre_tasks:
+    - name: update repositories
+      apt: update_cache=yes
+      changed_when: False
+    - include_vars: local-en.yml
+      when: p.stat.exists  
+  vars:
+     linguagem: "{{'en' if (p.stat.exists) else 'pt'}}"
 
   tasks:
     - name: verifica se diretorio Desktop existe (usado como indicacao de que o SO esta em ingles).
       stat:
         path: /home/pi/Desktop
-      register: p 
-#    - include: tasks/copies.yml
-#    - include: tasks/copies-pt.yml
-#      when: not p.stat.exists
-#    - include: tasks/copies-en.yml
-#      when: p.stat.exists
-#   - include: tasks/packages.yml
+      register: p
+    - include: tasks/copies-pt.yml
+      when: not p.stat.exists
+    - include: tasks/copies-en.yml
+      when: p.stat.exists
+    - include: tasks/copies.yml
+    - include: tasks/packages.yml
     - include: tasks/packages-uninstall.yml
