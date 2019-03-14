@@ -4,6 +4,6 @@ Name=Scratch 2
 Exec=/usr/bin/scratch2
 Terminal=false
 Type=Application
-Icon=scratch
+Icon=scratch2
 Categories=Application;Game;
 StartupNotify=true
