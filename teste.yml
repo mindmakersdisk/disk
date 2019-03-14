@@ -9,7 +9,7 @@
   - name: Assertando
     assert:
       that:
-        - "'shell_output.stdout_lines' >= 'ver'"
+        - "'shell_output.stdout_lines' >= 7.0.0"
  #     register: n
       fail_msg: "'shell_output.stdout_lines' must be between 0 and 100"
       success_msg: "register= n"
