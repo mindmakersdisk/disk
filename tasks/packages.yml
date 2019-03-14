@@ -1,6 +1,6 @@
 - name: verifica se o Node.js já foi instalado
   stat:
-     path: /usr/lib/nodejs
+     path: /home/mindmakers/programs/verify/node815
   register: nodejs
 - name: Instala Nodejs 8.15.3
   shell: 'curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -' 
@@ -10,6 +10,8 @@
   with_items:
     - nodejs
   when: not nodejs.stat.exists
+- name: Cria pasta de verificação de instalação node 8.15.3
+  copy: src=files/ongoing/verify/node815 dest=/home/mindmakers/programs mode=01777
 - name: Instala libudev-dev e build-essential
   apt: name={{item}}
   with_items:
@@ -29,6 +31,8 @@
   with_items:
     - npm
     - npm
+- name: Cria pasta de verificação de instalação npm 6.9.0
+  copy: src=files/ongoing/verify/node815 dest=/home/mindmakers/programs mode=01777
 - name: Instala pacote do nodejs "bluetooth-hci-socket"
   npm:
     name:  bluetooth-hci-socket
