@@ -20,7 +20,7 @@
 #        that:
 #          - shell_output.stdout_lines == ver
 #        register: n
-    when: n.stat.exists
+#    when: n.stat.exists
  
 #  - debug:
 #      var: shell_output.stdout_lines
