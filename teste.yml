@@ -9,7 +9,7 @@
   - name: Assertando
     assert:
       that:
-        - "'shell_output.stdout_lines' >= '6.9.0'"
+        - "'shell_output.stdout_lines' >= '7.0'"
  #     register: n
       fail_msg: "'shell_output.stdout_lines' must be between 0 and 100"
       success_msg: "register= n"
@@ -20,7 +20,7 @@
 #        that:
 #          - shell_output.stdout_lines == ver
 #        register: n
-    when: n.stat.exists
+#    when: n.stat.exists
  
 #  - debug:
 #      var: shell_output.stdout_lines
