@@ -1,0 +1,8 @@
+- hosts: localhost
+  tasks:  
+  - name: Troca imagem de fundo e posiciona icones padrões do Desktop
+    copy: src=files/desktop-items-0.conf dest=/home/pi/.config/pcmanfm/LXDE-pi mode=01777
+  - name: Personaliza barra superior
+    copy: src=files/panel dest=/home/pi/.config/lxpanel/LXDE-pi/panels mode=01777
+  - name: Altera resolucao da tela
+    copy: src=files/config.txt dest=/boot
