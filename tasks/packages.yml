@@ -1,6 +1,6 @@
 - name: verifica se o Node.js já foi instalado
   stat:
-     path: /home/mindmakers/programs/node
+     path: /usr/lib
   register: nodejs 
 - name: Instala Nodejs 8.15.3 e NPM 6.9.0 PPA
   shell: 'curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -' 
