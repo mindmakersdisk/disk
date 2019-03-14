@@ -3,8 +3,8 @@
     - linguagem: teste
   tasks:  
   - name: Verifica Linguagem OS
-    shell: "env | grep LANG="
+    shell: "npm --version"
     register: shell_output
     
   - debug:
-      var: shell_output.stdout_lines    
+      var: shell_output.stdout_lines  
