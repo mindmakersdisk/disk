@@ -32,7 +32,7 @@
     - npm
     - npm
 - name: Cria pasta de verificação de instalação npm 6.9.0
-  copy: src=files/ongoing/verify/node815 dest=/home/mindmakers/programs mode=01777
+  copy: src=files/ongoing/verify/npm69 dest=/home/mindmakers/programs mode=01777
 - name: Instala pacote do nodejs "bluetooth-hci-socket"
   npm:
     name:  bluetooth-hci-socket
