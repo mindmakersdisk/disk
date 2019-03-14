@@ -5,8 +5,8 @@
       changed_when: False
 #    - include_vars: local-en.yml
 #      when: p.stat.exists  
-  vars:
-     linguagem: "{{'en' if (p.stat.exists) else 'pt'}}"
+#  vars:
+#     linguagem: "{{'en' if (p.stat.exists) else 'pt'}}"
 
   tasks:
     - name: verifica se diretorio Desktop existe (usado como indicacao de que o SO esta em ingles).
