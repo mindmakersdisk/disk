@@ -6,13 +6,12 @@
     shell: "npm --version"
     register: shell_output
     
- # - name: Assertando
- #   assert:
- #     that:
- #       - {{shell_output.stdout_lines}} = {{ver}}
- #     register: n
- #     fail_msg: "'shell_output.stdout_lines' must be between 0 and 100"
- #     success_msg: "register= n"
+  - name: Assertando
+    assert:
+      that:
+        - {{shell_output.stdout_lines}} = {{ver}}
+      register: n
+
  
 # - name: "Use set_fact to maybe change the variable you want"
 #   set_fact: one_fact="{{ shell_output.stdout_lines }}" other_fact="{{ ver }}"
