@@ -12,4 +12,4 @@
         that:
           - shell_output.stdout_lines == 6.9.0
         register: n
-    when: when: p.stat.exists
+    when: p.stat.exists
