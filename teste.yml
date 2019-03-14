@@ -17,7 +17,7 @@
  - name: "Use set_fact to maybe change the variable you want"
      set_fact:
        register: n
-     when: "{{shell_output.stdout_lines}}" = "{{ver}}"
+     when: "{{shell_output.stdout_lines}} = {{ver}}"
     
   - debug:
       var: shell_output.stdout_lines
