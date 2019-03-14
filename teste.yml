@@ -6,11 +6,11 @@
     shell: "npm --version"
     register: shell_output
     
-  - name: Assertando
-    assert:
-      that:
-        - {{shell_output.stdout_lines}} == {{ver}}
-      register: n
+#  - name: Assertando
+#    assert:
+#      that:
+#        - {{shell_output.stdout_lines}} == {{ver}}
+#      register: n
 
  
 # - name: "Use set_fact to maybe change the variable you want"
@@ -24,7 +24,7 @@
 #        that:
 #          - shell_output.stdout_lines == ver
 #        register: n
-    when: n.stat.exists
+#    when: n.stat.exists
  
 #  - debug:
 #      var: shell_output.stdout_lines
