@@ -1,6 +1,6 @@
 - name: verifica se o Node.js já foi instalado
   stat:
-     path: /usr/lib
+     path: /usr/lib/nodejs
   register: nodejs
 - name: Instala Nodejs 8.15.3
   shell: 'curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -' 
