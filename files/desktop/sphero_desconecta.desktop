@@ -1,8 +1,8 @@
 [Desktop Entry]
 Name=Sphero Disconnect
 Name[pt_BR]=Desconecta Sphero
-Comment=Encerra o servidor Node.js que controla o Sphero.
-Comment[pt_BR]=Finish the Node.js server that controls Sphero.
+Comment=Finish the Node.js server that controls Sphero.
+Comment[pt_BR]=Encerra o servidor Node.js que controla o Sphero.
 Icon=/usr/share/icons/sprk_purple.png
 Exec= bash /home/mindmakers/programs/shells/sphero-disconnect.sh
 Type=Application
