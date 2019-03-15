@@ -5,18 +5,18 @@
   tasks:  
   - name: Verifica Versao npm
     shell: "npm --version"
-    register: shell_output
-  - name: "compara com 6.9.0"
-    register: n
-   when: shell_output.stdout == 6.9.0
+#    register: shell_output
+#  - name: "compara com 6.9.0"
+#    register: n
+#   when: shell_output.stdout == 6.9.0
 #      - ansible_facts['shell_output.stdout_lines'] == "6.9.0"
 #      - ansible_facts['distribution_major_version'] == "6"
 
-  #- name: Assertando
-  #  assert:
-  #    that:
-  #      - "{{ shell_output.stdout_lines }}  == {{ ver }}"
-  #    register: n
+  - name: Assertando
+    assert:
+      that:
+        - "{{ shell_output.stdout }}  == {{ ver }}"
+      register: n
 
  
 # - name: "Use set_fact to maybe change the variable you want"
