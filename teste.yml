@@ -9,7 +9,8 @@
   - name: "compara com 6.9.0"
       register: n
     when:
-      - ansible_facts['shell_output.stdout_lines'] == "6.9.0"
+      - { shell_output.stdout_lines }}  == {{ ver }}
+#      - ansible_facts['shell_output.stdout_lines'] == "6.9.0"
 #      - ansible_facts['distribution_major_version'] == "6"
 
   #- name: Assertando
