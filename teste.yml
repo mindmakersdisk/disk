@@ -10,7 +10,7 @@
 
   - name: "This is bad version"
 #    when: shell_output.stdout|strict=true("6.9.0")
-    when: shell_output.stdout_lines != "6.9.0"
+    when: shell_output.stdout_lines == "6.9.0"
     
 
 
