@@ -5,12 +5,18 @@
   - name: Verifica Versao npm
     shell: "npm --version"
     register: shell_output
-    
-  - name: Assertando
-    assert:
-      that:
-        - "{{ shell_output.stdout_lines }}  == {{ ver }}"
-      register: n
+
+  - name: "compara com 6.9.0"
+    register: n
+    when:
+      - ansible_facts['shell_output.stdout_lines'] == "6.9.0"
+#      - ansible_facts['distribution_major_version'] == "6"
+
+  #- name: Assertando
+  #  assert:
+  #    that:
+  #      - "{{ shell_output.stdout_lines }}  == {{ ver }}"
+  #    register: n
 
  
 # - name: "Use set_fact to maybe change the variable you want"
