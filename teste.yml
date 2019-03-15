@@ -16,11 +16,11 @@
     assert:
       that:
         - "{{ shell_output.stdout }}  == {{ ver }}"
-      register: n
+    register: n
 
  
 # - name: "Use set_fact to maybe change the variable you want"
-#   set_fact: one_fact="{{ shell_output.stdout_lines }}" other_fact="{{ ver }}"
+#   set_fact: one_fact="{{ shell_output.stdout }}" other_fact="{{ ver }}"
 #       register: n
  
     
@@ -34,7 +34,7 @@
  
 #  - debug:
 #      var: shell_output.stdout_lines
-#    when: assert= { that= "shell_output.stdout_lines == '6.9.0'" }
+#    when: assert= { that= "shell_output.stdout == '6.9.0'" }
     
 #- name: after version 2.7 both 'msg' and 'fail_msg' can customize failing assertion message
 #  assert:
