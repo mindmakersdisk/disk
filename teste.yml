@@ -1,6 +1,6 @@
 - hosts: localhost
   vars: 
-    - ver: 6.9.0
+    - ver: [u'6.9.0']
   tasks:  
   - name: Verifica Versao npm
     shell: "npm --version"
@@ -9,7 +9,7 @@
   - name: Assertando
     assert:
       that:
-        - " shell_output.stdout_lines  == {{ ver }}"
+        - "{{ shell_output.stdout_lines }}  == {{ ver }}"
       register: n
 
  
