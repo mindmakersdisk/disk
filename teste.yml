@@ -3,8 +3,8 @@
     - ver: 6.9.0
   tasks:  
   - name: Verifica Versao npm
-    shell: "npm --version"
-#    shell: "npm --version |awk '{print $2}'"
+#    shell: "npm --version"
+    shell: "npm --version |awk '{print $2}'"
 #    shell: "echo npm --version"
     register: shell_output
 
