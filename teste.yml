@@ -3,21 +3,21 @@
     - ver: 6.9.0
   tasks:  
   - name: Verifica Versao npm
-#    shell: "npm --version"
-    shell: "npm --version |awk '{print $2}'"
+    shell: "npm --version"
+#    shell: "npm --version |awk '{print $2}'"
 #    shell: "echo npm --version"
     register: shell_output
 
-  - name: "This is bad version"
-    when: shell_output.stdout|strict=true("6.9.0")
+#  - name: "This is bad version"
+#    when: shell_output.stdout|strict=true("6.9.0")
   #  when: shell_output.stdout_lines != "6.9.0"
     
 
 
     
-  - name: "compara com 6.9.0"
+#  - name: "compara com 6.9.0"
 #    register: n
-    when: shell_output.stdout == ver.value   #when ainda nao funcionou
+#    when: shell_output.stdout == ver.value   #when ainda nao funcionou
 #      - ansible_facts['shell_output.stdout_lines'] == "6.9.0"
 #      - ansible_facts['distribution_major_version'] == "6"
 
