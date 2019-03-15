@@ -36,7 +36,7 @@
  
     
   - debug:
-      var: ver
+      var: shell_output
 #      assert:
 #        that:
 #          - shell_output.stdout_lines == ver
