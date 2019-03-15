@@ -15,7 +15,7 @@
   - name: Assertando
     assert:
       that:
-        - "{{ shell_output.stdout }}  == {{ ver }}"
+        - "{{ shell_output.stdout }}  = {{ ver }}"
     register: n
 
  
