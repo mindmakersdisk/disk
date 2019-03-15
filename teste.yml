@@ -9,8 +9,8 @@
     register: shell_output
 
   - name: "This is bad version"
-  #  when: shell_output.stdout|version_compare("6.9.0", "eq")
-    when: shell_output.stdout_lines != "6.9.0"
+    when: shell_output.stdout|strict=true("6.9.0", "eq")
+  #  when: shell_output.stdout_lines != "6.9.0"
     
 
 
