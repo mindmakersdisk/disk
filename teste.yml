@@ -5,6 +5,10 @@
   - name: Verifica Versao npm
     shell: "npm --version"
     register: shell_output
+
+  - fail: "This is bad version"
+    when: var=shell_output.stdout_lines != "6.9.0"
+
     
   - name: "compara com 6.9.0"
 #    register: n
