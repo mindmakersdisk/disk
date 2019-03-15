@@ -6,9 +6,9 @@
   - name: Verifica Versao npm
     shell: "npm --version"
     register: shell_output
-#  - name: "compara com 6.9.0"
-#    register: n
-#    when: shell_output  == '6.9.0'   #when ainda nao funcionou
+  - name: "compara com 6.9.0"
+    register: n
+    when: shell_output  == ver   #when ainda nao funcionou
 #      - ansible_facts['shell_output.stdout_lines'] == "6.9.0"
 #      - ansible_facts['distribution_major_version'] == "6"
 
