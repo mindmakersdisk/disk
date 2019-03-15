@@ -1,6 +1,6 @@
 - hosts: localhost
   vars: 
-    - ver: [u'6.9.0']
+    - ver: ['6.9.0']
   tasks:  
   - name: Verifica Versao npm
     shell: "npm --version"
