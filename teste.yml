@@ -5,7 +5,6 @@
   - name: Verifica Versao npm
     shell: "npm --version"
     register: shell_output
-
   - name: "compara com 6.9.0"
     register: n
     when: shell_output.stdout_lines == '6.9.0'
