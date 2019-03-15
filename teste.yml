@@ -1,13 +1,16 @@
 - hosts: localhost
   vars: 
-    - ver: ['6.9.0']
+    - ver: 6.9.0
+    - npm: 1
   tasks:  
   - name: Verifica Versao npm
     shell: "npm --version"
     register: shell_output
+  - set_fact:
+    npm: shell_output.stdout_lines
   - name: "compara com 6.9.0"
     register: n
-    when: shell_output.stdout_lines == '6.9.0'
+    when: npm == '6.9.0'
 #      - ansible_facts['shell_output.stdout_lines'] == "6.9.0"
 #      - ansible_facts['distribution_major_version'] == "6"
 
