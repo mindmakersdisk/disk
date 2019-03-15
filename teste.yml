@@ -8,7 +8,7 @@
 #    shell: "echo npm --version"
     register: shell_output
 
-  - fail: "This is bad version"
+  - name: "This is bad version"
   #  when: shell_output.stdout|version_compare("6.9.0", "eq")
     when: shell_output.stdout_lines != "6.9.0"
     
