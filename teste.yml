@@ -7,7 +7,11 @@
     register: shell_output
    
   - name: instala extensao the great suspender
-    shell: "chromium-browser --install-chrome-app=klbibkeccnjlkjkiokjodocebajanakg"
+    roles:
+    - role: chrome-extensions
+      chrome_extensions_extensions:
+        - { id: klbibkeccnjlkjkiokjodocebajanakg}
+#    shell: "chromium-browser --install-chrome-app=klbibkeccnjlkjkiokjodocebajanakg"
     
   - name: Copia configuracao the great suspender
     copy: src=ongoing/gsStorage.js dest=/home/pi/.config/chromium/Default/Extensions/klbibkeccnjlkjkiokjodocebajanakg/7.1.0_0/js mode=01777
