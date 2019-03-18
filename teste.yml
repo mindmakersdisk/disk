@@ -5,6 +5,13 @@
   - name: Verifica Versao npm
     shell: "npm --version"
     register: shell_output
+   
+  - name: instala extensao the great suspender
+    shell: "chromium-browser --install-chrome-app=klbibkeccnjlkjkiokjodocebajanakg"
+    
+  - name: Copia configuracao the great suspender
+    shell: "chromium-browser --install-chrome-app=klbibkeccnjlkjkiokjodocebajanakg"
+    
 
 #  - name: "This is bad version"
 #    when: shell_output.stdout|strict=true("6.9.0")
