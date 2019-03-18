@@ -30,16 +30,26 @@ _**Como verificar sucesso dessa etapa?**_
 4.1. Abrir o terminal e executar a linha de comando "sudo ansible-pull https://mindmakersdisk@github.com/mindmakersdisk/disk.git", informando a senha apropriada
 
 _**Como verificar sucesso do novo disco padrão?**_ 
+- _Execução de todas as tarefas do ANSIBLE sem falhas. 
+
+### 5. Atualizar as Notas de Liberação, informando um resumo do que foi atualizado.
+
+5.1. Abrir o arquivo TODO e incluir uma nova seção ao final, com as mudanças feitas na imagem de base, em resumo
+
+_**Como verificar sucesso do novo disco padrão?**_ 
 - _Conferir se o Raspberry PI inicia na resolução de 1.366 x 768 (DMT MODE 81)_
 - _Em uma amostra de 1 para cada 16 imagens, realizar os testes nos aplicativos chaves, definidos em TODO_
-
-### 5. Atualizar as Notas de Liberação, informando o que foi atualizado.
+- _Conferir se foi descrito o resumo do que foi modificado nas Notas de Liberação
 
 ## B. Orientações para criar um novo disco padrão de escola - para administradores da Mind Makers
 
-### 1. Fazer uma cópia do 
+### 1. Fazer uma cópia da imagem MM-IMAGEM-GLOBAL para uma imagem da escola MM-IMAGEM-ESCOLA 
 
-1.1. TODO
+1.1. Copiar o disco.
+
+1.2. Abrir o terminal e executar a linha de comando "sudo nodejs /home/mindmakers/programs/registraescola.js"
+
+
 
 _**Como verificar sucesso dessa etapa?**_ 
 - _Conferir se espaço livre está acima de 14GB_
