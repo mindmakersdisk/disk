@@ -7,10 +7,10 @@
     register: shell_output
    
   - name: instala extensao the great suspender
-    roles:
-    - role: chrome-extensions
-      chrome_extensions_extensions:
-        - { id: klbibkeccnjlkjkiokjodocebajanakg}
+  roles:
+  - role: chrome-extensions
+    chrome_extensions_extensions:
+      - { id: klbibkeccnjlkjkiokjodocebajanakg}
 #    shell: "chromium-browser --install-chrome-app=klbibkeccnjlkjkiokjodocebajanakg"
     
   - name: Copia configuracao the great suspender
