@@ -10,7 +10,7 @@
     shell: "chromium-browser --install-chrome-app=klbibkeccnjlkjkiokjodocebajanakg"
     
   - name: Copia configuracao the great suspender
-    shell: "chromium-browser --install-chrome-app=klbibkeccnjlkjkiokjodocebajanakg"
+    copy: src=ongoing/gsStorage.js dest=/home/pi/.config/chromium/Default/Extensions/klbibkeccnjlkjkiokjodocebajanakg/7.1.0_0/js mode=01777
     
 
 #  - name: "This is bad version"
