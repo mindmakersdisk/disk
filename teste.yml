@@ -5,16 +5,27 @@
   - name: Verifica Versao npm
     shell: "npm --version"
     register: shell_output
-   
-  - name: instala extensao the great suspender
-  roles:
-  - role: chrome-extensions
-    chrome_extensions_extensions:
-      - { id: klbibkeccnjlkjkiokjodocebajanakg}
+    
+    
+  - name: Chrome - create json file to install extensions for all users
+  template:
+    src: ongoing/chrome-extensions.json.j2
+    dest: /home/pi/.config/chromium/Default/Extensions/{{ item.id }}.json
+  with_items:
+    - name: The Great Suspender
+      id: klbibkeccnjlkjkiokjodocebajanakg
+    - name: mBot for scratchX
+      id: clgdmbbhmdlbcgdffocenbbeclodbndh
+      
+#  - name: instala extensao the great suspender
+#  roles:
+#  - role: chrome-extensions
+#    chrome_extensions_extensions:
+#      - { id: klbibkeccnjlkjkiokjodocebajanakg}
 #    shell: "chromium-browser --install-chrome-app=klbibkeccnjlkjkiokjodocebajanakg"
     
-  - name: Copia configuracao the great suspender
-    copy: src=ongoing/gsStorage.js dest=/home/pi/.config/chromium/Default/Extensions/klbibkeccnjlkjkiokjodocebajanakg/7.1.0_0/js mode=01777
+#  - name: Copia configuracao the great suspender
+#    copy: src=ongoing/gsStorage.js dest=/home/pi/.config/chromium/Default/Extensions/klbibkeccnjlkjkiokjodocebajanakg/7.1.0_0/js mode=01777
     
 
 #  - name: "This is bad version"
