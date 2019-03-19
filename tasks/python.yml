@@ -7,6 +7,8 @@
   - pip:
     name: file:///home/mindmakers/programs/requests
 #    name: file:///home/mindmakers/programs/requests/setup.py
+
+#comandos ainda nao testados, como verifica a instalacao
     
      
 # Tem que baixar fontes do requests no diretorio 'programs' com 'git clone git://github.com/requests/requests.git'
