@@ -3,6 +3,12 @@
     repo: 'https://github.com/requests/requests.git'
     dest: /home/mindmakers/programs
     clone: yes
+  
+  - pip:
+    name: file:///home/mindmakers/programs/requests
+#    name: file:///home/mindmakers/programs/requests/setup.py
+    
+     
 # Tem que baixar fontes do requests no diretorio 'programs' com 'git clone git://github.com/requests/requests.git'
 # entrar no diretorio 'cd requests' 
 # e compilar com 'sudo pip install .'
