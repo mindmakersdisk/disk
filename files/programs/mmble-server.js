@@ -11,7 +11,7 @@
 */
 const express = require('express')  
 const app = express()
-var noble = require('/home/pi/node_modules/noble/index.js')
+var noble = require('/home/mindmakers/programs/node_modules/noble/index.js')
 
 
 // Este servidor foi concebido para rodar local, por isso o uso de estado
@@ -44,32 +44,14 @@ noble.on('stateChange', function(state) {
 
 noble.on('discover', function(peripheral) {
   
-  console.log('peripheral discovered (' + peripheral.id +
-              ' with address <' + peripheral.address +  ', ' + peripheral.addressType + '>,' +
-              ' connectable ' + peripheral.connectable + ',' +
-              ' RSSI ' + peripheral.rssi + ':');
-  console.log('\thello my local name is:');
-  console.log('\t\t' + peripheral.advertisement.localName);
-  console.log('\tcan I interest you in any of the following advertised services:');
-  console.log('\t\t' + JSON.stringify(peripheral.advertisement.serviceUuids));
+  if (peripheral.rssi>-60  && (
+            (''+peripheral.advertisement.localName).indexOf('SK') == 0 || 
+            (''+peripheral.advertisement.localName).indexOf('Sphero')==0)) {
+    
+      console.log('Sphero com macaddress:'+peripheral.address +  ', '  + ' conectável?' + peripheral.connectable + ',' +
+                  ' RSSI:' + peripheral.rssi + ', nome:'+peripheral.advertisement.localName);
 
-  var serviceData = peripheral.advertisement.serviceData;
-  if (serviceData && serviceData.length) {
-    console.log('\there is my service data:');
-    for (var i in serviceData) {
-      console.log('\t\t' + JSON.stringify(serviceData[i].uuid) + ': ' + JSON.stringify(serviceData[i].data.toString('hex')));
-    }
-  }
-  if (peripheral.advertisement.manufacturerData) {
-    console.log('\there is my manufacturer data:');
-    console.log('\t\t' + JSON.stringify(peripheral.advertisement.manufacturerData.toString('hex')));
-  }
-  if (peripheral.advertisement.txPowerLevel !== undefined) {
-    console.log('\tmy TX power level is:');
-    console.log('\t\t' + peripheral.advertisement.txPowerLevel);
-  }
-
-  console.log();
+}
 
   global_jsondevicelist.push({"address":peripheral.address,
  				"localname":peripheral.advertisement.localName,
