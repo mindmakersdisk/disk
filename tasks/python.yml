@@ -1,4 +1,8 @@
 - name: Instala modulo requests do Python.
+  - git:
+    repo: 'https://github.com/requests/requests.git'
+    dest: /home/mindmakers/programs
+    clone: yes
 # Tem que baixar fontes do requests no diretorio 'programs' com 'git clone git://github.com/requests/requests.git'
 # entrar no diretorio 'cd requests' 
 # e compilar com 'sudo pip install .'
