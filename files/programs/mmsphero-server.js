@@ -34,7 +34,13 @@ var sphero = require("sphero"),
 bb8.connect(function() {
 
   bb8.ping();  // Importante: evita travamentos inesperados
-
+ 
+  bb8.version(function(err, data) {   
+     if (err) { console.error("err:", err); } 
+     else 
+      { console.log("Versão:" + data.msaVer+ '.'+ data.msaRev); }
+     });
+	 
   console.log('Conectou com sucesso! Aguardando comandos em http://localhost?code=')
  
   count=0;
@@ -48,11 +54,12 @@ bb8.connect(function() {
      if (code!='') {
 
 	try {
-         console.log('Vai executar: '+code)
+         
+	 console.log('Vai executar: '+code)
+	 	 
 	 eval(code)
+	 	 
 	 if (!eConfig) {
-//		bb8.color('black')
-//	 	bb8.setBackLed(0)
 		}		
 	} catch(e) {
 	 console.log('Erro ao tentar executar comando. Erro: '+e)
