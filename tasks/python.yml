@@ -6,16 +6,3 @@
     
 - name: Instala Nodejs 8.15.3
   shell: 'cd /home/mindmakers/programs/requests && sudo pip install .' 
-#  shell: 'cd /home/mindmakers/programs/requests | sudo pip install .' 
-    
-  
-#  - pip:
-#    name: file:///home/mindmakers/programs/requests
-#    name: file:///home/mindmakers/programs/requests/setup.py
-
-#comandos ainda nao testados, como verifica a instalacao
-    
-     
-# Tem que baixar fontes do requests no diretorio 'programs' com 'git clone git://github.com/requests/requests.git'
-# entrar no diretorio 'cd requests' 
-# e compilar com 'sudo pip install .'
