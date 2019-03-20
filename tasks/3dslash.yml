@@ -5,7 +5,7 @@
     - libsdl2-dev
     
 - name: Cria links simbolicos necessarios do 3DSlash
-  shell: name={{item}}
+  shell: "{{ item }}"
   with_items:
     - 'ln -s libbrcmEGL.so libEGL.so'
     - 'ln -s libbrcmEGL.so libEGL.so'
