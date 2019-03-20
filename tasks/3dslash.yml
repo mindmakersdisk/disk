@@ -4,13 +4,13 @@
   register: 3DS
 - name: Copia arquivos 3DSlash
   copy: src=ongoing/3dslash_raspberry_3_0_0.tgz dest=/home/mindmakers/programs/verify/3DSlash/3dslash_raspberry_3_0_0.tgz mode=644
-  when: not 3ds.stat.exists
+  when: not 3DS.stat.exists
 - name: Extrai 3DSlash
   shell: 'cd /home/mindmakers/programs/verify/3DSlash/ && tar -xvzpf 3dslash_raspberry_3_0_0.tgz -C /usr/local'
-    when: not 3ds.stat.exists
+    when: not 3DS.stat.exists
 - name: Instala 3DSlash
   shell: 'cd /home/mindmakers/programs/verify/3DSlash/ && chown -R root:staff /usr/local/3DSlash'
-  when: not 3ds.stat.exists
+  when: not 3DS.stat.exists
   
 - name: Instala libgles2-mesa e libsdl2-dev
   apt: name={{item}}
