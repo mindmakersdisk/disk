@@ -5,18 +5,18 @@
     - libsdl2-dev
     
 - name: Cria links simbolicos necessarios do 3DSlash
-  shell: name={{item}}
+  shell: {{item}}
   with_items:
-    - ln -s libbrcmEGL.so libEGL.so
-    - ln -s libbrcmGLESv2.so libGLESv2.so
-    - ln -s libbrcmOpenVG.so libOpenVG.so
-    - ln -s libbrcmWFC.so libWFC.so
-    - ln -fs /opt/vc/lib/libEGL.so /usr/lib/arm-linux-gnueabihf/libEGL.so
-    - ln -fs /opt/vc/lib/libGLESv2.so /usr/lib/arm-linux-gnueabihf/libGLESv2.so
-    - ldconfig
+    - 'ln -s libbrcmEGL.so libEGL.so'
+    - 'ln -s libbrcmEGL.so libEGL.so'
+    - 'ln -s libbrcmOpenVG.so libOpenVG.so'
+    - 'ln -s libbrcmWFC.so libWFC.so'
+    - 'ln -fs /opt/vc/lib/libEGL.so /usr/lib/arm-linux-gnueabihf/libEGL.so'
+    - 'ln -fs /opt/vc/lib/libGLESv2.so /usr/lib/arm-linux-gnueabihf/libGLESv2.so'
+    - 'ldconfig'
 
 #  shell: 'ln -s libbrcmEGL.so libEGL.so'
-#  shell: 'ln -s libbrcmGLESv2.so libGLESv2.so'
+#  shell: 'ln -s libbrcmEGL.so libEGL.so'
 #  shell: 'ln -s libbrcmOpenVG.so libOpenVG.so'
 #  shell: 'ln -s libbrcmWFC.so libWFC.so'
 #  shell: 'ln -fs /opt/vc/lib/libEGL.so /usr/lib/arm-linux-gnueabihf/libEGL.so'
