@@ -1,0 +1,25 @@
+Enter 
+sudo raspi-config
+
+choose Advanced Options | Memory Split, enter 256,
+ then Tab to OK and press Enter.
+
+ cd Downloads
+ sudo tar -xvzpf 3dslash_raspberry_3_0_0.tgz -C /usr/local
+ sudo chown -R root:staff /usr/local/3DSlash
+ /usr/local/3DSlash/3DSlash-pi
+
+sudo apt-get install libgles2-mesa libsdl2-dev
+
+
+link simbolicos
+
+cd /opt/vc/lib
+sudo ln -s libbrcmEGL.so libEGL.so
+sudo ln -s libbrcmGLESv2.so libGLESv2.so
+sudo ln -s libbrcmOpenVG.so libOpenVG.so
+sudo ln -s libbrcmWFC.so libWFC.so
+
+sudo ln -fs /opt/vc/lib/libEGL.so /usr/lib/arm-linux-gnueabihf/libEGL.so
+sudo ln -fs /opt/vc/lib/libGLESv2.so /usr/lib/arm-linux-gnueabihf/libGLESv2.so
+sudo ldconfig
