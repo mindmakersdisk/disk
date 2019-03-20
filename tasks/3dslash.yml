@@ -7,6 +7,7 @@
 - name: Cria links simbolicos necessarios do 3DSlash
   shell: "{{ item }}"
   with_items:
+    - 'cd /opt/vc/lib'  
     - 'ln -s libbrcmEGL.so libEGL.so'
     - 'ln -s libbrcmGLESv2.so libGLESv2.so'
     - 'ln -s libbrcmOpenVG.so libOpenVG.so'
