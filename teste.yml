@@ -3,7 +3,7 @@
     - ver: 6.9.0
   tasks: 
   - name: instalar 3dslash
-  - include: tasks/3dslash.yml
+    include: tasks/3dslash.yml
   
   - name: Verifica Versao npm
     shell: "npm --version"
