@@ -14,5 +14,3 @@
   copy: src=files/panel dest=/home/pi/.config/lxpanel/LXDE-pi/panels mode=01777
 - name: Altera resolucao da tela
   copy: src=files/config.txt dest=/boot
-- name: Aplica atualizacao do desktop
-  shell: "pcmanfm --reconfigure"
