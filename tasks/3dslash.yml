@@ -8,7 +8,7 @@
 #  shell: "{{ item }}"
 #  with_items:
 #    - 'ln -s libbrcmEGL.so libEGL.so'
-#    - 'ln -s libbrcmEGL.so libEGL.so'
+#    - 'ln -s libbrcmGLESv2.so libGLESv2.so'
 #    - 'ln -s libbrcmOpenVG.so libOpenVG.so'
 #    - 'ln -s libbrcmWFC.so libWFC.so'
 #    - 'ln -fs /opt/vc/lib/libEGL.so /usr/lib/arm-linux-gnueabihf/libEGL.so'
@@ -16,7 +16,7 @@
 #    - 'ldconfig'
 
   shell: 'cd /opt/vc/lib && ln -s libbrcmEGL.so libEGL.so'
-  shell: 'cd /opt/vc/lib && ln -s libbrcmEGL.so libEGL.so'
+  shell: 'cd /opt/vc/lib && ln -s libbrcmGLESv2.so libGLESv2.so'
   shell: 'cd /opt/vc/lib && ln -s libbrcmOpenVG.so libOpenVG.so'
   shell: 'cd /opt/vc/lib && ln -s libbrcmWFC.so libWFC.so'
   shell: 'ln -fs /opt/vc/lib/libEGL.so /usr/lib/arm-linux-gnueabihf/libEGL.so'
