@@ -14,7 +14,7 @@
 #    - 'ln -fs /opt/vc/lib/libEGL.so /usr/lib/arm-linux-gnueabihf/libEGL.so'
 #    - 'ln -fs /opt/vc/lib/libGLESv2.so /usr/lib/arm-linux-gnueabihf/libGLESv2.so'
 #    - 'ldconfig'
-
+  shell: 'cd /opt/vc/lib'
   shell: 'ln -s libbrcmEGL.so libEGL.so'
   shell: 'ln -s libbrcmEGL.so libEGL.so'
   shell: 'ln -s libbrcmOpenVG.so libOpenVG.so'
