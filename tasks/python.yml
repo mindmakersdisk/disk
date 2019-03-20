@@ -1,4 +1,4 @@
-- name: Instala modulo requests do Python.
+- name: Clona modulo requests para Python.
   git:
     repo: 'https://github.com/requests/requests.git'
     dest: /home/mindmakers/programs/
