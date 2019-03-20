@@ -7,13 +7,13 @@
 - name: Cria links simbolicos necessarios do 3DSlash
   shell: "{{ item }}"
   with_items: 
-    - 'ln -fs /opt/vc/liblibbrcmEGL.so /opt/vc/liblibEGL.so'
-    - 'ln -fs /opt/vc/liblibbrcmGLESv2.so /opt/vc/liblibGLESv2.so'
-    - 'ln -fs /opt/vc/liblibbrcmOpenVG.so /opt/vc/liblibOpenVG.so'
-    - 'ln -fs /opt/vc/liblibbrcmWFC.so /opt/vc/liblibWFC.so'
-    - 'ln -fs /opt/vc/lib/libEGL.so /usr/lib/arm-linux-gnueabihf/libEGL.so'
-    - 'ln -fs /opt/vc/lib/libGLESv2.so /usr/lib/arm-linux-gnueabihf/libGLESv2.so'
-    - 'ldconfig'
+    - 'sudo ln -fs /opt/vc/liblibbrcmEGL.so /opt/vc/liblibEGL.so'
+    - 'sudo ln -fs /opt/vc/liblibbrcmGLESv2.so /opt/vc/liblibGLESv2.so'
+    - 'sudo ln -fs /opt/vc/liblibbrcmOpenVG.so /opt/vc/liblibOpenVG.so'
+    - 'sudo ln -fs /opt/vc/liblibbrcmWFC.so /opt/vc/liblibWFC.so'
+    - 'sudo ln -fs /opt/vc/lib/libEGL.so /usr/lib/arm-linux-gnueabihf/libEGL.so'
+    - 'sudo ln -fs /opt/vc/lib/libGLESv2.so /usr/lib/arm-linux-gnueabihf/libGLESv2.so'
+    - 'sudo ldconfig'
 
 #  shell: 'cd /opt/vc/lib && ln -s libbrcmEGL.so libEGL.so'
 #  shell: 'cd /opt/vc/lib && ln -s libbrcmGLESv2.so libGLESv2.so'
