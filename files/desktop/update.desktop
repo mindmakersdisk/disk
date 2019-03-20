@@ -2,7 +2,7 @@
 Name=Update Version
 Name[pt_BR]=Atualizar Versão
 Comment= Atualiza a Versão da Imagem disponibilizada pela Mind Makers
-Icon=/usr/share/icons/
+Icon=/usr/share/icons/Adwaita/32x32/apps/system-software-update.png
 Exec=bash /home/mindmakers/programs/shells/update-image.sh
 Type=Application
 Encoding=UTF-8
