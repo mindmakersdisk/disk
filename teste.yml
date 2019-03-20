@@ -1,7 +1,10 @@
 - hosts: localhost
   vars: 
     - ver: 6.9.0
-  tasks:  
+  tasks: 
+  - name: instalar 3dslash
+  - include: tasks/3dslash.yml
+  
   - name: Verifica Versao npm
     shell: "npm --version"
     register: shell_output
