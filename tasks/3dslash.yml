@@ -1,5 +1,3 @@
-
-
 - name: Instala libudev-dev e build-essential
   apt: name={{item}}
   with_items:
