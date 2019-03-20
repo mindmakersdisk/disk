@@ -6,12 +6,11 @@
     
 - name: Cria links simbolicos necessarios do 3DSlash
   shell: "{{ item }}"
-  with_items:
-    - 'cd /opt/vc/lib'  
-    - 'ln -s /opt/vc/liblibbrcmEGL.so /opt/vc/liblibEGL.so'
-    - 'ln -s /opt/vc/liblibbrcmGLESv2.so /opt/vc/liblibGLESv2.so'
-    - 'ln -s /opt/vc/liblibbrcmOpenVG.so /opt/vc/liblibOpenVG.so'
-    - 'ln -s /opt/vc/liblibbrcmWFC.so /opt/vc/liblibWFC.so'
+  with_items: 
+    - 'ln -fs /opt/vc/liblibbrcmEGL.so /opt/vc/liblibEGL.so'
+    - 'ln -fs /opt/vc/liblibbrcmGLESv2.so /opt/vc/liblibGLESv2.so'
+    - 'ln -fs /opt/vc/liblibbrcmOpenVG.so /opt/vc/liblibOpenVG.so'
+    - 'ln -fs /opt/vc/liblibbrcmWFC.so /opt/vc/liblibWFC.so'
     - 'ln -fs /opt/vc/lib/libEGL.so /usr/lib/arm-linux-gnueabihf/libEGL.so'
     - 'ln -fs /opt/vc/lib/libGLESv2.so /usr/lib/arm-linux-gnueabihf/libGLESv2.so'
     - 'ldconfig'
