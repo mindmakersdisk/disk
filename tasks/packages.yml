@@ -35,50 +35,50 @@
   when: not npm.stat.exists
 - name: Cria pasta de verificação de instalação npm 6.9.0
   copy: src=ongoing/verify/npm69 dest=/home/mindmakers/programs/verify mode=444
-- name: Instala pacote do nodejs "bluetooth-hci-socket"
+- name: Instala pacote do npm "bluetooth-hci-socket"
   npm:
     name:  bluetooth-hci-socket
     path: /home/mindmakers/programs
     executable: /usr/bin/npm --unsafe-perm=true
-- name: Instala pacote do nodejs "bluebird"
+- name: Instala pacote do npm "bluebird"
   npm:
     name: bluebird
     path: /home/mindmakers/programs
-- name: Instala pacote do nodejs "browser-serialport"
+- name: Instala pacote do npm "browser-serialport"
   npm:
     name: browser-serialport
     path: /home/mindmakers/programs
-- name: Instala pacote do nodejs "debug"
+- name: Instala pacote do npm "debug"
   npm:
     name: debug
     path: /home/mindmakers/programs
-- name: Instala pacote do nodejs "express"
+- name: Instala pacote do npm "express"
   npm:
     name: express
     path: /home/mindmakers/programs
-- name: Instala pacote do nodejs "grunt"
+- name: Instala pacote do npm "grunt"
   npm:
     name: grunt
     path: /home/mindmakers/programs
-- name: Instala pacote do nodejs "keypress"
+- name: Instala pacote do npm "keypress"
   npm:
     name: keypress
     path: /home/mindmakers/programs
-- name: Instala pacote do nodejs "webworker-threads"
+- name: Instala pacote do npm "webworker-threads"
   npm:
     name: webworker-threads
     path: /home/mindmakers/programs
     executable: /usr/bin/npm --unsafe-perm=true
-- name: Instala pacote do nodejs "noble"
+- name: Instala pacote do npm "noble"
   npm:
     name: noble
     path: /home/mindmakers/programs
     executable: /usr/bin/npm --unsafe-perm=true
-- name: Instala pacote do nodejs "sphero"
+- name: Instala pacote do npm "sphero"
   npm:
     name: sphero
     path: /home/mindmakers/programs
-- name: Instala pacote do nodejs "serialport"
+- name: Instala pacote do npm "serialport"
   npm:
     name: serialport
     path: /home/mindmakers/programs
