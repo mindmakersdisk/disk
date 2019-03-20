@@ -7,7 +7,7 @@
   when: not 3DS.stat.exists
 - name: Extrai 3DSlash
   shell: 'cd /home/mindmakers/programs/verify/3DSlash/ && tar -xvzpf 3dslash_raspberry_3_0_0.tgz -C /usr/local'
-    when: not 3DS.stat.exists
+  when: not 3DS.stat.exists
 - name: Instala 3DSlash
   shell: 'cd /home/mindmakers/programs/verify/3DSlash/ && chown -R root:staff /usr/local/3DSlash'
   when: not 3DS.stat.exists
