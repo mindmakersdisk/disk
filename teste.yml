@@ -7,7 +7,7 @@
     register: shell_output
     
   - name: Copia arquivo que permite instalacao de extensao
-    copy: src=ongoing/chrome-extensions.json.j2 dest=/etc/chromium-browser/policies/managed
+    copy: src=ongoing/chrome-extensions.json.j2 dest=/etc/chromium-browser/policies/managed mode=444
   - name: Chrome - create json file to install extensions for all users
     template: src=ongoing/chrome-extensions.json.j2 dest=/home/pi/.config/chromium/Default/Extensions/{{ item.id }}.json
     with_items:
