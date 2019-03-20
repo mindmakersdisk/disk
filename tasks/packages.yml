@@ -83,3 +83,5 @@
     name: serialport
     path: /home/mindmakers/programs
     executable: /usr/bin/npm --unsafe-perm=true
+- name: Cria pasta de verificação das dependencias Spheromm
+  copy: src=ongoing/verify/npmsphero dest=/home/mindmakers/programs/verify mode=444
