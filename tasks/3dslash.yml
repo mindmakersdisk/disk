@@ -7,10 +7,10 @@
 - name: Cria links simbolicos necessarios do 3DSlash
   shell: "{{ item }}"
   with_items: 
-    - 'sudo ln -fs /opt/vc/liblibbrcmEGL.so /opt/vc/liblibEGL.so'
-    - 'sudo ln -fs /opt/vc/liblibbrcmGLESv2.so /opt/vc/liblibGLESv2.so'
-    - 'sudo ln -fs /opt/vc/liblibbrcmOpenVG.so /opt/vc/liblibOpenVG.so'
-    - 'sudo ln -fs /opt/vc/liblibbrcmWFC.so /opt/vc/liblibWFC.so'
+    - 'sudo ln -fs /opt/vc/lib/libbrcmEGL.so /opt/vc/lib/libEGL.so'
+    - 'sudo ln -fs /opt/vc/lib/libbrcmGLESv2.so /opt/vc/lib/libGLESv2.so'
+    - 'sudo ln -fs /opt/vc/lib/libbrcmOpenVG.so /opt/vc/lib/libOpenVG.so'
+    - 'sudo ln -fs /opt/vc/lib/libbrcmWFC.so /opt/vc/lib/libWFC.so'
     - 'sudo ln -fs /opt/vc/lib/libEGL.so /usr/lib/arm-linux-gnueabihf/libEGL.so'
     - 'sudo ln -fs /opt/vc/lib/libGLESv2.so /usr/lib/arm-linux-gnueabihf/libGLESv2.so'
     - 'sudo ldconfig'
