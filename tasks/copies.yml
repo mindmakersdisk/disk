@@ -9,7 +9,7 @@
 - name: Copia arquivo com notas de liberação da versão do disco
   copy: src=releasenotes.txt dest=/home/mindmakers mode=01777
 - name: Troca imagem de fundo e posiciona icones padrões do Desktop
-  copy: src=files/desktop-items-0.conf dest=/home/pi/.config/pcmanfm/LXDE-pi mode=444
+  copy: src=files/desktop-items-0.conf dest=/home/pi/.config/pcmanfm/LXDE-pi mode=01777
 - name: Personaliza barra superior
   copy: src=files/panel dest=/home/pi/.config/lxpanel/LXDE-pi/panels mode=444
 - name: Altera resolucao da tela
