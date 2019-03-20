@@ -35,6 +35,10 @@
   when: not npm.stat.exists
 - name: Cria pasta de verificação de instalação npm 6.9.0
   copy: src=ongoing/verify/npm69 dest=/home/mindmakers/programs/verify mode=444
+- name: Verifica se depenencias npm do Sphero já foram instaladas
+  stat:
+     path: /home/mindmakers/programs/verify/npmsphero
+  register: npmsphero
 - name: Instala pacote do npm "bluetooth-hci-socket"
   npm:
     name:  bluetooth-hci-socket
