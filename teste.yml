@@ -2,6 +2,7 @@
   vars: 
     - ver: 6.9.0
   tasks:  
+  - include: tasks/python.yml
   - name: Verifica Versao npm
     shell: "npm --version"
     register: shell_output
