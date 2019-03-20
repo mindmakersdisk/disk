@@ -1,8 +1,8 @@
-- name: Instala modulo requests do Python.
-  - git:
-      repo: 'https://github.com/requests/requests.git'
-      dest: /home/mindmakers/programs
-      clone: yes
+#- name: Instala modulo requests do Python.
+- git:
+  repo: 'https://github.com/requests/requests.git'
+  dest: /home/mindmakers/programs
+  clone: yes
     
 - name: Instala Nodejs 8.15.3
   shell: 'cd /home/mindmakers/programs/requests && sudo pip install .' 
