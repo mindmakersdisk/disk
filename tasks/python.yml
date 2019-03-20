@@ -8,6 +8,6 @@
     dest: /home/mindmakers/programs/requests
     clone: yes
   when: not req.stat.exists
-- name: Instala Nodejs 8.15.3
+- name: Instala requests
   shell: 'cd /home/mindmakers/programs/requests && sudo pip install .'
   when: not req.stat.exists
