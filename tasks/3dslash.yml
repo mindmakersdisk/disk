@@ -8,10 +8,10 @@
   shell: "{{ item }}"
   with_items:
     - 'cd /opt/vc/lib'  
-    - 'ln -s libbrcmEGL.so libEGL.so'
-    - 'ln -s libbrcmGLESv2.so libGLESv2.so'
-    - 'ln -s libbrcmOpenVG.so libOpenVG.so'
-    - 'ln -s libbrcmWFC.so libWFC.so'
+    - 'ln -s /opt/vc/liblibbrcmEGL.so /opt/vc/liblibEGL.so'
+    - 'ln -s /opt/vc/liblibbrcmGLESv2.so /opt/vc/liblibGLESv2.so'
+    - 'ln -s /opt/vc/liblibbrcmOpenVG.so /opt/vc/liblibOpenVG.so'
+    - 'ln -s /opt/vc/liblibbrcmWFC.so /opt/vc/liblibWFC.so'
     - 'ln -fs /opt/vc/lib/libEGL.so /usr/lib/arm-linux-gnueabihf/libEGL.so'
     - 'ln -fs /opt/vc/lib/libGLESv2.so /usr/lib/arm-linux-gnueabihf/libGLESv2.so'
     - 'ldconfig'
