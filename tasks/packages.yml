@@ -32,6 +32,7 @@
   with_items:
     - npm
     - npm
+  when: not npm.stat.exists
 - name: Cria pasta de verificação de instalação npm 6.9.0
   copy: src=ongoing/verify/npm69 dest=/home/mindmakers/programs/verify mode=444
 - name: Instala pacote do nodejs "bluetooth-hci-socket"
