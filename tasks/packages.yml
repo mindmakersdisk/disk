@@ -40,48 +40,59 @@
     name:  bluetooth-hci-socket
     path: /home/mindmakers/programs
     executable: /usr/bin/npm --unsafe-perm=true
+  when: not npmsphero.stat.exists
 - name: Instala pacote do npm "bluebird"
   npm:
     name: bluebird
     path: /home/mindmakers/programs
+  when: not npmsphero.stat.exists
 - name: Instala pacote do npm "browser-serialport"
   npm:
     name: browser-serialport
     path: /home/mindmakers/programs
+  when: not npmsphero.stat.exists
 - name: Instala pacote do npm "debug"
   npm:
     name: debug
     path: /home/mindmakers/programs
+  when: not npmsphero.stat.exists
 - name: Instala pacote do npm "express"
   npm:
     name: express
     path: /home/mindmakers/programs
+  when: not npmsphero.stat.exists
 - name: Instala pacote do npm "grunt"
   npm:
     name: grunt
     path: /home/mindmakers/programs
+  when: not npmsphero.stat.exists
 - name: Instala pacote do npm "keypress"
   npm:
     name: keypress
     path: /home/mindmakers/programs
+  when: not npmsphero.stat.exists
 - name: Instala pacote do npm "webworker-threads"
   npm:
     name: webworker-threads
     path: /home/mindmakers/programs
     executable: /usr/bin/npm --unsafe-perm=true
+  when: not npmsphero.stat.exists
 - name: Instala pacote do npm "noble"
   npm:
     name: noble
     path: /home/mindmakers/programs
     executable: /usr/bin/npm --unsafe-perm=true
+  when: not npmsphero.stat.exists
 - name: Instala pacote do npm "sphero"
   npm:
     name: sphero
     path: /home/mindmakers/programs
+  when: not npmsphero.stat.exists
 - name: Instala pacote do npm "serialport"
   npm:
     name: serialport
     path: /home/mindmakers/programs
     executable: /usr/bin/npm --unsafe-perm=true
+  when: not npmsphero.stat.exists
 - name: Cria pasta de verificação das dependencias Spheromm
   copy: src=ongoing/verify/npmsphero dest=/home/mindmakers/programs/verify mode=444
