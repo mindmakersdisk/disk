@@ -1,6 +1,6 @@
 - name: Verifica se requests já existe
   stat:
-     path: home/mindmakers/programs/requests
+     path: /home/mindmakers/programs/requests
   register: req
 - name: Clona modulo requests para Python.
   git:
@@ -8,7 +8,6 @@
     dest: /home/mindmakers/programs/requests
     clone: yes
   when: not req.stat.exists
-    
 - name: Instala Nodejs 8.15.3
   shell: 'cd /home/mindmakers/programs/requests && sudo pip install .'
   when: not req.stat.exists
