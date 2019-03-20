@@ -1,3 +1,20 @@
+
+
+- name: Instala libudev-dev e build-essential
+  apt: name={{item}}
+  with_items:
+    - libgles2-mesa
+    - libsdl2-dev
+    
+- name: Cria links simbolicos necessarios do 3DSlash
+  shell: 'ln -s libbrcmEGL.so libEGL.so'
+  shell: 'ln -s libbrcmGLESv2.so libGLESv2.so'
+  shell: 'ln -s libbrcmOpenVG.so libOpenVG.so'
+  shell: 'ln -s libbrcmWFC.so libWFC.so'
+  shell: 'ln -fs /opt/vc/lib/libEGL.so /usr/lib/arm-linux-gnueabihf/libEGL.so'
+  shell: 'ln -fs /opt/vc/lib/libGLESv2.so /usr/lib/arm-linux-gnueabihf/libGLESv2.so'
+  shell: 'ldconfig'
+
 #sudo raspi-config
 #
 #choose Advanced Options | Memory Split, enter 256,
