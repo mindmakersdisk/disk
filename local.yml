@@ -20,3 +20,4 @@
     - include: tasks/copies.yml
     - include: tasks/packages.yml
     - include: tasks/packages-uninstall.yml
+    - include: tasks/python.yml
