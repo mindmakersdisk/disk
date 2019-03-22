@@ -8,6 +8,8 @@
   copy: src=files/desktop/update.desktop dest=/home/mindmakers mode=01777
 - name: Copia arquivo com notas de liberação da versão do disco
   copy: src=releasenotes.info dest=/home/mindmakers mode=01777
+- name: Instala requests
+  shell: 'sudo pcmanfm --wallpaper-mode=screen'
 - name: Troca imagem de fundo e posiciona icones padrões do Desktop
   copy: src=files/desktop-items-0.conf dest=/home/pi/.config/pcmanfm/LXDE-pi mode=01777
 - name: Personaliza barra superior
