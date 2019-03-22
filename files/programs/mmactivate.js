@@ -1,25 +1,21 @@
 /*
-  Mind Makers Blockly.
-  Serviço Node para seleção dos dispositivos bluetooth disponíveis. 
-  Paulo Alvim 20/12/2016
- 
-  1. Certificar-se que o bluetooth do PI está ligado
-  2. Rodar com "sudo node appble.js". 
-  3. Testar abrindo o navegador e chamando http://localhost
+  Inventário e Ativação Automatizada de Ativos 
+   
+  1. Aproxime um Sphero que deseja ativar - alterar atalho de execução e registrar no inventário da escola (opcional)
+  2. Tenha o código da escola disponível para colar, obtido da Mind Makers (exceto se for somente alteraçãodo de ativação do Sphero)
+  3. Execute com o atalho adequado ou de terminal do diretório /home/mindmakers/programas -> "sudo node mmactivate.js". 
 
+  Paulo Alvim 22/03/2019
   Copyright(c) Mind Makers Editora Educacional Ltda. Todos os direitos reservados
 */
-const express = require('express')  
+
 const request = require('request')  
 const si = require('systeminformation')
-const app = express()
-
 var noble = require('/home/mindmakers/programs/node_modules/noble/index.js')
 var inquirer = require('inquirer');
 var fs = require('fs');
 
-// Este servidor foi concebido para rodar local, por isso o uso de estado
-// em variáveis globais
+// Este serviço foi concebido para rodar local, por isso o uso de variáveis globais
 var global_jsondevicelist=[];
 
 // Registrados
@@ -35,11 +31,19 @@ var sprk_identificado='';
 var pi_identificado=''
 var sd_identificado=''
 
+// Informados
+var idescola_informado='';
+
 // Recuperados
 var escolanome_recuperado='';
 
 var numeroScans=0;
-var modoregistro=false
+var modoregistro=false;
+
+// Semáforo para sinalizar finalização dos serviços assincronos
+var totalAcessosPlataformaPendentes=-1;
+var servicoRecorrente;
+var tentativas=0;
 
 fs.readFile('/home/mindmakers/school.info', function(err,data) 
         {
@@ -60,7 +64,7 @@ fs.readFile('/home/mindmakers/school.info', function(err,data)
              // console.log(sprk_registrado);
             console.log('');
             console.log(escolainfo);
-            
+            console.log('');
             console.log('--- Identificação automática de ativos');
             getSDSerialNumber();
             getPiSerial();  
@@ -77,20 +81,6 @@ fs.readFile('/home/mindmakers/school.info', function(err,data)
             
           }
         });
-
-// Permite que página da aplicação Mind Makers acesse este servidor local
-app.use((request, response, next) => {  
-  response.setHeader('Access-Control-Allow-Origin', '*');
-  response.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept');
-
-  next()
-})
-
-app.get('/', (request, response) => {  
-  response.json(global_jsondevicelist)
-})
-
-//app.listen(8080) 
 
 
 noble.on('discover', function(peripheral) {
@@ -144,7 +134,7 @@ var questions = [
   {
     type: 'input',
     name: 'idescola',
-    message: "Informe o código da escola (solicie à Mind Makers se não possuir):",
+    message: "Digite ou cole o código da escola (solicie à Mind Makers se não possuir):",
     when: function (answers) {
       return answers.opcao;
     }
@@ -160,9 +150,25 @@ var questions = [
   {
     type: 'password',
     name: 'senha',
-    message: "Senha:",
+    message: "Informe sua senha:",
     when: function (answers) {
       return answers.opcao;
+    }
+  },
+  {
+    type: 'confirm',
+    name: 'loginSimplificado',
+    message: "Deseja configurar o login simplificado no atalho Mind Makers?",
+    when: function (answers) {
+      return answers.opcao;
+    }
+  },
+  {
+    type: 'input',
+    name: 'numeroSalas',
+    message: "Quantas turmas simultâneas de Mind Makers pode ter a escola?",
+    when: function (answers) {
+      return answers.loginSimplificado;
     }
   }
 
@@ -177,7 +183,7 @@ var questionsEscola = [
   {
     type: 'input',
     name: 'idescola',
-    message: "Informe o código da escola (solicie à Mind Makers se não possuir):",
+    message: "Digite ou cole o código da escola (solicie à Mind Makers se não possuir):",
     when: function (answers) {
       return answers.opcao;
     }
@@ -197,15 +203,32 @@ var questionsEscola = [
     when: function (answers) {
       return answers.opcao;
     }
+  },
+  {
+    type: 'confirm',
+    name: 'loginSimplificado',
+    message: "Deseja configurar o login simplificado no atalho Mind Makers?",
+    when: function (answers) {
+      return answers.opcao;
+    }
+  },
+  {
+    type: 'input',
+    name: 'numeroSalas',
+    message: "Quantas turmas simultâneas de Mind Makers pode ter a escola?",
+    when: function (answers) {
+      return answers.loginSimplificado;
+    }
   }
+
 
 ];
 
 var questionsSphero = [
   {
     type: 'confirm',
-    name: 'confirma',
-    message: "Deseja ativar o Sphero acima"
+    name: 'opcao',
+    message: "Deseja ativar o Sphero acima identificado? Isso vai alterar o atalho de execução para usá-lo."
 
   },
   {
@@ -223,6 +246,58 @@ var questionsSphero = [
     when: function (answers) {
       return answers.opcao;
     }   
+  }
+
+];
+
+var questionsSoTrocarEscola = [
+  {
+    type: 'confirm',
+    name: 'opcao',
+    message: "Todos os ativos identificados já estão corretamente registrados. Deseja trocar a escola "+escolanome+"?"
+  },
+  {
+    type: 'input',
+    name: 'idescola',
+    message: "Digite ou cole o código da escola (solicie à Mind Makers se não possuir):",
+    when: function (answers) {
+      return answers.opcao;
+    }
+  },
+  {
+    type: 'input',
+    name: 'login',
+    message: "Informe seu usuário Mind Makers:",
+     when: function (answers) {
+      return answers.opcao && answers.idescola;
+    }   
+  },
+  {
+    type: 'password',
+    name: 'senha',
+    message: "Senha:",
+    when: function (answers) {
+      return answers.opcao && answers.idescola;
+    }   
+  },
+  {
+    type: 'confirm',
+    name: 'loginSimplificado',
+    message: "Deseja configurar o login simplificado no atalho Mind Makers?",
+    when: function (answers) {
+      return answers.opcao && answers.idescola;
+    }
+  },
+  {
+    type: 'input',
+    name: 'numeroSalas',
+    message: "Quantas turmas simultâneas de Mind Makers pode ter a escola?",
+    when: function (answers) {
+       return answers.loginSimplificado;
+    },
+    validate: function validaNumero(numeroSalas) {
+        return /^-{0,1}\d+$/.test(numeroSalas);
+    }
   }
 
 ];
@@ -255,9 +330,11 @@ function getSDSerialNumber() {
 function getPiSerial(){
 
    var SDSerial = fs.readFileSync('/sys/block/mmcblk0/device/serial');
-   var SDCID = fs.readFileSync('/sys/block/mmcblk0/device/cid');
+  
+  // Também pode ser usado no futuro, identifica o modelo.
+  // var SDCID = fs.readFileSync('/sys/block/mmcblk0/device/cid');
    
-   sd_identificado=(SDCID+'').trim();
+   sd_identificado=(SDSerial+'').trim();
 
    console.log('SD Serial: '+SDSerial /*+ ' CID='+ SDCID */);
 
@@ -266,19 +343,45 @@ function getPiSerial(){
 function executaRegistros() {
   
    if (tudoEmConformidade()) {
+      
+      modoregistro=true;
+      inquirer.prompt(questionsSoTrocarEscola).then(answers => {
+        if (answers.opcao) {
+          idescola_informado=answers.idescola;
+                    
+          // Se não informou mas tem um registrado, usa este.
+          if (idescola_informado != null && idescola_informado.trim() != '') {
+              recuperaNomeEscola(answers);
+              registraAtivosEscolaPlataforma(answers);
+              if (answers.loginSimplificado)
+                 atualizaAtalhoLoginSimplificadoEscola(answers);
+
+              atualizaAtalhoSphero();  
+              registraSpheroPlataforma(answers);    
+          
+              totalAcessosPlataformaPendentes=4;
+              servicoRecorrente=setInterval(monitoraAcessosAssincronosPlataforma,2000);   
+
+          } else {
+        
+
+            // Encerra com falha
+            process.exit(1);
+        }
+          modoregistro=false;        
+      }});        
    
-      console.log('Todos os ativos identificados já estão corretamente registrados')
    
    } else if (soSpheroPendente()) {
      // Faz registro somente do Sphero
-   
+         
       modoregistro=true;
       inquirer.prompt(questionsSphero).then(answers => {
-        console.log(JSON.stringify(answers, null, '  '));
         if (answers.opcao) {
           atualizaAtalhoSphero();
           registraSpheroPlataforma(answers);
-          atualizaSchoolInfo(answers);
+          totalAcessosPlataformaPendentes=1;
+          servicoRecorrente=setInterval(monitoraAcessosAssincronosPlataforma,2000);
         }
         modoregistro=false;
       });        
@@ -287,11 +390,17 @@ function executaRegistros() {
      // Faz registro basico
         
       modoregistro=true;
+
       inquirer.prompt(questionsEscola).then(answers => {
-        console.log(JSON.stringify(answers, null, '  '));
         if (answers.opcao) {
+          idescola_informado=answers.idescola;
+          recuperaNomeEscola(answers);
           registraAtivosEscolaPlataforma(answers);
-          atualizaSchoolInfo(answers);
+          if (answers.loginSimplificado)
+            atualizaAtalhoLoginSimplificadoEscola(answers);
+      
+          totalAcessosPlataformaPendentes=3;
+          servicoRecorrente=setInterval(monitoraAcessosAssincronosPlataforma,2000);
         }
         modoregistro=false;
       });        
@@ -302,21 +411,35 @@ function executaRegistros() {
         
       modoregistro=true;
       inquirer.prompt(questions).then(answers => {
-        console.log(JSON.stringify(answers, null, '  '));
         if (answers.opcao) {
-          registraAtivosEscolaPlataforma(answers);
-          atualizaAtalhoLoginSimplificadoEscola();
-          atualizaAtalhoSphero();
-          atualizaSchoolInfo(answers);        
+          idescola_informado=answers.idescola;
+          
+          // Se não informou mas tem um registrado, usa este.
+          if (idescola_informado != null && idescola_informado.trim() != '') {
+              
+            recuperaNomeEscola(answers);
+            registraAtivosEscolaPlataforma(answers);
+            atualizaAtalhoLoginSimplificadoEscola();
+            atualizaAtalhoSphero();      
+            if (answers.loginSimplificado)
+              atualizaAtalhoLoginSimplificadoEscola(answers);
+            
+            totalAcessosPlataformaPendentes=4;
+            servicoRecorrente=setInterval(monitoraAcessosAssincronosPlataforma,2000);   
+          } else {
+            // Encerra com falha
+              process.exit(1);
+          }
         }
         modoregistro=false;
+            
       });   
   }
 }
 
 function tudoEmConformidade() {
 
-  return escolaid!='Escola não registrada' &&
+  return escolaid!='Escola não registrada' && escolaid.trim()!='' &&
         (sprk_identificado=='' || sprk_identificado==sprk_registrado) &&
         (pi_identificado == pi_registrado) &&
         (sd_identificado == sd_registrado);
@@ -326,7 +449,7 @@ function tudoEmConformidade() {
 
 function soSpheroPendente() {
 
-  return escolaid!='Escola não registrada' &&
+  return escolaid!='Escola não registrada' && escolaid.trim()!='' &&
         (pi_identificado == pi_registrado) &&
         (sd_identificado == sd_registrado) &&
         (sprk_identificado!='' && sprk_identificado!=sprk_registrado);
@@ -336,28 +459,35 @@ function soSpheroPendente() {
 
 function soEscolaPendente() {
 
-  return (escolaid=='Escola não registrada' ||
-         pi_identificado != pi_registrado ||
-         sd_identificado != sd_registrado) &&
-         (sprk_identificado=='' || sprk_identificado==sprk_registrado);
+  return (escolaid=='Escola não registrada' || escolaid.trim()=='' ||
+         pi_identificado != pi_registrado || sd_identificado != sd_registrado) &&
+         (sprk_identificado=='' || sprk_identificado.trim()==sprk_registrado.trim());
   
 }
 
 /* FUNÇÕES QUE CONSULTAM E ATUALIZAM INFORMAÇṌES NA PLATAFORMA*/
 
 function recuperaNomeEscola(resposta) {
-  
-       request({url: 'https://mindmakers.cc/api/Escolas/nome/publico',
-            method: 'GET',
-            json: {'id':resposta.idescola}},
+ // console.log('vai recuperar escola:'+resposta.idescola);
+       request('https://firstcode-tst.appspot.com/api/Escolas/nome/publico?id='+resposta.idescola,
             function(error, response, body) {
-                console.log(body);
-                if (error) {
-                  console.log(error);
+               /* console.log('ERROR ---------------------------');
+               console.log(error);      
+               console.log('RESPONSE---------------------------');
+                console.log(response);
+               console.log('BODY---------------------------');
+                console.log(body); */ 
+                    bodyJ=JSON.parse(body);
+                if (!bodyJ.success) {
+                  console.log('Erro ao recuperar escola: '+bodyJ.err);
+                  console.log(bodyJ);
                 } else {
-                    escolanome_recuperado=body;
-                    console.log('Vai ativar para escola "'+escolanome_recuperado+'".');
-                }
+                   // console.log(body);
+                    escolaretorno=JSON.parse(body);
+                    escolanome_recuperado=escolaretorno.nomeEscola;
+                    console.log('Escola "'+escolanome_recuperado+'" recuperada com sucesso! ');
+                    totalAcessosPlataformaPendentes=totalAcessosPlataformaPendentes-1;
+                }tentativas
             }
         );
   
@@ -365,13 +495,12 @@ function recuperaNomeEscola(resposta) {
 
 function recuperaImagemEscola(resposta) {
   
-       request({url: 'https://mindmakers.cc/api/Escolas/logo/publico',
-            method: 'GET',
-            json: {'id':resposta.idescola}},
+       request('https://firstcode-tst.appspot.com/api/Escolas/logo/publico?id='+resposta.idescola,
             function(error, response, body) {
-                console.log(body);
-                if (error) {
-                  console.log(error);
+               
+                if (!body.success) {
+                   console.log('Erro ao recuperar logo: '+body.err);
+                   console.log(body);
                 } else {
                     
                     // Salva logotipo da escola
@@ -388,15 +517,16 @@ function registraAtivosEscolaPlataforma(resposta) {
   
   // Registra PI
   
-     request({url: 'https://mindmakers.cc/api/Escolas/ativo',
+     request({url: 'https://firstcode-tst.appspot.com/api/Escolas/ativo',
             method: 'POST',
             json: {'User.login':resposta.login,'User.pwd':resposta.senha, tipo:'Raspberry',idEscola:resposta.escolaid, 
                 chavenatural:pi_identificado}},
-            function(error, response, body){
-                if (error) {
-                  console.log(error);
+            function(error, response, body){                
+                if (body.error) {
+                  console.log('Erro ao registrar PI: '+body.error.message);
                 } else {
-                    console.log('PI registrado com sucesso!');
+                    totalAcessosPlataformaPendentes=totalAcessosPlataformaPendentes-1;
+                    console.log('PI registrado com sucesso! ');
                 }
             }
         );
@@ -405,15 +535,16 @@ function registraAtivosEscolaPlataforma(resposta) {
   
   // Registra SD
   
-     request({url: 'https://mindmakers.cc/api/Escolas/ativo',
+     request({url: 'https://firstcode-tst.appspot.com/api/Escolas/ativo',
             method: 'POST',
             json: {'User.login':resposta.login,'User.pwd':resposta.senha, tipo:'cartaoSD',idEscola:resposta.escolaid, 
                 chavenatural:sd_identificado}},
             function(error, response, body){
-                if (error) {
-                  console.log(error);
+                if (body.error) {
+                  console.log('Erro ao registrar SD: '+body.error.message);
                 } else {
-                    console.log('Cartão SD registrado com sucesso!');
+                    totalAcessosPlataformaPendentes=totalAcessosPlataformaPendentes-1;
+                    console.log('Cartão SD registrado com sucesso! ');
                 }
             }
         );
@@ -425,15 +556,22 @@ function registraSpheroPlataforma(resposta) {
 
     // Registra SPRK+
 
-     request({url: 'https://mindmakers.cc/api/Escolas/ativo',
+     request({url: 'https://firstcode-tst.appspot.com/api/Escolas/ativo',
             method: 'POST',
-            json: {'User.login':resposta.login,'User.pwd':resposta.senha, tipo:'SPRK+',idEscola:resposta.escolaid, chavenatural:sprk_identificado}},
-            function(error, response, nome_escola){
-                
-                if (error) {
-                  console.log(error);
-                } else if (body) {
-                    console.log('SPRK+ registrado com sucesso!');
+            json: {'User.login':resposta.login,'User.pwd':resposta.senha, tipo:'SPRK+',idEscola:resposta.escolaid, 
+                           chavenatural:sprk_identificado}},
+            function(error, response, body){
+                console.log('ERROR ---------------------------');
+                console.log(error);      
+                console.log('RESPONSE---------------------------');
+                console.log(response);
+                console.log('BODY---------------------------');
+                console.log(body);       
+                if (body.error) {
+                  console.log('Erro ao registrar SPRK+: '+body.error.message);
+                } else {
+                    totalAcessosPlataformaPendentes=totalAcessosPlataformaPendentes-1;                 
+                    console.log('SPRK+ registrado com sucesso! ');
                 }
             }
         );
@@ -448,21 +586,141 @@ function registraSpheroPlataforma(resposta) {
 /* Atualiza atalho do servidor Sphero */
 function atualizaAtalhoSphero() {
   
+  var sprkshell = fs.readFileSync('/home/mindmakers/programs/shells/sphero-connect+.sh')+'';
+   
+   // substitui macaddress
+   var ponto_chave = sprkshell.indexOf('.js')+4;
+   
+    sprkshell_parteinicial=sprkshell.substring(0,ponto_chave);
+    
+    sprkshell_partefinal=sprkshell.substring(sprkshell.indexOf('sudo fuser',ponto_chave)-1);
+   
+    sprkshell_novo=sprkshell_parteinicial+sprk_identificado+'\n'+sprkshell_partefinal;
+   
+   // grava
+  
+  fs.writeFile('/home/mindmakers/programs/shells/sphero-connect+.sh', sprkshell_novo, function(err,data) 
+        {
+          if (err)
+              console.log(err);
+          else {
+          
+            console.log('Alterou a configuração para usar o Sphero '+sprk_identificado+' neste computador!');
+
+          }
+        }
+        );
   
 }
 
-function atualizaAtalhoLoginSimplificadoEscola() {
+function statPath(path) {
   
+  try {
+    
+    return fs.statSync(path);
+    
+  } catch (ex) {
+      return false;
+  } 
+  
+}
+
+function atualizaAtalhoLoginSimplificadoEscola(resposta) {
+  
+  if (!resposta.loginSimplificado) 
+     return
+  
+  var atalho_mm_conteudo;
+  
+  var existeEmPortugues = statPath('/home/pi/Área de Trabalho/mindmakers.desktop');
+  
+  if (existeEmPortugues) {
+    
+    atalho_mm_conteudo= fs.readFileSync('/home/pi/Área de Trabalho/mindmakers.desktop')+'';
+    
+  } else {
+    
+    // versão em ingles
+    atalho_mm_conteudo= fs.readFileSync('/home/pi/Desktop/mindmakers.desktop')+'';    
+  
+  }
+   
+   // substitui macaddress
+   var ponto_chave = atalho_mm_conteudo.indexOf('Exec=')+5;
+   
+    conteudo_parteinicial=atalho_mm_conteudo.substring(0,ponto_chave);
+    
+    conteudo_partefinal=atalho_mm_conteudo.substring(atalho_mm_conteudo.indexOf('--allow-control-allow-origin'));
+   
+    conteudo_novo=conteudo_parteinicial+'https://mindmakers.cc/login-simplificado?id='+idescola_informado.trim()+
+                            '&quantSalas='+resposta.numeroSalas+' '+conteudo_partefinal;
+   
+   // grava
+   
+   if (existeEmPortugues) {
+    
+      fs.writeFile('/home/pi/Área de Trabalho/mindmakers.desktop', conteudo_novo, function(err,data) 
+        {
+          if (err)
+              console.log(err);
+          else {
+          
+            console.log('Configurou login simplificado para escola '+escolanome+' para '+resposta.numeroSalas+' turmas!');
+
+          }
+        }
+        );
+    
+  } else {
+    
+      fs.writeFile('/home/pi/Desktop/mindmakers.desktop', conteudo_novo, function(err,data) 
+        {
+          if (err)
+              console.log(err);
+          else {
+          
+            console.log('Configurou login simplificado para escola '+escolanome+' para '+resposta.numeroSalas+' turmas!');
+
+          }
+        }
+        );
+  
+  }
+  
+}
+
+function monitoraAcessosAssincronosPlataforma() {
+  
+  // Somente depois de todos os serviços de registro ocorrem ok, alterar o arquivo local.
+  if (totalAcessosPlataformaPendentes==0) {
+    
+    atualizaSchoolInfo();
+
+    clearInterval(servicoRecorrente);
+    
+  } else {
+      tentativas++;
+      if (tentativas>5) {
+        console.log('Registro não pode ser realizado com sucesso. '+
+        'Informações podem ter sido parcialmente configuradas. Cód: '+totalAcessosPlataformaPendentes);
+         clearInterval(servicoRecorrente);
+         // Encerra com falha
+         console.log('');
+         process.exit(1);
+       }
+  }
   
 }
 
 
 /* Grava mudanças no arquivo de registro */
-function atualizaSchoolInfo(resposta) {
+function atualizaSchoolInfo() {
   
   // Muda escola?
-  if (escolaid!=resposta.idescola && resposta.idescola != null && resposta.idescola!='') {
-     escolaid=resposta.idescola;
+//console.log('entrou para mudar');
+  if (escolanome_recuperado != null && escolanome_recuperado!='') {
+     escolaid=idescola_informado;
+ //   console.log('valor:'+escolanome_recuperado);
      escolanome=escolanome_recuperado;
   }
   
@@ -491,14 +749,23 @@ function atualizaSchoolInfo(resposta) {
   
   fs.writeFile('/home/mindmakers/school.info', escolainfoatualizada, function(err,data) 
         {
-          if (err)
+          if (err) {
               console.log(err);
-          else {
+              // Encerra com falha
+              process.exit(1);
+          } else {
           
-            console.log('Ativação de Desktop: registrou atalho de login simplificado e infs da escola');
-            console.log('');
+            console.log('------------- Ativação OK! -------------');
+            console.log('----------------------------------------');
             console.log(escolainfoatualizada);
+          // Encerra com sucesso
+          process.exit();
+          
           }
+          
+
+          
+          
         }
         );
         
