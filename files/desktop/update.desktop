@@ -1,8 +1,8 @@
 [Desktop Entry]
-Name=Update Version
-Name[pt_BR]=Atualizar Versão
+Name=Update
+Name[pt_BR]=Atualizar
 Comment= Atualiza a Versão da Imagem disponibilizada pela Mind Makers
-Icon=/usr/share/icons/Adwaita/32x32/apps/system-software-update.png
+Icon=/usr/share/icons/update.png
 Exec=bash /home/mindmakers/programs/shells/update-image.sh
 Type=Application
 Encoding=UTF-8
