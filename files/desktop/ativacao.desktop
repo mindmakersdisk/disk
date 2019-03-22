@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Activation
-Name[pt_BR]=Ativação
+Name[pt_BR]=Ativar
 Comment=Ativação de computador (registro de Sphero e outros ativos)
 Icon=/home/mindmakers/disk/files/icons/activate.png
 Exec=bash /home/mindmakers/programs/shells/activate.sh
