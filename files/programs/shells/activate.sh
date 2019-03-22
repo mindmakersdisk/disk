@@ -3,7 +3,7 @@ sudo fuser -k 80/tcp
 
 echo "********************************************************************************" 
 echo "*                                                                              *" 
-echo "*      Ativa o Computador para Uso em Sala de Aula por uma Escola              *" 
+echo "*      Ativa o Computador para Uso em Salas de Aula                            *" 
 echo "*                                                                              *" 
 echo "********************************************************************************" 
 
