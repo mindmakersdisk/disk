@@ -11,7 +11,7 @@
 - name: Cria pasta de verificação de instalação node 8.15.3
   copy: src=ongoing/verify/node815 dest=/home/mindmakers/programs/verify mode=444
 - name: Instala libudev-dev e build-essential
-  apt: name=['libudev-dev', 'build-essential']
+  apt: name=[libudev-dev, build-essential]
 - name: Verifica se o npm já foi instalado
   stat:
      path: /home/mindmakers/programs/verify/npm69
