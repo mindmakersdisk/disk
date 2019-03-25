@@ -2,8 +2,6 @@
   shell: 'echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main" | sudo tee -a /etc/apt/sources.list'
 - name: configura instalação do pacote ansible 2.7
   shell: 'apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367'
-- name: configura instalação do pacote ansible 2.7
-  shell: 'apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367'
 - name: update repositories
   apt: update_cache=yes
 - name: Instala Nodejs 8.15.3
