@@ -21,3 +21,10 @@
   copy: src=files/panel dest=/home/pi/.config/lxpanel/LXDE-pi/panels mode=777
 - name: Altera resolucao da tela
   copy: src=files/config.txt dest=/boot
+- name: Verifica se existe arquivo school.info
+  stat:
+     path: /home/mindmakers/school.info
+  register: school
+- name: Altera resolucao da tela
+  copy: src=school.info dest=/home/mindmakers/school.info mode=0777
+  when: not school.stat.exists
