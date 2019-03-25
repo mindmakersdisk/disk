@@ -101,6 +101,7 @@
   npm:
     name: request
     path: /home/mindmakers/programs
+  when: not npmsphero.stat.exists
 - name: Instala pacote do npm "inquirer"
   npm:
     name: inquirer
