@@ -5,4 +5,6 @@
 - name: update repositories
   apt: update_cache=yes
 - name: Instala Nodejs 8.15.3
-  apt: name=ansible
+  apt: name={{item}}
+  with_items:
+    - ansible
