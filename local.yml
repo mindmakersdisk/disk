@@ -28,3 +28,9 @@
     - include: tasks/packages-uninstall.yml
  #   - include: tasks/python.yml
     - include: tasks/3dslash.yml
+ # Copia as notas de liberação e o atalho com nome da versão atualizados
+    - include: tasks/final-version-copies-pt.yml
+      when: not p.stat.exists
+    - include: tasks/final-version-copies-en.yml
+      when: p.stat.exists
+ # Não acrescentar tarefas após estas últimas.
