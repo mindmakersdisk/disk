@@ -9,7 +9,6 @@
 #     linguagem: "{{'en' if (p.stat.exists) else 'pt'}}"
 
   tasks:
-  ansible27
     - name: Verifica versão do ansible.
       stat:
         path: /home/mindmakers/programs/verify/ansible27
