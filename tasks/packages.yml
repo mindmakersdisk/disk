@@ -6,7 +6,7 @@
   shell: 'curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -' 
   when: not nodejs.stat.exists
 - name: Instala Nodejs 8.15.3
-  apt: name=['nodejs']
+  apt: name=[nodejs]
   when: not nodejs.stat.exists
 - name: Cria pasta de verificação de instalação node 8.15.3
   copy: src=ongoing/verify/node815 dest=/home/mindmakers/programs/verify mode=444
