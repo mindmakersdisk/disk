@@ -2,14 +2,3 @@
   apt: 
      name: [scratch, bluej, greenfoot, claws-mail, claws-mail-i18n, libreoffice-draw, libreoffice-impress, libreoffice-math, libreoffice-writer, piclone]
      state: absent
- # with_items:
- #   - scratch
- #   - bluej
- #   - greenfoot
- #   - claws-mail
- #   - claws-mail-i18n
- #   - libreoffice-draw
- #   - libreoffice-impress
- #   - libreoffice-math
- #   - libreoffice-writer
- #   - piclone
