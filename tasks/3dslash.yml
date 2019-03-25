@@ -13,10 +13,8 @@
   when: not slash.stat.exists
   
 - name: Instala libgles2-mesa e libsdl2-dev
-  apt: name={{item}}
-  with_items:
-    - libgles2-mesa
-    - libsdl2-dev
+  apt: 
+     name: [libgles2-mesa, libsdl2-dev]
     
 - name: Cria links simbolicos necessarios do 3DSlash
   shell: "{{ item }}"
