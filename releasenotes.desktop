@@ -4,6 +4,6 @@ Name=Ambiente v2.0
 Type=Application
 Terminal=false
 Exec=leafpad /home/mindmakers/releasenotes.info
-Icon=/usr/share/icons/mindmakers.png
+Icon=/usr/share/icons/card.png
 StartupNotify=true
 Categories=Application;
