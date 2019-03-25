@@ -19,9 +19,8 @@
      path: /home/mindmakers/programs/verify/npm69
   register: npm
 - name: Instala NPM 1.4.0
-  apt: name={{item}}
-  with_items:
-    - npm
+  apt: 
+     name: [npm]
   when: not npm.stat.exists
 - name: Atualiza npm para 6.9.0
   npm: name={{item}} global=yes
