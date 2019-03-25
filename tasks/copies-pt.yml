@@ -1,4 +1,2 @@
-- name: Copia o atalho para notas de liberacão para a Área de Trabalho - SO em português
-  copy: src=releasenotes.desktop dest="/home/pi/Área de Trabalho" mode=755
 - name: Copia demais arquivos de atalho para a Área de Trabalho - SO em português
   copy: src=files/desktop/ dest="/home/pi/Área de Trabalho" mode=755
