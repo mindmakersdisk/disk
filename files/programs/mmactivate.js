@@ -478,7 +478,7 @@ function soEscolaPendente() {
 
 function recuperaNomeEscola(resposta) {
  // console.log('vai recuperar escola:'+resposta.idescola);
-       request('https:///api/Escolas/nome/publico?id='+resposta.idescola,
+       request('https://mindmakers.cc/api/Escolas/nome/publico?id='+resposta.idescola,
             function(error, response, body) {
                /* console.log('ERROR ---------------------------');
                console.log(error);      
@@ -529,10 +529,10 @@ function registraAtivosEscolaPlataforma(resposta) {
      request({url: 'https://mindmakers.cc/api/Escolas/ativo/publico',
             method: 'POST',
               json: {'username':resposta.login,'password':resposta.senha, 'tipo':'Raspberry','alocadoescola':resposta.idescola, 
-                           'chaveNatural':pi_identificado}},    
+                           'chaveNatural':pi_identificado,'acao': 'registrar','observacao': 'ativação automática'}},    
             function(error, response, body){                
-                if (body.error) {
-                  console.log('Erro ao registrar PI: '+body.error.message);
+                if (!body.success) {
+                  console.log('Erro ao registrar PI: '+body.err);
                 } else {
                     totalAcessosPlataformaPendentes=totalAcessosPlataformaPendentes-1;
                     console.log('PI registrado com sucesso! ');
@@ -547,10 +547,11 @@ function registraAtivosEscolaPlataforma(resposta) {
      request({url: 'https://mindmakers.cc/api/Escolas/ativo/publico',
             method: 'POST',
             json: {'username':resposta.login,'password':resposta.senha, 'tipo':'cartaoSD','alocadoescola':resposta.escolaid, 
-                           'chaveNatural':sd_identificado}},                 
+                           'chaveNatural':sd_identificado,'acao': 'registrar',
+              'observacao': 'ativação automática'}},                 
             function(error, response, body){
-                if (body.error) {
-                  console.log('Erro ao registrar SD: '+body.error.message);
+                if (!body.success) {
+                  console.log('Erro ao registrar SD: '+body.err);
                 } else {
                     totalAcessosPlataformaPendentes=totalAcessosPlataformaPendentes-1;
                     console.log('Cartão SD registrado com sucesso! ');
@@ -560,7 +561,7 @@ function registraAtivosEscolaPlataforma(resposta) {
         
       var versaoImagemDisco = obtemVersaoImagemDisco();
 
-  // Registra Estação
+  /* Registra Estação
   
      request({url: 'https://mindmakers.cc/api/Escolas/estacao/publico',
             method: 'POST',
@@ -568,25 +569,28 @@ function registraAtivosEscolaPlataforma(resposta) {
                             'discoSerial':sd_identificado, 'alocadoescola':resposta.escolaid, 
                            'versaoImagemDisco':versaoImagemDisco}},                 
             function(error, response, body){
-                if (body.error) {
-                  console.log('Erro ao registrar Estacao: '+body.error.message);
+                if (!body.success) {
+                  console.log('Erro ao registrar Estacao: '+body.err);
                 } else {
                     console.log('Estação registrada com sucesso! ');
                 }
             }
         );      
-      
+    */  
         
 
 }
 
 
 function registraSpheroPlataforma(resposta) {
+  
+    if (sprk_identificado=='')
+       return;
 
     // Registra SPRK+
     console.log('chave = '+sprk_identificado);
     
-     request({url: 'https://firstcode-tst.appspot.com/api/Escolas/ativo/publico',
+     request({url: 'https://mindmakers.cc/api/Escolas/ativo/publico',
             method: 'POST',
             json: {
               'username':resposta.login,
@@ -595,7 +599,7 @@ function registraSpheroPlataforma(resposta) {
               'alocadoescola':resposta.escolaid, 
               'chaveNatural':sprk_identificado,
               'acao': 'registrar',
-              'observacao': 'obs'}
+              'observacao': 'ativação automática'}
             },
             function(error, response, body){
                 console.log('ERROR ---------------------------');
@@ -604,8 +608,8 @@ function registraSpheroPlataforma(resposta) {
              //   console.log(response);
                 console.log('BODY---------------------------');
                 console.log(body);       
-                if (body.error) {
-                  console.log('Erro ao registrar SPRK+: '+body.error.message);
+                if (!body.success) {
+                  console.log('Erro ao registrar SPRK+: '+body.err);
                 } else {
                     totalAcessosPlataformaPendentes=totalAcessosPlataformaPendentes-1;                 
                     console.log('SPRK+ registrado com sucesso! ');
@@ -622,6 +626,11 @@ function registraSpheroPlataforma(resposta) {
 
 /* Atualiza atalho do servidor Sphero */
 function atualizaAtalhoSphero() {
+  
+  if (sprk_identificado=='') {
+     console.log('Não modificou o atalho do Sphero pois não encontrou nenhum próximo');
+       return;
+  }
   
   var sprkshell = fs.readFileSync('/home/mindmakers/programs/shells/sphero-connect+.sh')+'';
    
@@ -824,7 +833,7 @@ function obtemVersaoImagemDisco() {
    // obtém versão
    var inicial = atalho_mm_conteudo.indexOf('Name=')+5;
     
-   var final = atalho_mm_conteudo.indexOf('Type')-1);
+   var final = atalho_mm_conteudo.indexOf('Type')-1;
    
    
    if (inicial == -1 || final == -1) {
