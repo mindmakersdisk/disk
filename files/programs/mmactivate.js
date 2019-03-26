@@ -10,7 +10,7 @@
 */
 
 const request = require('request')  
-const si = require('systeminformation')
+//const si = require('systeminformation')
 var noble = require('/home/mindmakers/programs/node_modules/noble/index.js')
 var inquirer = require('inquirer');
 var fs = require('fs');
@@ -134,7 +134,7 @@ var questions = [
   {
     type: 'input',
     name: 'idescola',
-    message: "Digite ou cole o código da escola (solicie à Mind Makers se não possuir):",
+    message: "Digite ou cole o código da escola (solicite à Mind Makers se não possuir):",
     when: function (answers) {
       return answers.opcao;
     }
@@ -254,12 +254,12 @@ var questionsSoTrocarEscola = [
   {
     type: 'confirm',
     name: 'opcao',
-    message: "Todos os ativos identificados já estão corretamente registrados. Deseja trocar a escola "+escolanome+"?"
+    message: "Todos os ativos identificados já estão corretamente registrados. Deseja trocar a escola?"
   },
   {
     type: 'input',
     name: 'idescola',
-    message: "Digite ou cole o código da escola (solicie à Mind Makers se não possuir):",
+    message: "Digite ou cole o código da escola (solicite à Mind Makers se não possuir):",
     when: function (answers) {
       return answers.opcao;
     }
@@ -294,7 +294,7 @@ var questionsSoTrocarEscola = [
     message: "Quantas turmas simultâneas de Mind Makers pode ter a escola?",
     when: function (answers) {
        return answers.loginSimplificado;
-    },
+    },   
     validate: function validaNumero(numeroSalas) {
         return /^-{0,1}\d+$/.test(numeroSalas);
     }
@@ -346,13 +346,17 @@ function executaRegistros() {
       
       modoregistro=true;
       inquirer.prompt(questionsSoTrocarEscola).then(answers => {
+        
         if (answers.opcao) {
+          
           idescola_informado=answers.idescola;
                     
           // Se não informou mas tem um registrado, usa este.
           if (idescola_informado != null && idescola_informado.trim() != '') {
+              
               recuperaNomeEscola(answers);
               registraAtivosEscolaPlataforma(answers);
+              
               if (answers.loginSimplificado)
                  atualizaAtalhoLoginSimplificadoEscola(answers);
 
@@ -369,7 +373,12 @@ function executaRegistros() {
             process.exit(1);
         }
           modoregistro=false;        
-      }});        
+      } else {
+        
+         // Encerra ok
+            process.exit(0);
+        
+        }});        
    
    
    } else if (soSpheroPendente()) {
@@ -469,7 +478,7 @@ function soEscolaPendente() {
 
 function recuperaNomeEscola(resposta) {
  // console.log('vai recuperar escola:'+resposta.idescola);
-       request('https://firstcode-tst.appspot.com/api/Escolas/nome/publico?id='+resposta.idescola,
+       request('https:///api/Escolas/nome/publico?id='+resposta.idescola,
             function(error, response, body) {
                /* console.log('ERROR ---------------------------');
                console.log(error);      
@@ -495,7 +504,7 @@ function recuperaNomeEscola(resposta) {
 
 function recuperaImagemEscola(resposta) {
   
-       request('https://firstcode-tst.appspot.com/api/Escolas/logo/publico?id='+resposta.idescola,
+       request('https://mindmakers.cc/api/Escolas/logo/publico?id='+resposta.idescola,
             function(error, response, body) {
                
                 if (!body.success) {
@@ -514,13 +523,13 @@ function recuperaImagemEscola(resposta) {
 }
 
 function registraAtivosEscolaPlataforma(resposta) {
-  
+  //console.log(resposta)
   // Registra PI
   
-     request({url: 'https://firstcode-tst.appspot.com/api/Escolas/ativo',
+     request({url: 'https://mindmakers.cc/api/Escolas/ativo/publico',
             method: 'POST',
-            json: {'User.login':resposta.login,'User.pwd':resposta.senha, tipo:'Raspberry',idEscola:resposta.escolaid, 
-                chavenatural:pi_identificado}},
+              json: {'username':resposta.login,'password':resposta.senha, 'tipo':'Raspberry','alocadoescola':resposta.idescola, 
+                           'chaveNatural':pi_identificado}},    
             function(error, response, body){                
                 if (body.error) {
                   console.log('Erro ao registrar PI: '+body.error.message);
@@ -535,10 +544,10 @@ function registraAtivosEscolaPlataforma(resposta) {
   
   // Registra SD
   
-     request({url: 'https://firstcode-tst.appspot.com/api/Escolas/ativo',
+     request({url: 'https://mindmakers.cc/api/Escolas/ativo/publico',
             method: 'POST',
-            json: {'User.login':resposta.login,'User.pwd':resposta.senha, tipo:'cartaoSD',idEscola:resposta.escolaid, 
-                chavenatural:sd_identificado}},
+            json: {'username':resposta.login,'password':resposta.senha, 'tipo':'cartaoSD','alocadoescola':resposta.escolaid, 
+                           'chaveNatural':sd_identificado}},                 
             function(error, response, body){
                 if (body.error) {
                   console.log('Erro ao registrar SD: '+body.error.message);
@@ -548,6 +557,26 @@ function registraAtivosEscolaPlataforma(resposta) {
                 }
             }
         );
+        
+      var versaoImagemDisco = obtemVersaoImagemDisco();
+
+  // Registra Estação
+  
+     request({url: 'https://mindmakers.cc/api/Escolas/estacao/publico',
+            method: 'POST',
+            json: {'username':resposta.login,'password':resposta.senha, 'computadorSerial':pi_identificado,
+                            'discoSerial':sd_identificado, 'alocadoescola':resposta.escolaid, 
+                           'versaoImagemDisco':versaoImagemDisco}},                 
+            function(error, response, body){
+                if (body.error) {
+                  console.log('Erro ao registrar Estacao: '+body.error.message);
+                } else {
+                    console.log('Estação registrada com sucesso! ');
+                }
+            }
+        );      
+      
+        
 
 }
 
@@ -555,16 +584,24 @@ function registraAtivosEscolaPlataforma(resposta) {
 function registraSpheroPlataforma(resposta) {
 
     // Registra SPRK+
-
-     request({url: 'https://firstcode-tst.appspot.com/api/Escolas/ativo',
+    console.log('chave = '+sprk_identificado);
+    
+     request({url: 'https://firstcode-tst.appspot.com/api/Escolas/ativo/publico',
             method: 'POST',
-            json: {'User.login':resposta.login,'User.pwd':resposta.senha, tipo:'SPRK+',idEscola:resposta.escolaid, 
-                           chavenatural:sprk_identificado}},
+            json: {
+              'username':resposta.login,
+              'password':resposta.senha,
+              'tipo':'SPRKPlus',
+              'alocadoescola':resposta.escolaid, 
+              'chaveNatural':sprk_identificado,
+              'acao': 'registrar',
+              'observacao': 'obs'}
+            },
             function(error, response, body){
                 console.log('ERROR ---------------------------');
                 console.log(error);      
-                console.log('RESPONSE---------------------------');
-                console.log(response);
+             //   console.log('RESPONSE---------------------------');
+             //   console.log(response);
                 console.log('BODY---------------------------');
                 console.log(body);       
                 if (body.error) {
@@ -762,11 +799,43 @@ function atualizaSchoolInfo() {
           process.exit();
           
           }
-          
-
-          
-          
+        
         }
         );
         
 }
+
+
+function obtemVersaoImagemDisco() {
+  
+  var existeEmPortugues = statPath('/home/pi/Área de Trabalho/mindmakers.desktop');
+  
+  if (existeEmPortugues) {
+    
+    atalho_mm_conteudo= fs.readFileSync('/home/pi/Área de Trabalho/releasenotes.desktop')+'';
+    
+  } else {
+    
+    // versão em ingles
+    atalho_mm_conteudo= fs.readFileSync('/home/pi/Desktop/releasenotes.desktop')+'';    
+  
+  }
+   
+   // obtém versão
+   var inicial = atalho_mm_conteudo.indexOf('Name=')+5;
+    
+   var final = atalho_mm_conteudo.indexOf('Type')-1);
+   
+   
+   if (inicial == -1 || final == -1) {
+       console.log('Não foi possível identificar a versão da imagem do disco investigando o atalho de notas de liberação');
+       console.log('A operação irá prosseguir mas é aconselhável que o atalho seja restaurado ao seu padrão para o adequado acompanhamento da configuração');
+       return 'Atalho de Versão Fora do Padrão';
+   }
+   
+   var versaoImagemDisco = atalho_mm_conteudo.substring(inicial,final);
+   
+   console.log('Identificada a versão da imagem de disco como '+versaoImagemDisco);
+  
+}
+
