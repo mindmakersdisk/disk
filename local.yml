@@ -28,6 +28,8 @@
     - include: tasks/packages-uninstall.yml
  #   - include: tasks/python.yml
     - include: tasks/3dslash.yml
+    - include: hide-games.yml
+    - include: install-extension.yml
  # Copia as notas de liberação e o atalho com nome da versão atualizados
     - include: tasks/final-version-copies-pt.yml
       when: not p.stat.exists
