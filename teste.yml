@@ -13,8 +13,8 @@
 #    copy: src=ongoing/chrome-extensions.json.j2 dest=/etc/chromium-browser/policies/managed mode=444
   - name: Chrome - create json file to install extensions for all users
     template: 
-       src:ongoing/chrome-extensions.json.j2
-       dest:/home/pi/.config/chromium/Default/Extensions/{{ item.id }}.json
+       src: ongoing/chrome-extensions.json.j2
+       dest: /home/pi/.config/chromium/Default/Extensions/{{ item.id }}.json
        mode: 0444
     with_items:
     - name: The Great Suspender
