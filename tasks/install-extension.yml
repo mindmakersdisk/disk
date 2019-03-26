@@ -1,0 +1,5 @@
+  - name: Copia arquivo que instala de extensões
+    copy: 
+       src: files/extension-forceinstall.json 
+       dest: /etc/chromium-browser/policies/managed
+       mode: 0644
