@@ -20,15 +20,16 @@
       stat:
         path: /home/pi/Desktop
       register: p
-    - include: tasks/copies-pt.yml
-      when: not p.stat.exists
-    - include: tasks/copies-en.yml
+ #   - include: tasks/copies-pt.yml
+ #     when: not p.stat.exists
+ #   - include: tasks/copies-en.yml
       when: p.stat.exists
+    - include: tasks/tightvnc.yml
     - include: tasks/copies.yml
     - include: tasks/packages.yml
     - include: tasks/packages-uninstall.yml
  #   - include: tasks/python.yml
-    - include: tasks/3dslash.yml
+ #   - include: tasks/3dslash.yml
     - include: tasks/hide-games.yml
     - include: tasks/install-extension.yml
  # Copia as notas de liberação e o atalho com nome da versão atualizados
