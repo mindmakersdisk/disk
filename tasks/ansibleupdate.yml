@@ -6,7 +6,4 @@
   shell: 'apt-get update && apt-get install -y ansible'
 - name: Cria pasta de verificação instalação ansible 2.7
   copy: src=ongoing/verify/ansible27 dest=/home/mindmakers/programs/verify mode=444
-#- name: Instala ansible 2.7
-#  apt: 
-#    name: ansible
-#    update_cache: yes
+  
