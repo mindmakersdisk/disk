@@ -1,6 +1,6 @@
 - name: Copia demais arquivos de atalho para o Desktop
   copy: 
-     src: files/desktop/
+     src: files/headless/desktop/
      dest: /home/pi/Desktop
      mode: 0755
   
