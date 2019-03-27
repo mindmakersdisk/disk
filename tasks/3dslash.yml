@@ -3,7 +3,10 @@
      path: /home/mindmakers/programs/verify/3DSlash
   register: slash
 - name: Copia arquivos 3DSlash
-  copy: src=ongoing/3DSlash dest=/home/mindmakers/programs/verify/ mode=644
+  copy: 
+     src: ongoing/3DSlash
+     dest: /home/mindmakers/programs/verify/
+     mode: 0644
   when: not slash.stat.exists
 - name: Extrai 3DSlash
   shell: 'cd /home/mindmakers/programs/verify/3DSlash/ && tar -xvzpf 3dslash_raspberry_3_0_0.tgz -C /usr/local'
