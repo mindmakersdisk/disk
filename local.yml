@@ -9,12 +9,12 @@
 #     linguagem: "{{'en' if (p.stat.exists) else 'pt'}}"
 
   tasks:
- #   - name: Verifica versão do ansible.
- #     stat:
- #       path: /home/mindmakers/programs/verify/ansible27
- #     register: asb
- #   - include: tasks/ansibleupdate.yml
- #     when: not asb.stat.exists
+    - name: Verifica versão do ansible.
+      stat:
+        path: /home/mindmakers/programs/verify/ansible27
+      register: asb
+    - include: tasks/ansibleupdate.yml
+      when: not asb.stat.exists
     - include: task/ansibleupdate.yml
     - name: verifica se diretorio Desktop existe (usado como indicacao de que o SO esta em ingles).
       stat:
