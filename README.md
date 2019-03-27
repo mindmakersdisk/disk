@@ -114,10 +114,10 @@ Utilizar alguma técnica para copiar imagens de discos SD, como a utilizada no p
 
 2.3. Repetir o processo acima, para o número de estações Desktop da escola.
 
-_**Como verificar sucesso dessa etapa?**_ 
+_**Como verificar sucesso das imagens de disco da escola?**_ 
 - _A conferência de cada cópia será realizada na próxima atividade, de Ativação dos Desktops_
 
-### 3. Instalar o gerenciador de configuração Ansible TODO
+### 3. Ativar cada estação de trabalho. 
 
 3.1. TODO
 
