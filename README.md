@@ -1,8 +1,6 @@
 # Imagem Padrão de Desktop para Salas de Aula da Mind Makers
 
-## A. Orientações para criar uma nova imagem de disco padrão para escolas chamada de disco-padrão-base.
-## [Essas instruções precisam ser realizadas apenas uma única vez]
-
+## A. Orientações para criar uma imagem de 'disco-padrão-base' com automação de atualização
 ### 1. Formatar um cartão SD.
 
 1.1. Formate para 16GB ou maior se o cartão permitir, utilizando orientações padrões da internet como em https://www.wikihow.com/Format-an-SD-Card
