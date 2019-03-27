@@ -1,4 +1,4 @@
-- name: Copia demais arquivos de atalho para o Desktop - SO em inglês
+- name: Copia demais arquivos de atalho para o Desktop
   copy: src=files/desktop/ dest=/home/pi/Desktop mode=0755
   
 #comando tornar icones imutáveis  
