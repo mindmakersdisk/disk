@@ -1,4 +1,15 @@
+- name: Verifica se os jogos já estão ocultos
+  stat:
+     path: /home/mindmakers/programs/verify/hide-games
+  register: hide
 - name: Esconde python-games
   shell: 'echo "NoDisplay=true" | sudo tee -a /usr/share/applications/python-games.desktop'
+  when: not hide.stat.exists
 - name: Esconde minecraft
   shell: 'echo "NoDisplay=true" | sudo tee -a /usr/share/raspi-ui-overrides/applications/minecraft-pi.desktop'
+  when: not hide.stat.exists
+- name: Cria pasta de verificação dos jogos
+  copy: 
+     src: ongoing/verify/hide-games
+     dest: /home/mindmakers/programs/verify
+     mode: 0444
