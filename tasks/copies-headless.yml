@@ -10,7 +10,7 @@
      mode: 0777
 - name: Copia a imagem tema de fundo
   copy: 
-     src: files/fundo.png 
+     src: files/headless/fundo.png 
      dest: /home/mindmakers 
      mode: 0777
 - name: Verifica se pasta pcmanfm já existe
