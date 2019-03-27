@@ -119,16 +119,25 @@ _**Como verificar sucesso das imagens de disco da escola?**_
 
 ### 3. Ativar cada estação de trabalho. 
 
-3.1. TODO
+3.1. Montar cada cartão SD no computador Raspberry Pi definitivo em que ele será liberado.
 
-_**Como verificar sucesso dessa etapa?**_ 
-- _Digitar no terminal "sudo ansible-pull" de qualquer diretório e conferir se a resposta é TODO_
+3.2. Ligar o Pi
+
+3.3. Se desejar configurar um robô Sphero SPRK+, basta deixá-lo próximo (menos de 20cm) do Pi, antes de ativar.
+
+3.4. Clicar no atalho Ativação, informando seu login e senha da plataforma Mind Makers.
+
+3.5. Se desejar utilizar o Login Simplificado, informe esta opção durante a ativação. 
+
+_**Como verificar o sucesso da Ativação?**_ 
+- _Conferir a mensagem de ativação OK_
+- _Testar a conexão do Sphero, se ele foi configurado, clicando no atalho 'Conexão Sphero' e conferindo se a conexão é bem sucedida_- _Testar o Login Simplificado, se ele foi configurado, clicando no atalho 'Mind Makers' e conferindo se a página _
 
 ## C. Orientações para atualizar versões de imagens de disco já configuradas.
 
-TODO-
+TODO
 
 ## Apêndice. Orientações para atualizar uma versão de disco padrão existente - para instrutores e/ou responsáveis técnicos de escolas
 
-### 1. TODO
+### TODO
 
