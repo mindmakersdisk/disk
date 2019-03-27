@@ -11,5 +11,5 @@
 - name: Configura VncServer
   shell: 'sudo update-rc.d vncserver defaults'
 
--name: Chama o server para configurar uma senha de acesso
- shell: 'lxterminal -e tightvncserver'
+- name: Chama o server para configurar uma senha de acesso
+  shell: 'lxterminal -e tightvncserver'
