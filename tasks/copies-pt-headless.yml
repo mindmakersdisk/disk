@@ -1,5 +1,5 @@
 - name: Copia demais arquivos de atalho para a Área de Trabalho - SO em português
   copy: 
-     src: files/desktop/
+     src: files/headless/desktop/
      dest: "/home/pi/Área de Trabalho"
      mode: 0755
