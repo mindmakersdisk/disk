@@ -24,7 +24,7 @@
   copy: 
      src: files/headless/desktop-items-0.conf 
      dest: /home/pi/.config/pcmanfm/LXDE-pi 
-     mode=0777
+     mode: 0777
 - name: Personaliza barra superior
   copy: 
      src: files/panel 
