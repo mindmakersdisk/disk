@@ -87,9 +87,9 @@ _**Como verificar sucesso do novo disco padrão?**_
 
 1.1. Obter o código da escola com a Mind Makers através do suporte@mindmakers.cc ou SAC.
 
-1.2. Abrir o terminal e alterar o diretório corrente com "cd /home/mindmakers/programs"
+1.2. Abrir o terminal e alterar o diretório corrente com o comando "cd /home/mindmakers/programs"
 
-1.3. Executar a linha de comando "sudo nodejs mmallocate.js" e aguardar pela mensagem de sucesso, conferindo se o nome correto da escola é exibido.
+1.3. Executar a linha de comando "sudo nodejs mmallocate.js", informar seu usuário e senha na plataforma da Mind Makers e aguardar pela mensagem de sucesso, conferindo se o nome correto da escola é exibido.
 
 _**Como verificar sucesso dessa etapa?**_ 
 - _Para dupla-conferência, clicar no atalho da Área de Trabalho com rótulo "Ativação" e confirmar que o código e nome da escola são exibidos no registro de "Ativação de Desktop Mind Makers" que aparece no início da rotina (cancelar o restante da ativação por hora, com control+C)_
