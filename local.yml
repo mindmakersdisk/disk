@@ -15,7 +15,7 @@
       register: asb
     - include: tasks/ansibleupdate.yml
       when: not asb.stat.exists
-    - name: verifica se diretorio Desktop existe (usado como indicacao de que o SO esta em ingles).
+    - name: verifica se diretorio Desktop existe.
       stat:
         path: /home/pi/Desktop
       register: p
