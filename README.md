@@ -1,6 +1,7 @@
 # Imagem Padrão de Desktop para Salas de Aula da Mind Makers
 
 ## A. Orientações para criar uma nova imagem de disco padrão para escolas chamada de disco-padrão-base.
+## [Essas instruções precisam ser realizadas apenas uma única vez]
 
 ### 1. Formatar um cartão SD.
 
@@ -124,6 +125,10 @@ _**Como verificar sucesso dessa etapa?**_
 
 _**Como verificar sucesso dessa etapa?**_ 
 - _Digitar no terminal "sudo ansible-pull" de qualquer diretório e conferir se a resposta é TODO_
+
+## C. Orientações para atualizar versões de imagens de disco já configuradas.
+
+TODO-
 
 ## Apêndice. Orientações para atualizar uma versão de disco padrão existente - para instrutores e/ou responsáveis técnicos de escolas
 
