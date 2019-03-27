@@ -12,9 +12,9 @@
     - name: Verifica versão do ansible.
       stat:
         path: /home/mindmakers/programs/verify/ansible27
-      register: asb
+      register: ansb
     - include: tasks/ansibleupdate.yml
-      when: not asb.stat.exists
+      when: not ansb.stat.exists
     - name: verifica se diretorio Desktop existe.
       stat:
         path: /home/pi/Desktop
