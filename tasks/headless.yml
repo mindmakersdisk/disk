@@ -9,4 +9,4 @@
      mode: 0755
 
 - name: Configura VncServer
-  shell: 'update-rc.d vncserver defaults'
+  shell: 'sudo update-rc.d vncserver defaults'
