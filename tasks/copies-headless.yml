@@ -14,7 +14,7 @@
 - name: Troca imagem de fundo e posiciona icones padrões do Desktop
   copy: src=files/headless/desktop-items-0.conf dest=/home/pi/.config/pcmanfm/LXDE-pi mode=0777
 - name: Personaliza barra superior
-  copy: src=files/headless/panel dest=/home/pi/.config/lxpanel/LXDE-pi/panels mode=0777
+  copy: src=files/panel dest=/home/pi/.config/lxpanel/LXDE-pi/panels mode=0777
 - name: Altera resolucao da tela
   copy: src=files/config.txt dest=/boot
 - name: Verifica se existe arquivo school.info
