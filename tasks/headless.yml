@@ -1,6 +1,6 @@
 - name: Instala tightvncserver
   apt: 
-     name: [tighvncserver]
+     name: [tightvncserver]
 
 - name: Copia arquivo vncserver
   copy: 
