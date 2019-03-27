@@ -5,5 +5,8 @@
 - name: configura instalação do pacote ansible 2.7
   shell: 'apt-get update && apt-get install -y ansible'
 - name: Cria pasta de verificação instalação ansible 2.7
-  copy: src=ongoing/verify/ansible27 dest=/home/mindmakers/programs/verify mode=444
+  copy: 
+     src: ongoing/verify/ansible27 
+     dest: /home/mindmakers/programs/verify 
+     mode: 0444
   
