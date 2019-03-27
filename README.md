@@ -45,17 +45,18 @@ _**Como verificar sucesso dessa etapa?**_
 4.2. Abrir o terminal e executar a linha de comando "sudo ansible-pull https://mindmakersdisk-school@github.com/mindmakersdisk/disk.git", informando a senha apropriada quando solicitado (dica: para uma perfeita leitura da senha, evite digitar muito rapidamente)
 
 _**Como verificar sucesso do novo disco padrão?**_ 
-- _Conferir na mensagem final do terminal se a execução de todas as tarefas do ANSIBLE ocorreram sem falhas (TODO GABRIEL)...
-- _...ou que o rótulo de versão do atalho de "Ambiente v9.9" (ou Environment v9.9) foi atualizado para a nova versão._ 
+- _Conferir na mensagem final do terminal se todas as tarefas do ANSIBLE executaram sem falhas, checando se "failed=0"...
+- _...ou se foi criado um atalho na área de trabalho com rótulo "Ambiente v9.9" (ou Environment v9.9, para versão em ingês). Esta é a última tarefa da rotina, realizada apenas quando todas as demais finalizaram com sucesso._ 
 
-### 5. Atualizar as Notas de Liberação, informando um resumo do que foi atualizado.
+### 5. Validar a nova configuração do Desktop
 
-5.1. Abrir o arquivo TODO e incluir uma nova seção ao final, com as mudanças feitas na imagem de base, em resumo
+5.1. Reiniciar o computador acessando o menu e opção "Shutdown" ou usando o comando no terminal "reboot".
+
+5.2. Consultar as notas de liberação, para conhecer as principais modificações na versão da imagem padrão, clicando no atalho da Área de Trabalho instalado com nome "Ambiente v9.9" ((ou Environment v9.9, para versão em ingês).
 
 _**Como verificar sucesso do novo disco padrão?**_ 
 - _Conferir se o Raspberry PI inicia na resolução de 1.366 x 768 (DMT MODE 81)_
-- _Em uma amostra de 1 para cada 16 imagens, realizar os testes nos aplicativos chaves, definidos em TODO_
-- _Conferir se foi descrito o resumo do que foi modificado nas Notas de Liberação
+- _Acessar alguns atalhos para confirmar a correta abertura das aplicações_
 
 ## B. Orientações para criar um novo disco padrão de escola - para administradores da Mind Makers
 
