@@ -58,27 +58,41 @@ _**Como verificar sucesso do novo disco padrão?**_
 - _Conferir se o Raspberry PI inicia na resolução de 1.366 x 768 (DMT MODE 81)_
 - _Acessar alguns atalhos para confirmar a correta abertura das aplicações_
 
-## B. Orientações para criar um novo disco padrão de escola - para administradores da Mind Makers
+## B. Orientações para gerar imagens para uma escola específica
 
-### 1. Fazer uma cópia da imagem MM-IMAGEM-GLOBAL para uma imagem da escola MM-IMAGEM-ESCOLA 
+### 1. Alocar o disco padrão para uma escola específica.
 
-1.1. Copiar o disco.
+1.1. Obter o código da escola com a Mind Makers através do suporte@mindmakers.cc ou SAC.
 
-1.2. Abrir o terminal e executar a linha de comando "sudo nodejs /home/mindmakers/programs/registraescola.js"
+1.2. Abrir o terminal e alterar o diretório corrente com "cd /home/mindmakers/programs"
 
-
-
-_**Como verificar sucesso dessa etapa?**_ 
-- _Conferir se espaço livre está acima de 14GB_
-
-### 2. Instalar o Sistema Operacional
-
-2.1. Instalar o Sistema Operacional "Raspbian Stretch with desktop and recommended software", baixada de https://www.raspberrypi.org/downloads/raspbian/, versão 4.14 de 2018-11-13 (TODO Ver se é prudente copiarmos para drive próprio)
+1.3. Executar a linha de comando "sudo nodejs mmallocate.js" e aguardar pela mensagem de sucesso, conferindo se o nome correto da escola é exibido.
 
 _**Como verificar sucesso dessa etapa?**_ 
-- _Conferir se o Raspberry PI inicia com a interface gráfica (chamada LXDE)_
-- _Conferir se configuração está no idioma correto, em inglês ou português, conforme o interesse específico_
-- _Conferir se mouse, teclado e monitor estão corretamente configurados_
+- _Para dupla-conferência, clicar no atalho da Área de Trabalho com rótulo "Ativação" e confirmar que o código e nome da escola são exibidos no registro de "Ativação de Desktop Mind Makers" que aparece no início da rotina (cancelar o restante da ativação por hora, com control+C)_
+
+### 2. Replicar a imagem de disco padrão da escola para todas as estações
+
+Utilizar alguma técnica para copiar imagens de discos SD, como a utilizada no passo XX, através do programa "Win32 Disk Imager", no caso de SO Windows, exemplificado abaixo:
+
+2.1. Copiar a imagem do disco padrão gerado no passo B.1 para um computador central utilizado para intermediar as cópias, com espaço em disco suficiente, utilizando o "Win32 Disk Imager".
+
+2.1.1. Selecionar o drive correto em "Device"; 
+2.1.2. No campo Image File, selecionar um diretório de destino e dar um nome como "imagem_padrao_escola.img"; 
+2.1.3. Clicar em Read.
+
+2.2. Copiar a imagem padrão do computador central para os novos cartões SD.
+
+2.2.1. Formatar um novo cartão SD conforme instruções em A.1;
+2.2.2. Incluir o cartão no slot do computador central;
+2.2.3. No "Win32 Disk Manager", selecionar o arquivo "imagem_padrao_escola.img" (ou nome definido no passo anterior);
+2.2.4. Selecionar o drive correto de destino no campo "Device"; 
+2.2.5. Clicar em "Write".
+
+2.3. Repetir o processo acima, para o número de estações Desktop da escola.
+
+_**Como verificar sucesso dessa etapa?**_ 
+- _A conferência de cada cópia será realizada na próxima atividade, de Ativação dos Desktops_
 
 ### 3. Instalar o gerenciador de configuração Ansible TODO
 
