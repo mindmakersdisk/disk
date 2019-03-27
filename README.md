@@ -1,6 +1,6 @@
 # Imagem Padrão de Desktop para Salas de Aula da Mind Makers
 
-## A. Orientações para criar uma nova imagem de disco padrão para escolas.
+## A. Orientações para criar uma nova imagem de disco padrão para escolas chamada de disco-padrão-base.
 
 ### 1. Formatar um cartão SD.
 
@@ -13,21 +13,36 @@ _**Como verificar sucesso dessa etapa?**_
 
 ### 2. Instalar o Sistema Operacional Raspbian (Padrão para o Raspberry Pi, derivado do Debian)
 
-2.1. Instalar o Sistema Operacional "Raspbian Stretch with desktop and recommended software", baixando de https://www.raspberrypi.org/downloads/raspbian/. O link direto para download do arquivo ZIP com esta versão é: https://downloads.raspberrypi.org/raspbian_full_latest
+2.1. Baixar o arquivo do Sistema Operacional "Raspbian Stretch with desktop and recommended software", de https://www.raspberrypi.org/downloads/raspbian/ para um computador central de controle (estação Windows, por exemplo). O link direto para download do arquivo ZIP com esta versão é: https://downloads.raspberrypi.org/raspbian_full_latest
 
 Obs.: O último empacotamento de arquivo do Raspbian homologado pela Mind Makers em março/2019 tem versão 4.14 de 2018-11-13. Versões posteriores devem funcionar, mas caso o pacote seja superior, recomenda-se confirmar essa informação através do suporte@mindmakers.cc.
 
-2.2. Durante a instalação, selecionar idioma "Português" se for de interesse instalar um Desktop para aulas em português. Ou idioma "Inglês" se for de interesse instalar um Destop para aulas em inglês (ex.: escolas bilíngues).
+2.2. Copiar a imagem do SO baixada para o cartão SD formatado, utilizando um utilitário de cópia de imagens de disco como o "Win32 Disk Imager".
 
-2.3. Configurar o teclado, mouse e monitor conforme orientações padrões da instalação. 
+2.2.1. Selecionar o arquivo baixado em 2.1 no computador central;
+2.2.2. Selecionar o drive correto de destino no campo "Device"; 
+2.2.3. Clicar em "Write".
 
-2.4. Configurar a conexão para acesso à Internet via WiFi e/ou cabo de rede.
+2.3. Configurar o SO copiado. 
+
+2.3.1. Montar o cartão em um Raspberry PI com monitor, teclado e mouse conectados e ligar.
+
+2.3.2. Seguir o tutorial de configuração, selecionando o país "Brazil", o Timezone apropriado e o idioma "Brazilian Portuguese". Para escolas que desejem manter o Desktop em inglês (ex.: escolas bilíngues), selecionar um país de língua inglesa, porém preservando o Timezone do Brazil. 
+
+2.3.3. Informar uma nova senha para o usuário "pi", lembrando de anotá-la para não correr o risco de esquecer. Obs.: Este usuário e senha não serão utilizado no dia a dia, mas alterar a senha padrão pode evitar modificações indevidas de algumas configurações por parte de alunos, por exemplo. 
+
+2.3.4. Configurar a conexão para acesso à Internet via WiFi e/ou cabo de rede conforme solicitado.
+
+2.3.5. Na opção "Update Software" clicar em "Skip" para evitar uma atualização desnecessária. Alguns softwares serão removidos e os que precisam ser atualizados o serão, nos próximos passos, via Ansible. 
+
+2.3.6. Reinicie clicando em Reboot.
 
 _**Como verificar sucesso dessa etapa?**_ 
 - _Conferir se o Raspberry PI inicia com a interface gráfica (chamada LXDE)_
-- _Conferir se configuração está no idioma correto, em inglês ou português, conforme o interesse específico_
+- _Conferir se os rótulos e menu estão no idioma correto, em inglês ou português, conforme o interesse específico_
+- _Conferir se o Timezone está correto, abrindo o terminal e digitando "date", confirmando que a hora está correta para o Brasil_
 - _Conferir se mouse, teclado e monitor estão corretamente configurados. Importante: não é relevante que o monitor siga a resolução padrão neste momento, pois ela será configurada automaticamente em passos posteriores. Confira apenas que a imagem é apresentada_
-- _Conferir a versão corrente do SO digitando o comando "lsb_release -a" em uma janela de terminal, conferindo se Release é 9.8_
+- _Conferir a versão corrente do SO digitando o comando "lsb_release -a" em uma janela de terminal, conferindo se Release é 9.4. Obs.: essa versão será atualizada em passos posteriores via Ansible_
 - _Abrir o navegador Chromium e confirmar que a internet está sendo acessada corretamente_
 
 ### 3. Instalar o gerenciador automático de configuração Ansible
@@ -51,19 +66,19 @@ _**Como verificar sucesso do novo disco padrão?**_
 - _Conferir na mensagem final do terminal se todas as tarefas do ANSIBLE executaram sem falhas, checando se "failed=0"...
 - _...ou se foi criado um atalho na área de trabalho com rótulo "Ambiente v9.9" (ou Environment v9.9, para versão em ingês). Esta é a última tarefa da rotina, realizada apenas quando todas as demais finalizaram com sucesso._ 
 
-### 5. Validar a nova configuração do Desktop
+### 5. Validar a configuração do novo disco-padrão-base.
 
 5.1. Reiniciar o computador acessando o menu e opção "Shutdown" ou usando o comando no terminal "reboot".
 
 5.2. Consultar as notas de liberação, para conhecer as principais modificações na versão da imagem padrão, clicando no atalho da Área de Trabalho instalado com nome "Ambiente v9.9" ((ou Environment v9.9, para versão em ingês).
 
-_**Como verificar sucesso do novo disco padrão?**_ 
+_**Como verificar sucesso do novo disco-padrão-base?**_ 
 - _Conferir se o Raspberry PI inicia na resolução de 1.366 x 768 (DMT MODE 81)_
 - _Acessar alguns atalhos para confirmar a correta abertura das aplicações_
 
 ## B. Orientações para gerar imagens para uma escola específica
 
-### 1. Alocar o disco padrão para uma escola específica, gerando um disco-padrão-da-escola.
+### 1. Alocar o disco padrão para uma escola específica, gerando um disco-padrão-escola.
 
 1.1. Obter o código da escola com a Mind Makers através do suporte@mindmakers.cc ou SAC.
 
@@ -74,7 +89,7 @@ _**Como verificar sucesso do novo disco padrão?**_
 _**Como verificar sucesso dessa etapa?**_ 
 - _Para dupla-conferência, clicar no atalho da Área de Trabalho com rótulo "Ativação" e confirmar que o código e nome da escola são exibidos no registro de "Ativação de Desktop Mind Makers" que aparece no início da rotina (cancelar o restante da ativação por hora, com control+C)_
 
-### 2. Replicar a imagem do disco-padrão-da-escola para todas as estações
+### 2. Replicar a imagem do disco-padrão-escola para todas as estações
 
 Utilizar alguma técnica para copiar imagens de discos SD, como a utilizada no passo XX, através do programa "Win32 Disk Imager", no caso de SO Windows, exemplificado abaixo:
 
