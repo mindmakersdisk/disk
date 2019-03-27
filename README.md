@@ -47,16 +47,12 @@ _**Como verificar sucesso dessa etapa?**_
 
 ### 3. Instalar o gerenciador automático de configuração Ansible
 
-3.1. Baixar o arquivo "ansible.zip" a partir do link "https://github.com/mindmakersdisk/disk/raw/master/ansible.zip"
-
-3.2. Extrair os arquivos para o diretório "/home/pi/Downloads".
-
-3.3. Clicar no executável "instala".
+3.1. Abrir o terminal em qualquer diretório e executar a linha de comando "sudo apt-get install -y ansible".
 
 _**Como verificar sucesso dessa etapa?**_ 
-- _Digitar no terminal "sudo ansible-pull --version" de qualquer diretório e conferir se a resposta traz ansible 2.7.9 ou superior na primeira linha_
+- _Digitar no terminal "ansible --version" de qualquer diretório e conferir se a resposta traz ansible 2.2.1.0 ou superior na primeira linha_
 
-### 4. Disparar a configuração automatizada via Ansible.
+### 4. Disparar o restante da configuração automatizada via Ansible.
 
 4.1. Obter uma senha para atualização de desktops padrões da Mind Makers, solicitando através do "suporte@mindmakers.cc" ou da funcionalidade de SAC na plataforma em https://mindmakers.cc.
 
