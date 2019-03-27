@@ -1,4 +1,4 @@
-- name: Copia demais arquivos de atalho para a Área de Trabalho - SO em português
+- name: Copia demais arquivos de atalho para a Área de Trabalho
   copy: 
      src: files/headless/desktop/
      dest: "/home/pi/Área de Trabalho"
