@@ -1,5 +1,8 @@
 - name: Copia demais arquivos de atalho para o Desktop
-  copy: src=files/desktop/ dest=/home/pi/Desktop mode=0755
+  copy: 
+     src: files/desktop/
+     dest: /home/pi/Desktop
+     mode: 0755
   
 #comando tornar icones imutáveis  
 #  copy: src=files/desktop/ dest=/home/pi/Desktop mode=0755 attributes=+i #se ansible> 2.3
