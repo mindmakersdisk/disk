@@ -1,0 +1,13 @@
+[Desktop Entry]
+Version=1.0
+Name=MMBlockly
+Exec=chromium-browser http://mindmakers.cc/mmblockly/home.html --allow-running-insecure-content --allow-control-allow-origin %U --start-fullscreen --incognito
+Terminal=false
+X-MultipleArgs=false
+Type=Application
+Icon=/usr/share/icons/mmblockly.jpg
+Categories=Network;WebBrowser;
+MimeType=text/html;text/xml;application/xhtml_xml;x-scheme-handler/http;x-scheme-handler/https;
+StartupNotify=true
+Actions=NewWindow;Incognito;TempProfile;
+X-AppInstall-Package=chromium-browser
