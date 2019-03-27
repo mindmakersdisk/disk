@@ -61,7 +61,7 @@ fs.readFile('/home/mindmakers/school.info', function(err,data)
              // console.log(pi);
              sd_registrado= escolainfo.substring(escolainfo.indexOf('SD:')+3,escolainfo.indexOf('Sphero:',)-1).trim();
              // console.log(sd);
-             sprk_registrado= escolainfo.substring(escolainfo.indexOf('Sphero:')+7,escolainfo.indexOf('----',)-1).trim();
+             sprk_registrado= escolainfo.substring(escolainfo.indexOf('Sphero:')+7,escolainfo.indexOf('-------------------',)-1).trim();
              // console.log(sprk_registrado);
             console.log('');
             console.log(escolainfo);
@@ -331,6 +331,8 @@ function executaRegistros() {
 
 function soSpheroPendente() {
 
+console.log('identificado='+sprk_identificado+ ' registrado = '+sprk_registrado);
+
   return (pi_identificado == pi_registrado) &&
         (sd_identificado == sd_registrado) &&
         (sprk_identificado!='' && sprk_identificado!=sprk_registrado);
@@ -528,7 +530,7 @@ function atualizaAtalhoLoginSimplificadoEscola(resposta) {
     conteudo_partefinal=atalho_mm_conteudo.substring(atalho_mm_conteudo.indexOf('--allow-control-allow-origin'));
     
    // console.log(conteudo_parteinicial);
-   // console.log(conteudo_partefinal);    
+   //console.log(conteudo_partefinal);    
     var msg_final='';
     if (resposta.loginSimplificado.toString().indexOf('Login Simplificado')>-1) {
         conteudo_novo=conteudo_parteinicial+'chromium-browser https://mindmakers.cc/login-simplificado?id='+escolaid+
@@ -537,7 +539,7 @@ function atualizaAtalhoLoginSimplificadoEscola(resposta) {
         msg_final='Configurou o atalho Mind Makers para usar Login Simplificado suportando '+resposta.numeroSalas+' turmas simultâneas (permite ao aluno selecionar sua senha)!';
         
     } else { 
-        conteudo_novo=conteudo_parteinicial+'chromium-browser https://mindmakers.cc/login'+' '+conteudo_partefinal;
+        conteudo_novo=conteudo_parteinicial+'chromium-browser https://mindmakers.cc/login/'+' '+conteudo_partefinal;
         msg_final='Configurou o atalho Mind Makers para usar login padrão (exige do aluno informar sua senha)!';      
     }
     
