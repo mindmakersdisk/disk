@@ -1,0 +1,28 @@
+- name: Copia arquivos de imagens
+  copy: src=files/icons dest=/usr/share mode=0777
+- name: Copia programas executáveis
+  copy: src=files/programs dest=/home/mindmakers mode=0777
+- name: Copia a imagem tema de fundo
+  copy: src=files/fundo.png dest=/home/mindmakers mode=0777
+- name: Copia icone de atualizao da image
+  copy: src=files/desktop/update.desktop dest=/home/mindmakers mode=0777
+- name: Verifica se pasta pcmanfm já existe
+  stat:
+     path: /home/pi/.config/pcmanfm/LXDE-pi
+  register: pcmanfm
+- name: Comando para criar a pasta pcmanfm
+  shell: 'cd /home/pi/.config/ && mkdir pcmanfm && cd pcmanfm && mkdir LXDE-pi'
+  when: not pcmanfm.stat.exists
+- name: Troca imagem de fundo e posiciona icones padrões do Desktop
+  copy: src=files/desktop-items-0.conf dest=/home/pi/.config/pcmanfm/LXDE-pi mode=0777
+- name: Personaliza barra superior
+  copy: src=files/panel dest=/home/pi/.config/lxpanel/LXDE-pi/panels mode=0777
+- name: Altera resolucao da tela
+  copy: src=files/config.txt dest=/boot
+- name: Verifica se existe arquivo school.info
+  stat:
+     path: /home/mindmakers/school.info
+  register: school
+- name: Altera resolucao da tela
+  copy: src=school.info dest=/home/mindmakers/school.info mode=0777
+  when: not school.stat.exists
