@@ -58,9 +58,19 @@ _**Como verificar sucesso dessa etapa?**_
 
 4.2. Abrir o terminal e executar a linha de comando "sudo ansible-pull https://mindmakersdisk-school@github.com/mindmakersdisk/disk.git", informando a senha apropriada quando solicitado (dica: para uma perfeita leitura da senha, evite digitar muito rapidamente)
 
+Na primeira vez, a atualização de versão do próprio Ansible irá gerar uma exceção no restante da rotina, pelo fato de uma versão do Ansible ter sido alterada em meio à execução. Isso é indicado pelo linha "failed=1" ao final e esperado.
+
+Confirme a atualização de versão do Ansible digitando no terminal "ansible --version" e confirmando que a versão agora é "2.7.9 ou superior".
+
+4.3. Executar novamente a rotina de atualização automática, agora usando a versão atualizada do Ansible, repetindo o mesmo comando do item 4.2.
+
+DICAS IMPORTANTES - Podem ocorrer falhas esporádicas por casuísmos durante a execução da rotina tais como queda ou lentidão excessiva de conexão durante alguma atualização. Essas falhas sempre geram um resultado "failed=1". Nestes casos:
+- Reinicie a execução, para que as tarefas que falharam sejam novamente executadas com sucesso;
+- Se o erro persistir, reinicia o Raspberry Pi e execute novamente. 
+
 _**Como verificar sucesso do novo disco padrão?**_ 
 - _Conferir na mensagem final do terminal se todas as tarefas do ANSIBLE executaram sem falhas, checando se "failed=0"...
-- _...ou se foi criado um atalho na área de trabalho com rótulo "Ambiente v9.9" (ou Environment v9.9, para versão em ingês). Esta é a última tarefa da rotina, realizada apenas quando todas as demais finalizaram com sucesso._ 
+- _...ou se foi criado um atalho na área de trabalho com rótulo "Ambiente vX.X" (ou Environment vX.X, para versão em ingês), onde X.X é a versão e release da imagem padrão (ex: 2.2, 2.3)._ 
 
 ### 5. Validar a configuração do novo disco-padrão-base.
 
