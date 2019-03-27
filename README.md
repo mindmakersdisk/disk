@@ -81,7 +81,7 @@ _**Como verificar sucesso do novo disco padrão?**_
 
 5.4. Conferir se o Raspberry PI inicia na resolução de 1.366 x 768 (DMT MODE 81), acessando via menu "Preferências -> Raspberry Pi Configuration" e clicando em "Set Resolution" ou via comando de terminal "tvservice -s".
 
-## B. Orientações para gerar imagens para uma escola específica
+## B. Orientações para gerar uma imagem 'disco-padrão-base' derivada de 'disco-padrão-escola', alocada para uma escola específica
 
 ### 1. Alocar o disco padrão para uma escola específica, gerando um disco-padrão-escola.
 
