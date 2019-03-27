@@ -21,11 +21,14 @@ Obs.: O último empacotamento de arquivo do Raspbian homologado pela Mind Makers
 
 2.3. Configurar o teclado, mouse e monitor conforme orientações padrões da instalação. 
 
+2.4. Configurar a conexão para acesso à Internet via WiFi e/ou cabo de rede.
+
 _**Como verificar sucesso dessa etapa?**_ 
 - _Conferir se o Raspberry PI inicia com a interface gráfica (chamada LXDE)_
 - _Conferir se configuração está no idioma correto, em inglês ou português, conforme o interesse específico_
 - _Conferir se mouse, teclado e monitor estão corretamente configurados. Importante: não é relevante que o monitor siga a resolução padrão neste momento, pois ela será configurada automaticamente em passos posteriores. Confira apenas que a imagem é apresentada_
-- _Conferir a versão corrente do SO digitando o comando "lsb_release -a" em uma janela de terminal, conferindo se Release é 9.8._
+- _Conferir a versão corrente do SO digitando o comando "lsb_release -a" em uma janela de terminal, conferindo se Release é 9.8_
+- _Abrir o navegador Chromium e confirmar que a internet está sendo acessada corretamente_
 
 ### 3. Instalar o gerenciador automático de configuração Ansible
 
@@ -60,7 +63,7 @@ _**Como verificar sucesso do novo disco padrão?**_
 
 ## B. Orientações para gerar imagens para uma escola específica
 
-### 1. Alocar o disco padrão para uma escola específica.
+### 1. Alocar o disco padrão para uma escola específica, gerando um disco-padrão-da-escola.
 
 1.1. Obter o código da escola com a Mind Makers através do suporte@mindmakers.cc ou SAC.
 
@@ -71,7 +74,7 @@ _**Como verificar sucesso do novo disco padrão?**_
 _**Como verificar sucesso dessa etapa?**_ 
 - _Para dupla-conferência, clicar no atalho da Área de Trabalho com rótulo "Ativação" e confirmar que o código e nome da escola são exibidos no registro de "Ativação de Desktop Mind Makers" que aparece no início da rotina (cancelar o restante da ativação por hora, com control+C)_
 
-### 2. Replicar a imagem de disco padrão da escola para todas as estações
+### 2. Replicar a imagem do disco-padrão-da-escola para todas as estações
 
 Utilizar alguma técnica para copiar imagens de discos SD, como a utilizada no passo XX, através do programa "Win32 Disk Imager", no caso de SO Windows, exemplificado abaixo:
 
