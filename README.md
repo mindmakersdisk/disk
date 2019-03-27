@@ -77,9 +77,9 @@ _**Como verificar sucesso do novo disco padrão?**_
 
 5.2. Consultar as notas de liberação, para conhecer as principais modificações na versão da imagem padrão, clicando no atalho da Área de Trabalho instalado com nome "Ambiente v9.9" ((ou Environment v9.9, para versão em ingês).
 
-_**Como verificar sucesso do novo disco-padrão-base?**_ 
-- _Conferir se o Raspberry PI inicia na resolução de 1.366 x 768 (DMT MODE 81)_
-- _Acessar alguns atalhos para confirmar a correta abertura das aplicações_
+5.3. Acessar alguns atalhos para confirmar a correta abertura das aplicações
+
+5.4. Conferir se o Raspberry PI inicia na resolução de 1.366 x 768 (DMT MODE 81), acessando via menu "Preferências -> Raspberry Pi Configuration" e clicando em "Set Resolution".
 
 ## B. Orientações para gerar imagens para uma escola específica
 
