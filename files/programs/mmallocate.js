@@ -179,13 +179,13 @@ function atualizaSchoolInfo() {
 
   }
   
-  escolainfoatualizada = "--- Ativação de Desktop Mind Makers ---\n" +
+  escolainfoatualizada = "----- Identificação de Desktop Mind Makers ------\n" +
                          "Cód.: "+escolaid+"\n"+
                          "Nome: "+escolanome+"\n"+
-                         "Pi: "+pi_registrado+"\n"+
-                         "SD: "+sd_registrado+"\n"+
-                         "Sphero: "+sprk_registrado+"\n"+
-                         "---------------------------------------";  
+                         "Pi: \n"+
+                         "SD: \n"+
+                         "Sphero: \n"+
+                         "--------------------------------------------";  
   
   fs.writeFile('/home/mindmakers/school.info', escolainfoatualizada, function(err,data) 
         {
@@ -194,8 +194,8 @@ function atualizaSchoolInfo() {
               // Encerra com falha
               process.exit(1);
           } else {
-            console.log('------------- Alocação OK! -------------');
-            console.log('----------------------------------------');
+            console.log('------------- Alocação OK! ------------------');
+            console.log('---------------------------------------------');
             console.log(escolainfoatualizada);
             // Encerra com sucesso
             process.exit();
