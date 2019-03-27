@@ -8,4 +8,4 @@
   copy: 
      src: releasenotes.info
      dest: /home/mindmakers
-     mode: 777
+     mode: 0777
