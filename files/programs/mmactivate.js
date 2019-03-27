@@ -785,13 +785,13 @@ function atualizaSchoolInfo() {
      sprk_registrado=sprk_identificado;
   }
   
-  escolainfoatualizada = "--- Ativação de Desktop Mind Makers ---\n" +
+  escolainfoatualizada = "--- Identificação de Desktop Mind Makers ---\n" +
                          "Cód.: "+escolaid+"\n"+
                          "Nome: "+escolanome+"\n"+
                          "Pi: "+pi_registrado+"\n"+
                          "SD: "+sd_registrado+"\n"+
                          "Sphero: "+sprk_registrado+"\n"+
-                         "---------------------------------------";  
+                         "-----------------------------------------";  
   
   fs.writeFile('/home/mindmakers/school.info', escolainfoatualizada, function(err,data) 
         {
