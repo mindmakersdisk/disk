@@ -60,7 +60,7 @@ _**Como verificar sucesso dessa etapa?**_
 
 4.1. Obter uma senha para atualização de desktops padrões da Mind Makers, solicitando através do "suporte@mindmakers.cc" ou da funcionalidade de SAC na plataforma em https://mindmakers.cc.
 
-4.2. Abrir o terminal e executar a linha de comando "sudo ansible-pull https://mindmakersdisk-school@github.com/mindmakersdisk/disk.git", informando a senha apropriada quando solicitado (dica: para uma perfeita leitura da senha, evite digitar muito rapidamente)
+4.2. Abrir o terminal e executar a linha de comando "sudo ansible-pull -U https://mindmakersdisk-school@github.com/mindmakersdisk/disk.git", informando a senha apropriada quando solicitado (dica: para uma perfeita leitura da senha, evite digitar muito rapidamente)
 
 Na primeira vez, a atualização de versão do próprio Ansible irá gerar uma exceção no restante da rotina, pelo fato de uma versão do Ansible ter sido alterada em meio à execução. Isso é indicado pelo linha "failed=1" ao final e esperado.
 
@@ -80,7 +80,7 @@ _...ou se foi criado um atalho na área de trabalho com rótulo "Ambiente vX.X" 
 
 5.1. Reiniciar o computador acessando o menu e opção "Shutdown" ou usando o comando no terminal "reboot".
 
-5.2. Consultar as notas de liberação, para conhecer as principais modificações na versão da imagem padrão, clicando no atalho da Área de Trabalho instalado com nome "Ambiente v9.9" ((ou Environment v9.9, para versão em ingês).
+5.2. Consultar as notas de liberação, para conhecer as principais modificações na versão da imagem padrão, clicando no atalho da Área de Trabalho instalado com nome "Ambiente vX.X" ((ou Desktop vX.X, para versão em ingês).
 
 5.3. Acessar alguns atalhos para confirmar a correta abertura das aplicações
 
