@@ -19,6 +19,6 @@ echo "**************************************************************************
 
 sleep 5
 
-sudo nodejs /home/mindmakers/programs/mmsphero-server.js F2:98:D7:D9:16:08  
+sudo nodejs /home/mindmakers/programs/mmsphero-server.js XX:XX:XX:XX:XX:XX  
 
 sudo fuser -k 80/tcp
