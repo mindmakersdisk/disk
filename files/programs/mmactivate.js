@@ -74,11 +74,14 @@ fs.readFile('/home/mindmakers/school.info', function(err,data)
             
             obtemVersaoImagemDisco();
             
-            if (escolaid==null || escolaid=='' || escolaid.toString().indexOf('Não')>-1) {
-               console.err('Não foi possível identificar uma escola para a qual esse disco foi alocado');
-               console.err('Para ativar uma estação ela precisa estar previamente alocada para uma escola.');
-               console.err('Reexecute a alocação ou contate suporte@mindmakers.cc para obter apoio.');
-              
+            if (escolaid==null || escolaid=='' || escolaid.toString().toLowerCase().indexOf('não')>-1) {
+               console.log('');
+               console.error('Não foi possível identificar uma escola para a qual esse disco foi alocado');
+               console.error('Para ativar uma estação ela precisa estar previamente alocada para uma escola.');
+               console.error('Reexecute a alocação ou contate suporte@mindmakers.cc para obter apoio.');
+               console.log('');
+               process.exit(1);
+      
             }
             
                      
@@ -176,6 +179,31 @@ var questions = [
     message: "Quantas turmas simultâneas de Mind Makers pode ter a escola?",
     when: function (answers) {
       return (answers.opcao && answers.loginSimplificado.toString().indexOf('Login Simplificado')>-1);
+    }
+  }
+
+];
+
+var questionsHeadless = [
+  {
+    type: 'confirm',
+    name: 'opcao',
+    message: "Deseja ativar essa estação?"
+  },
+  {
+    type: 'input',
+    name: 'login',
+    message: "Informe seu usuário na plataforma Mind Makers:",
+    when: function (answers) {
+      return answers.opcao;
+    }
+  },
+  {
+    type: 'password',
+    name: 'senha',
+    message: "Informe sua senha:",
+    when: function (answers) {
+      return answers.opcao;
     }
   }
 
@@ -286,6 +314,11 @@ function executaRegistros() {
       console.log('-------------------------------------------------------');
       console.log('');
      
+      if (!existeAtalhoMindMakers()) {
+          // Então é headless
+          return;
+      }
+      
       inquirer.prompt(questionsLoginSimplificado).then(answers => {
                   
             if (answers.loginSimplificado!=null && answers.loginSimplificado.toString().indexOf('Não')==-1) {
@@ -305,9 +338,15 @@ function executaRegistros() {
    } else {
      
       // Faz registro geral
+      var perguntas = questions;
+      
+      if (!existeAtalhoMindMakers()) {
+          // Então é headless
+          perguntas=questionsHeadless;
+      }
         
       modoregistro=true;
-      inquirer.prompt(questions).then(answers => {
+      inquirer.prompt(perguntas).then(answers => {
         
         if (answers.opcao) {
           
@@ -315,8 +354,10 @@ function executaRegistros() {
           escolanome_recuperado= escolanome;
 
             registraAtivosEscolaPlataforma(answers);
-            atualizaAtalhoSphero();      
-            atualizaAtalhoLoginSimplificadoEscola(answers);
+            atualizaAtalhoSphero();   
+            
+            if (perguntas===questions)   
+                atualizaAtalhoLoginSimplificadoEscola(answers);
             
             totalAcessosPlataformaPendentes=2;
             servicoRecorrente=setInterval(monitoraAcessosAssincronosPlataforma,2000);  
@@ -331,7 +372,7 @@ function executaRegistros() {
 
 function soSpheroPendente() {
 
-console.log('identificado='+sprk_identificado+ ' registrado = '+sprk_registrado);
+//console.log('identificado='+sprk_identificado+ ' registrado = '+sprk_registrado);
 
   return (pi_identificado == pi_registrado) &&
         (sd_identificado == sd_registrado) &&
@@ -461,7 +502,7 @@ function registraSpheroPlataforma(resposta) {
 function atualizaAtalhoSphero() {
   
   if (sprk_identificado=='') {
-     console.log('Não modificou o atalho do Sphero pois não encontrou nenhum próximo');
+     console.log('Não modificou o atalho do Sphero pois não encontrou nenhum SPRK+ próximo');
        return;
   }
   
@@ -657,9 +698,9 @@ function atualizaSchoolInfo() {
 
 function obtemVersaoImagemDisco() {
   
-  var existeEmPortugues = statPath('/home/pi/Área de Trabalho/mindmakers.desktop');
+  var ePortugues = statPath('/home/pi/Área de Trabalho');
   
-  if (existeEmPortugues) {
+  if (ePortugues) {
     
     atalho_mm_conteudo= fs.readFileSync('/home/pi/Área de Trabalho/releasenotes.desktop')+'';
     
@@ -691,4 +732,30 @@ function obtemVersaoImagemDisco() {
   
 }
 
+function existeAtalhoMindMakersPortugues() {
+  
+  try {
+    var ret = statPath('/home/pi/Área de Trabalho/mindmakers.desktop');
+    return ret;
+  } catch (e) {
+    return false;
+  }
+  
+}
 
+function existeAtalhoMindMakersIngles() {
+  
+  try {
+    var ret =  statPath('/home/pi/Desktop/mindmakers.desktop');
+    return ret;
+  } catch (e) {
+    return false;
+  }
+  
+}
+
+function existeAtalhoMindMakers() {
+ 
+    return existeAtalhoMindMakersPortugues() || existeAtalhoMindMakersIngles();
+    
+}
