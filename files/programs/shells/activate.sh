@@ -11,3 +11,5 @@ cd '/home/mindmakers/programs'
 sudo nodejs mmactivate.js
 
 sudo fuser -k 80/tcp
+
+$SHELL
