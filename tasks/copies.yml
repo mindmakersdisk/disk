@@ -15,13 +15,13 @@
 - name: Copia Shell Sphero
   copy: 
      src: files/sphero-connect+.sh
-     dest: /home/mindmakers/shells/
+     dest: /home/mindmakers/programs/shells/
      mode: 0777
   when: not sphero.stat.exists
 - name: Copia Shell Sphero
   copy: 
      src: files/sphero-connect.sh
-     dest: /home/mindmakers/shells/
+     dest: /home/mindmakers/programs/shells/
      mode: 0777
   when: not sphero.stat.exists
 - name: Copia a imagem tema de fundo
