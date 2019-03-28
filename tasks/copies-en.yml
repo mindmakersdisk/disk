@@ -7,7 +7,7 @@
   stat:
      path: /home/pi/Desktop/mindmakers.desktop
   register: mmdesk
-- name: Copia Shell Sphero
+- name: Copia atalho mindmakers.desktop
   copy: 
      src: files/mindmakers.desktop
      dest: /home/mindmakers/shells
