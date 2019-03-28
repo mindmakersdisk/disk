@@ -18,9 +18,9 @@ Obs.: O último empacotamento de arquivo do Raspbian homologado pela Mind Makers
 
 2.2. Copiar a imagem do SO baixada para o cartão SD formatado, utilizando um utilitário de cópia de imagens de disco como o "Win32 Disk Imager".
 
-> 2.2.1. Selecionar o arquivo baixado em 2.1 no computador central; <
-> 2.2.2. Selecionar o drive correto de destino no campo "Device"; <
-> 2.2.3. Clicar em "Write". <
+- 2.2.1. Selecionar o arquivo baixado em 2.1 no computador central;
+- 2.2.2. Selecionar o drive correto de destino no campo "Device"; 
+- 2.2.3. Clicar em "Write". 
 
 2.3. Configurar o SO copiado. 
 
