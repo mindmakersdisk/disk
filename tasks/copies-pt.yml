@@ -3,3 +3,13 @@
      src: files/desktop/
      dest: "/home/pi/Área de Trabalho"
      mode: 0755
+- name: Verifica ícone desktop
+  stat:
+     path: "/home/pi/Área de Trabalho/mindmakers.desktop"
+  register: mmdesk
+- name: Copia Shell Sphero
+  copy: 
+     src: files/mindmakers.desktop
+     dest: /home/mindmakers/shells
+     mode: 0755
+  when: not mmdesk.stat.exists
