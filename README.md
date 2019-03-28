@@ -26,13 +26,13 @@ Obs.: O último empacotamento de arquivo do Raspbian homologado pela Mind Makers
 
 2.3. Configurar o SO copiado. 
 
-> 2.3.1. Montar o cartão em um Raspberry PI com monitor, teclado e mouse conectados e ligar.
+> 2.3.1. Montar o cartão em um Raspberry PI com monitor, teclado e mouse e cabo de rede conectados e ligar.
 
-> 2.3.2. Seguir o tutorial de configuração, selecionando o país "Brazil", o Timezone apropriado e o idioma "Brazilian Portuguese". Para escolas que desejem manter o Desktop em inglês (ex.: escolas bilíngues), selecionar um país de língua inglesa, porém preservando o Timezone do Brazil. 
+> 2.3.2. Seguir o tutorial de configuração, selecionando o país "Brazil", o Timezone apropriado e o idioma "Brazilian Portuguese". Para escolas que desejarem manter o Desktop em inglês (ex.: escolas bilíngues), selecionar um país de língua inglesa, porém preservando o Timezone do Brasil. 
 
 > 2.3.3. Informar uma nova senha para o usuário "pi", lembrando de anotá-la para não correr o risco de esquecer. Obs.: Este usuário e senha não serão utilizado no dia a dia, mas alterar a senha padrão pode evitar modificações indevidas de algumas configurações por parte de alunos, por exemplo. 
 
-> 2.3.4. Configurar a conexão para acesso à Internet via WiFi e/ou cabo de rede conforme solicitado.
+> 2.3.4. Configurar a conexão para acesso à Internet via WiFi conforme solicitado.
 
 > 2.3.5. Na opção "Update Software" clicar em "Skip" para evitar uma atualização desnecessária. Alguns softwares serão removidos e os que precisam ser atualizados o serão, nos próximos passos, via Ansible. 
 
@@ -42,7 +42,8 @@ _**Como verificar sucesso dessa etapa?**_
 - _Conferir se o Raspberry PI inicia com a interface gráfica (chamada LXDE)_
 - _Conferir se os rótulos e menu estão no idioma correto, em inglês ou português, conforme o interesse específico_
 - _Conferir se o Timezone está correto, abrindo o terminal e digitando "date", confirmando que a hora está correta para o Brasil_
-- _Conferir se mouse, teclado e monitor estão corretamente configurados. Importante: não é relevante que o monitor siga a resolução padrão neste momento, pois ela será configurada automaticamente em passos posteriores. Confira apenas que a imagem é apresentada_
+- _Conferir se o mouse e teclado estão configurados ok. Para testar o teclado, digite um "ç" e um "ã" em uma janela de terminal com o teclado, confirmando que são corretamente exibidos.
+- _Conferir se o monitor está corretamente configurado. Importante: não é relevante que o monitor siga a resolução padrão neste momento, pois ela será configurada automaticamente em passos posteriores. Confira apenas que a imagem é apresentada_
 - _Conferir a versão corrente do SO digitando o comando "lsb_release -a" em uma janela de terminal, conferindo se Release é 9.4. Obs.: essa versão será atualizada em passos posteriores via Ansible_
 - _Abrir o navegador Chromium e confirmar que a internet está sendo acessada corretamente_
 
