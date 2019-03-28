@@ -2,11 +2,12 @@
   shell: 'echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main" | sudo tee -a /etc/apt/sources.list'
 - name: configura instalação do pacote ansible 2.7
   shell: 'apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367'
-- name: configura instalação do pacote ansible 2.7
-  shell: 'apt-get update && apt-get install -y ansible'
 - name: Cria pasta de verificação instalação ansible 2.7
   copy: 
      src: ongoing/verify/ansible27 
      dest: /home/mindmakers/programs/verify 
-     mode: 0444
+     mode: 0444  
+- name: configura instalação do pacote ansible 2.7
+  shell: 'apt-get update && apt-get install -y ansible'
+
   
