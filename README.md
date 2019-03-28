@@ -24,9 +24,9 @@ Obs.: O último empacotamento de arquivo do Raspbian homologado pela Mind Makers
 
 2.3. Configurar o SO copiado. 
 
-  2.3.1. Montar o cartão em um Raspberry PI com monitor, teclado e mouse conectados e ligar.
+    2.3.1. Montar o cartão em um Raspberry PI com monitor, teclado e mouse conectados e ligar.
 
-  2.3.2. Seguir o tutorial de configuração, selecionando o país "Brazil", o Timezone apropriado e o idioma "Brazilian Portuguese". Para escolas que desejem manter o Desktop em inglês (ex.: escolas bilíngues), selecionar um país de língua inglesa, porém preservando o Timezone do Brazil. 
+    2.3.2. Seguir o tutorial de configuração, selecionando o país "Brazil", o Timezone apropriado e o idioma "Brazilian Portuguese". Para escolas que desejem manter o Desktop em inglês (ex.: escolas bilíngues), selecionar um país de língua inglesa, porém preservando o Timezone do Brazil. 
 
   2.3.3. Informar uma nova senha para o usuário "pi", lembrando de anotá-la para não correr o risco de esquecer. Obs.: Este usuário e senha não serão utilizado no dia a dia, mas alterar a senha padrão pode evitar modificações indevidas de algumas configurações por parte de alunos, por exemplo. 
 
