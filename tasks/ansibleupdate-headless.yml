@@ -15,7 +15,7 @@
 - name: Update repositories cache and install "ansible" package
   apt:
     update_cache: yes
-- name: Update repositories cache and install "ansible" package
+- name: instala install "ansible" package
   apt:
     name: ansible
  
