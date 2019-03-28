@@ -29,20 +29,20 @@
      src: files/headless/fundo.png 
      dest: /home/mindmakers 
      mode: 0777
-- name: Verifica se pasta pcmanfm já existe
-  stat:
-     path: /home/pi/.config/pcmanfm/LXDE-pi
-  register: pcmanfm
-- name: Comando para criar a pasta pcmanfm
-  shell: 'cd /home/pi/.config/ && mkdir pcmanfm && cd pcmanfm && mkdir LXDE-pi'
-  when: not pcmanfm.stat.exists
+#- name: Verifica se pasta pcmanfm já existe
+#  stat:
+#     path: /home/pi/.config/pcmanfm/LXDE-pi
+#  register: pcmanfm
+#- name: Comando para criar a pasta pcmanfm
+#  shell: 'cd /home/pi/.config/ && mkdir pcmanfm && cd pcmanfm && mkdir LXDE-pi'
+#  when: not pcmanfm.stat.exists
 - name: Troca imagem de fundo e posiciona icones padrões do Desktop
   copy: 
-     src: files/headless/desktop-items-0.conf 
-     dest: /home/pi/.config/pcmanfm/LXDE-pi
+     src: files/pcmanfm 
+     dest: /home/pi/.config/
      owner: pi
      group: pi
-     mode: 0777
+     mode: 0700
 - name: Personaliza barra superior
   copy: 
      src: files/panel 
