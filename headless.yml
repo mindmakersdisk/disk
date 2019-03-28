@@ -26,6 +26,7 @@
     - include: tasks/packages-uninstall-headless.yml
     - include: tasks/hide-games.yml
     - include: tasks/install-extension.yml
+    - include: tasks/apt-get.yml
  # Copia as notas de liberação e o atalho com nome da versão atualizados
     - include: tasks/final-version-copies-pt.yml
       when: not p.stat.exists
