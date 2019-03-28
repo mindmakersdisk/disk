@@ -18,9 +18,9 @@ Obs.: O último empacotamento de arquivo do Raspbian homologado pela Mind Makers
 
 2.2. Copiar a imagem do SO baixada para o cartão SD formatado, utilizando um utilitário de cópia de imagens de disco como o "Win32 Disk Imager".
 
-- 2.2.1. Selecionar o arquivo baixado em 2.1 no computador central;
-- 2.2.2. Selecionar o drive correto de destino no campo "Device"; 
-- 2.2.3. Clicar em "Write". 
+    2.2.1. Selecionar o arquivo baixado em 2.1 no computador central;
+    2.2.2. Selecionar o drive correto de destino no campo "Device"; 
+    2.2.3. Clicar em "Write". 
 
 2.3. Configurar o SO copiado. 
 
@@ -28,13 +28,13 @@ Obs.: O último empacotamento de arquivo do Raspbian homologado pela Mind Makers
 
     2.3.2. Seguir o tutorial de configuração, selecionando o país "Brazil", o Timezone apropriado e o idioma "Brazilian Portuguese". Para escolas que desejem manter o Desktop em inglês (ex.: escolas bilíngues), selecionar um país de língua inglesa, porém preservando o Timezone do Brazil. 
 
-  2.3.3. Informar uma nova senha para o usuário "pi", lembrando de anotá-la para não correr o risco de esquecer. Obs.: Este usuário e senha não serão utilizado no dia a dia, mas alterar a senha padrão pode evitar modificações indevidas de algumas configurações por parte de alunos, por exemplo. 
+    2.3.3. Informar uma nova senha para o usuário "pi", lembrando de anotá-la para não correr o risco de esquecer. Obs.: Este usuário e senha não serão utilizado no dia a dia, mas alterar a senha padrão pode evitar modificações indevidas de algumas configurações por parte de alunos, por exemplo. 
 
-  2.3.4. Configurar a conexão para acesso à Internet via WiFi e/ou cabo de rede conforme solicitado.
+    2.3.4. Configurar a conexão para acesso à Internet via WiFi e/ou cabo de rede conforme solicitado.
 
-  2.3.5. Na opção "Update Software" clicar em "Skip" para evitar uma atualização desnecessária. Alguns softwares serão removidos e os que precisam ser atualizados o serão, nos próximos passos, via Ansible. 
+    2.3.5. Na opção "Update Software" clicar em "Skip" para evitar uma atualização desnecessária. Alguns softwares serão removidos e os que precisam ser atualizados o serão, nos próximos passos, via Ansible. 
 
-  2.3.6. Reinicie clicando em Reboot.
+    2.3.6. Reinicie clicando em Reboot.
 
 _**Como verificar sucesso dessa etapa?**_ 
 - _Conferir se o Raspberry PI inicia com a interface gráfica (chamada LXDE)_
