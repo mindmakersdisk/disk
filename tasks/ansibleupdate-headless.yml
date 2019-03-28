@@ -14,5 +14,8 @@
      mode: 0444
 - name: Update repositories cache and install "ansible" package
   apt:
-    name: ansible
     update_cache: yes
+- name: Update repositories cache and install "ansible" package
+  apt:
+    name: ansible
+ 
