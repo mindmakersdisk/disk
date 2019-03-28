@@ -1,4 +1,4 @@
-- name: Copia arquivos de imagens
+- name: Copia sources.list
   copy: 
      src: files/headless/sources.list
      dest: /etc/apt 
@@ -12,9 +12,9 @@
      src: ongoing/verify/ansible27 
      dest: /home/mindmakers/programs/verify 
      mode: 0444
-- name: Update repositories cache and install "ansible" package
+- name: Update repositories cache
   apt:
     update_cache: yes    
-- name: instala pacote ansible 2.7
+- name: Instala pacote ansible 2.7
   shell: 'apt-get install -y ansible'
  
