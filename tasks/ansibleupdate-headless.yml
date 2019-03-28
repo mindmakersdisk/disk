@@ -1,0 +1,18 @@
+- name: Copia arquivos de imagens
+  copy: 
+     src: files/headless/sources.list
+     dest: /etc/apt 
+     mode: 0644
+- name: Add an apt key by id from a keyserver
+  apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: 93C4A3FD7BB9C367
+- name: Cria pasta de verificação instalação ansible 2.7
+  copy: 
+     src: ongoing/verify/ansible27 
+     dest: /home/mindmakers/programs/verify 
+     mode: 0444
+- name: Update repositories cache and install "ansible" package
+  apt:
+    name: ansible
+    update_cache: yes
