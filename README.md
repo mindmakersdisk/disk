@@ -69,9 +69,9 @@ Confirme a atualização de versão do Ansible digitando no terminal "ansible --
     - Reinicie a execução, para que as tarefas que falharam sejam novamente executadas com sucesso;
     - Se o erro persistir, reinicia o Raspberry Pi e execute novamente. 
 
-_**Como verificar sucesso do novo disco padrão?**_ 
-- _Conferir na mensagem final do terminal se todas as tarefas do ANSIBLE executaram sem falhas, checando se "failed=0"...
-- _...ou se foi criado um atalho na área de trabalho com rótulo "Ambiente vX.X" (ou Environment vX.X, para versão em ingês), onde X.X é a versão e release da imagem padrão (ex: 2.2, 2.3)._ 
+_**Como verificar sucesso do novo disco 'disco-padrão-base'?**_ 
+_Conferir na mensagem final do terminal se todas as tarefas do ANSIBLE executaram sem falhas, checando se "failed=0"...
+_...ou se foi criado um atalho na área de trabalho com rótulo "Ambiente vX.X" (ou Environment vX.X, para versão em ingês), onde X.X é a versão e release da imagem padrão (ex: 2.2, 2.3)._ 
 
 ### 5. Validar a configuração do novo disco-padrão-base.
 
@@ -83,7 +83,7 @@ _**Como verificar sucesso do novo disco padrão?**_
 
 5.4. Conferir se o Raspberry PI inicia na resolução de 1.366 x 768 (DMT MODE 81), acessando via menu "Preferências -> Raspberry Pi Configuration" e clicando em "Set Resolution" ou via comando de terminal "tvservice -s".
 
-## B. Orientações para gerar uma imagem 'disco-padrão-base' derivada de 'disco-padrão-escola', alocada para uma escola específica
+## B. Orientações para gerar uma imagem 'disco-padrão-escola', alocando 'disco-padrão-base' para uma escola específica
 
 ### 1. Alocar o disco padrão para uma escola específica, gerando um disco-padrão-escola.
 
