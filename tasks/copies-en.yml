@@ -10,7 +10,7 @@
 - name: Copia atalho mindmakers.desktop
   copy: 
      src: files/mindmakers.desktop
-     dest: /home/mindmakers/shells
+     dest: /home/pi/Desktop/mindmakers.desktop
      mode: 0755
   when: not mmdesk.stat.exists
   
