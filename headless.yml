@@ -20,7 +20,7 @@
       when: not p.stat.exists
     - include: tasks/copies-en-headless.yml
       when: p.stat.exists
-#    - include: tasks/tightvnc.yml
+    - include: tasks/tightvnc.yml
     - include: tasks/copies-headless.yml
     - include: tasks/packages.yml
     - include: tasks/packages-uninstall-headless.yml
