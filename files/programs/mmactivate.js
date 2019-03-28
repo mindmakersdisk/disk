@@ -389,25 +389,27 @@ function registraAtivosEscolaPlataforma(resposta) {
         );
         
 
-  /* Registra Estação somente se está ativando para uma escola informada.
+  // Registra Estação somente se está ativando para uma escola informada.
      if (escolaid!=null && escolaid!='') {
   
         request({url: 'https://mindmakers.cc/api/Escolas/estacao/publico',
             method: 'POST',
-            json: {'username':resposta.login,'password':resposta.senha, 'computadorSerial':pi_identificado,
-                            'discoSerial':sd_identificado, 'alocadoescola':escolaid, 
-                           'versaoImagemDisco':versaoImagemDisco}},                 
+            json: {'username':resposta.login,'password':resposta.senha, 'computadorserial':pi_identificado,
+                            'discoserial':sd_identificado, 'alocadoescola':escolaid, 
+                           'versaoimagemdisco':versaoImagemDisco}},                 
             function(error, response, body){
                 if (!body.success) {
                   console.log('Erro ao registrar Estacao: '+body.err);
+                  console.log('');
+                  process.exit(1);
                 } else {
-                    console.log('Estação registrada com sucesso! ');
+                    console.log('Estação registrada com sucesso!');
                 }
             }
         );      
         
       }  
-    */  
+      
         
 
 }
