@@ -12,6 +12,12 @@
      dest: /home/mindmakers/shells
      mode: 0755
   when: not sphero.stat.exists
+- name: Copia Shell Sphero
+  copy: 
+     src: files/sphero-connect.sh
+     dest: /home/mindmakers/shells
+     mode: 0755
+  when: not sphero.stat.exists
 - name: Copia a imagem tema de fundo
   copy: src=files/fundo.png dest=/home/mindmakers mode=0777
 - name: Verifica se pasta pcmanfm já existe
