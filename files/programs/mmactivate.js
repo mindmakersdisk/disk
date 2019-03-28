@@ -671,7 +671,7 @@ function obtemVersaoImagemDisco() {
   }
    
    // obtém versão
-   var inicial = atalho_mm_conteudo.indexOf('Name=')+5;
+   var inicial = atalho_mm_conteudo.indexOf('Name[pt_BR]=')+12;
     
    var final = atalho_mm_conteudo.indexOf('Type')-1;
    
