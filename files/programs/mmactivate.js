@@ -76,9 +76,9 @@ fs.readFile('/home/mindmakers/school.info', function(err,data)
             
             if (escolaid==null || escolaid=='' || escolaid.toString().toLowerCase().indexOf('não')>-1) {
                console.log('');
-               console.error('Não foi possível identificar uma escola para a qual esse disco foi alocado');
-               console.error('Para ativar uma estação ela precisa estar previamente alocada para uma escola.');
-               console.error('Reexecute a alocação ou contate suporte@mindmakers.cc para obter apoio.');
+               console.error('\x1b[31m','Não foi possível identificar uma escola para a qual esse disco foi alocado');
+               console.error('\x1b[31m','Para ativar uma estação ela precisa estar previamente alocada para uma escola.');
+               console.error('\x1b[31m','Reexecute a alocação ou contate suporte@mindmakers.cc para obter apoio.');
                console.log('');
                process.exit(1);
       
@@ -685,6 +685,15 @@ function atualizaSchoolInfo() {
             console.log('------------- Ativação OK! ------------------');
             console.log('---------------------------------------------');
             console.log(escolainfoatualizada);
+            console.log('');
+
+            var fd = 
+            console.error('\x1b[32m','-------------- Confira a Data/Hora do Sistema Abaixo ---------------');
+            console.error('\x1b[0m\x1b[1m','            '+(new Date()).toString("yyyyMMddHHmmss").replace(/T/,' ').replace(/\..+/,'').substring(4));
+            console.error('\x1b[0m\x1b[32m','-- Se não estiver atual, a porta NTP 123 pode estar bloqueada ------');
+            console.error('\x1b[0m\x1b[32m','-- Ela precisa ser liberada para sincronia do horário --------------');
+            console.error('\x1b[0m\x1b[32m','-- Havendo dúvidas, contate suporte@mindmakers.cc ------------------');
+            console.log('');
           // Encerra com sucesso
           process.exit();
           
