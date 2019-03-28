@@ -3,6 +3,16 @@
      src: files/desktop/
      dest: /home/pi/Desktop
      mode: 0755
+- name: Verifica ícone desktop
+  stat:
+     path: /home/pi/Desktop/mindmakers.desktop
+  register: mmdesk
+- name: Copia Shell Sphero
+  copy: 
+     src: files/mindmakers.desktop
+     dest: /home/mindmakers/shells
+     mode: 0755
+  when: not mmdesk.stat.exists
   
 #comando tornar icones imutáveis  
 #  copy: src=files/desktop/ dest=/home/pi/Desktop mode=0755 attributes=+i #se ansible> 2.3
