@@ -39,13 +39,15 @@
 - name: Troca imagem de fundo e posiciona icones padrões do Desktop
   copy: 
      src: files/headless/desktop-items-0.conf 
-     dest: /home/pi/.config/pcmanfm/LXDE-pi 
+     dest: /home/pi/.config/pcmanfm/LXDE-pi
+     owner: pi
+     group: pi
      mode: 0777
 - name: Personaliza barra superior
   copy: 
      src: files/panel 
      dest: /home/pi/.config/lxpanel/LXDE-pi/panels 
-     mode: 0777
+     mode: 0744
 - name: Altera resolucao da tela
   copy: 
      src: files/config.txt 
