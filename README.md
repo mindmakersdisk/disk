@@ -38,9 +38,9 @@ Obs.: O último empacotamento de arquivo do Raspbian homologado pela Mind Makers
 
 > 2.3.6. Reinicie clicando em Reboot.
 
-    _**Como verificar sucesso dessa etapa?**_ 
-    - _Conferir se o Raspberry PI inicia com a interface gráfica (chamada LXDE)_
-    - _Conferir se os rótulos e menu estão no idioma correto, em inglês ou português, conforme o interesse específico_
+_**Como verificar sucesso dessa etapa?**_ 
+- _Conferir se o Raspberry PI inicia com a interface gráfica (chamada LXDE)_
+- _Conferir se os rótulos e menu estão no idioma correto, em inglês ou português, conforme o interesse específico_
 - _Conferir se o Timezone está correto, abrindo o terminal e digitando "date", confirmando que a hora está correta para o Brasil_
 - _Conferir se mouse, teclado e monitor estão corretamente configurados. Importante: não é relevante que o monitor siga a resolução padrão neste momento, pois ela será configurada automaticamente em passos posteriores. Confira apenas que a imagem é apresentada_
 - _Conferir a versão corrente do SO digitando o comando "lsb_release -a" em uma janela de terminal, conferindo se Release é 9.4. Obs.: essa versão será atualizada em passos posteriores via Ansible_
@@ -65,9 +65,9 @@ Confirme a atualização de versão do Ansible digitando no terminal "ansible --
 
 4.3. Executar novamente a rotina de atualização automática, agora usando a versão atualizada do Ansible, repetindo o mesmo comando do item 4.2.
 
-DICAS IMPORTANTES - Podem ocorrer falhas esporádicas por casuísmos durante a execução da rotina tais como queda ou lentidão excessiva de conexão durante alguma atualização. Essas falhas sempre geram um resultado "failed=1". Nestes casos:
-- Reinicie a execução, para que as tarefas que falharam sejam novamente executadas com sucesso;
-- Se o erro persistir, reinicia o Raspberry Pi e execute novamente. 
+    DICAS IMPORTANTES => Podem ocorrer falhas esporádicas por casuísmos durante a execução da rotina tais como queda ou lentidão excessiva de conexão durante alguma atualização. Essas falhas sempre geram um resultado "failed=1". Nestes casos:
+    - Reinicie a execução, para que as tarefas que falharam sejam novamente executadas com sucesso;
+    - Se o erro persistir, reinicia o Raspberry Pi e execute novamente. 
 
 _**Como verificar sucesso do novo disco padrão?**_ 
 - _Conferir na mensagem final do terminal se todas as tarefas do ANSIBLE executaram sem falhas, checando se "failed=0"...
@@ -102,17 +102,23 @@ Utilizar alguma técnica para copiar imagens de discos SD, como a utilizada no p
 
 2.1. Copiar a imagem do disco padrão gerado no passo B.1 para um computador central utilizado para intermediar as cópias, com espaço em disco suficiente, utilizando o "Win32 Disk Imager".
 
-2.1.1. Selecionar o drive correto em "Device"; 
-2.1.2. No campo Image File, selecionar um diretório de destino e dar um nome como "imagem_padrao_escola.img"; 
-2.1.3. Clicar em Read.
+> 2.1.1. Selecionar o drive correto em "Device"; 
+
+> 2.1.2. No campo Image File, selecionar um diretório de destino e dar um nome como "imagem_padrao_escola.img"; 
+
+> 2.1.3. Clicar em Read.
 
 2.2. Copiar a imagem padrão do computador central para os novos cartões SD.
 
-2.2.1. Formatar um novo cartão SD conforme instruções em A.1;
-2.2.2. Incluir o cartão no slot do computador central;
-2.2.3. No "Win32 Disk Manager", selecionar o arquivo "imagem_padrao_escola.img" (ou nome definido no passo anterior);
-2.2.4. Selecionar o drive correto de destino no campo "Device"; 
-2.2.5. Clicar em "Write".
+> 2.2.1. Formatar um novo cartão SD conforme instruções em A.1;
+
+> 2.2.2. Incluir o cartão no slot do computador central;
+
+> 2.2.3. No "Win32 Disk Manager", selecionar o arquivo "imagem_padrao_escola.img" (ou nome definido no passo anterior);
+
+> 2.2.4. Selecionar o drive correto de destino no campo "Device"; 
+
+> 2.2.5. Clicar em "Write".
 
 2.3. Repetir o processo acima, para o número de estações Desktop da escola.
 
