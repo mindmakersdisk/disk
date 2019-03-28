@@ -6,12 +6,12 @@
       changed_when: False
 
   tasks:
-#    - name: Verifica versão do ansible.
-#      stat:
-#        path: /home/mindmakers/programs/verify/ansible27
-#      register: ansb
-#    - include: tasks/ansibleupdate.yml
-#      when: not ansb.stat.exists
+    - name: Verifica versão do ansible.
+      stat:
+        path: /home/mindmakers/programs/verify/ansible27
+      register: ansb
+    - include: tasks/ansibleupdate.yml
+      when: not ansb.stat.exists
     - name: verifica se diretorio Desktop existe.
       stat:
         path: /home/pi/Desktop
@@ -20,7 +20,7 @@
       when: not p.stat.exists
     - include: tasks/copies-en-headless.yml
       when: p.stat.exists
-    - include: tasks/tightvnc.yml
+#    - include: tasks/tightvnc.yml
     - include: tasks/copies-headless.yml
     - include: tasks/packages.yml
     - include: tasks/packages-uninstall-headless.yml
