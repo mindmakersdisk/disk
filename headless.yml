@@ -10,7 +10,7 @@
       stat:
         path: /home/mindmakers/programs/verify/ansible27
       register: ansb
-    - include: tasks/ansibleupdate.yml
+    - include: tasks/ansibleupdate-headless.yml
       when: not ansb.stat.exists
     - name: verifica se diretorio Desktop existe.
       stat:
