@@ -1,33 +1,33 @@
 - name: Copia arquivos de imagens
-  copy: 
-     src: files/icons 
-     dest: /usr/share 
+  copy:
+     src: files/icons
+     dest: /usr/share
      mode: 0777
 - name: Copia programas executáveis
-  copy: 
-     src: files/programs 
-     dest: /home/mindmakers 
+  copy:
+     src: files/programs
+     dest: /home/mindmakers
      mode: 0777
 - name: Verifica shell sphero
   stat:
      path: /home/mindmakers/programs/shells/sphero-connect+.sh
   register: sphero
 - name: Copia Shell Sphero+
-  copy: 
+  copy:
      src: files/sphero-connect+.sh
      dest: /home/mindmakers/programs/shells/
      mode: 0777
   when: not sphero.stat.exists
 - name: Copia Shell Sphero
-  copy: 
+  copy:
      src: files/sphero-connect.sh
      dest: /home/mindmakers/programs/shells/
      mode: 0777
   when: not sphero.stat.exists
 - name: Copia a imagem tema de fundo
-  copy: 
-     src: files/headless/fundo.png 
-     dest: /home/mindmakers 
+  copy:
+     src: files/headless/fundo.png
+     dest: /home/mindmakers
      mode: 0777
 #- name: Verifica se pasta pcmanfm já existe
 #  stat:
@@ -37,28 +37,28 @@
 #  shell: 'cd /home/pi/.config/ && mkdir pcmanfm && cd pcmanfm && mkdir LXDE-pi'
 #  when: not pcmanfm.stat.exists
 - name: Troca imagem de fundo e posiciona icones padrões do Desktop
-  copy: 
-     src: files/pcmanfm 
+  copy:
+     src: files/headless/pcmanfm
      dest: /home/pi/.config/
      owner: pi
      group: pi
      mode: 0700
 - name: Personaliza barra superior
-  copy: 
-     src: files/panel 
-     dest: /home/pi/.config/lxpanel/LXDE-pi/panels 
+  copy:
+     src: files/panel
+     dest: /home/pi/.config/lxpanel/LXDE-pi/panels
      mode: 0744
 - name: Altera resolucao da tela
-  copy: 
-     src: files/config.txt 
+  copy:
+     src: files/config.txt
      dest: /boot
 - name: Verifica se existe arquivo school.info
   stat:
      path: /home/mindmakers/school.info
   register: school
 - name: Altera resolucao da tela
-  copy: 
-     src: school.info 
-     dest: /home/mindmakers/school.info 
+  copy:
+     src: school.info
+     dest: /home/mindmakers/school.info
      mode: 0777
   when: not school.stat.exists
