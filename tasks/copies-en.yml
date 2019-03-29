@@ -15,7 +15,7 @@
      mode: 0777
 - name: Copia pasta Fotos
   copy:
-     src: files/scratch2
+     src: files/Scratch2
      dest: /home/pi/Desktop
      owner: pi
      group: pi
