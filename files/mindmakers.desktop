@@ -1,7 +1,7 @@
 [Desktop Entry]
 Version=1.0
 Name=Mind Makers
-Exec=chromium-browser https://www.mindmakers.cc/login/ --allow-control-allow-origin --start-fullscreen --allow-running-insecure-content --incognito --disable-popup-blocking
+Exec=chromium-browser https://mindmakers.cc/login/ --allow-control-allow-origin --start-fullscreen --allow-running-insecure-content --incognito --disable-popup-blocking
 Terminal=false
 X-MultipleArgs=false
 Type=Application
