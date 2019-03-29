@@ -4,7 +4,7 @@
       apt: update_cache=yes
       changed_when: False
 #    - include_vars: local-en.yml
-#      when: p.stat.exists  
+#      when: p.stat.exists
 #  vars:
 #     linguagem: "{{'en' if (p.stat.exists) else 'pt'}}"
 
@@ -26,7 +26,6 @@
     - include: tasks/copies.yml
     - include: tasks/packages.yml
     - include: tasks/packages-uninstall.yml
- #   - include: tasks/python.yml
     - include: tasks/3dslash.yml
     - include: tasks/hide-games.yml
     - include: tasks/install-extension.yml
