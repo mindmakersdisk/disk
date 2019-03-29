@@ -2,6 +2,9 @@
   copy: 
      src: files/desktop/
      dest: /home/pi/Desktop
+     owner: pi
+     group: pi
+     attributes: +i
      mode: 0755
 - name: Verifica ícone desktop
   stat:
