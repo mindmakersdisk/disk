@@ -68,7 +68,8 @@ Confirme a atualização de versão do Ansible digitando no terminal "ansible --
 
 4.3. Executar novamente a rotina de atualização automática, agora usando a versão atualizada do Ansible, repetindo o mesmo comando do item 4.2.
 
-    DICAS IMPORTANTES => Podem ocorrer falhas esporádicas por casuísmos durante a execução da rotina tais como queda ou lentidão excessiva de conexão durante alguma atualização. Essas falhas sempre geram um resultado "failed=1". Nestes casos:
+    DICAS IMPORTANTES => Podem ocorrer falhas esporádicas por casuísmos durante a execução da rotina tais como queda ou lentidão excessiva de conexão durante alguma atualização. 
+    Essas falhas sempre geram um resultado "failed=1". Nestes casos:
     - Reinicie a execução, para que as tarefas que falharam sejam novamente executadas com sucesso;
     - Se o erro persistir, reinicia o Raspberry Pi e execute novamente. 
 
