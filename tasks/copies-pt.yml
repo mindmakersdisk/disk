@@ -1,15 +1,20 @@
 - name: Copia demais arquivos de atalho para a Área de Trabalho - SO em português
-  copy: 
+  copy:
      src: files/desktop/
      dest: "/home/pi/Área de Trabalho"
+     owner: pi
+     group: pi
+     attributes: +i
      mode: 0755
 - name: Verifica ícone desktop
   stat:
      path: "/home/pi/Área de Trabalho/mindmakers.desktop"
   register: mmdesk
 - name: Copia atalho mindmakers.desktop
-  copy: 
+  copy:
      src: files/mindmakers.desktop
      dest: "/home/pi/Área de Trabalho"
+     owner: pi
+     group: pi
      mode: 0755
   when: not mmdesk.stat.exists

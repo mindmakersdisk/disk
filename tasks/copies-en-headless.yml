@@ -1,12 +1,15 @@
 - name: Copia demais arquivos de atalho para o Desktop
-  copy: 
+  copy:
      src: files/headless/desktop/
      dest: /home/pi/Desktop
+     owner: pi
+     group: pi
+     attributes: +i
      mode: 0755
-  
-#comando tornar icones imutáveis  
+
+#comando tornar icones imutáveis
 #  copy: src=files/desktop/ dest=/home/pi/Desktop mode=0755 attributes=+i #se ansible> 2.3
 
 #se ansible < 2.3
-#- name: Torna icones do Desktop imutáveis   
+#- name: Torna icones do Desktop imutáveis
 #  shell: 'cd /home/pi/Desktop && sudo chattr +i 3DSlash.desktop makeblock.desktop releasenotes.desktop ativacao.desktop mblock.desktop scratch2.desktop capturafoto.desktop mindmakers.desktop sphero_desconecta.desktop codeorg.desktop mmblockly.desktop sphero.desktop gifpal.desktop pixlr.desktop update.desktop'

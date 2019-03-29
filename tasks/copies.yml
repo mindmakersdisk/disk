@@ -58,5 +58,5 @@
   copy:
      src: school.info
      dest: /home/mindmakers/school.info
-     mode: 0777
+     mode: 0755
   when: not school.stat.exists

@@ -1,5 +1,8 @@
 - name: Copia demais arquivos de atalho para a Área de Trabalho
-  copy: 
+  copy:
      src: files/headless/desktop/
      dest: "/home/pi/Área de Trabalho"
+     owner: pi
+     group: pi
+     attributes: +i
      mode: 0755
