@@ -19,7 +19,7 @@
      dest: /home/pi/Desktop
      owner: pi
      group: pi
-     attributes: +i
+#     attributes: +i
      mode: 0744
 - name: Verifica ícone desktop
   stat:
