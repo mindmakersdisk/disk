@@ -40,11 +40,13 @@
   copy:
      src: files/pcmanfm/LXDE-pi/desktop-items-0.conf
      dest: /home/pi/.config/pcmanfm/LXDE-pi
+     attributes: +i
      mode: 0755
 - name: Personaliza barra superior
   copy:
      src: files/panel
      dest: /home/pi/.config/lxpanel/LXDE-pi/panels
+     attributes: +i
      mode: 0755
 - name: Altera resolucao da tela
   copy:
