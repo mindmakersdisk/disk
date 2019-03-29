@@ -98,11 +98,11 @@ _**Como verificar sucesso do novo disco 'disco-padrão-base'?**_
 1.3. Executar a linha de comando "sudo nodejs mmallocate.js", informar seu usuário e senha na plataforma da Mind Makers e aguardar pela mensagem de sucesso, conferindo se o nome correto da escola é exibido.
 
 _**Como verificar sucesso dessa etapa?**_ 
-- _Para dupla-conferência, clicar no atalho da Área de Trabalho com rótulo "Ativação" e confirmar que o código e nome da escola são exibidos no registro de "Ativação de Desktop Mind Makers" que aparece no início da rotina (cancelar o restante da ativação por hora, com control+C)_
+- _Para dupla-conferência, clicar no atalho da Área de Trabalho com rótulo "Ativar" e confirmar que o código e nome da escola são exibidos no registro de "Ativação de Desktop Mind Makers" que aparece no início da rotina (cancelar o restante da ativação por hora, com control+C)_
 
 ### 2. Replicar a imagem do disco-padrão-escola para todas as estações
 
-Utilizar alguma técnica para copiar imagens de discos SD, como a utilizada no passo XX, através do programa "Win32 Disk Imager", no caso de SO Windows, exemplificado abaixo:
+Utilizar alguma técnica para copiar imagens de discos SD, como a utilizada no passo (A) 2.2, através do programa "Win32 Disk Imager", no caso de SO Windows, exemplificado abaixo:
 
 2.1. Copiar a imagem do disco padrão gerado no passo B.1 para um computador central utilizado para intermediar as cópias, com espaço em disco suficiente, utilizando o "Win32 Disk Imager".
 
@@ -137,13 +137,14 @@ _**Como verificar sucesso das imagens de disco da escola?**_
 
 3.3. Se desejar configurar um robô Sphero SPRK+, basta deixá-lo próximo (menos de 20cm) do Pi, antes de ativar.
 
-3.4. Clicar no atalho Ativação, informando seu login e senha da plataforma Mind Makers.
+3.4. Clicar no atalho 'Ativar', informando seu login e senha da plataforma Mind Makers.
 
 3.5. Se desejar utilizar o Login Simplificado, informe esta opção durante a ativação. 
 
 _**Como verificar o sucesso da Ativação?**_ 
 - _Conferir a mensagem de ativação OK_
-- _Testar a conexão do Sphero, se ele foi configurado, clicando no atalho 'Conexão Sphero' e conferindo se a conexão é bem sucedida_- _Testar o Login Simplificado, se ele foi configurado, clicando no atalho 'Mind Makers' e conferindo se a página _
+- _Testar a conexão do Sphero, se ele foi configurado, clicando no atalho 'Conexão Sphero' e conferindo se a conexão é bem sucedida_
+- _Testar o Login Simplificado, se ele foi configurado corretamente, clicando no atalho 'Mind Makers' e conferindo se a página exibe fotos dos alunos para seleção, no caso de haver uma turma em andamento com aulas recentes (importante: se não houver uma turma ou a última aula finalizou há mais de 24 horas, a página de login normal é exibida)_
 
 ## C. Orientações para atualizar versões de imagens de disco já configuradas.
 
