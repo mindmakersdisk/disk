@@ -6,6 +6,21 @@
      group: pi
      attributes: +i
      mode: 0755
+- name: Copia pasta Fotos
+  copy:
+     src: files/Fotos
+     dest: "/home/pi/Área de Trabalho"
+     owner: pi
+     group: pi
+     mode: 0777
+- name: Copia pasta Fotos
+  copy:
+     src: files/scratch2
+     dest: "/home/pi/Área de Trabalho"
+     owner: pi
+     group: pi
+     attributes: +i
+     mode: 0744
 - name: Verifica ícone desktop
   stat:
      path: "/home/pi/Área de Trabalho/mindmakers.desktop"
