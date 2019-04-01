@@ -25,7 +25,7 @@
     - include: tasks/3dslash.yml
     - include: tasks/hide-games.yml
     - include: tasks/install-extension.yml
-    - include: tasks/mblock.yml
+#    - include: tasks/mblock.yml
  # Copia as notas de liberação e o atalho com nome da versão atualizados
     - include: tasks/final-version-copies-pt.yml
       when: not p.stat.exists
