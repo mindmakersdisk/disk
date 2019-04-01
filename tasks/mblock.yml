@@ -1,17 +1,22 @@
-- name: Copia pasta mbot
-  copy:
-     src: files/mbot
-     dest: /home/mindmakers
-     mode: 0755
+- name: cria a pasta mbot
+   file:
+    path: /home/mindmakers/mbot
+    state: directory
+    mode: 0744
+#- name: Copia pasta mbot
+#  copy:
+#     src: files/mbot
+#     dest: /home/mindmakers
+#     mode: 0755
 #  when: not mbot.stat.exists
 #- name: Download arquivo instalacao mbot
 #  get_url:
-#    url: https://drive.google.com/uc?export=download&confirm=SthN&id=1Rg00Ad1-x13TNmtcIbYAjM9AkZk-uc0f
+#    url: http://download.makeblock.com/mBlock_RaspberryPI.zip
 #    dest: /home/mindmakers/mbot
 #    mode: 0744
 #- name: Extract mbot.zip
 #  unarchive:
-#    src: /home/mindmakers/mbot/
+#    src: /home/mindmakers/mbot/mBlock_RaspberryPi.zip
 #    dest: /home/mindmakers/mbot
 #    remote_src: yes
 - name: Verifica se mbot já existe
