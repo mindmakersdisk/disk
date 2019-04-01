@@ -4,16 +4,16 @@
      dest: /home/mindmakers
      mode: 0755
 #  when: not mbot.stat.exists
-#- name: Download arquivo instalacao mbot
-#  get_url:
-#    url: https://drive.google.com/open?id=1Rg00Ad1-x13TNmtcIbYAjM9AkZk-uc0f
-#    dest: /home/mindmakers/mbot
-#    mode: 0744
-#- name: Extract mbot.zit
-#  unarchive:
-#    src: /home/mindmakers/mbot/
-#    dest: /home/mindmakers/mbot
-#    remote_src: yes
+- name: Download arquivo instalacao mbot
+  get_url:
+    url: https://drive.google.com/uc?export=download&confirm=SthN&id=1Rg00Ad1-x13TNmtcIbYAjM9AkZk-uc0f
+    dest: /home/mindmakers/mbot
+    mode: 0744
+- name: Extract mbot.zit
+  unarchive:
+    src: /home/mindmakers/mbot/
+    dest: /home/mindmakers/mbot
+    remote_src: yes
 - name: Verifica se mbot já existe
   stat:
      path: /home/mindmakers/mbot
