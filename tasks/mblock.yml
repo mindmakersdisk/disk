@@ -3,16 +3,23 @@
 #    url: http://example.com/path/file.conf
 #    dest: /etc/foo.conf
 #    mode: 0440
+- name: Verifica se 3DSlash já existe
+  stat:
+     path: /home/mindmakers/mbot
+  register: mbot
 - name: Copia pasta mbot
   copy:
      src: files/files/mbot
      dest: /home/mindmakers
      mode: 0755
+  when: not mbot.stat.exists
 - name: Unarchive a file that needs to be downloaded (added in 2.0)
   unarchive:
     src: https://drive.google.com/uc?export=download&confirm=9PCh&id=1Rg00Ad1-x13TNmtcIbYAjM9AkZk-uc0f
     dest: /home/mindmakers/mbot
     remote_src: yes
+  when: not mbot.stat.exists
 - name: Install packages based on package.json.
   npm:
     path: /home/mindmakers/mbot/mBlock_RaspberryPI/desktop-app
+  when: not mbot.stat.exists
