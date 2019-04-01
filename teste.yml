@@ -2,8 +2,10 @@
 #  vars: 
 #    - ver: 6.9.0
   tasks: 
-  - name: instalar headless
-    include: tasks/headless.yml
+   - name: instalar mblock
+     include: tasks/mblock.yml
+#  - name: instalar headless
+#    include: tasks/headless.yml
   
 #  - name: Verifica Versao npm
 #    shell: "npm --version"
