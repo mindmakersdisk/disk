@@ -7,29 +7,24 @@
     path: /home/mindmakers/mbot
     state: directory
     mode: 0744
-#- name: Copia pasta mbot
-#  copy:
-#     src: files/mbot
-#     dest: /home/mindmakers
-#     mode: 0755
-#  when: not mbot.stat.exists
-- name: Download arquivo instalacao mbot
-  get_url:
-    url: http://download.makeblock.com/mBlock_RaspberryPI.zip
-    dest: /home/mindmakers/mbot
-    mode: 0744
-- name: Extract mbot.zip
-  unarchive:
-    src: /home/mindmakers/mbot/mBlock_RaspberryPi.zip
-    dest: /home/mindmakers/mbot
-    remote_src: yes
-#- name: Unarchive a file that needs to be downloaded (added in 2.0)
+  when: not mbot.stat.exists
+#- name: Download arquivo instalacao mbot
+#  get_url:
+#    url: http://download.makeblock.com/mBlock_RaspberryPI.zip
+#    dest: /home/mindmakers/mbot
+#    mode: 0744
+#- name: Extract mbot.zip
 #  unarchive:
-#    src: http://download.makeblock.com/mBlock_RaspberryPI.zip
+#    src: /home/mindmakers/mbot/mBlock_RaspberryPi.zip
 #    dest: /home/mindmakers/mbot
 #    remote_src: yes
-#  when: not mbot.stat.exists
+- name: Unarchive a file that needs to be downloaded (added in 2.0)
+  unarchive:
+    src: http://download.makeblock.com/mBlock_RaspberryPI.zip
+    dest: /home/mindmakers/mbot
+    remote_src: yes
+  when: not mbot.stat.exists
 - name: Install packages based on package.json.
   npm:
     path: /home/mindmakers/mbot/mBlock_RaspberryPI/desktop-app
-#  when: not mbot.stat.exists
+  when: not mbot.stat.exists
