@@ -1,5 +1,5 @@
 - name: cria a pasta mbot
-   file:
+  file:
     path: /home/mindmakers/mbot
     state: directory
     mode: 0744
