@@ -3,13 +3,13 @@
 #    url: http://example.com/path/file.conf
 #    dest: /etc/foo.conf
 #    mode: 0440
-- name: Verifica se 3DSlash já existe
+- name: Verifica se mbot já existe
   stat:
      path: /home/mindmakers/mbot
   register: mbot
 - name: Copia pasta mbot
   copy:
-     src: files/files/mbot
+     src: files/mbot
      dest: /home/mindmakers
      mode: 0755
   when: not mbot.stat.exists
