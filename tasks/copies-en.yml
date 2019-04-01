@@ -1,3 +1,8 @@
+- file:
+    path: /home/pi/Desktop
+    state: directory
+    attributes: -i
+    recurse: yes
 - name: Copia demais arquivos de atalho para o Desktop
   copy:
      src: files/desktop/
