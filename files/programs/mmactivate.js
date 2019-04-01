@@ -313,7 +313,7 @@ function executaRegistros() {
       console.log('--- Todas as configurações de ativação já estão ok! ---');
       console.log('-------------------------------------------------------');
       console.log('');
-     
+      
       if (!existeAtalhoMindMakers()) {
           // Então é headless
           return;
@@ -401,8 +401,11 @@ function registraAtivosEscolaPlataforma(resposta) {
               json: {'username':resposta.login,'password':resposta.senha, 'tipo':'Raspberry','alocadoescola':escolaid, 
                            'chaveNatural':pi_identificado,'acao': 'registrar','observacao': 'ativação automática'}},    
             function(error, response, body){                
-                if (!body.success) {
-                  console.log('Erro ao registrar PI: '+body.err);
+                if (!body.success || error) {
+                  if (!body.success)
+                    console.log('Erro ao registrar PI: '+body.err);
+                  else
+                    console.log('Erro ao registrar PI: '+error);                  
                 } else {
                     totalAcessosPlataformaPendentes=totalAcessosPlataformaPendentes-1;
                     console.log('PI registrado com sucesso! ');
@@ -420,8 +423,12 @@ function registraAtivosEscolaPlataforma(resposta) {
                            'chaveNatural':sd_identificado,'acao': 'registrar',
               'observacao': 'ativação automática'}},                 
             function(error, response, body){
-                if (!body.success) {
-                  console.log('Erro ao registrar SD: '+body.err);
+                if (!body.success || error) {
+                    if (!body.sucess)
+                        console.log('Erro ao registrar SD: '+body.err);
+                    else
+                        console.log('Erro ao registrar SD: '+error);  
+
                 } else {
                     totalAcessosPlataformaPendentes=totalAcessosPlataformaPendentes-1;
                     console.log('Cartão SD registrado com sucesso! ');
@@ -439,8 +446,11 @@ function registraAtivosEscolaPlataforma(resposta) {
                             'discoserial':sd_identificado, 'alocadoescola':escolaid, 
                            'versaoimagemdisco':versaoImagemDisco}},                 
             function(error, response, body){
-                if (!body.success) {
-                  console.log('Erro ao registrar Estacao: '+body.err);
+                if (!body.success || error) {
+                  if (!body.sucess)
+                    console.log('Erro ao registrar Estacao: '+body.err);
+                  else
+                    console.log('Erro ao registrar Estacao: '+error);                    
                   console.log('');
                   process.exit(1);
                 } else {
@@ -482,8 +492,11 @@ function registraSpheroPlataforma(resposta) {
              //   console.log(response);
               //  console.log('BODY---------------------------');
               //  console.log(body);       
-                if (!body.success) {
-                  console.log('Erro ao registrar SPRK+: '+body.err);
+                if (!body.success || error) {
+                    if (!body.success)
+                      console.log('Erro ao registrar SPRK+: '+body.err);
+                    else
+                      console.log('Erro ao registrar SPRK+: '+error);
                 } else {
                     totalAcessosPlataformaPendentes=totalAcessosPlataformaPendentes-1;                 
                     console.log('SPRK+ registrado com sucesso! ');
