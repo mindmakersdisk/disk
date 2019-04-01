@@ -1,8 +1,13 @@
 #- name: Download foo.conf
 #  get_url:
-#    url: http://example.com/path/file.conf
-#    dest: /etc/foo.conf
-#    mode: 0440
+#    url: https://drive.google.com/uc?export=download&confirm=9PCh&id=1Rg00Ad1-x13TNmtcIbYAjM9AkZk-uc0f
+#    dest: /home/mindmakers/mbot
+#    mode: 0744
+#- name: Extract mbot.zit
+#  unarchive:
+#    src: /home/mindmakers/mbot/
+#    dest: /home/mindmakers/mbot
+#    remote_src: yes
 - name: Verifica se mbot já existe
   stat:
      path: /home/mindmakers/mbot
