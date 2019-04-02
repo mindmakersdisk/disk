@@ -5,13 +5,13 @@
       changed_when: False
 
   tasks:
-    - name: Verifica versão do ansible.
+    - name: Verificando versão do ansible.
       stat:
         path: /home/mindmakers/programs/verify/ansible27
       register: ansb
     - include: tasks/ansibleupdate.yml
       when: not ansb.stat.exists
-    - name: verifica se diretorio Desktop existe.
+    - name: Verificando se diretorio Desktop existe.
       stat:
         path: /home/pi/Desktop
       register: p

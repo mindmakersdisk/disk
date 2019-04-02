@@ -1,46 +1,46 @@
-- name: Copia arquivos de imagens
+- name: Copiando arquivos de imagens
   copy:
      src: files/icons
      dest: /usr/share
      mode: 0777
-- name: Copia programas executáveis
+- name: Copiando programas executáveis
   copy:
      src: files/programs
      dest: /home/mindmakers
      mode: 0755
-- name: Verifica shell sphero
+- name: Verificando shell sphero
   stat:
      path: /home/mindmakers/programs/shells/sphero-connect+.sh
   register: sphero
-- name: Copia Shell Sphero
+- name: Copiando Shell Sphero
   copy:
      src: files/sphero-connect+.sh
      dest: /home/mindmakers/programs/shells/
      mode: 0755
   when: not sphero.stat.exists
-- name: Copia Shell Sphero
+- name: Copiando Shell Sphero
   copy:
      src: files/sphero-connect.sh
      dest: /home/mindmakers/programs/shells/
      mode: 0755
   when: not sphero.stat.exists
-- name: Copia a imagem tema de fundo
+- name: Copiando a imagem tema de fundo
   copy:
      src: files/fundo.png
      dest: /home/mindmakers
      mode: 0755
-- name: Verifica se pasta pcmanfm já existe
+- name: Verificando se pasta pcmanfm já existe
   stat:
      path: /home/pi/.config/pcmanfm/LXDE-pi
   register: pcmanfm
-- name: Comando para criar a pasta pcmanfm
+- name: Comandondo para criar a pasta pcmanfm
   shell: 'cd /home/pi/.config/ && mkdir pcmanfm && cd pcmanfm && mkdir LXDE-pi'
   when: not pcmanfm.stat.exists
 - file:
     path: /home/pi/.config/pcmanfm/LXDE-pi/desktop-items-0.conf
     state: touch
     attributes: -i
-- name: Troca imagem de fundo e posiciona icones padrões do Desktop
+- name: Trocando imagem de fundo e posiciona icones padrões do Desktop
   copy:
      src: files/pcmanfm/LXDE-pi/desktop-items-0.conf
      dest: /home/pi/.config/pcmanfm/LXDE-pi
@@ -50,21 +50,21 @@
     path: /home/pi/.config/lxpanel/LXDE-pi/panels/panel
     state: touch
     attributes: -i
-- name: Personaliza barra superior
+- name: Personalizando barra superior
   copy:
      src: files/panel
      dest: /home/pi/.config/lxpanel/LXDE-pi/panels
      attributes: +i
      mode: 0755
-- name: Altera resolucao da tela
+- name: Alterando resolucao da tela
   copy:
      src: files/config.txt
      dest: /boot
-- name: Verifica se existe arquivo school.info
+- name: Verificando se existe arquivo school.info
   stat:
      path: /home/mindmakers/school.info
   register: school
-- name: Altera resolucao da tela
+- name: Alterando resolucao da tela
   copy:
      src: school.info
      dest: /home/mindmakers/school.info

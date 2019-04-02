@@ -4,7 +4,7 @@
     state: directory
     attributes: -i
     recurse: yes
-- name: Copia demais arquivos de atalho para o Desktop
+- name: Copiando demais atalhos para o Desktop
   copy:
      src: files/headless/desktop/
      dest: /home/pi/Desktop
