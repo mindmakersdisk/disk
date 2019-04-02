@@ -29,7 +29,7 @@
 #    src: http://download.makeblock.com/mBlock_RaspberryPI.zip
 #    dest: /home/mindmakers/mbot
 #    remote_src: yes
-  when: not mbot.stat.exists
+#  when: not mbot.stat.exists
 - name: Instando pacotes npm baseados no package.json.
   npm:
     path: /home/mindmakers/mbot/mBlock_RaspberryPI/desktop-app
