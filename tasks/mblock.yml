@@ -1,13 +1,12 @@
 - name: Verificando se mbot já existe
   stat:
-     path: /home/mindmakers/mbot/mBlock_RaspberryPI/
+     path: /home/mindmakers/mbot/mBlock_RaspberryPI.zip
   register: mbot
 - name: Criando a pasta mbot
   file:
     path: /home/mindmakers/mbot
     state: directory
     mode: 0755
-  when: not mbot.stat.exists
 - name: Download arquivo instalacao mbot
   get_url:
     url: http://download.makeblock.com/mBlock_RaspberryPI.zip
@@ -15,11 +14,16 @@
     timeout: 60
     mode: 0744
   when: not mbot.stat.exists
+- name: Verificando se mbot já existe
+  stat:
+     path: /home/mindmakers/mbot/mBlock_RaspberryPI/
+  register: mbotext
 - name: Extract mbot.zip
   unarchive:
     src: /home/mindmakers/mbot/mBlock_RaspberryPI.zip
-    dest: /home/mindmakers/mbot/mBlock_RaspberryPI
+    dest: /home/mindmakers/mbot
     remote_src: yes
+  when: not mbotext.stat.exists
 #- name: Baixando e extraindo arquivo mBlock_RaspberryPI -- Este passo pode demorar bastante--
 #  unarchive:
 #    src: http://download.makeblock.com/mBlock_RaspberryPI.zip
@@ -29,4 +33,4 @@
 - name: Instando pacotes npm baseados no package.json.
   npm:
     path: /home/mindmakers/mbot/mBlock_RaspberryPI/desktop-app
-  when: not mbot.stat.exists
+  when: not mbotext.stat.exists
