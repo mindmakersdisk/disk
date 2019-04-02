@@ -21,15 +21,15 @@
   file:
     path: /home/mindmakers/
     state: directory
-    mode: 0444
+    mode: 0755
 - file:
     path: /home/mindmakers/programs
     state: directory
-    mode: 0444
+    mode: 0755
 - file:
     path: /home/mindmakers/programs/verify
     state: directory
-    mode: 0444
+    mode: 0755
 - file:
     path: /home/mindmakers/programs/verify/ansible27
     state: directory
