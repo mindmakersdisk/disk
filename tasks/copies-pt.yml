@@ -17,7 +17,7 @@
     state: directory
     owner: pi
     group: pi
-    mode: 0744
+    mode: 0755
 #- name: Copia pasta Fotos
 #  copy:
 #     src: files/Fotos
@@ -31,7 +31,7 @@
      dest: "/home/pi/Área de Trabalho"
      owner: pi
      group: pi
-     mode: 0744
+     mode: 0755
 - file:
     path: "/home/pi/Área de Trabalho/Scratch2"
     state: directory
