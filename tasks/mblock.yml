@@ -12,10 +12,12 @@
   get_url:
     url: http://download.makeblock.com/mBlock_RaspberryPI.zip
     dest: /home/mindmakers/mbot
+    timeout: 30
     mode: 0744
+  when: not mbot.stat.exists
 - name: Extract mbot.zip
   unarchive:
-    src: /home/mindmakers/mbot/mBlock_RaspberryPi.zip
+    src: /home/mindmakers/mbot/mBlock_RaspberryPI.zip
     dest: /home/mindmakers/mbot
     remote_src: yes
 #- name: Unarchive a file that needs to be downloaded (added in 2.0)
