@@ -1,6 +1,6 @@
 - name: Verifica se mbot já existe
   stat:
-     path: /home/mindmakers/mbot/mBlock_RaspberryPI/desktop-app
+     path: /home/mindmakers/mbot/mBlock_RaspberryPI.zip
   register: mbot
 - name: cria a pasta mbot
   file:
