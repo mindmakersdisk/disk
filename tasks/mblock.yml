@@ -18,11 +18,15 @@
   stat:
      path: /home/mindmakers/mbot/mBlock_RaspberryPI/
   register: mbotext
-- name: Extract mbot.zip
-  unarchive:
-    src: /home/mindmakers/mbot/mBlock_RaspberryPI.zip
-    dest: /home/mindmakers/mbot
-    remote_src: yes
+#- name: Extraindo mbot.zip
+#  unarchive:
+#    src: /home/mindmakers/mbot/mBlock_RaspberryPI.zip
+#    dest: /home/mindmakers/mbot
+#    remote_src: yes
+#    list_files: yes
+#  when: not mbotext.stat.exists
+- name: Extraindo mbot.zip    #testar para ver se funciona mais rápido
+  shell: 'cd /home/mindmakers/mbot && unzip mBlock_RaspberryPI.zip'
   when: not mbotext.stat.exists
 #- name: Baixando e extraindo arquivo mBlock_RaspberryPI -- Este passo pode demorar bastante--
 #  unarchive:
