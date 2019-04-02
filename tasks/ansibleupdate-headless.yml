@@ -19,6 +19,14 @@
 #     mode: 0444
 - name: Cria pasta de verificação
   file:
+    path: /home/mindmakers/
+    state: directory
+    mode: 0444
+- file:
+    path: /home/mindmakers/programs
+    state: directory
+    mode: 0444
+- file:
     path: /home/mindmakers/programs/verify
     state: directory
     mode: 0444
