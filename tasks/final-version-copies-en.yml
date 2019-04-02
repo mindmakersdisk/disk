@@ -1,4 +1,4 @@
-- name: Copia o atalho para notas de liberacão para o Desktop - SO em inglês
+- name: Copia o atalho para notas de liberacão para o Desktop
   copy:
      src: releasenotes.desktop
      dest: /home/pi/Desktop
