@@ -18,7 +18,7 @@
 - name: Extract mbot.zip
   unarchive:
     src: /home/mindmakers/mbot/mBlock_RaspberryPI.zip
-    dest: /home/mindmakers/mbot
+    dest: /home/mindmakers/mbot/mBlock_RaspberryPI
     remote_src: yes
 #- name: Unarchive a file that needs to be downloaded (added in 2.0)
 #  unarchive:
@@ -29,4 +29,4 @@
 - name: Install packages based on package.json.
   npm:
     path: /home/mindmakers/mbot/mBlock_RaspberryPI/desktop-app
-  when: not mbot.stat.exists
+#  when: not mbot.stat.exists
