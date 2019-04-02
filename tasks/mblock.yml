@@ -2,21 +2,21 @@
   stat:
      path: /home/mindmakers/mbot/mBlock_RaspberryPI.zip
   register: mbot
-- name: Criando a pasta mbot
+- name: Criando a pasta mBot
   file:
     path: /home/mindmakers/mbot
     state: directory
     mode: 0755
-- name: Download arquivo instalacao mbot
+- name: Baixando arquivo de instalação mbot
   get_url:
     url: http://download.makeblock.com/mBlock_RaspberryPI.zip
     dest: /home/mindmakers/mbot
     timeout: 60
     mode: 0744
   when: not mbot.stat.exists
-- name: Verificando se mbot já existe
+- name: Verificando se mBot já existe
   stat:
-     path: /home/mindmakers/mbot/mBlock_RaspberryPI/
+     path: /home/mindmakers/mbot/mBlock_RaspberryPI/mBlock
   register: mbotext
 #- name: Extraindo mbot.zip
 #  unarchive:
@@ -25,7 +25,7 @@
 #    remote_src: yes
 #    list_files: yes
 #  when: not mbotext.stat.exists
-- name: Extraindo mbot.zip    #testar para ver se funciona mais rápido
+- name: Extraindo mBlock_RaspberryPI.zip    #testar para ver se funciona mais rápido
   shell: 'unzip mBlock_RaspberryPI.zip'
   args:
      chdir: /home/mindmakers/mbot
