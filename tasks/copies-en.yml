@@ -26,6 +26,12 @@
      group: pi
 #     attributes: +i
      mode: 0744
+- name: Torna icones dentro de Scratch2 imutaveis
+  file:
+    path: /home/pi/Desktop/Scratch2
+    state: directory
+    attributes: +i
+    recurse: yes
 - name: Verifica ícone desktop
   stat:
      path: /home/pi/Desktop/mindmakers.desktop
