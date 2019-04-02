@@ -1,8 +1,3 @@
-#- name: Copia sources.list
-#  copy:
-#     src: files/headless/sources.list
-#     dest: /etc/apt
-#     mode: 0644
 - name: Adiciona pacote ansible 2.7
   shell: 'echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main" | sudo tee -a /etc/apt/sources.list'
 - name: Add an apt key by id from a keyserver
@@ -12,17 +7,12 @@
 - name: Update repositories cache
   apt:
     update_cache: yes
-#- name: Cria pasta de verificação instalação ansible 2.7
-#  copy:
-#     src: ongoing/verify/ansible27
-#     dest: /home/mindmakers/programs/verify
-#     mode: 0444
 - name: Cria pasta de verificação
   file:
-    path: /home/mindmakers/
+    path: /home/mindmakers
     state: directory
     mode: 0755
-- file:
+  file:
     path: /home/mindmakers/programs
     state: directory
     mode: 0755
