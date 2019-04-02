@@ -1,7 +1,7 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=Desktop v1.9
-Name[pt_BR]=Ambiente v1.9
+Name[pt_BR]=Ambiente v1.9.1
 Type=Application
 Terminal=false
 Exec=leafpad /home/mindmakers/releasenotes.info
