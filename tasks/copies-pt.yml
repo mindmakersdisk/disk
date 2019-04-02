@@ -1,4 +1,4 @@
-- name: Copia demais arquivos de atalho para a Área de Trabalho - SO em português
+- name: Copia demais arquivos de atalho para a Área de Trabalho
   copy:
      src: files/desktop/
      dest: "/home/pi/Área de Trabalho"
@@ -6,14 +6,21 @@
      group: pi
      attributes: +i
      mode: 0755
-- name: Copia pasta Fotos
-  copy:
-     src: files/Fotos
-     dest: "/home/pi/Área de Trabalho"
-     owner: pi
-     group: pi
-     mode: 0777
-- name: Copia pasta Fotos
+- name: Cria pasta Fotos na Area de Trabalho
+  file:
+    path: "/home/pi/Área de Trabalho/Fotos"
+    state: directory
+    owner: pi
+    group: pi
+    mode: 0744
+#- name: Copia pasta Fotos
+#  copy:
+#     src: files/Fotos
+#     dest: "/home/pi/Área de Trabalho"
+#     owner: pi
+#     group: pi
+#     mode: 0777
+- name: Copia pasta Scratch2
   copy:
      src: files/Scratch2
      dest: "/home/pi/Área de Trabalho"

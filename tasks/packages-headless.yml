@@ -3,10 +3,10 @@
      path: /home/mindmakers/programs/verify/node815
   register: nodejs
 - name: Instala Nodejs 8.15.3
-  shell: 'curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -' 
+  shell: 'curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -'
   when: not nodejs.stat.exists
 - name: Instala Nodejs 8.15.3
-  apt: 
+  apt:
      name: [nodejs]
   when: not nodejs.stat.exists
 # create a directory if it doesn't exist
@@ -15,19 +15,19 @@
     state: directory
     mode: 0444
 #- name: Cria pasta de verificação de instalação node 8.15.3
-#  copy: 
-#     src: ongoing/verify/node815 
-#     dest: /home/mindmakers/programs/verify 
+#  copy:
+#     src: ongoing/verify/node815
+#     dest: /home/mindmakers/programs/verify
 #     mode: 0444
 - name: Instala libudev-dev e build-essential
-  apt: 
+  apt:
      name: [libudev-dev, build-essential]
 - name: Verifica se o npm já foi instalado
   stat:
      path: /home/mindmakers/programs/verify/npm69
   register: npm
 - name: Instala NPM 1.4.0
-  apt: 
+  apt:
      name: [npm]
   when: not npm.stat.exists
 - name: Atualiza npm para 6.9.0
@@ -36,14 +36,14 @@
     - npm
     - npm
   when: not npm.stat.exists
-  - file:
+- file:
     path: /home/mindmakers/programs/verify/npm69
     state: directory
     mode: 0444
 #- name: Cria pasta de verificação de instalação npm 6.9.0
-#  copy: 
-#     src: ongoing/verify/npm69 
-#     dest: /home/mindmakers/programs/verify 
+#  copy:
+#     src: ongoing/verify/npm69
+#     dest: /home/mindmakers/programs/verify
 #     mode: 0444
 - name: Verifica se depenencias npm do Sphero já foram instaladas
   stat:
@@ -136,7 +136,7 @@
     state: directory
     mode: 0444
 #- name: Cria pasta de verificação das dependencias Sphero
-#  copy: 
-#     src: ongoing/verify/npmsphero 
-#     dest: /home/mindmakers/programs/verify 
+#  copy:
+#     src: ongoing/verify/npmsphero
+#     dest: /home/mindmakers/programs/verify
 #     mode: 0444
