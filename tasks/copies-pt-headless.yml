@@ -1,3 +1,8 @@
+- file:
+    path: "/home/pi/Área de Trabalho"
+    state: directory
+    attributes: -i
+    recurse: yes
 - name: Copia demais arquivos de atalho para a Área de Trabalho
   copy:
      src: files/headless/desktop/
