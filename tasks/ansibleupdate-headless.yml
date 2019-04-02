@@ -1,13 +1,13 @@
-- name: Adiciona pacote ansible 2.7
+- name: Adicionando pacote ansible 2.7
   shell: 'echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main" | sudo tee -a /etc/apt/sources.list'
 - name: Add an apt key by id from a keyserver
   apt_key:
     keyserver: keyserver.ubuntu.com
     id: 93C4A3FD7BB9C367
-- name: Update repositories cache
+- name: Atualizando repositórios
   apt:
     update_cache: yes
-- name: Cria pasta de verificação
+- name: Criando pastas de verificação
   file:
     path: /home/mindmakers
     state: directory
@@ -24,5 +24,5 @@
     path: /home/mindmakers/programs/verify/ansible27
     state: directory
     mode: 0444
-- name: Instala pacote ansible 2.7
+- name: Instalando pacote ansible 2.7
   shell: 'apt-get install -y ansible'

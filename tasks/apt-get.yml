@@ -1,11 +1,11 @@
 #- name: Update all packages to the latest version
 #  apt:
 #    upgrade: dist
-    
-- name: Remove useless packages from the cache
+
+- name: Removendo pacotes desnecessários da cache
   apt:
     autoclean: yes
 
-- name: Remove dependencies that are no longer required
+- name: Removendo dependencas que não são mais necessárias
   apt:
     autoremove: yes

@@ -3,7 +3,7 @@
     state: directory
     attributes: -i
     recurse: yes
-- name: Copia demais arquivos de atalho para o Desktop
+- name: Copiando demais atalho para o Desktop
   copy:
      src: files/desktop/
      dest: /home/pi/Desktop
@@ -11,31 +11,31 @@
      group: pi
      attributes: +i
      mode: 0755
-- name: Copia pasta Fotos
+- name: Copiando pasta Fotos
   copy:
      src: files/Fotos
      dest: /home/pi/Desktop
      owner: pi
      group: pi
      mode: 0777
-- name: Copia pasta Scratch2
+- name: Copiando pasta Scratch2
   copy:
      src: files/Scratch2
      dest: /home/pi/Desktop
      owner: pi
      group: pi
      mode: 0755
-- name: Torna icones dentro de Scratch2 imutaveis
+- name: Tornando icones dentro de Scratch2 imutáveis
   file:
     path: /home/pi/Desktop/Scratch2
     state: directory
     attributes: +i
     recurse: yes
-- name: Verifica ícone desktop
+- name: Verificando ícone mindmakers.desktop
   stat:
      path: /home/pi/Desktop/mindmakers.desktop
   register: mmdesk
-- name: Copia atalho mindmakers.desktop
+- name: Copiando atalho mindmakers.desktop
   copy:
      src: files/mindmakers.desktop
      dest: /home/pi/Desktop/mindmakers.desktop

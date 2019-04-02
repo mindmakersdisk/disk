@@ -3,7 +3,7 @@
     state: directory
     attributes: -i
     recurse: yes
-- name: Copia demais arquivos de atalho para a Área de Trabalho
+- name: Copiando demais atalhos para a Área de Trabalho
   copy:
      src: files/headless/desktop/
      dest: "/home/pi/Área de Trabalho"
