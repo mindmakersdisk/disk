@@ -24,7 +24,7 @@
      dest: /home/pi/Desktop
      owner: pi
      group: pi
-     mode: 0744
+     mode: 0755
 - name: Torna icones dentro de Scratch2 imutaveis
   file:
     path: /home/pi/Desktop/Scratch2

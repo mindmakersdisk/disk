@@ -6,7 +6,7 @@
   file:
     path: /home/mindmakers/mbot
     state: directory
-    mode: 0744
+    mode: 0755
   when: not mbot.stat.exists
 #- name: Download arquivo instalacao mbot
 #  get_url:
