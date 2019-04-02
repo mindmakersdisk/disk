@@ -36,18 +36,36 @@
 #- name: Comando para criar a pasta pcmanfm
 #  shell: 'cd /home/pi/.config/ && mkdir pcmanfm && cd pcmanfm && mkdir LXDE-pi'
 #  when: not pcmanfm.stat.exists
+- name: Cria pasta de verificação
+  file:
+    path: /home/pi/.config/pcmanfm
+    state: directory
+    mode: 0755
+- file:
+    path: /home/pi/.config/pcmanfm/LXDE-pi
+    state: directory
+    mode: 0755
+- file:
+    path: /home/pi/.config/pcmanfm/LXDE-pi/desktop-items-0.conf
+    state: touch
+    attributes: -i
 - name: Troca imagem de fundo e posiciona icones padrões do Desktop
   copy:
-     src: files/headless/pcmanfm
+     src: files/headless/pcmanfm/LXDE-pi/desktop-items-0.conf
      dest: /home/pi/.config/
      owner: pi
      group: pi
+     attributes: +i
      mode: 0700
 - name: Personaliza barra superior
   copy:
      src: files/panel
      dest: /home/pi/.config/lxpanel/LXDE-pi/panels
      mode: 0744
+- file:
+    path: /home/pi/.config/lxpanel/LXDE-pi/panels/panel
+    state: touch
+    attributes: +i
 - name: Altera resolucao da tela
   copy:
      src: files/config.txt
