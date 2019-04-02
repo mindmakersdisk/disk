@@ -1,8 +1,10 @@
-- name: Copia sources.list
-  copy:
-     src: files/headless/sources.list
-     dest: /etc/apt
-     mode: 0644
+#- name: Copia sources.list
+#  copy:
+#     src: files/headless/sources.list
+#     dest: /etc/apt
+#     mode: 0644
+- name: Adiciona pacote ansible 2.7
+  shell: 'echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main" | sudo tee -a /etc/apt/sources.list'
 - name: Add an apt key by id from a keyserver
   apt_key:
     keyserver: keyserver.ubuntu.com
@@ -17,7 +19,7 @@
 #     mode: 0444
 - name: Cria pasta de verificação
   file:
-    path: /home/mindmakers/programs/verify/
+    path: /home/mindmakers/programs/verify
     state: directory
     mode: 0444
 - file:
