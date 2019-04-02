@@ -20,8 +20,7 @@
     path: /home/mindmakers/programs/verify/
     state: directory
     mode: 0444
-- name: Cria pasta de verificação instalação ansible 2.7
-  file:
+- file:
     path: /home/mindmakers/programs/verify/ansible27
     state: directory
     mode: 0444

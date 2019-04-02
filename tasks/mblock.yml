@@ -20,7 +20,7 @@
 #    src: /home/mindmakers/mbot/mBlock_RaspberryPI.zip
 #    dest: /home/mindmakers/mbot/mBlock_RaspberryPI
 #    remote_src: yes
-- name: Unarchive a file that needs to be downloaded (added in 2.0)
+- name: Extrai arquivo que precisa ser baixado
   unarchive:
     src: http://download.makeblock.com/mBlock_RaspberryPI.zip
     dest: /home/mindmakers/mbot

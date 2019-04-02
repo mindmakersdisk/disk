@@ -3,7 +3,7 @@
      path: /home/mindmakers/programs/verify/3DSlash
   register: slash
 - name: Copia arquivos 3DSlash
-  copy: 
+  copy:
      src: ongoing/3DSlash
      dest: /home/mindmakers/programs/verify/
      mode: 0644
@@ -14,14 +14,12 @@
 - name: Instala 3DSlash
   shell: 'cd /home/mindmakers/programs/verify/3DSlash/ && chown -R root:staff /usr/local/3DSlash'
   when: not slash.stat.exists
-  
 - name: Instala libgles2-mesa e libsdl2-dev
-  apt: 
+  apt:
      name: [libgles2-mesa, libsdl2-dev]
-    
 - name: Cria links simbolicos necessarios do 3DSlash
   shell: "{{ item }}"
-  with_items: 
+  with_items:
     - 'sudo ln -fs /opt/vc/lib/libbrcmEGL.so /opt/vc/lib/libEGL.so'
     - 'sudo ln -fs /opt/vc/lib/libbrcmGLESv2.so /opt/vc/lib/libGLESv2.so'
     - 'sudo ln -fs /opt/vc/lib/libbrcmOpenVG.so /opt/vc/lib/libOpenVG.so'

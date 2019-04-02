@@ -8,8 +8,12 @@
 - name: Esconde minecraft
   shell: 'echo "NoDisplay=true" | sudo tee -a /usr/share/raspi-ui-overrides/applications/minecraft-pi.desktop'
   when: not hide.stat.exists
-- name: Cria pasta de verificação dos jogos
-  copy: 
-     src: ongoing/verify/hide-games
-     dest: /home/mindmakers/programs/verify
-     mode: 0444
+- file:
+    path: /home/mindmakers/programs/verify/hide-games
+    state: directory
+    mode: 0444
+#- name: Cria pasta de verificação dos jogos
+#  copy:
+#     src: ongoing/verify/hide-games
+#     dest: /home/mindmakers/programs/verify
+#     mode: 0444
