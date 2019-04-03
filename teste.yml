@@ -14,6 +14,8 @@
 #  - debug:
 #       var: apt_list
 #    when: shell_output is version('6.0', '>=')
+
+#precisa de valor para execultar o comando e ignorar o resultado para continuar rodando o playbook
   - name: Ativa vnstat
     command: lxterminal -e vnstat -l -i wlan0
     when: ansible_facts.wlan0.active
