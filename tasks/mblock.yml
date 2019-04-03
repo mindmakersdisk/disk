@@ -27,6 +27,7 @@
 #  when: not mbotext.stat.exists
 - name: Extraindo mBlock_RaspberryPI.zip    #testar para ver se funciona mais rápido
   shell: 'unzip mBlock_RaspberryPI.zip'
+  warn: false
   args:
      chdir: /home/mindmakers/mbot
   when: not mbotext.stat.exists
