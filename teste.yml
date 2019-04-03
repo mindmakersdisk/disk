@@ -6,30 +6,21 @@
 #     include: tasks/raspi-config.yml
 #  - name: instalar headless
 #    include: tasks/headless.yml
-  
-  - name: Verifica Versao npm
-    command: npm --version
-    register: shell_output
-  
-  - name: Verifica Versao npm
-    command: npm --version
-    register: shell_output
- 
-    
+
+
+#verificação de versão funcionando!!
+#  - name: Verifica Versao npm
+#    command: npm --version
+#    register: shell_output
 #  - debug:
-#      var: shell_output
-#      assert:
-#        that:
-#          - shell_output.stdout_lines == ver
-#        register: n
-#    when: n.stat.exists
+#       var: apt_list
+#    when: shell_output is version('6.0', '>=')
+
   - debug:
        var: {{ ansible_facts.wlan0.ipv4.address }}
     when: ansible_facts.wlan0.active is true
   
-  - debug:
-       var: apt_list
-    when: shell_output is version('6.0', '>=')
+
     
-  - debug: 
-       var: ansible_facts
+#  - debug: 
+#       var: ansible_facts
