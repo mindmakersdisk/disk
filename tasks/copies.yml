@@ -40,7 +40,7 @@
     path: /home/pi/.config/pcmanfm/LXDE-pi/desktop-items-0.conf
     state: touch
     attributes: -i
-- name: Trocando imagem de fundo e posiciona icones padrões do Desktop
+- name: Trocando imagem de fundo e posiciona ícones padrões do Desktop
   copy:
      src: files/pcmanfm/LXDE-pi/desktop-items-0.conf
      dest: /home/pi/.config/pcmanfm/LXDE-pi
@@ -56,7 +56,7 @@
      dest: /home/pi/.config/lxpanel/LXDE-pi/panels
      attributes: +i
      mode: 0755
-- name: Alterando resolucao da tela
+- name: Alterando resolução da tela
   copy:
      src: files/config.txt
      dest: /boot
@@ -64,7 +64,7 @@
   stat:
      path: /home/mindmakers/school.info
   register: school
-- name: Alterando resolucao da tela
+- name: Alterando resolução da tela
   copy:
      src: school.info
      dest: /home/mindmakers/school.info
