@@ -19,13 +19,17 @@
 #       var: apt_list
 #    when: shell_output is version('6.0', '>=')
 
-#precisa de valor para execultar o comando e ignorar o resultado para continuar rodando o playbook
-#  - name: Ativa vnstat
-#    command: lxterminal -e vnstat -l -i wlan0
-#    when: ansible_facts.wlan0.active
+#precisa de ignorar o resultado para continuar rodando o playbook
+  - name: Ativa vnstat
+    command: lxterminal -e vnstat -l -i wlan0
+    changed_when: False
+    failed_when: False
+    when: ansible_facts.wlan0.active
 #  - name: Ativa vnstat
 #    command: lxterminal -e vnstat -l 
 #    when: ansible_facts.ansible_eth0.active
+
+
 
 #  - debug:
 #       var: ansible_facts.wlan0.ipv4.address
@@ -35,9 +39,9 @@
 #     include: version_update.yml
 
     
-  - debug: 
-       var: ansible_facts
-  - debug: 
-       var: ansible_facts['os_family']
+#  - debug: 
+#       var: ansible_facts
+#  - debug: 
+#       var: ansible_facts['os_family']
   - debug: 
        var: ansible_facts.lsb
