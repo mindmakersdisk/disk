@@ -7,6 +7,10 @@
 #    include: tasks/headless.yml
 
 
+#    - name: "shut down Debian flavored systems"
+#      command: 
+#      when: ansible_facts['os_family'] == "Debian"
+
 #verificação de versão funcionando!!
 #  - name: Verifica Versao npm
 #    command: npm --version
@@ -16,16 +20,16 @@
 #    when: shell_output is version('6.0', '>=')
 
 #precisa de valor para execultar o comando e ignorar o resultado para continuar rodando o playbook
-  - name: Ativa vnstat
-    command: lxterminal -e vnstat -l -i wlan0
-    when: ansible_facts.wlan0.active
-  - debug:
-       var: ansible_facts.wlan0.ipv4.address
-    when: ansible_facts.wlan0.active
+#  - name: Ativa vnstat
+#    command: lxterminal -e vnstat -l -i wlan0
+#    when: ansible_facts.wlan0.active
+#  - debug:
+#       var: ansible_facts.wlan0.ipv4.address
+#    when: ansible_facts.wlan0.active
 
 #   - name: Testar version update
 #     include: version_update.yml
 
     
-#  - debug: 
-#       var: ansible_facts
+  - debug: 
+       var: ansible_facts['os_family']
