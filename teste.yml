@@ -6,10 +6,10 @@
 #  - name: instalar headless
 #    include: tasks/headless.yml
 
-
-#    - name: "shut down Debian flavored systems"
+#pode ser utilzado para verificar se é Raspberry ou ChromeOS
+#    - name: "testes"
 #      command: 
-#      when: ansible_facts['os_family'] == "Debian"
+#      when: ansible_facts.lsb.id == "Raspbian"
 
 #verificação de versão funcionando!!
 #  - name: Verifica Versao npm
