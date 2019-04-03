@@ -3,12 +3,11 @@
 - hosts: localhost
 
   tasks: 
-  - name: Criando pastas de verificação
+  - name: Criando pastaa debug
     file:
        path: /home/mindmakers/debug
        state: directory
        mode: 0755
-#  - local_action: copy content="{{ ansible_facts }}" dest="/home/mindmakers/debug/ansible_facts.log"
   - name: Copiando conteúdo de ansible_facts para arquivo em /home/mindmakers/debug/ansible_facts.log
     copy:
        content: "{{ ansible_facts }}" 
@@ -20,4 +19,3 @@
     copy:
        content: "{{ apt_list.stdout_lines }}"
        dest: "/home/mindmakers/debug/apt_list.log"
-#  - local_action: copy content="{{ apt_list.stdout_lines }}" dest="/home/mindmakers/debug/apt_list.log"
