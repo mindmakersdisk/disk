@@ -25,11 +25,11 @@
 #    remote_src: yes
 #    list_files: yes
 #  when: not mbotext.stat.exists
-- name: Extraindo mBlock_RaspberryPI.zip    #testar para ver se funciona mais rápido
+- name: Extraindo mBlock_RaspberryPI.zip
   shell: 'unzip mBlock_RaspberryPI.zip'
-  warn: false
   args:
      chdir: /home/mindmakers/mbot
+     warn: false
   when: not mbotext.stat.exists
 #- name: Baixando e extraindo arquivo mBlock_RaspberryPI -- Este passo pode demorar bastante--
 #  unarchive:
