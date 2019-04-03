@@ -25,7 +25,7 @@
      owner: pi
      group: pi
      mode: 0755
-- name: Tornando écones dentro de Scratch2 imutáveis
+- name: Tornando ícones dentro da pasta Scratch2 imutáveis
   file:
     path: /home/pi/Desktop/Scratch2
     state: directory
