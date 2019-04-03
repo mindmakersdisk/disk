@@ -2,8 +2,8 @@
 #  vars: 
 #    - ver: 6.9.0
   tasks: 
-   - name: instalar mblock
-     include: tasks/mblock.yml
+   - name: Testar raspi-config
+     include: tasks/raspi-config.yml
 #  - name: instalar headless
 #    include: tasks/headless.yml
   
