@@ -9,7 +9,6 @@
   apt:
      name: [nodejs]
   when: not nodejs.stat.exists
-# create a directory if it doesn't exist
 - file:
     path: /home/mindmakers/programs/verify/node815
     state: directory

@@ -10,9 +10,9 @@
      name: [nodejs]
   when: not nodejs.stat.exists
 - name: Criando pasta de verificação de instalação do node 8.15.3
-  copy:
-    src: ongoing/verify/node815
-    dest: /home/mindmakers/programs/verify
+  file:
+    path: /home/mindmakers/programs/verify/node815
+    state: directory
     mode: 0444
 - name: Instalando libudev-dev e build-essential
   apt:
@@ -38,9 +38,9 @@
     - npm
   when: not npm.stat.exists
 - name: Criando pasta de verificação de instalação do npm 6.9.0
-  copy:
-    src: ongoing/verify/npm69
-    dest: /home/mindmakers/programs/verify
+  file:
+    path: /home/mindmakers/programs/verify/npm69
+    state: directory
     mode: 0444
 - name: Verificando se as dependências npm do Sphero já foram instaladas
   stat:
@@ -116,7 +116,7 @@
     path: /home/mindmakers/programs
   when: not npmsphero.stat.exists
 - name: Criando pasta de verificação das dependências Sphero
-  copy:
-    src: ongoing/verify/npmsphero
-    dest: /home/mindmakers/programs/verify
+  file:
+    path: /home/mindmakers/programs/verify/npmsphero
+    state: directory
     mode: 0444
