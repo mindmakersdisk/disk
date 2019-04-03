@@ -8,7 +8,7 @@
 #    include: tasks/headless.yml
   
 - name: Verifica Versao npm
-    command: npm --version
+  command: npm --version
   register: shell_output
 
 #- name: Verifica Versao npm
