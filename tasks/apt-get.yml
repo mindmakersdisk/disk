@@ -2,10 +2,10 @@
 #  apt:
 #    upgrade: dist
 
-- name: Removendo pacotes desnecessários da cache
+- name: Removendo pacotes desnecessários do cache
   apt:
     autoclean: yes
 
-- name: Removendo dependencas que não são mais necessárias
+- name: Removendo dependências que não são mais necessárias
   apt:
     autoremove: yes
