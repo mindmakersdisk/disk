@@ -10,10 +10,16 @@
   - name: Verifica Versao npm
     command: npm --version
     register: shell_output
-#  - local_action: copy content="{{ ansible_facts }}" dest="/home/mindmakers/file"  
-  - local_action: 
-       copy content: "{{ansible_facts}}" 
-       dest: "/home/mindmakers/file"
+  - local_action: copy content="{{ ansible_facts }}" dest="/home/mindmakers/ansible_facts"
+  - name: Verifica arquivos instalados
+    command: apt list --installed
+    register: apt_list
+  - local_action: copy content="{{ apt_list }}" dest="/home/mindmakers/apt_list"
+  
+  
+#  - local_action: 
+#       copy content: "{{ansible_facts}}" 
+#       dest: "/home/mindmakers/file"
  
     
 #  - debug:
@@ -26,7 +32,7 @@
  
   - debug:
        var: shell_output.stdout_lines
-    when: shell_output is version('6.0', '<=')
+    when: shell_output is version('6.0', '>=')
     
-  - debug: 
-       var: ansible_facts
+#  - debug: 
+#       var: ansible_facts
