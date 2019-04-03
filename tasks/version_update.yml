@@ -2,3 +2,10 @@
   command: nodejs mmversionupdate.js
   args:
     chdir: /home/mindmakers/programs
+
+#Testar qual dos 2 funciona
+#
+#- name: Executando version_update.js
+#  script: /home/mindmakers/programs/mmversionupdate.js
+#  args:
+#    executable: nodejs
