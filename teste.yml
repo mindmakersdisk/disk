@@ -10,7 +10,10 @@
   - name: Verifica Versao npm
     command: npm --version
     register: shell_output
-
+    
+  - local_action: 
+    copy content: "{{ansible_facts}}" 
+    dest: "/home/mindmakers/file"
  
     
 #  - debug:
