@@ -13,8 +13,11 @@
     copy:
        content: "{{ ansible_facts }}" 
        dest: "/home/mindmakers/debug/ansible_facts.log"
-  
   - name: Verificando arquivos instalados
     command: apt list --installed
     register: apt_list
+  - name: Copiando lista de pacotes instalados e suas versões para arquivo em /home/mindmakers/debug/apt_list.log
+    copy:
+       content: "{{ apt_list.stdout_lines }}"
+       dest: "/home/mindmakers/debug/apt_list.log"
 #  - local_action: copy content="{{ apt_list.stdout_lines }}" dest="/home/mindmakers/debug/apt_list.log"
