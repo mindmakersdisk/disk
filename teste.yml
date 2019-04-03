@@ -1,4 +1,4 @@
-- hosts: pi
+- hosts: localhost
 #  vars: 
 #    - ver: 6.9.0
   tasks: 
