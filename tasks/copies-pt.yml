@@ -18,13 +18,6 @@
     owner: pi
     group: pi
     mode: 0755
-#- name: Copia pasta Fotos
-#  copy:
-#     src: files/Fotos
-#     dest: "/home/pi/Área de Trabalho"
-#     owner: pi
-#     group: pi
-#     mode: 0777
 - name: Copiando pasta Scratch2
   copy:
      src: files/Scratch2
