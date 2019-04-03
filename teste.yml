@@ -9,7 +9,7 @@
   
 - name: Verifica Versao npm
     command: "npm --version"
-    register: shell_output
+  register: shell_output
 
 - name: Verifica Versao npm
     command: "npm --version"
