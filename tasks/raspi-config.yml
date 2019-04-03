@@ -3,5 +3,7 @@
 #raspi-config nonint functions obey sh return codes
 #0 is in general success / yes / selected
 #1 is failed / no / not selected */
-- name: Configurando acesso da câmera
+- name: Configurando acesso da Câmera
   shell: 'sudo raspi-config nonint do_camera 0'
+- name: Configurando saída de audio padrão para Analógico
+  shell: 'amixer cset numid=3 2'
