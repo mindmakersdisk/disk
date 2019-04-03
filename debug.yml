@@ -8,8 +8,13 @@
        path: /home/mindmakers/debug
        state: directory
        mode: 0755
-  - local_action: copy content="{{ ansible_facts }}" dest="/home/mindmakers/debug/ansible_facts.log"
+#  - local_action: copy content="{{ ansible_facts }}" dest="/home/mindmakers/debug/ansible_facts.log"
+  - name: Copiando conteúdo de ansible_facts para arquivo em /home/mindmakers/debug/ansible_facts.log
+    copy:
+       content: "{{ ansible_facts }}" 
+       dest: "/home/mindmakers/debug/ansible_facts.log"
+  
   - name: Verificando arquivos instalados
     command: apt list --installed
     register: apt_list
-  - local_action: copy content="{{ apt_list.stdout_lines }}" dest="/home/mindmakers/debug/apt_list.log"
+#  - local_action: copy content="{{ apt_list.stdout_lines }}" dest="/home/mindmakers/debug/apt_list.log"
