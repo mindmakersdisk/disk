@@ -1,11 +1,13 @@
 ########### IMAGEM DE DISCO MIND MAKERS ###########
 
-Versão 1.9 28/03/2019
+Versão 2.0 03/04/2019
 - Automação completa da atualização de versões da imagem de disco através do Ansible. 
 - Automação completa da ativação de desktops Raspberry Pi, incluindo configuração de atalho do Sphero e Login Simplificado.
 - Retirada de prefixos "www" dos links para a plataforma para "https://mindmakers.cc" como solução de contorno para falhas do provedor Net/Claro/Embratel.
 - Atualização do 3D Slash para v3.0, com evolução do padrão para ativação utilizando dois logins/senhas da escola.
-- Evolução do SO Raspbian 
-- Evolução de versão do Chromium Browser
+- Evolução do SO Raspbian. 
+- Evolução de versão do Chromium Browser.
 - Instalação local do Scratch 2.0
-- PENDENTE: mBlock for mBot.
+- Instalação local da IDE mBlock para programação mBot, com mudança no padrão de liberação de problemas via cabo.
+
+
