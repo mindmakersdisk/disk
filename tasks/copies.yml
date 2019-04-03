@@ -29,18 +29,20 @@
      src: files/fundo.png
      dest: /home/mindmakers
      mode: 0755
-- name: Verificando se pasta pcmanfm já existe
-  stat:
-     path: /home/pi/.config/pcmanfm/LXDE-pi
-  register: pcmanfm
-- name: Comandondo para criar a pasta pcmanfm
-  shell: 'cd /home/pi/.config/ && mkdir pcmanfm && cd pcmanfm && mkdir LXDE-pi'
-  when: not pcmanfm.stat.exists
+- name: Criando pastas de configuração
+  file:
+    path: /home/pi/.config/pcmanfm
+    state: directory
+    mode: 0755
+- file:
+    path: /home/pi/.config/pcmanfm/LXDE-pi
+    state: directory
+    mode: 0755
 - file:
     path: /home/pi/.config/pcmanfm/LXDE-pi/desktop-items-0.conf
     state: touch
     attributes: -i
-- name: Trocando imagem de fundo e posiciona ícones padrões do Desktop
+- name: Trocando imagem de fundo e posicionando ícones padrões do Desktop
   copy:
      src: files/pcmanfm/LXDE-pi/desktop-items-0.conf
      dest: /home/pi/.config/pcmanfm/LXDE-pi

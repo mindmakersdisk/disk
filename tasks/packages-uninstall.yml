@@ -1,4 +1,4 @@
-- name: Desistalando aplicações não utilizada dos softwares recomendados
+- name: Desistalando aplicações não utilizadas
   apt:
      name: [scratch, bluej, greenfoot, claws-mail, claws-mail-i18n, libreoffice-draw, libreoffice-impress, libreoffice-math, libreoffice-writer, piclone]
      state: absent

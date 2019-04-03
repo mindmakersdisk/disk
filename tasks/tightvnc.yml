@@ -1,12 +1,12 @@
-- name: Instala tightvncserver
+- name: Instalando tightvncserver
   apt:
      name: [tightvncserver]
-- name: Copia arquivo vncserver
+- name: Copiando arquivo vncserver
   copy:
      src: files/vncserver
      dest: /etc/init.d
      mode: 0755
-- name: Configura VncServer
+- name: Configurando VncServer
   shell: 'sudo update-rc.d vncserver defaults'
 
 #- name: Chama o server para configurar uma senha de acesso

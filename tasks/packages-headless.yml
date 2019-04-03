@@ -27,7 +27,7 @@
   stat:
      path: /home/mindmakers/programs/verify/npm69
   register: npm
-- name: Instalando NPM 1.4.0
+- name: Instalando npm 1.4.0
   apt:
      name: [npm]
   when: not npm.stat.exists

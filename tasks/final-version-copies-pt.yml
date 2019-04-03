@@ -1,4 +1,4 @@
-- name: Copia o atalho notas de liberacão para a Área de Trabalho
+- name: Copiando o atalho notas de liberacão para a Área de Trabalho
   copy:
      src: releasenotes.desktop
      dest: "/home/pi/Área de Trabalho"

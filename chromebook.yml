@@ -10,13 +10,13 @@
 #     linguagem: "{{'en' if (p.stat.exists) else 'pt'}}"
 
   tasks:
-    - name: Verificando versão do ansible.
+    - name: Verificando versão do Ansible.
       stat:
         path: /home/mindmakers/programs/verify/ansible27
       register: asb
     - include: tasks/ansibleupdate.yml
       when: not asb.stat.exists
-    - name: Verificando se diretorio Desktop existe.
+    - name: Verificando se diretório Desktop existe.
       stat:
         path: /home/pi/Desktop
       register: p

@@ -20,11 +20,14 @@
 - name: Instalando vnstat
   apt:
      name: [vnstat]
+- name: Atualizando a versão do Chromium-browser
+  apt:
+     name: [Chromium-browser]
 - name: Verificando se o npm já foi instalado
   stat:
      path: /home/mindmakers/programs/verify/npm69
   register: npm
-- name: Instalando NPM 1.4.0
+- name: Instalando npm 1.4.0
   apt:
      name: [npm]
   when: not npm.stat.exists
