@@ -1,7 +1,7 @@
 - hosts: localhost
   pre_tasks:
     - name: Atualizando Repositórios
-      apt: 
+      apt:
          update_cache: yes
          cache_valid_time: 3600
       changed_when: False
@@ -28,6 +28,7 @@
     - include: tasks/hide-games.yml
     - include: tasks/install-extension.yml
     - include: tasks/mblock.yml
+    - include: task/raspi-config.yml
     - include: tasks/apt-get.yml
  # Copia as notas de liberação e o atalho com nome da versão atualizados
     - include: tasks/final-version-copies-pt.yml
