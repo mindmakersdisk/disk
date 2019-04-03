@@ -1,2 +1,3 @@
 - name: Reiniciando o Raspberry para aplicar as mudanças
-  reboot:
+#  reboot:
+  shell: 'reboot'

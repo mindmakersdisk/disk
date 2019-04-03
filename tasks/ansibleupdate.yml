@@ -9,10 +9,27 @@
 - name: Atualizando repositórios
   apt:
     update_cache: yes
-- name: Criando pasta de verificação de instalação Ansible 2.7
-  copy:
-     src: ongoing/verify/ansible27
-     dest: /home/mindmakers/programs/verify
-     mode: 0444
+- name: Criando pastas de verificação
+  file:
+    path: /home/mindmakers
+    state: directory
+    mode: 0755
+- file:
+    path: /home/mindmakers/programs
+    state: directory
+    mode: 0755
+- file:
+    path: /home/mindmakers/programs/verify
+    state: directory
+    mode: 0755
+- file:
+    path: /home/mindmakers/programs/verify/ansible27
+    state: directory
+    mode: 0444
+#- name: Criando pasta de verificação de instalação Ansible 2.7
+#  copy:
+#     src: ongoing/verify/ansible27
+#     dest: /home/mindmakers/programs/verify
+#     mode: 0444
 - name: Instalando pacote Ansible 2.7
   shell: 'apt-get install -y ansible'

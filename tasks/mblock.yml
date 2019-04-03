@@ -7,7 +7,7 @@
     path: /home/mindmakers/mbot
     state: directory
     mode: 0755
-- name: Baixando arquivo de instalação mBot
+- name: Baixando arquivo de instalação mBot -- Este passo pode demorar bastante --
   get_url:
     url: http://download.makeblock.com/mBlock_RaspberryPI.zip
     dest: /home/mindmakers/mbot

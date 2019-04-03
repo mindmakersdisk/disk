@@ -12,7 +12,7 @@
     path: /home/mindmakers
     state: directory
     mode: 0755
-  file:
+- file:
     path: /home/mindmakers/programs
     state: directory
     mode: 0755
