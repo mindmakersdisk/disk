@@ -18,7 +18,7 @@
 
   - debug:
        var: "{{ ansible_facts.wlan0.ipv4.address }}"
-    when: ansible_facts.wlan0.active is true
+    when: ansible_facts.wlan0.active is 'true'
   
 
     
