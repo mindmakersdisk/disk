@@ -11,62 +11,6 @@
     command: npm --version
     register: shell_output
 
-#- name: Verifica Versao npm
-#    command: "npm --version"
-#  when: shell_output is version('6.0', '>=')
-
-#  - name: Copia arquivo que permite instalacao de extensao
-#    copy: 
-#       src: ongoing/chrome-extensions.json.j2 
-#       dest: /etc/chromium-browser/policies/managed
-#       mode: 0444
-#  - name: Chrome - create json file to install extensions for all users
-#    template: 
-#       src: ongoing/chrome-extensions.json.j2
-#       dest: /home/pi/.config/chromium/Default/Extensions/{{ item.id }}.json
-#       mode: 0444
-#    with_items:
-#    - name: The Great Suspender
-#      id: klbibkeccnjlkjkiokjodocebajanakg
-#    - name: mBot for scratchX
-#      id: clgdmbbhmdlbcgdffocenbbeclodbndh
-      
-#  - name: instala extensao the great suspender
-#  roles:
-#  - role: chrome-extensions
-#    chrome_extensions_extensions:
-#      - { id: klbibkeccnjlkjkiokjodocebajanakg}
-#    shell: "chromium-browser --install-chrome-app=klbibkeccnjlkjkiokjodocebajanakg"
-    
-#  - name: Copia configuracao the great suspender
-#    copy: src=ongoing/gsStorage.js dest=/home/pi/.config/chromium/Default/Extensions/klbibkeccnjlkjkiokjodocebajanakg/7.1.0_0/js mode=01777
-    
-
-#  - name: "This is bad version"
-#    when: shell_output.stdout|strict=true("6.9.0")
-#    when: shell_output.stdout_lines == "6.9.0"
-    
-
-
-    
-#  - name: "compara com 6.9.0"
-#    register: n
-#    when: shell_output.stdout == ver.value   #when ainda nao funcionou
-#      - ansible_facts['shell_output.stdout_lines'] == "6.9.0"
-#      - ansible_facts['distribution_major_version'] == "6"
-
-# - name: Assertando  #quase funcionando
-#    assert:
-#      that:
-#        - "{{ shell_output.stdout }}  == {{ ver }}" 
-#        - "{{ shell_output.stdout }}  == 6.9.0"
-#        - "{{ shell_output.stdout }}  == 6.9.0"
-#    register: n
-
- 
-# - name: "Use set_fact to maybe change the variable you want"
-#   set_fact: one_fact="{{ shell_output.stdout }}" other_fact="{{ ver }}"
-#       register: n
  
     
 #  - debug:
@@ -81,10 +25,5 @@
        var: shell_output.stdout_lines
     when: shell_output is version('6.0', '<=')
     
-#- name: after version 2.7 both 'msg' and 'fail_msg' can customize failing assertion message
-#  assert:
-#    that:
-#      - "my_param <= 100"
-#      - "my_param >= 0"
-#   
-#    success_msg: "'my_param' is between 0 and 100"
+  - debug: 
+       var: ansible_facts
