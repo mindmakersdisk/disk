@@ -1,4 +1,4 @@
-- name: Verificando se mbot já existe
+- name: Verificando se mBot já existe
   stat:
      path: /home/mindmakers/mbot/mBlock_RaspberryPI.zip
   register: mbot
@@ -7,14 +7,14 @@
     path: /home/mindmakers/mbot
     state: directory
     mode: 0755
-- name: Baixando arquivo de instalação mbot
+- name: Baixando arquivo de instalação mBot
   get_url:
     url: http://download.makeblock.com/mBlock_RaspberryPI.zip
     dest: /home/mindmakers/mbot
     timeout: 60
     mode: 0744
   when: not mbot.stat.exists
-- name: Verificando se mBot já existe
+- name: Verificando se mBot já foi extraído
   stat:
      path: /home/mindmakers/mbot/mBlock_RaspberryPI/mBlock
   register: mbotext

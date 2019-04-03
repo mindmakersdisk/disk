@@ -18,7 +18,7 @@
   apt:
      name: [libgles2-mesa, libsdl2-dev]
   when: not slash.stat.exists
-- name: Criando links simbolicos necessários do 3DSlash
+- name: Criando links simbólicos necessários do 3DSlash
   shell: "{{ item }}"
   with_items:
     - 'sudo ln -fs /opt/vc/lib/libbrcmEGL.so /opt/vc/lib/libEGL.so'

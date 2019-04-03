@@ -36,7 +36,7 @@
 #- name: Comando para criar a pasta pcmanfm
 #  shell: 'cd /home/pi/.config/ && mkdir pcmanfm && cd pcmanfm && mkdir LXDE-pi'
 #  when: not pcmanfm.stat.exists
-- name: Criando pasta de verificação
+- name: Criando pastas de configuração
   file:
     path: /home/pi/.config/pcmanfm
     state: directory
