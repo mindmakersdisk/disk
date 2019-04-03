@@ -1,4 +1,4 @@
-- hosts: raspberrypi
+- hosts: all
 #  vars: 
 #    - ver: 6.9.0
   tasks: 
@@ -8,12 +8,12 @@
 #    include: tasks/headless.yml
   
 - name: Verifica Versao npm
-    command: "npm --version"
+    command: npm --version
   register: shell_output
 
-- name: Verifica Versao npm
-    command: "npm --version"
-  when: shell_output is version('6.0', '>=')
+#- name: Verifica Versao npm
+#    command: "npm --version"
+#  when: shell_output is version('6.0', '>=')
 
 #  - name: Copia arquivo que permite instalacao de extensao
 #    copy: 
