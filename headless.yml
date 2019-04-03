@@ -33,4 +33,5 @@
       when: not p.stat.exists
     - include: tasks/final-version-copies-en.yml
       when: p.stat.exists
+    - include: tasks/reboot.yml
  # Não acrescentar tarefas após estas últimas.
