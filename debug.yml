@@ -1,0 +1,13 @@
+- hosts: localhost
+
+  tasks: 
+  - name: Criando pastas de verificação
+    file:
+       path: /home/mindmakers/debug
+       state: directory
+       mode: 0755
+  - local_action: copy content="{{ ansible_facts }}" dest="/home/mindmakers/ansible_facts.log"
+  - name: Verifica arquivos instalados
+    command: apt list --installed
+    register: apt_list
+  - local_action: copy content="{{ apt_list.stdout_lines }}" dest="/home/mindmakers/apt_list.log"
