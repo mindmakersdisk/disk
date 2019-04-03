@@ -15,7 +15,9 @@
 #  - debug:
 #       var: apt_list
 #    when: shell_output is version('6.0', '>=')
-
+  - name: Ativa vnstat
+    command: vnstat -l -i wlan0
+    when: ansible_facts.wlan0.active
   - debug:
        var: ansible_facts.wlan0.ipv4.address
     when: ansible_facts.wlan0.active
