@@ -79,7 +79,7 @@
  
   - debug:
        var: shell_output.stdout_lines
-    when: shell_output is version('6.0', '>=')
+    when: shell_output is version('6.0', '<=')
     
 #- name: after version 2.7 both 'msg' and 'fail_msg' can customize failing assertion message
 #  assert:
