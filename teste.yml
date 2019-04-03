@@ -2,15 +2,19 @@
 #  vars: 
 #    - ver: 6.9.0
   tasks: 
-   - name: Testar raspi-config
-     include: tasks/raspi-config.yml
+#   - name: Testar raspi-config
+#     include: tasks/raspi-config.yml
 #  - name: instalar headless
 #    include: tasks/headless.yml
   
-#  - name: Verifica Versao npm
-#    shell: "npm --version"
-#    register: shell_output
-    
+- name: Verifica Versao npm
+    command: "npm --version"
+    register: shell_output
+
+- name: Verifica Versao npm
+    command: "npm --version"
+  when: shell_output is version('6.0', '>=')
+
 #  - name: Copia arquivo que permite instalacao de extensao
 #    copy: 
 #       src: ongoing/chrome-extensions.json.j2 
@@ -73,9 +77,9 @@
 #        register: n
 #    when: n.stat.exists
  
-#  - debug:
-#      var: shell_output.stdout_lines
-#    when: assert= { that= "shell_output.stdout == '6.9.0'" }
+  - debug:
+       var: shell_output.stdout_lines
+    when: shell_output is version('6.0', '>=')
     
 #- name: after version 2.7 both 'msg' and 'fail_msg' can customize failing assertion message
 #  assert:
