@@ -17,7 +17,7 @@
 #    when: shell_output is version('6.0', '>=')
 
   - debug:
-       var: {{ ansible_facts.wlan0.ipv4.address }}
+       var: "{{ ansible_facts.wlan0.ipv4.address }}"
     when: ansible_facts.wlan0.active is true
   
 
