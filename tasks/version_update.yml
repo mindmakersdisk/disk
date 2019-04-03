@@ -1,0 +1,4 @@
+- name: Executando version_update.js
+  command: nodejs mmversionupdate.js
+  args:
+    chdir: /home/mindmakers/programs
