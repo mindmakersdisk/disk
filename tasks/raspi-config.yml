@@ -1,0 +1,4 @@
+#lista com todos comandos para configurar os rapsi-config
+#https://github.com/raspberrypi-ui/rc_gui/blob/master/src/rc_gui.c#L23
+- name: Configurando acesso da câmera
+  shell: 'sudo raspi-config nonint do_camera 0'
