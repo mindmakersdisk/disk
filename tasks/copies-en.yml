@@ -12,12 +12,18 @@
      attributes: +i
      mode: 0755
 - name: Copiando pasta Fotos
-  copy:
-     src: files/Fotos
-     dest: /home/pi/Desktop
-     owner: pi
-     group: pi
-     mode: 0777
+  file:
+    path: /home/pi/Desktop/Fotos
+    state: directory
+    owner: pi
+    group: pi
+    mode: 0777
+#  copy:
+#     src: files/Fotos
+#     dest: /home/pi/Desktop
+#     owner: pi
+#     group: pi
+#     mode: 0777
 - name: Copiando pasta Scratch2
   copy:
      src: files/Scratch2
@@ -43,10 +49,3 @@
      group: pi
      mode: 0755
   when: not mmdesk.stat.exists
-
-#comando tornar icones imutáveis
-#  copy: src=files/desktop/ dest=/home/pi/Desktop mode=0755 attributes=+i #se ansible> 2.3
-
-#se ansible < 2.3
-#- name: Torna icones do Desktop imutáveis
-#  shell: 'cd /home/pi/Desktop && sudo chattr +i 3DSlash.desktop makeblock.desktop releasenotes.desktop ativacao.desktop mblock.desktop scratch2.desktop capturafoto.desktop mindmakers.desktop sphero_desconecta.desktop codeorg.desktop mmblockly.desktop sphero.desktop gifpal.desktop pixlr.desktop update.desktop'
