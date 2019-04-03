@@ -2,8 +2,7 @@
 #  vars: 
 #    - ver: 6.9.0
   tasks: 
-#   - name: Testar raspi-config
-#     include: tasks/raspi-config.yml
+
 #  - name: instalar headless
 #    include: tasks/headless.yml
 
@@ -21,7 +20,9 @@
   - debug:
        var: ansible_facts.wlan0.ipv4.address
     when: ansible_facts.wlan0.active
-  
+
+#   - name: Testar version update
+#     include: version_update.yml
 
     
 #  - debug: 
