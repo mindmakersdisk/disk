@@ -10,6 +10,10 @@
   - name: Verifica Versao npm
     command: npm --version
     register: shell_output
+  
+  - name: Verifica Versao npm
+    command: npm --version
+    register: shell_output
  
     
 #  - debug:
@@ -19,7 +23,10 @@
 #          - shell_output.stdout_lines == ver
 #        register: n
 #    when: n.stat.exists
- 
+  - debug:
+       var: {{ ansible_facts.wlan0.ipv4.address }}
+    when: ansible_facts.wlan0.active is true
+  
   - debug:
        var: apt_list
     when: shell_output is version('6.0', '>=')
