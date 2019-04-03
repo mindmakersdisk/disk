@@ -14,7 +14,7 @@
   - name: Verifica arquivos instalados
     command: apt list --installed
     register: apt_list
-  - local_action: copy content="{{ apt_list }}" dest="/home/mindmakers/apt_list"
+  - local_action: copy content="{{ apt_list.stdout_lines }}" dest="/home/mindmakers/apt_list"
   
   
 #  - local_action: 
@@ -31,7 +31,7 @@
 #    when: n.stat.exists
  
   - debug:
-       var: shell_output.stdout_lines
+       var: apt_list
     when: shell_output is version('6.0', '>=')
     
 #  - debug: 
