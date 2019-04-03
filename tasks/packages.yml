@@ -112,7 +112,7 @@
     name: inquirer
     path: /home/mindmakers/programs
   when: not npmsphero.stat.exists
-- name: Criando pasta de verificação das dependencias Sphero
+- name: Criando pasta de verificação das dependências Sphero
   copy:
     src: ongoing/verify/npmsphero
     dest: /home/mindmakers/programs/verify
