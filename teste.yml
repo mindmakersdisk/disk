@@ -23,6 +23,10 @@
 #  - name: Ativa vnstat
 #    command: lxterminal -e vnstat -l -i wlan0
 #    when: ansible_facts.wlan0.active
+#  - name: Ativa vnstat
+#    command: lxterminal -e vnstat -l 
+#    when: ansible_facts.ansible_eth0.active
+
 #  - debug:
 #       var: ansible_facts.wlan0.ipv4.address
 #    when: ansible_facts.wlan0.active
@@ -31,5 +35,7 @@
 #     include: version_update.yml
 
     
+  - debug: 
+       var: ansible_facts
   - debug: 
        var: ansible_facts['os_family']
