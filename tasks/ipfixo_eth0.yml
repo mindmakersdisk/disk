@@ -1,4 +1,4 @@
-#Troca linhas de um documento para tornar o ipv4 eth0 atual o ip fixo
+#Troca linhas de um documento para tornar o ipv4 eth0 atual o ip fixo (backrefs: yes faz trocar somente se for achado a linha regexp)
 - lineinfile:
     path: /etc/dhcpcd.conf
     backrefs: yes
