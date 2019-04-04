@@ -51,26 +51,27 @@
 #Trocar uma linha pela variável, para configurar o dhcpcd por ip estático.
   - lineinfile:
       path: /home/mindmakers/school.info
-      regexp: '#interface eth0'
+      firstmatch: yes
+      insertafter: '#interface eth0'
       line: interface eth0
-  - lineinfile:
-      path: /home/mindmakers/school.info
-      regexp: '#static ip_address='
-      line: static ip_address={{ansible_facts.default_ipv4.address}}
-  - lineinfile:
-      path: /home/mindmakers/school.info
-      regexp: '#static routers='
-      line: static routers={{ansible_facts.default_ipv4.gateway}}
-  - lineinfile:
-      path: /home/mindmakers/school.info
-      regexp: '#static domain_name_servers='
-      line: static domain_name_servers={{ansible_facts.default_ipv4.gateway}}
-  - debug:
-       var: ansible_facts.eth0
-    when: ansible_facts.eth0.active
-  - debug:
-       var: ansible_facts.wlan0
-    when: ansible_facts.wlan0.active
+#  - lineinfile:
+#      path: /home/mindmakers/school.info
+#      regexp: '#static ip_address='
+#      line: static ip_address={{ansible_facts.default_ipv4.address}}
+#  - lineinfile:
+#      path: /home/mindmakers/school.info
+#      regexp: '#static routers='
+#      line: static routers={{ansible_facts.default_ipv4.gateway}}
+#  - lineinfile:
+#      path: /home/mindmakers/school.info
+#      regexp: '#static domain_name_servers='
+#      line: static domain_name_servers={{ansible_facts.default_ipv4.gateway}}
+#  - debug:
+#       var: ansible_facts.eth0
+#    when: ansible_facts.eth0.active
+#  - debug:
+#       var: ansible_facts.wlan0
+#    when: ansible_facts.wlan0.active
 
 #  - name: Blockinfile teste
 #    blockinfile:
