@@ -51,8 +51,7 @@
 #Trocar uma linha pela variável, para configurar o dhcpcd por ip estático.
   - lineinfile:
       path: /home/mindmakers/school.info
-      firstmatch: yes
-      insertafter: '#interface eth0'
+      backrefs: yes
       regexp: '#interface eth0'
       line: interface eth0
 #  - lineinfile:
