@@ -67,6 +67,7 @@
       line: static domain_name_servers={{ansible_facts.default_ipv4.gateway}}
   - debug:
        var: ansible_facts.eth0
+    when: ansible_facts.eth0.active
 
 #  - name: Blockinfile teste
 #    blockinfile:
