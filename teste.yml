@@ -68,6 +68,9 @@
   - debug:
        var: ansible_facts.eth0
     when: ansible_facts.eth0.active
+  - debug:
+       var: ansible_facts.wlan0
+    when: ansible_facts.wlan0.active
 
 #  - name: Blockinfile teste
 #    blockinfile:
