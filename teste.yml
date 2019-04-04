@@ -97,7 +97,8 @@
 # Note that YAML double quotes require escaping backslashes but yaml single quotes do not.
   - name: Ver se máquina já foi ativada para fixar o ip do Rapsberry.
     find:
-      paths: /home/mindmakers/school.info
+      paths: /home/mindmakers/
+      patterns: *.info
       contains: "Não registrado"
 #      use_regex: yes
     register: semregistro
