@@ -53,6 +53,7 @@
       path: /home/mindmakers/school.info
       firstmatch: yes
       insertafter: '#interface eth0'
+      regexp:'#interface eth0'
       line: interface eth0
 #  - lineinfile:
 #      path: /home/mindmakers/school.info
