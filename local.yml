@@ -1,5 +1,8 @@
 - hosts: localhost
   pre_tasks:
+    - fail:
+       msg: "Comando errado, se estiver tentando atualizar Chromebook, utilize o termo chomebook.yml ao final do comando"
+    when: not ansible_facts.lsb.id == "Raspbian"
     - name: Atualizando Repositórios
       apt:
          update_cache: yes
