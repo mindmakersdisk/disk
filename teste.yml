@@ -49,31 +49,27 @@
 #    line: '127.0.0.1 localhost'
 
 #Trocar uma linha pela variável, para configurar o dhcpcd por ip estático.
-#  - lineinfile:
-#      path: /home/mindmakers/school.info
-#      regexp: '#static ip_address='
-#      line: static ip_address="{{ansible_facts.default_ipv4.address}}"
-
-#  - name:Blockinfile teste
-#    blockinfile:
-#       path: /home/mindmakers/school.info
-#       block: |
-#          # Example static IP configuration:
-#             interface eth0
-#             static ip_address={{ansible_facts.default_ipv4.address}}
-#             #static ip6_address=fd51:42f8:caae:d92e::ff/64
-#             static routers={{ansible_facts.default_ipv4.gateway}}
-#             static domain_name_servers={{ansible_facts.default_ipv4.gateway}}
-  - name: Blockinfile teste
-    blockinfile:
+  - lineinfile:
       path: /home/mindmakers/school.info
-      marker: "# Example static IP configuration:"
-      block: |
-        interface eth0
-        static ip_address={{ansible_facts.default_ipv4.address}}
-        #static ip6_address=fd51:42f8:caae:d92e::ff/64
-        static routers={{ansible_facts.default_ipv4.gateway}}
-        static domain_name_servers={{ansible_facts.default_ipv4.gateway}}
+      regexp: '#interface eth0'
+      line: interface eth0
+      regexp: '#static ip_address='
+      line: static ip_address={{ansible_facts.default_ipv4.address}}
+      regexp: '#static routers='
+      line: static routers={{ansible_facts.default_ipv4.gateway}}
+      regexp: '#static domain_name_servers='
+      line: static domain_name_servers={{ansible_facts.default_ipv4.gateway}}
+
+#  - name: Blockinfile teste
+#    blockinfile:
+#      path: /home/mindmakers/school.info
+#      marker: "# Example static IP configuration:"
+#      block: |
+#        interface eth0
+#        static ip_address={{ansible_facts.default_ipv4.address}}
+#        #static ip6_address=fd51:42f8:caae:d92e::ff/64
+#        static routers={{ansible_facts.default_ipv4.gateway}}
+#        static domain_name_servers={{ansible_facts.default_ipv4.gateway}}
 
 
 
