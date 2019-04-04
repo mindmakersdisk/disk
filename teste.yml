@@ -65,6 +65,8 @@
       path: /home/mindmakers/school.info
       regexp: '#static domain_name_servers='
       line: static domain_name_servers={{ansible_facts.default_ipv4.gateway}}
+  - debug:
+       var: ansible_facts.eth0
 
 #  - name: Blockinfile teste
 #    blockinfile:
