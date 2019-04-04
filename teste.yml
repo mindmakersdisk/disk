@@ -1,8 +1,12 @@
 - hosts: localhost
 
   tasks:
-  - meta: end_play
-    when: not ansible_facts.lsb.id == "Raspbian"
+#  - meta: end_play
+#    when: not ansible_facts.lsb.id == "Raspbian"
+    
+  - fail:
+       msg: "Você não está tentando cessar o playbook errado."
+    when: ansible_facts.lsb.id == "Raspbian"
 #  - name: instalar headless
 #    include: tasks/headless.yml
 
