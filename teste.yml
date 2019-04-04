@@ -53,7 +53,7 @@
       path: /home/mindmakers/school.info
       regexp: 'Pi: Não registrado'
 #    insertafter: '^#Listen '
-      line: 'Pi: teste'
+      line: 'Pi: {{ansible_facts.wlan0.ipv4.address}}'
 
 #- lineinfile:
 #    path: /etc/services
