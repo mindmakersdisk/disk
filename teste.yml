@@ -1,7 +1,8 @@
 - hosts: localhost
 
   tasks:
-
+  - meta: end_play
+    when: not ansible_facts.lsb.id == "Raspbian"
 #  - name: instalar headless
 #    include: tasks/headless.yml
 
@@ -54,8 +55,8 @@
 #     include: version_update.yml
 
 
-#  - debug:
-#       var: ansible_facts
+  - debug:
+       var: ansible_facts
 #  - debug:
 #       var: ansible_facts['os_family']
 #  - debug:
