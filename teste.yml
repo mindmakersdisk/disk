@@ -2,7 +2,7 @@
 
   tasks:
   - meta: end_play
-    when: not ansible_facts.lsb.id == "Raspbian"
+    when: ansible_facts.lsb.id == "Raspbian"
 #  - name: instalar headless
 #    include: tasks/headless.yml
 
