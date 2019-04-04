@@ -70,11 +70,11 @@
       path: /home/mindmakers/school.info
       block: |
         # Example static IP configuration:
-             interface eth0
-             static ip_address={{ansible_facts.default_ipv4.address}}
-             #static ip6_address=fd51:42f8:caae:d92e::ff/64
-             static routers={{ansible_facts.default_ipv4.gateway}}
-             static domain_name_servers={{ansible_facts.default_ipv4.gateway}}
+        interface eth0
+        static ip_address={{ansible_facts.default_ipv4.address}}
+        #static ip6_address=fd51:42f8:caae:d92e::ff/64
+        static routers={{ansible_facts.default_ipv4.gateway}}
+        static domain_name_servers={{ansible_facts.default_ipv4.gateway}}
 
 
 
