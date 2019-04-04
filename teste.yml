@@ -69,7 +69,8 @@
     blockinfile:
       path: /home/mindmakers/school.info
       marker: "# Example static IP configuration:"
-      block: |
+      content: |
+#      block: |
         interface eth0
         static ip_address={{ansible_facts.default_ipv4.address}}
         #static ip6_address=fd51:42f8:caae:d92e::ff/64
