@@ -68,6 +68,7 @@
         (it might be better to copy files into /etc/network/interfaces.d/)
     blockinfile:
       path: /home/mindmakers/school.info
+      marker: "# Example static IP configuration:"
       block: |
         # Example static IP configuration:
         interface eth0
