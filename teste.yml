@@ -54,18 +54,21 @@
       backrefs: yes
       regexp: '#interface eth0'
       line: interface eth0
-#  - lineinfile:
-#      path: /home/mindmakers/school.info
-#      regexp: '#static ip_address='
-#      line: static ip_address={{ansible_facts.default_ipv4.address}}
-#  - lineinfile:
-#      path: /home/mindmakers/school.info
-#      regexp: '#static routers='
-#      line: static routers={{ansible_facts.default_ipv4.gateway}}
-#  - lineinfile:
-#      path: /home/mindmakers/school.info
-#      regexp: '#static domain_name_servers='
-#      line: static domain_name_servers={{ansible_facts.default_ipv4.gateway}}
+  - lineinfile:
+      path: /home/mindmakers/school.info
+      backrefs: yes
+      regexp: '#static ip_address='
+      line: static ip_address={{ansible_facts.default_ipv4.address}}
+  - lineinfile:
+      path: /home/mindmakers/school.info
+      backrefs: yes
+      regexp: '#static routers='
+      line: static routers={{ansible_facts.default_ipv4.gateway}}
+  - lineinfile:
+      path: /home/mindmakers/school.info
+      backrefs: yes
+      regexp: '#static domain_name_servers='
+      line: static domain_name_servers={{ansible_facts.default_ipv4.gateway}}
 #  - debug:
 #       var: ansible_facts.eth0
 #    when: ansible_facts.eth0.active
