@@ -1,0 +1,28 @@
+#Troca linhas de um documento para tornar o ipv4 eth0 atual o ip fixo
+- lineinfile:
+    path: /etc/dhcpcd.conf
+    backrefs: yes
+    regexp: '#interface eth0'
+    line: interface eth0
+  when: ansible_facts.eth0.active
+- lineinfile:
+    path: /etc/dhcpcd.conf
+    backrefs: yes
+    regexp: '#static ip_address='
+    line: static ip_address={{ansible_facts.default_ipv4.address}}
+  when: ansible_facts.eth0.active
+- lineinfile:
+    path: /etc/dhcpcd.conf
+    backrefs: yes
+    regexp: '#static routers='
+    line: static routers={{ansible_facts.default_ipv4.gateway}}
+  when: ansible_facts.eth0.active
+- lineinfile:
+    path: /etc/dhcpcd.conf
+    backrefs: yes
+    regexp: '#static domain_name_servers='
+    line: static domain_name_servers={{ansible_facts.default_ipv4.gateway}}
+  when: ansible_facts.eth0.active
+  
+#- debug:
+#     var: ansible_facts.eth0
