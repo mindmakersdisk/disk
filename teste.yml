@@ -51,9 +51,14 @@
 
   - lineinfile:
       path: /home/mindmakers/school.info
-      regexp: 'Pi:'
+      regexp: '#interface eth0'
 #    insertafter: '^#Listen '
-      line: 'Pi: {{ansible_facts.wlan0.ipv4.address}}'
+      line: |
+      interface eth0
+      static ip_address={{ansible_facts.default_ipv4.address}}
+      #static ip6_address=fd51:42f8:caae:d92e::ff/64
+      static routers={{ansible_facts.default_ipv4.address}}
+      static domain_name_servers={{ansible_facts.default_ipv4.address}}
 
 #- lineinfile:
 #    path: /etc/services
