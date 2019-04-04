@@ -21,6 +21,7 @@ elif [ "$pi"  = 'Não registrado' ]
   run;
   
 else
+
   chromium-browser https://mindmakers.cc/instrutor/#/testar-sala-list?pi=$pi\&sd=$sd
   
   if [ "$(sudo cat /sys/class/net/eth0/operstate)" = 'up' ]
