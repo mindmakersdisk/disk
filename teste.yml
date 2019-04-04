@@ -98,7 +98,7 @@
   - name: Ver se máquina já foi ativada para fixar o ip do Rapsberry.
     find:
       paths: /home/mindmakers/
-      patterns: '*.info'
+      patterns: 'school.info'
 #      contains: "Não registrado"
 #      use_regex: yes
     register: semregistro
