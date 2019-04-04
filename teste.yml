@@ -99,8 +99,8 @@
     find:
       paths: /home/mindmakers/
       patterns: 'school.info'
-      contains: 'Pi: registrado'
-#      use_regex: yes
+      contains: 'Pi: Não registrado'
+      use_regex: yes
     register: semregistro
 
   - debug:
