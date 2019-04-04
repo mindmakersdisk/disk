@@ -102,8 +102,8 @@
       use_regex: yes
     register: semregistro
 
-   - debug:
-        var: semregistro
+  - debug:
+       var: semregistro
 
 
 
