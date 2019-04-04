@@ -49,11 +49,11 @@
 #    line: '127.0.0.1 localhost'
 
 
-- lineinfile:
-    path: /home/mindmakers/school.info
-    regexp: 'Pi: Não registrado'
+  - lineinfile:
+      path: /home/mindmakers/school.info
+      regexp: 'Pi: Não registrado'
 #    insertafter: '^#Listen '
-    line: 'Pi: teste'
+      line: 'Pi: teste'
 
 #- lineinfile:
 #    path: /etc/services
