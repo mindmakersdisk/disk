@@ -99,7 +99,7 @@
     find:
       paths: /home/mindmakers/school.info
       contains: "Não registrado"
-      use_regex: yes
+#      use_regex: yes
     register: semregistro
 
   - debug:
