@@ -64,12 +64,11 @@
 #             #static ip6_address=fd51:42f8:caae:d92e::ff/64
 #             static routers={{ansible_facts.default_ipv4.gateway}}
 #             static domain_name_servers={{ansible_facts.default_ipv4.gateway}}
-  - name: insert/update eth0 configuration stanza in /etc/network/interfaces
-        (it might be better to copy files into /etc/network/interfaces.d/)
+  - name: Blockinfile teste
     blockinfile:
       path: /home/mindmakers/school.info
       marker: "# Example static IP configuration:"
-      content: |
+      block: |
         interface eth0
         static ip_address={{ansible_facts.default_ipv4.address}}
         #static ip6_address=fd51:42f8:caae:d92e::ff/64
