@@ -3,7 +3,7 @@
 pi="$(sudo grep -w "Pi:" /home/mindmakers/school.info | sed 's/.*: //')" 
 sd="$(sudo grep -w "SD:" /home/mindmakers/school.info | sed 's/.*: //')"  
 
-echo pi=$pi \&sd=$sd
+echo pi=$pi \& sd=$sd
 
 run(){
         echo "Imagem não registrada, registre-a para realizar este teste."
@@ -39,6 +39,7 @@ if [ -e /home/mindmakers/school.info ]
   fi
   
 else
+
   echo "Imagem não contem arquivo school.info"
   run;
   
