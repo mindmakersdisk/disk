@@ -49,11 +49,11 @@
 #    line: '127.0.0.1 localhost'
 
 
-#- lineinfile:
-#    path: /etc/httpd/conf/httpd.conf
-#    regexp: '^Listen '
+- lineinfile:
+    path: /home/mindmakers/school.info
+    regexp: 'Pi: Não registrado'
 #    insertafter: '^#Listen '
-#    line: 'Listen 8080'
+    line: 'Pi: teste'
 
 #- lineinfile:
 #    path: /etc/services
@@ -94,18 +94,20 @@
 #    replace: '\1 127.0.0.1:8080'
 #    validate: '/usr/sbin/apache2ctl -f %s -t'
 
-# Note that YAML double quotes require escaping backslashes but yaml single quotes do not.
-  - name: Ver se máquina já foi ativada para fixar o ip do Rapsberry.
-    find:
-      paths: /home/mindmakers/
-      patterns: 'school.info'
-      contains: 'Pi: Não'
-      use_regex: yes
-    register: semregistro
 
-  - debug:
-       var: semregistro
-
+##########
+# Verifica se school.info ainda tem Pi não registrado para. true se não tiver e false se tiver.
+#  - name: Ver se máquina já foi ativada para fixar o ip do Rapsberry.
+#    find:
+#      paths: /home/mindmakers/
+#      patterns: 'school.info'
+#      contains: 'Pi: Não'
+#      use_regex: yes
+#    register: semregistro
+#
+#  - debug:
+#       var: semregistro
+##########
 
 
 
