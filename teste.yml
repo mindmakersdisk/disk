@@ -1,14 +1,13 @@
 - hosts: localhost
-#  vars: 
-#    - ver: 6.9.0
-  tasks: 
+
+  tasks:
 
 #  - name: instalar headless
 #    include: tasks/headless.yml
 
 #pode ser utilzado para verificar se é Raspberry ou ChromeOS
 #    - name: "testes"
-#      command: 
+#      command:
 #      when: ansible_facts.lsb.id == "Raspbian"
 
 #verificação de versão funcionando!!
@@ -20,17 +19,96 @@
 #    when: shell_output is version('6.0', '>=')
 
 #precisa de ignorar o resultado para continuar rodando o playbook
-  - name: Ativa vnstat
-    command: lxterminal -e vnstat -l -i wlan0
-    changed_when: False
-    failed_when: False
-    when: ansible_facts.wlan0.active
 #  - name: Ativa vnstat
-#    command: lxterminal -e vnstat -l 
+#    command: lxterminal -e vnstat -l -i wlan0
+#    changed_when: False
+#    failed_when: False
+#    when: ansible_facts.wlan0.active
+#  - name: Ativa vnstat
+#    command: lxterminal -e vnstat -l
 #    when: ansible_facts.ansible_eth0.active
 
 
 
+################################    ativar headless e manter ip fixo.
+#line in file para verificar se já foi escrito e alterar os valores do que está no documento
+# Before 2.3, option 'dest', 'destfile' or 'name' was used instead of 'path'
+#- lineinfile:
+#    path: /etc/selinux/config
+#    regexp: '^SELINUX='
+#    line: 'SELINUX=enforcing'
+
+#- lineinfile:
+#    path: /etc/sudoers
+#    state: absent
+#    regexp: '^%wheel'
+# Searches for a line that begins with 127.0.0.1 and replaces it with the value of the 'line' parameter
+#- lineinfile:
+#    path: /etc/hosts
+#    regexp: '^127\.0\.0\.1'
+#    line: '127.0.0.1 localhost'
+
+
+#- lineinfile:
+#    path: /etc/httpd/conf/httpd.conf
+#    regexp: '^Listen '
+#    insertafter: '^#Listen '
+#    line: 'Listen 8080'
+
+#- lineinfile:
+#    path: /etc/services
+#    regexp: '^# port for http'
+#    insertbefore: '^www.*80/tcp'
+#    line: '# port for http by default'
+
+#ou ver se Replace funciona melhor
+# Replace after the expression till the end of the file (requires >=2.4)
+#- replace:
+#    path: /etc/hosts
+#    regexp: '(\s+)old\.host\.name(\s+.*)?$'
+#    replace: '\1new.host.name\2'
+#    after: 'Start after line.*'
+
+# Replace before the expression till the begin of the file (requires >=2.4)
+#- replace:
+#    path: /etc/hosts
+#    regexp: '(\s+)old\.host\.name(\s+.*)?$'
+#    replace: '\1new.host.name\2'
+#    before: 'Start before line.*'
+
+# Replace between the expressions (requires >=2.4)
+#- replace:
+#    path: /etc/hosts
+#    regexp: '(\s+)old\.host\.name(\s+.*)?$'
+#    replace: '\1new.host.name\2'
+#    after: 'Start after line.*'
+#    before: 'Start before line.*'
+
+#- replace:
+#    path: /home/jdoe/.ssh/known_hosts
+#    regexp: '^old\.host\.name[^\n]*\n'
+
+#- replace:
+#    path: /etc/apache/ports
+#    regexp: '^(NameVirtualHost|Listen)\s+80\s*$'
+#    replace: '\1 127.0.0.1:8080'
+#    validate: '/usr/sbin/apache2ctl -f %s -t'
+
+# Note that YAML double quotes require escaping backslashes but yaml single quotes do not.
+  - name: Ver se máquina já foi ativada para fixar o ip do Rapsberry.
+    find:
+      paths: /home/mindmakers/school.info
+      contains: "Não registrado"
+      use_regex: yes
+    register: semregistro
+
+   - debug:
+        var: semregistro
+
+
+
+
+###########################
 #  - debug:
 #       var: ansible_facts.wlan0.ipv4.address
 #    when: ansible_facts.wlan0.active
@@ -38,10 +116,10 @@
 #   - name: Testar version update
 #     include: version_update.yml
 
-    
-#  - debug: 
+
+#  - debug:
 #       var: ansible_facts
-#  - debug: 
+#  - debug:
 #       var: ansible_facts['os_family']
-  - debug: 
-       var: ansible_facts.lsb
+#  - debug:
+#       var: ansible_facts.lsb
