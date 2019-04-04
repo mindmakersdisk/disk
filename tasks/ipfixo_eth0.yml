@@ -8,19 +8,19 @@
 - lineinfile:
     path: /etc/dhcpcd.conf
     backrefs: yes
-    regexp: '#static ip_address='
-    line: static ip_address={{ansible_facts.default_ipv4.address}}
+    regexp: '#static ip_address=192.168.0.10/24'
+    line: static ip_address={{ansible_facts.default_ipv4.address}}/24
   when: ansible_facts.eth0.active
 - lineinfile:
     path: /etc/dhcpcd.conf
     backrefs: yes
-    regexp: '#static routers='
+    regexp: '#static routers=192.168.0.1'
     line: static routers={{ansible_facts.default_ipv4.gateway}}
   when: ansible_facts.eth0.active
 - lineinfile:
     path: /etc/dhcpcd.conf
     backrefs: yes
-    regexp: '#static domain_name_servers='
+    regexp: '#static domain_name_servers=192.168.0.1'
     line: static domain_name_servers={{ansible_facts.default_ipv4.gateway}}
   when: ansible_facts.eth0.active
   
