@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=mBlock
-Comment=
+Comment=Opens terminal and new mBlock environment
 Icon=scratch2
 Exec=bash /home/mindmakers/mbot/mBlock_RaspberryPI/mBlock
 Type=Application
