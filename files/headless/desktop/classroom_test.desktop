@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Classroom Test
+Name[pt_BR]=Teste de sala
+Comment=
+Icon=/usr/share/icons/classroom_test.jpg
+Exec=bash /home/mindmakers/programs/shells/classroom_test.sh
+Type=Application
+Encoding=UTF-8
+Terminal=true
+Categories=None;

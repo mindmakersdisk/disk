@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=BLE:bit Connection
+Name[pt_BR]=Conexão BLE:bit
+Comment=
+Icon=/usr/share/icons/littlebit_BLE.png
+Exec=bash /home/mindmakers/programs/shells/ble_bit-connect.sh
+Type=Application
+Encoding=UTF-8
+Terminal=true
+Categories=None;
