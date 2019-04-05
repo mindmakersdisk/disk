@@ -6,4 +6,4 @@
 - name: Configurando acesso da Câmera
   shell: 'sudo raspi-config nonint do_camera 0'
 - name: Configurando saída de audio padrão para Analógico
-  shell: 'amixer cset numid=3 2'
+  shell: 'amixer cset numid=3 1'
