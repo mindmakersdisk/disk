@@ -17,7 +17,7 @@
     command: nodejs mmversionupdate.js
     args:
       chdir: /home/mindmakers/programs
-    when: not semregistro.stat.exists
+    when: semregistro.matched != 0
 
   
 #  - meta: end_play
