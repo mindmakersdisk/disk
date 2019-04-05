@@ -78,8 +78,8 @@
 #     include: version_update.yml
 
 
-  - debug:
-       var: ansible_facts
+#  - debug:
+#       var: ansible_facts
 #  - debug:
 #       var: ansible_facts['os_family']
 #  - debug:
