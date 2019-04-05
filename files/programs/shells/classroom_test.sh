@@ -23,9 +23,6 @@ if [ -e /home/mindmakers/school.info ]
     run;
   
   else
-
-    chromium-browser https://mindmakers.cc/instrutor/#/testar-sala-list?pi=$pi\&sd=$sd
-  
     if [ "$(sudo cat /sys/class/net/eth0/operstate)" = 'up' ]
       then
     
@@ -35,6 +32,9 @@ if [ -e /home/mindmakers/school.info ]
     
         lxterminal -e vnstat -l -i wlan0
     fi
+    
+    chromium-browser https://mindmakers.cc/instrutor/#/testar-sala-list?pi=$pi\&sd=$sd --incognito
+  
 
   fi
   
