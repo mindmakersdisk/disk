@@ -424,7 +424,7 @@ function registraAtivosEscolaPlataforma(resposta) {
               'observacao': 'ativação automática'}},                 
             function(error, response, body){
                 if (!body.success || error) {
-                    if (!body.sucess)
+                    if (!body.success)
                         console.log('Erro ao registrar SD: '+body.err);
                     else
                         console.log('Erro ao registrar SD: '+error);  
@@ -447,7 +447,7 @@ function registraAtivosEscolaPlataforma(resposta) {
                            'versaoimagemdisco':versaoImagemDisco}},                 
             function(error, response, body){
                 if (!body.success || error) {
-                  if (!body.sucess)
+                  if (!body.success)
                     console.log('Erro ao registrar Estacao: '+body.err);
                   else
                     console.log('Erro ao registrar Estacao: '+error);                    
