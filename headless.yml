@@ -24,7 +24,7 @@
     - include: tasks/copies-en-headless.yml
       when: p.stat.exists
     - include: tasks/tightvnc.yml
-    - include: tasks/copies.yml
+    - include: tasks/copies-headless.yml
     - include: tasks/packages.yml
     - include: tasks/packages-uninstall.yml
     - include: tasks/hide-games.yml
