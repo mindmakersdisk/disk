@@ -1,10 +1,9 @@
 /*
-  Mind Makers Blockly.
-  Serviço Node para controle do robô Sphero
+  Serviço Node para controle do robô Sphero  - usar somente para o Sphero Cinza SPRK, bluetooth 2.x
   Paulo Alvim 20/12/2016
  
   1. Certificar-se que o bluetooth do PI está ligado
-  2. Rodar com "sudo node app.js [macaddress]", onde macaddress é de um sphero visível pelo bluetooth. Ex.: sudo node app.js E8:8A:B4:69:69:99 
+  2. Rodar com "sudo node app.js [macaddress]", onde macaddress é de um sphero visível pelo bluetooth. Ex.: sudo node mmsphero-server.js E8:8A:B4:69:69:99 
   3. Testar abrindo o navegador e chamando http://localhost?code=[codigo-sphero.js]
   4. Para desconectar, fechar o serviço do Node
 
@@ -21,14 +20,16 @@ var macaddress = ""
 var currentAngle=0;  // para frente
 var eConfig=true;
 
-console.log('Entrou com macaddress: '+macaddressArg)
-
 if (macaddressArg) {
 	macaddress=macaddressArg
 }
 
 var sphero = require("sphero"),
     bb8 = sphero(args[0]);
+    
+var WebSocketServer = require('websocket').server;
+
+var http = require('http');    
 
 // submete comandos dinamicamente, para o SPRK+
 bb8.connect(function() {
@@ -41,7 +42,7 @@ bb8.connect(function() {
       { console.log("Versão:" + data.msaVer+ '.'+ data.msaRev); }
      });
 	 
-  console.log('Conectou com sucesso! Aguardando comandos em http://localhost?code=')
+  console.log('Conectou com sucesso!! Aguardando comandos em http://localhost?code=')
  
   count=0;
 
@@ -69,8 +70,21 @@ bb8.connect(function() {
    }
  
   }, 1000);
+  
+  
+bb8.detectCollisions({device: "bb8"});
+
+  bb8.on("collision", function(data) {
+    console.log("Colisão detectada!");
+    //console.log("  data:", data);
+    
+     if (temClienteConectado())
+        wsServer.connections[0].send('colisao={x:'+data.x+',y:'+data.y+',xMagnitude:'+data.xMagnitude+
+	                                ',yMagnitude:'+data.xMagnitude+',speed:'+data.speed+'}');
+  });
 
 });
+
 
 const express = require('express')  
 const app = express()
@@ -93,20 +107,6 @@ app.get('/', (request, response) => {
     eConfig=request.query.config!=null;
      currentAngle=0; 
      code=request.query.code
-
-/*
-	try {
-         console.log('Vai executar: '+code)
-	 eval(code)
-	// if (!eConfig) {
-	//	bb8.color('black')
-	 //	bb8.setBackLed(0)
-	//	}		
-	} catch(e) {
-	 console.log('Erro ao tentar executar comando. Erro: '+e)
-	}
-*/
-
 
   }
 
@@ -142,5 +142,66 @@ function wait(seconds) {
 
 app.listen(80) 
 
+/* daqui em diante websocket */
+var notificouClienteConexao=false;
+
+
+function temClienteConectado() {
+  
+  return wsServer!= null && wsServer.connections != null && wsServer.connections[0] != null
+  
+}
 
  
+var server = http.createServer(function(request, response) {
+   // console.log((new Date()) + ' Received request for ' + request.url);
+    response.writeHead(404);
+    response.end();
+});
+server.listen(8081, function() {
+   // console.log('---------------------------------------------------------------');
+    console.log('            '+(new Date().toLocaleString()) + ' Websocket ouvindo na porta 8081');
+   // console.log('---------------------------------------------------------------');    
+});
+ 
+wsServer = new WebSocketServer({
+    httpServer: server,
+    // You should not use autoAcceptConnections for production
+    // applications, as it defeats all standard cross-origin protection
+    // facilities built into the protocol and the browser.  You should
+    // *always* verify the connection's origin and decide whether or not
+    // to accept it.
+    autoAcceptConnections: false
+});
+ 
+function originIsAllowed(origin) {
+   // console.log('entrou para permitir origin');
+  // put logic here to detect whether the specified origin is allowed.
+  return true;
+}
+ 
+wsServer.on('request', function(request) {
+  
+    console.log('Cliente conectado');
+  
+    if (!originIsAllowed(request.origin)) {
+      // Make sure we only accept requests from an allowed origin
+      request.reject();
+      console.log((new Date().toLocaleString()) + ' Conexão com origem ' + request.origin + ' rejeitada.');
+      return;
+    }
+    
+    var connection = request.accept('echo-protocol', request.origin);
+    console.log((new Date().toLocaleString()) + ' Conexão aceita.');
+   
+    connection.on('message', function(message) {
+
+      // Implementa envios para Sphero por aqui.
+      
+     
+    });
+    
+    connection.on('close', function(reasonCode, description) {
+        console.log((new Date().toLocaleString()) + ' Conexão ' + connection.remoteAddress + ' finalizada.');
+    });
+});
