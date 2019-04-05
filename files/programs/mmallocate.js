@@ -182,9 +182,9 @@ function atualizaSchoolInfo() {
   escolainfoatualizada = "----- Identificação de Desktop Mind Makers ------\n" +
                          "Cód.: "+escolaid+"\n"+
                          "Nome: "+escolanome+"\n"+
-                         "Pi: \n"+
-                         "SD: \n"+
-                         "Sphero: \n"+
+                         "Pi: Não registrado\n"+
+                         "SD: Não registrado\n"+
+                         "Sphero: Não registrado\n"+
                          "--------------------------------------------";  
   
   fs.writeFile('/home/mindmakers/school.info', escolainfoatualizada, function(err,data) 
