@@ -1,9 +1,6 @@
 # Arquivo playbook - imagem para Raspberry Pi Headless
 - hosts: localhost
   pre_tasks:
-    - fail:
-         msg: "Comando errado, se estiver tentando atualizar Chromebook, utilize o termo chomebook.yml ao final do comando"
-      when: not ansible_facts.lsb.id == "Raspbian"
     - name: update repositories
       apt: update_cache=yes
       changed_when: False
@@ -13,8 +10,11 @@
       stat:
         path: /home/mindmakers/programs/verify/ansible27
       register: ansb
-    - include: tasks/ansibleupdate-headless.yml
+    - include: tasks/ansibleupdate.yml
       when: not ansb.stat.exists
+     - fail:
+         msg: "Comando errado, se estiver tentando atualizar Chromebook, utilize o termo chomebook.yml ao final do comando"
+      when: not ansible_facts.lsb.id == "Raspbian"
     - name: Verificando se diretório Desktop existe.
       stat:
         path: /home/pi/Desktop
@@ -24,17 +24,19 @@
     - include: tasks/copies-en-headless.yml
       when: p.stat.exists
     - include: tasks/tightvnc.yml
-    - include: tasks/copies-headless.yml
-    - include: tasks/packages-headless.yml
-    - include: tasks/packages-uninstall-headless.yml
+    - include: tasks/copies.yml
+    - include: tasks/packages.yml
+    - include: tasks/packages-uninstall.yml
     - include: tasks/hide-games.yml
     - include: tasks/install-extension.yml
     - include: tasks/mblock.yml
+    - include: tasks/raspi-config.yml
     - include: tasks/apt-get.yml
  # Copia as notas de liberação e o atalho com nome da versão atualizados
     - include: tasks/final-version-copies-pt.yml
       when: not p.stat.exists
     - include: tasks/final-version-copies-en.yml
       when: p.stat.exists
+    - include: tasks/version_update.yml
     - include: tasks/reboot.yml
  # Não acrescentar tarefas após estas últimas.
