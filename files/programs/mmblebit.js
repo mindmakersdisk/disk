@@ -50,7 +50,7 @@ var monitoriaTask=null;
 noble.on('discover', function(peripheral) {
   
   if ((''+peripheral.advertisement.localName).indexOf('w30') == 0 &&
-          peripheral.rssi>-60) {
+          peripheral.rssi>-80) {
 
    //console.log(peripheral);    
    // console.log(peripheral.advertisement);
