@@ -6,23 +6,23 @@
     find:
        paths: /home/mindmakers/
        patterns: 'school.info'
-       contains: 'Pi: Não'
+       contains: 'Pi:  '
        use_regex: yes
     register: semregistro
-    
+
   - debug:
        var: semregistro
-    
+
   - name: Executando version_update.js
     command: nodejs mmversionupdate.js
     args:
       chdir: /home/mindmakers/programs
     when: semregistro.matched == 0
 
-  
+
 #  - meta: end_play
 #    when: not ansible_facts.lsb.id == "Raspbian"
-    
+
 #  - fail:
 #       msg: "Você não está tentando cessar o playbook errado."
 #    when: ansible_facts.lsb.id == "Raspbian"
