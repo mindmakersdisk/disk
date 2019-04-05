@@ -52,7 +52,7 @@
   register: npmsphero
 - name: Instalando pacote do npm "bluetooth-hci-socket"
   npm:
-    name:  bluetooth-hci-socket
+    name: bluetooth-hci-socket
     path: /home/mindmakers/programs
     executable: /usr/bin/npm --unsafe-perm=true
   when: not npmsphero.stat.exists
@@ -114,11 +114,16 @@
     name: request
     path: /home/mindmakers/programs
   when: not npmsphero.stat.exists
+- name: Instalando pacote do npm "websocket"
+  npm:
+    name: websocket
+    path: /home/mindmakers/programs
+#  when: not npmsphero.stat.exists
 - name: Instalando pacote do npm "inquirer"
   npm:
     name: inquirer
     path: /home/mindmakers/programs
-  when: not npmsphero.stat.exists
+#  when: not npmsphero.stat.exists
 - name: Criando pasta de verificação das dependências Sphero
   file:
     path: /home/mindmakers/programs/verify/npmsphero
