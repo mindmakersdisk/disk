@@ -8,6 +8,10 @@ Versão 2.0 03/04/2019
 - Evolução do SO Raspbian. 
 - Evolução de versão do Chromium Browser.
 - Instalação local do Scratch 2.0
-- Instalação local da IDE mBlock para programação mBot, com mudança no padrão de liberação de problemas via cabo.
+- Novo atalho para atualização automatizada da versão da imagem de disco (exige senha especial de atualização)
+- Novo atalho para ativação automatizada de estação, configuração de atalhos do Sphero e de Login Simplificado (exige login/senha do instrutor)
+- Novo atalho para teste automatizado de sala de aula, configurando a máquina e abrindo monitoria para execução de baterias de teste
+- Novo atalho para conexão universal de robôs e circuitos eletrônicos da Mind Makers utilizando Bluetooth LE.
+
 
 
