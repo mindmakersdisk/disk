@@ -39,7 +39,7 @@ fs.readFile('/home/mindmakers/school.info', function(err,data)
             // Verifica se está configurado e se está alocado (pré-requisitos para ativação)
             obtemVersaoImagemDisco();
             
-            if (escolaid==null || escolaid=='' || escolaid.toString().toLowerCase().indexOf('não')>-1) {
+            if (escolaid==null || escolaid=='' || pi_registrado=='' || escolaid.toString().toLowerCase().indexOf('não')>-1 ) {
                console.log('');
                console.error('\x1b[31m','Como estação ainda não está ativada, não atualiza versão.');
                console.log('');
