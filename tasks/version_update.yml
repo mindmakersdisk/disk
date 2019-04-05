@@ -1,7 +1,17 @@
+# Verifica se school.info ainda tem Pi não registrado para. true se não tiver e false se tiver.
+- name: Ver se máquina já foi ativada para fixar o ip do Rapsberry.
+  find:
+     paths: /home/mindmakers/
+     patterns: 'school.info'
+     contains: 'Pi: Não'
+     use_regex: yes
+  register: semregistro
+    
 - name: Executando version_update.js
   command: nodejs mmversionupdate.js
   args:
     chdir: /home/mindmakers/programs
+  when: not semregistro.stat.exists
 
 #Testar qual dos 2 funciona
 #
