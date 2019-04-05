@@ -75,7 +75,7 @@ Confirme a atualização de versão do Ansible digitando no terminal "ansible --
 
 _**Como verificar sucesso do novo disco 'disco-padrão-base'?**_
 - _Conferir na mensagem final do terminal se todas as tarefas do ANSIBLE executaram sem falhas, checando se "failed=0"..._
-- _...ou se foi criado um atalho na área de trabalho com rótulo "Ambiente vX.X" (ou Environment vX.X, para versão em ingês), onde X.X é a versão e release da imagem padrão (ex: 2.2, 2.3)._ 
+- _...ou se foi criado um atalho na área de trabalho com rótulo "Ambiente vX.X" (ou Environment vX.X, para versão em inglês), onde X.X é a versão e release da imagem padrão (ex: 2.2, 2.3)._ 
 
 ### 5. Validar a configuração do novo disco-padrão-base.
 
