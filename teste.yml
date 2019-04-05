@@ -65,6 +65,7 @@
 #
 #  - debug:
 #       var: semregistro
+#    when: semregistro.matched == 0
 ##########
 
 
