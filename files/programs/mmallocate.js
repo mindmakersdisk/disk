@@ -97,7 +97,7 @@ function rotinaAlocacao() {
           // Testa se imagem está configurada
           obtemVersaoImagemDisco();
        
-          idescola_informado=answers.idescola;
+          idescola_informado=answers.idescola.toLowerCase();
           
           recuperaNomeEscola(answers);
         
