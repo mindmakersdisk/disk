@@ -14,6 +14,7 @@ var fs = require('fs');
 
 
 // Registrados
+var escolainfo=''
 var escolaid='';
 var escolanome='';
 var pi_registrado='';
@@ -28,8 +29,8 @@ fs.readFile('/home/mindmakers/school.info', function(err,data)
               console.log(err);
               process.exit(1);
           } else {
-          
-              escolaid= escolainfo.substring(escolainfo.indexOf('Cód.:')+5,escolainfo.indexOf('Nome:')-1).trim();
+             escolainfo = data.toString();
+             escolaid= escolainfo.substring(escolainfo.indexOf('Cód.:')+5,escolainfo.indexOf('Nome:')-1).trim();
              // console.log(escolaid);
              pi_registrado= escolainfo.substring(escolainfo.indexOf('Pi:')+3,escolainfo.indexOf('SD:',)-1).trim();
              // console.log(pi);
