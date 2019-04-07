@@ -24,6 +24,7 @@ var escolanome='';
 var sprk_registrado='';
 var pi_registrado='';
 var sd_registrado='';
+var sala_registrado = '1';
 
 // Identificados
 var sprk_identificado='';
@@ -33,6 +34,7 @@ var versaoImagemDisco='';
 
 // Informados
 var idescola_informado='';
+var sala_informado='';
 
 // Recuperados
 var escolanome_recuperado='';
@@ -53,18 +55,26 @@ fs.readFile('/home/mindmakers/school.info', function(err,data)
           } else {
           
               escolainfo = data.toString();
-              escolaid= escolainfo.substring(escolainfo.indexOf('Cód.:')+5,escolainfo.indexOf('Nome:')-1).trim();
-             // console.log(escolaid);
-              escolanome= escolainfo.substring(escolainfo.indexOf('Nome:')+5,escolainfo.indexOf('Pi:',)-1).trim();
-             // console.log(escolanome);
-             pi_registrado= escolainfo.substring(escolainfo.indexOf('Pi:')+3,escolainfo.indexOf('SD:',)-1).trim();
-             // console.log(pi);
-             sd_registrado= escolainfo.substring(escolainfo.indexOf('SD:')+3,escolainfo.indexOf('Sphero:',)-1).trim();
-             // console.log(sd);
-             sprk_registrado= escolainfo.substring(escolainfo.indexOf('Sphero:')+7,escolainfo.indexOf('-------------------',)-1).trim();
-             // console.log(sprk_registrado);
+              escolaidIni =escolainfo.indexOf('Cód.:')+5;
+              escolaid= escolainfo.substring(escolaidIni,escolainfo.indexOf('||'),escolaidIni).trim();
+              //console.log(escolaid);
+              escolanomeIni =escolainfo.indexOf('Nome:')+5;
+              escolanome= escolainfo.substring(escolanomeIni,escolainfo.indexOf('||',escolanomeIni)).trim();
+              //console.log(escolanome);
+              piIni = escolainfo.indexOf('Pi:')+3;
+              pi_registrado= escolainfo.substring(piIni,escolainfo.indexOf('||',piIni)).trim();
+              //console.log(pi_registrado);
+              sdIni = escolainfo.indexOf('SD:')+3;
+              sd_registrado= escolainfo.substring(sdIni,escolainfo.indexOf('||',sdIni)).trim();
+              //console.log(sd_registrado);
+              sprkIni = escolainfo.indexOf('Sphero:')+7
+              sprk_registrado= escolainfo.substring(sprkIni,escolainfo.indexOf('||',sprkIni)).trim();
+              //console.log(sprk_registrado);
+              salaIni = escolainfo.indexOf('Sala:')+5
+              sala_registrado= escolainfo.substring(salaIni,escolainfo.indexOf('||',salaIni)).trim();
+              //console.log(sala_registrado);
             console.log('');
-            console.log(escolainfo);
+            console.log(escolainfo.replace(/\|\|/g,''));
             console.log('');
             console.log('--- Identificação automática de ativos');
             getSDSerialNumber();
@@ -98,12 +108,11 @@ fs.readFile('/home/mindmakers/school.info', function(err,data)
           }
         });
 
-
 noble.on('discover', function(peripheral) {
   
   numeroScans++;
   
- // console.log('Encontrou dispositivos bluetooth low energy (BLE). Scan no. '+numeroScans);
+  //console.log('Encontrou dispositivos bluetooth low energy (BLE). Scan no. '+numeroScans);
   
   if (peripheral.rssi>-50  && (
             (''+peripheral.advertisement.localName).indexOf('SK') == 0 || 
@@ -126,7 +135,7 @@ noble.on('discover', function(peripheral) {
   
   } 
 
-  if (numeroScans>=5 && global_jsondevicelist.length==0) {
+  if (numeroScans>=4 && global_jsondevicelist.length==0) {
     
     if (!modoregistro) {
         
@@ -179,6 +188,16 @@ var questions = [
     message: "Quantas turmas simultâneas de Mind Makers pode ter a escola?",
     when: function (answers) {
       return (answers.opcao && answers.loginSimplificado.toString().indexOf('Login Simplificado')>-1);
+    }
+  },
+  {
+    type: 'list',
+    name: 'sala',
+    message: "Se a escola possuir mais de uma sala Mind Makers, indique o número desta sala.",
+    default: 0,
+    choices: ['1','2','3','4'],
+    when: function (answers) {
+      return answers.opcao;
     }
   }
 
@@ -350,8 +369,11 @@ function executaRegistros() {
         
         if (answers.opcao) {
           
-          idescola_informado=escolaid;
-          escolanome_recuperado= escolanome;
+            idescola_informado=escolaid;
+            escolanome_recuperado= escolanome;
+
+            sala_informado=answers.sala;
+            console.log('sala = '+sala_informado);
 
             registraAtivosEscolaPlataforma(answers);
             atualizaAtalhoSphero();   
@@ -362,7 +384,11 @@ function executaRegistros() {
             totalAcessosPlataformaPendentes=2;
             servicoRecorrente=setInterval(monitoraAcessosAssincronosPlataforma,2000);  
  
+        } else {
+          console.log('');
+          process.exit(0);
         }
+        
         modoregistro=false;
             
       });   
@@ -424,7 +450,7 @@ function registraAtivosEscolaPlataforma(resposta) {
               'observacao': 'ativação automática'}},                 
             function(error, response, body){
                 if (!body.success || error) {
-                    if (!body.success)
+                    if (!body.sucess)
                         console.log('Erro ao registrar SD: '+body.err);
                     else
                         console.log('Erro ao registrar SD: '+error);  
@@ -447,7 +473,7 @@ function registraAtivosEscolaPlataforma(resposta) {
                            'versaoimagemdisco':versaoImagemDisco}},                 
             function(error, response, body){
                 if (!body.success || error) {
-                  if (!body.success)
+                  if (!body.sucess)
                     console.log('Erro ao registrar Estacao: '+body.err);
                   else
                     console.log('Erro ao registrar Estacao: '+error);                    
@@ -679,12 +705,18 @@ function atualizaSchoolInfo() {
      sprk_registrado=sprk_identificado;
   }
   
+  // Muda Sala?
+  if (sala_registrado!=sala_informado && sala_informado!='') {
+     sala_registrado=sala_informado;
+  }
+  
   escolainfoatualizada = "----- Identificação de Desktop Mind Makers ------\n" +
-                         "Cód.: "+escolaid+"\n"+
-                         "Nome: "+escolanome+"\n"+
-                         "Pi: "+pi_registrado+"\n"+
-                         "SD: "+sd_registrado+"\n"+
-                         "Sphero: "+sprk_registrado+"\n"+
+                         "Cód.: "+escolaid+"||\n"+
+                         "Nome: "+escolanome+"||\n"+
+                         "Pi: "+pi_registrado+"||\n"+
+                         "SD: "+sd_registrado+"||\n"+
+                         "Sphero: "+sprk_registrado+"||\n"+
+                         "Sala: "+sala_registrado+"||\n"+
                          "--------------------------------------------";  
   
   fs.writeFile('/home/mindmakers/school.info', escolainfoatualizada, function(err,data) 
@@ -697,7 +729,7 @@ function atualizaSchoolInfo() {
           
             console.log('------------- Ativação OK! ------------------');
             console.log('---------------------------------------------');
-            console.log(escolainfoatualizada);
+            console.log(escolainfoatualizada.replace(/\|\|/,''));
             console.log('');
 
             var fd = 
