@@ -120,7 +120,7 @@
   - debug:
        var: shell_output
   - debug:
-       var: versao superior precisa ser instalada
+       msg: versao superior precisa ser instalada
     when: shell_output.stdout is version('8.15', '>=')
 
 #precisa de ignorar o resultado para continuar rodando o playbook
