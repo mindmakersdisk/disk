@@ -373,7 +373,7 @@ function executaRegistros() {
             escolanome_recuperado= escolanome;
 
             sala_informado=answers.sala;
-            console.log('sala = '+sala_informado);
+            //console.log('sala = '+sala_informado);
 
             registraAtivosEscolaPlataforma(answers);
             atualizaAtalhoSphero();   
@@ -470,7 +470,7 @@ function registraAtivosEscolaPlataforma(resposta) {
             method: 'POST',
             json: {'username':resposta.login,'password':resposta.senha, 'computadorserial':pi_identificado,
                             'discoserial':sd_identificado, 'alocadoescola':escolaid, 
-                           'versaoimagemdisco':versaoImagemDisco}},                 
+                           'versaoimagemdisco':versaoImagemDisco,'sala':sala_informado}},                 
             function(error, response, body){
                 if (!body.success || error) {
                   if (!body.sucess)
