@@ -7,7 +7,8 @@
   when: not nodejs.stat.exists
 - name: Instalando Nodejs 8.15.3
   apt:
-     name: [nodejs]
+     name: nodejs
+     update_cache: yes
   when: not nodejs.stat.exists
 - name: Criando pasta de verificação de instalação do node 8.15.3
   file:
@@ -19,7 +20,7 @@
      name: [libudev-dev, build-essential]
 - name: Instalando vnstat
   apt:
-     name: [vnstat]
+     name: vnstat
 - name: Atualizando a versão do Chromium-browser
   apt:
      name: chromium-browser=72*
@@ -33,7 +34,7 @@
   register: npm
 - name: Instalando npm 1.4.0
   apt:
-     name: [npm]
+     name: npm
   when: not npm.stat.exists
 - name: Atualizando npm para 6.9.0
   npm: name={{item}} global=yes
