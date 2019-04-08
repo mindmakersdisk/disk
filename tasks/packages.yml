@@ -114,18 +114,30 @@
     name: request
     path: /home/mindmakers/programs
   when: not npmsphero.stat.exists
+- name: Verificando se as dependências npm websocket já foram instaladas
+  stat:
+     path: /home/mindmakers/programs/verify/npmsphero
+  register: websocket
 - name: Instalando pacote do npm "websocket"
   npm:
     name: websocket
     path: /home/mindmakers/programs
-#  when: not npmsphero.stat.exists
+  when: not websocket.stat.exists
 - name: Instalando pacote do npm "inquirer"
   npm:
     name: inquirer
     path: /home/mindmakers/programs
-#  when: not npmsphero.stat.exists
+  when: not websocket.stat.exists
+- name: Criando pasta de verificação websocket
+  file:
+    path: /home/mindmakers/programs/verify/websocket
+    state: directory
+    mode: 0444
 - name: Criando pasta de verificação das dependências Sphero
   file:
     path: /home/mindmakers/programs/verify/npmsphero
     state: directory
     mode: 0444
+- name: Instalando Telepot
+  pip:
+    name: telepot
