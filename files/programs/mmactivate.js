@@ -197,6 +197,18 @@ var questions = [
   },
   {
     type: 'number',
+    name: 'sala',
+    message: "Se possuir mais de uma sala, atribua um código numérico inteiro para esta. Atual:"+sala_registrado,
+    default: 1,
+    when: function (answers) {
+      return answers.opcao;
+    },
+    validate: function (valor) {
+      return Number.isInteger(valor) && parseInt(valor)>=1 && parseInt(valor)<=10;
+    },
+  },
+  {
+    type: 'number',
     name: 'codigo',
     message: "Atribua um código numérico inteiro para identificar essa estação, de 1 a 16 (tolerância até 20). Atual:"+estacao_registrado,
     default: 1,
@@ -277,6 +289,24 @@ var questionsLoginSimplificado = [
     when: function (answers) {
       return (answers.loginSimplificado.toString().indexOf('Login Simplificado')>-1);
     }
+  },
+  {
+    type: 'number',
+    name: 'sala',
+    message: "Se possuir mais de uma sala, atribua um código numérico inteiro para esta. Atual:"+sala_registrado,
+    default: 1,
+    validate: function (valor) {
+      return Number.isInteger(valor) && parseInt(valor)>=1 && parseInt(valor)<=10;
+    },
+  },
+  {
+    type: 'number',
+    name: 'codigo',
+    message: "Atribua um código numérico inteiro para identificar essa estação, de 1 a 16 (tolerância até 20). Atual:"+estacao_registrado,
+    default: 1,
+    validate: function (valor) {
+      return Number.isInteger(valor) && parseInt(valor)>=1 && parseInt(valor)<=20;
+    },
   }
 
 ];
@@ -348,14 +378,18 @@ function executaRegistros() {
       inquirer.prompt(questionsLoginSimplificado).then(answers => {
                   
             if (answers.loginSimplificado!=null && answers.loginSimplificado.toString().indexOf('Não')==-1) {
+              
                 atualizaAtalhoLoginSimplificadoEscola(answers);
             
-                totalAcessosPlataformaPendentes=0;
-                servicoRecorrente=setInterval(monitoraAcessosAssincronosPlataforma,2000);  
+            } 
+                
+            sala_informado=answers.sala;
+          
+            estacao_informado=answers.codigo;
 
-            } else {
-                process.exit(0);              
-            }
+            totalAcessosPlataformaPendentes=0;
+            servicoRecorrente=setInterval(monitoraAcessosAssincronosPlataforma,2000);                 
+            
             modoregistro=false;
               
       });   
@@ -388,7 +422,7 @@ function executaRegistros() {
             if (perguntas===questions)   
                 atualizaAtalhoLoginSimplificadoEscola(answers);
             
-            estacao_registrado=estacao_informado;
+            estacao_informado=answers.codigo;
             
             totalAcessosPlataformaPendentes=2;
             servicoRecorrente=setInterval(monitoraAcessosAssincronosPlataforma,2000);  
@@ -479,7 +513,7 @@ function registraAtivosEscolaPlataforma(resposta) {
             method: 'POST',
             json: {'username':resposta.login,'password':resposta.senha, 'computadorserial':pi_identificado,
                             'discoserial':sd_identificado, 'alocadoescola':escolaid, 
-                           'versaoimagemdisco':versaoImagemDisco,'sala':sala_informado,'codigo':estacao_informado}},                 
+                           'versaoimagemdisco':versaoImagemDisco,'sala':parseInt(sala_informado),'codigo':parseInt(estacao_informado)}},                 
             function(error, response, body){
                 if (!body.success || error) {
                   if (!body.sucess)
@@ -718,6 +752,12 @@ function atualizaSchoolInfo() {
   if (sala_registrado!=sala_informado && sala_informado!='') {
      sala_registrado=sala_informado;
   }
+
+  // Muda Estacao?
+  if (estacao_registrado!=estacao_informado && estacao_informado!='') {
+     estacao_registrado=estacao_informado;
+  }
+
   
   escolainfoatualizada = "----- Identificação de Desktop Mind Makers ------\n" +
                          "Cód.: "+escolaid+"||\n"+
@@ -726,6 +766,7 @@ function atualizaSchoolInfo() {
                          "SD: "+sd_registrado+"||\n"+
                          "Sphero: "+sprk_registrado+"||\n"+
                          "Sala: "+sala_registrado+"||\n"+
+                         "Estação: "+estacao_registrado+"||\n"+
                          "--------------------------------------------";  
   
   fs.writeFile('/home/mindmakers/school.info', escolainfoatualizada, function(err,data) 
