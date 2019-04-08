@@ -1,12 +1,11 @@
 - name: Verifica Versao tightvnc
   command: Xvnc -version
-  ignore_errors: true
   register: vnc_output
 
 - name: Instalando tightvncserver
   apt:
      name: tightvncserver
-  when: not vnc_output.stderr is search("Xvnc version TightVNC=*")
+  when: not vnc_output.stderr is search("Xvnc version TightVNC=*") ignore_errors= True
 - name: Copiando arquivo vncserver
   copy:
      src: files/vncserver
