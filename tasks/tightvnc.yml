@@ -1,13 +1,20 @@
+- name: Verifica Versao tightvnc
+     command: Xvnc -version
+  register: vnc_output
 - name: Instalando tightvncserver
   apt:
-     name: [tightvncserver]
+     name: tightvncserver
+  when: not vnc_output.stderr is search("Xvnc version TightVNC=*")
 - name: Copiando arquivo vncserver
   copy:
      src: files/vncserver
      dest: /etc/init.d
      mode: 0755
+  when: not vnc_output.stderr is search("Xvnc version TightVNC=*")
+
 - name: Configurando VncServer
   shell: 'sudo update-rc.d vncserver defaults'
+  when: not vnc_output.stderr is search("Xvnc version TightVNC=*")
 
 #- name: Chama o server para configurar uma senha de acesso
 #  shell: 'lxterminal -e tightvncserver'
