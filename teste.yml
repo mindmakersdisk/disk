@@ -7,7 +7,7 @@
   - debug:
        var: vnc_output
   - include: tasks/tightvnc.yml
-    when: vnc_output is version('1.4', '>=')
+    when: vnc_output is version('1.3', '>=')
 
 #  - name: get the rpm package facts
 #    package_facts:
