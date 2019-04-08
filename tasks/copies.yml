@@ -76,3 +76,4 @@
   copy:
      src: files/telegram/rc.local
      dest: /etc
+     mode: 0755
