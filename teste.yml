@@ -23,7 +23,7 @@
     find:
       paths: /home/mindmakers/
       patterns: 'school.info'
-      contains: '||'
+      contains: "||"
       use_regex: yes
     register: semregistro
   - debug:
