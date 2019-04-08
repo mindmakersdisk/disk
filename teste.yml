@@ -20,10 +20,10 @@
 #tentativa adicionar || o final das linhas do arquivo school.info
   - name: Ver se máquina já foi ativada para fixar o ip do Rapsberry.
     find:
-      paths: /home/mindmakers/
-      patterns: 'school.info'
-      contains: '||'
-      use_regex: yes
+       paths: /home/mindmakers/
+       patterns: 'school.info'
+       contains: "||"
+       use_regex: yes
     register: semregistro
   - lineinfile:
       path: /home/mindmakers/school.info
