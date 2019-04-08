@@ -26,7 +26,7 @@
       contains: '||'
       use_regex: yes
     register: semregistro
-    - debug:
+  - debug:
        var: semregistro
   
   - lineinfile:
