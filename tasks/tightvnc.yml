@@ -2,6 +2,8 @@
   command: Xvnc -version
   register: vnc_output
   ignore_errors: True
+- debug:
+   msg: vnc_output
 
 - name: Instalando tightvncserver
   apt:
