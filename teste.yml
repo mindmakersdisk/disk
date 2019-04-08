@@ -124,9 +124,9 @@
 #      use_regex: yes
 #    register: semregistro
 
-   - debug:
-        var: semregistro
-     when: semregistro.matched == 0
+  - debug:
+       var: semregistro
+    when: semregistro.matched == 0
 ##########
 
 #  - debug:
