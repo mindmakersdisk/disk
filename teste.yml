@@ -5,20 +5,15 @@
        path: /home/mindmakers/programs/mmtelebot.py
        state: touch
        mode: 0711
-#  - name: Copiando arquivo de inicialização do telebot
-#    copy:
-#       src: files/sudoers.d/010_pi-nopasswd
-#       dest: /etc/sudoers.d
-#       mode: 0440
+#tornar arquivo mmtelebot somente execultavem para níveis grupo e owner
 
+#força pedir senha apra usar comando sudo para usuários pi.       
   - lineinfile:
       path: /etc/sudoers.d/010_pi-nopasswd
       regexp: '^pi ALL='
       line: 'pi ALL=(ALL) ALL'
       backrefs: yes
-    register: teste
-  - debug:
-       var: teste
+
     
 #  - name: Verifica Versao tightvnc
 #    command: Xvnc -version
