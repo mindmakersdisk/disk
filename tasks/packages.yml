@@ -5,10 +5,12 @@
 - name: Instalando Nodejs 8.15.3
   shell: 'curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -'
   when: not nodejs.stat.exists
+- name: Atualizando Repositórios
+  apt:
+     update_cache: yes
 - name: Instalando Nodejs 8.15.3
   apt:
      name: nodejs
-     update_cache: yes
   when: not nodejs.stat.exists
 - name: Criando pasta de verificação de instalação do node 8.15.3
   file:
