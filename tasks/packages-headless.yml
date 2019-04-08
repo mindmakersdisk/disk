@@ -13,11 +13,6 @@
     path: /home/mindmakers/programs/verify/node815
     state: directory
     mode: 0444
-#- name: Cria pasta de verificação de instalação node 8.15.3
-#  copy:
-#     src: ongoing/verify/node815
-#     dest: /home/mindmakers/programs/verify
-#     mode: 0444
 - name: Instalando libudev-dev e build-essential
   apt:
      name: [libudev-dev, build-essential]
@@ -40,11 +35,6 @@
     path: /home/mindmakers/programs/verify/npm69
     state: directory
     mode: 0444
-#- name: Cria pasta de verificação de instalação npm 6.9.0
-#  copy:
-#     src: ongoing/verify/npm69
-#     dest: /home/mindmakers/programs/verify
-#     mode: 0444
 - name: Verificando se dependências npm do Sphero já foram instaladas
   stat:
      path: /home/mindmakers/programs/verify/npmsphero
@@ -135,8 +125,3 @@
     path: /home/mindmakers/programs/verify/npmsphero
     state: directory
     mode: 0444
-#- name: Cria pasta de verificação das dependencias Sphero
-#  copy:
-#     src: ongoing/verify/npmsphero
-#     dest: /home/mindmakers/programs/verify
-#     mode: 0444

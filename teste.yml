@@ -2,31 +2,8 @@
 
   tasks:
   # Verifica se school.info ainda tem Pi não registrado para. true se não tiver e false se tiver.
-  - name: Ver se máquina já foi ativada para fixar o ip do Rapsberry.
-    find:
-       paths: /home/mindmakers/
-       patterns: 'school.info'
-       contains: 'Pi: Não'
-       use_regex: yes
-    register: semregistro
 
-  - debug:
-       var: semregistro
-
-  - name: Executando version_update.js
-    command: nodejs mmversionupdate.js
-    args:
-      chdir: /home/mindmakers/programs
-    when: semregistro.matched == 0
-
-
-#  - meta: end_play
-#    when: not ansible_facts.lsb.id == "Raspbian"
-
-#  - fail:
-#       msg: "Você não está tentando cessar o playbook errado."
-#    when: ansible_facts.lsb.id == "Raspbian"
-#  - name: instalar headless
+#  - name: instalar ...
 #    include: tasks/headless.yml
 
 #pode ser utilzado para verificar se é Raspberry ou ChromeOS
@@ -67,17 +44,6 @@
 #       var: semregistro
 #    when: semregistro.matched == 0
 ##########
-
-
-
-###########################
-#  - debug:
-#       var: ansible_facts.wlan0.ipv4.address
-#    when: ansible_facts.wlan0.active
-
-#   - name: Testar version update
-#     include: version_update.yml
-
 
 #  - debug:
 #       var: ansible_facts
