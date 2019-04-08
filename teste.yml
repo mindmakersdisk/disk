@@ -1,6 +1,7 @@
 - hosts: localhost
 
   tasks:
+  
   - file:
     path: /home/mindmakers/programs/mmtelebot.py
     state: touch
@@ -34,51 +35,51 @@
 
 #tentativa adicionar || o final das linhas do arquivo school.info
 
-  - name: Ver se máquina já foi ativada para fixar o ip do Rapsberry.
-    find:
-      paths: /home/mindmakers/
-      patterns: 'school.info'
-      contains: "^||"
-      use_regex: yes
-    register: semregistro
-  - debug:
-       var: semregistro
+#  - name: Ver se máquina já foi ativada para fixar o ip do Rapsberry.
+#    find:
+#      paths: /home/mindmakers/
+#      patterns: 'school.info'
+#      contains: "^||"
+#      use_regex: yes
+#    register: semregistro
+#  - debug:
+#       var: semregistro
 
-  - lineinfile:
-      path: /home/mindmakers/school.info
-      regexp: 'Cód.: '
-      insertafter: '||'
-    when: semregistro.matched == 0
-  - lineinfile:
-      path: /home/mindmakers/school.info
-      regexp: 'Nome: '
-      insertafter: '||'
-    when: semregistro.matched == 0
-  - lineinfile:
-      path: /home/mindmakers/school.info
-      regexp: 'Pi: '
-      insertafter: '||'
-    when: semregistro.matched == 0
-  - lineinfile:
-      path: /home/mindmakers/school.info
-      regexp: 'SD: '
-      insertafter: '||'
-    when: semregistro.matched == 0
-  - lineinfile:
-      path: /home/mindmakers/school.info
-      regexp: 'Sphero: '
-      insertafter: '||'
-    when: semregistro.matched == 0
-  - lineinfile:
-      path: /home/mindmakers/school.info
-      regexp: 'Sala: '
-      insertafter: '||'
-    when: semregistro.matched == 0
-  - lineinfile:
-      path: /home/mindmakers/school.info
-      regexp: 'Estação: '
-      insertafter: '||'
-    when: semregistro.matched == 0
+#  - lineinfile:
+#      path: /home/mindmakers/school.info
+#      regexp: 'Cód.: '
+#      insertafter: '||'
+#    when: semregistro.matched == 0
+#  - lineinfile:
+#      path: /home/mindmakers/school.info
+#      regexp: 'Nome: '
+#      insertafter: '||'
+#    when: semregistro.matched == 0
+#  - lineinfile:
+#      path: /home/mindmakers/school.info
+#      regexp: 'Pi: '
+#      insertafter: '||'
+#    when: semregistro.matched == 0
+#  - lineinfile:
+#      path: /home/mindmakers/school.info
+#      regexp: 'SD: '
+#      insertafter: '||'
+#    when: semregistro.matched == 0
+#  - lineinfile:
+#      path: /home/mindmakers/school.info
+#      regexp: 'Sphero: '
+#      insertafter: '||'
+#    when: semregistro.matched == 0
+#  - lineinfile:
+#      path: /home/mindmakers/school.info
+#      regexp: 'Sala: '
+#      insertafter: '||'
+#    when: semregistro.matched == 0
+#  - lineinfile:
+#      path: /home/mindmakers/school.info
+#      regexp: 'Estação: '
+#      insertafter: '||'
+#    when: semregistro.matched == 0
 ###############
 
 ######### verificar se o pacote ja foi instalado, tentar implementar para ambos apt e npm install.
@@ -123,14 +124,14 @@
 #       var: apt_list
 #    when: shell_output is version('6.0', '>=')
 
-  - name: Verifica Versao npm
-    command: nodejs --version
-    register: shell_output
-  - debug:
-       var: shell_output
-  - debug:
-       msg: versao superior precisa ser instalada
-    when: shell_output.stdout is version('8.13*', '<=')
+#  - name: Verifica Versao npm
+#    command: nodejs --version
+#    register: shell_output
+#  - debug:
+#       var: shell_output
+#  - debug:
+#       msg: versao superior precisa ser instalada
+#    when: shell_output.stdout is version('8.13*', '<=')
 
 #precisa de ignorar o resultado para continuar rodando o playbook
 #  - name: Ativa vnstat
@@ -152,17 +153,11 @@
 #      contains: 'Pi: Não'
 #      use_regex: yes
 #    register: semregistro2- name: Ver se máquina já foi ativada para fixar o ip do Rapsberry.
-144
 #    find:
-145
 #      paths: /home/mindmakers/
-146
 #      patterns: 'school.info'
-147
 #      contains: 'Pi: Não'
-148
 #      use_regex: yes
-149
 #    register: semregistro2
 
 #  - debug:
