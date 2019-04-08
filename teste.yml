@@ -126,7 +126,7 @@
 
   - debug:
        var: semregistro
-    when: semregistro.matched == 0
+#    when: semregistro.matched == 0
 ##########
 
 #  - debug:
