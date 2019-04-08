@@ -21,8 +21,7 @@
 
   - name: Ver se máquina já foi ativada para fixar o ip do Rapsberry.
     find:
-      paths: /home/mindmakers/
-      patterns: 'school.info'
+      paths: /home/mindmakers/school.info
       contains: 'Pi: Não'
       use_regex: yes
     register: semregistro
