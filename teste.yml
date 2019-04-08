@@ -116,7 +116,7 @@
 
 
 ##########
- Verifica se school.info ainda tem Pi não registrado para. true se não tiver e false se tiver.
+# Verifica se school.info ainda tem Pi não registrado para. true se não tiver e false se tiver.
   - name: Ver se máquina já foi ativada para fixar o ip do Rapsberry.
     find:
       paths: /home/mindmakers/       patterns: 'school.info'
