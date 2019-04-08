@@ -8,6 +8,21 @@
 
   - name: show them
     debug: var=ansible_facts.packages
+    
+    
+######### verificar se o pacote ja foi instalado, tentar implementar para ambos apt e npm install.
+#- name: Check if foo.rpm is installed
+#  command: rpm -q foo.rpm
+#  register: rpm_check
+
+#- name: Execute script if foo.rpm is not installed
+#  command: somescript
+#  when: rpm_check.stdout.find('is not installed') != -1
+#The rpm command will also exit with a 0 if the package exists, or a 1 if the package isn't found, so another possibility is to use:
+
+#when: rpm_check.rc == 1
+
+######
   
   # Verifica se school.info ainda tem Pi não registrado para. true se não tiver e false se tiver.
 
