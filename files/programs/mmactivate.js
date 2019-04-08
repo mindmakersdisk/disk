@@ -25,6 +25,7 @@ var sprk_registrado='';
 var pi_registrado='';
 var sd_registrado='';
 var sala_registrado = '1';
+var estacao_registrado = '';
 
 // Identificados
 var sprk_identificado='';
@@ -35,6 +36,7 @@ var versaoImagemDisco='';
 // Informados
 var idescola_informado='';
 var sala_informado='';
+var estacao_informado='';
 
 // Recuperados
 var escolanome_recuperado='';
@@ -73,6 +75,9 @@ fs.readFile('/home/mindmakers/school.info', function(err,data)
               salaIni = escolainfo.indexOf('Sala:')+5
               sala_registrado= escolainfo.substring(salaIni,escolainfo.indexOf('||',salaIni)).trim();
               //console.log(sala_registrado);
+              estacaoIni = escolainfo.indexOf('Estação:')+8
+              estacao_registrado= escolainfo.substring(estacaoIni,escolainfo.indexOf('||',estacaoIni)).trim();
+              //console.log(estacao_registrado);
             console.log('');
             console.log(escolainfo.replace(/\|\|/g,''));
             console.log('');
@@ -191,14 +196,16 @@ var questions = [
     }
   },
   {
-    type: 'list',
-    name: 'sala',
-    message: "Se a escola possuir mais de uma sala Mind Makers, indique o número desta sala.",
-    default: 0,
-    choices: ['1','2','3','4'],
+    type: 'number',
+    name: 'codigo',
+    message: "Atribua um código numérico inteiro para identificar essa estação, de 1 a 16 (tolerância até 20). Atual:"+estacao_registrado,
+    default: 1,
     when: function (answers) {
       return answers.opcao;
-    }
+    },
+    validate: function (valor) {
+      return Number.isInteger(valor) && parseInt(valor)>=1 && parseInt(valor)<=20;
+    },
   }
 
 ];
@@ -381,6 +388,8 @@ function executaRegistros() {
             if (perguntas===questions)   
                 atualizaAtalhoLoginSimplificadoEscola(answers);
             
+            estacao_registrado=estacao_informado;
+            
             totalAcessosPlataformaPendentes=2;
             servicoRecorrente=setInterval(monitoraAcessosAssincronosPlataforma,2000);  
  
@@ -470,7 +479,7 @@ function registraAtivosEscolaPlataforma(resposta) {
             method: 'POST',
             json: {'username':resposta.login,'password':resposta.senha, 'computadorserial':pi_identificado,
                             'discoserial':sd_identificado, 'alocadoescola':escolaid, 
-                           'versaoimagemdisco':versaoImagemDisco,'sala':sala_informado}},                 
+                           'versaoimagemdisco':versaoImagemDisco,'sala':sala_informado,'codigo':estacao_informado}},                 
             function(error, response, body){
                 if (!body.success || error) {
                   if (!body.sucess)
