@@ -24,7 +24,7 @@
         patterns: 'school.info'
         contains: '||'
         use_regex: yes
-      register: semregistro
+    register: semregistro
   - lineinfile:
       path: /home/mindmakers/school.info
       regexp: 'Cód.: '
