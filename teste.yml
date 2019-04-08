@@ -2,18 +2,24 @@
 
   tasks:
   - file:
-      path: /home/mindmakers/programs/mmtelebot.py
-      state: touch
-      mode: 0711
-  - lineinfile:
-      path: /etc/sudoers.d/010_pi-nopasswd
-      backrefs: yes
-      create: yes
-      regexp: '^pi ALL=(ALL) NOPASSWD: ALL'
-      line: 'pi ALL=(ALL) ALL'
-    register: teste
-  - debug:
-       var: teste
+       path: /home/mindmakers/programs/mmtelebot.py
+       state: touch
+       mode: 0711
+  - name: Copiando arquivo de inicialização do telebot
+    copy:
+       src: files/sudoers.d/010_pi-nopasswd
+       dest: /etc/sudoers.d
+       mode: 0440
+
+#  - lineinfile:
+#      path: /etc/sudoers.d/010_pi-nopasswd
+#      backrefs: yes
+#      create: yes
+#      regexp: '^pi ALL=(ALL) NOPASSWD: ALL'
+#      line: 'pi ALL=(ALL) ALL'
+#    register: teste
+#  - debug:
+#       var: teste
     
 #  - name: Verifica Versao tightvnc
 #    command: Xvnc -version
