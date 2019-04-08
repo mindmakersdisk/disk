@@ -54,3 +54,6 @@ hdmi_drive=2
 
 # Enable audio (loads snd_bcm2835)
 dtparam=audio=on
+
+# Reduzir tela piscando do hdmi
+disable_splash=1
