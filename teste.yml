@@ -23,7 +23,7 @@
        paths: /home/mindmakers/
        patterns: 'school.info'
        contains: '||'
-       use_regex: yes
+##       use_regex: yes
     register: semregistro
   - lineinfile:
       path: /home/mindmakers/school.info
