@@ -1,7 +1,7 @@
 - hosts: localhost
 
   tasks:
-  -include: tasks/tightvnc.yml
+  - include: tasks/tightvnc.yml
 
 #  - name: get the rpm package facts
 #    package_facts:
