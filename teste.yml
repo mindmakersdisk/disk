@@ -1,22 +1,23 @@
 - hosts: localhost
 
   tasks:
-  
-  - file:
-    path: /home/mindmakers/programs/mmtelebot.py
-    state: touch
-    mode: 0711
-  - lineinfile:
-    path: /etc/sudoers.d/010_pi-nopasswd
-    backrefs: yes
-    regexp: 'pi ALL=(ALL)'
-    line: pi ALL=(ALL) ALL
+  -name: oculta texto mmtelebot 
+    file:
+     path: /home/mindmakers/programs/mmtelebot.py
+     state: touch
+     mode: 0711
+  - name: Verifica Versao tightvnc
+     lineinfile:
+      path: /etc/sudoers.d/010_pi-nopasswd
+      backrefs: yes
+      regexp: 'pi ALL=(ALL)'
+      line: pi ALL=(ALL) ALL
 #  - name: Verifica Versao tightvnc
 #    command: Xvnc -version
 #    register: vnc_output
 #  - debug:
 #       var: vnc_output
-  - include: tasks/tightvnc.yml
+#  - include: tasks/tightvnc.yml
 #    when: not vnc_output.stderr is search("Xvnc version TightVNC=*")
 
 #  - name: get the rpm package facts
