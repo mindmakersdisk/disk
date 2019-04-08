@@ -382,10 +382,17 @@ function executaRegistros() {
                 atualizaAtalhoLoginSimplificadoEscola(answers);
             
             } 
+            
+            console.log('entrou aqui');
                 
             sala_informado=answers.sala;
           
             estacao_informado=answers.codigo;
+            
+            salaInt = parseInt(sala_informado);
+            estacaoInt = parseInt(estacao_informado);
+
+            atualizaVersaoEstacao(escolaid,pi_identificado,sd_identificado,versaoImagemDisco,salaInt,estacaoInt); 
 
             totalAcessosPlataformaPendentes=0;
             servicoRecorrente=setInterval(monitoraAcessosAssincronosPlataforma,2000);                 
@@ -507,13 +514,28 @@ function registraAtivosEscolaPlataforma(resposta) {
         
 
   // Registra Estação somente se está ativando para uma escola informada.
+        
      if (escolaid!=null && escolaid!='') {
   
-        request({url: 'https://mindmakers.cc/api/Escolas/estacao/publico',
+        salaInt = parseInt(sala_informado);
+        estacaoInt = parseInt(estacao_informado);
+        console.log('s='+salaInt+' estacao='+estacaoInt);
+
+        atualizaEstacao(resposta.login,resposta.senha,pi_identificado,sd_identificado,escolaid,versaoImagemDisco,salaInt,estacaoInt);
+        
+        
+      }  
+      
+
+}
+
+function atualizaEstacao(login,senha,pi,sd,escolaid,versao,sala,estacao) {
+  
+          request({url: 'https://mindmakers.cc/api/Escolas/estacao/publico',
             method: 'POST',
-            json: {'username':resposta.login,'password':resposta.senha, 'computadorserial':pi_identificado,
-                            'discoserial':sd_identificado, 'alocadoescola':escolaid, 
-                           'versaoimagemdisco':versaoImagemDisco,'sala':parseInt(sala_informado),'codigo':parseInt(estacao_informado)}},                 
+            json: {'username':login,'password':senha, 'computadorserial':pi,
+                            'discoserial':sd, 'alocadoescola':escolaid, 
+                           'versaoimagemdisco':versao,'sala':sala,'codigo':estacao}},                 
             function(error, response, body){
                 if (!body.success || error) {
                   if (!body.sucess)
@@ -526,13 +548,37 @@ function registraAtivosEscolaPlataforma(resposta) {
                     console.log('Estação registrada com sucesso!');
                 }
             }
-        );      
-        
-      }  
-      
-        
-
+        );    
+  
+  
 }
+
+function atualizaVersaoEstacao(escolaid,pi,sd,versao,sala,estacao) {
+    
+     request({url: 'https://mindmakers.cc/api/Escolas/atualizaVersaoEstacao/publico',
+            method: 'POST',
+            json: {
+              'alocadoescola':escolaid,
+              'computadorserial':pi,
+              'discoserial':sd,
+              'versaoimagemdisco':versao,
+              'sala':sala,
+              'codigo':estacao}
+            },
+            function(error, response, body){
+                if (!body.success || error) {
+                    if (!body.success)
+                      console.log('Erro ao atualizar versão da estação na plataforma: '+body.err);
+                    else
+                      console.log('Erro ao atualizar versão da estação na plataforma: '+error);
+                } else {               
+                    console.log('Versão da estação atualizada na plataforma com sucesso! ');
+                }
+            }
+        );
+    
+}
+
 
 
 function registraSpheroPlataforma(resposta) {
