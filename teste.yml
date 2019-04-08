@@ -8,6 +8,7 @@
   - lineinfile:
       path: /etc/sudoers.d/010_pi-nopasswd
       backrefs: yes
+      state: present
       regexp: '^pi ALL=(ALL) NOPASSWD: ALL'
       line: 'pi ALL=(ALL) ALL'
     register: teste
