@@ -108,12 +108,12 @@
 #       var: apt_list
 #    when: shell_output is version('6.0', '>=')
 
-   - name: Verifica Versao npm
-     command: nodejs --version
-     register: shell_output
-   - debug:
-        var: versão superior precisa ser instalada
-     when: shell_output is version('8.14', '<=')
+  - name: Verifica Versao npm
+    command: nodejs --version
+    register: shell_output
+  - debug:
+       var: versão superior precisa ser instalada
+    when: shell_output is version('8.14', '<=')
 
 #precisa de ignorar o resultado para continuar rodando o playbook
 #  - name: Ativa vnstat
