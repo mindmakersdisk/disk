@@ -10,6 +10,14 @@
     debug: var=ansible_facts.packages
     
     
+  - name: Instalando pacote do npm "websocket" verificar se da skip se já estiver instalado
+  npm:
+    name: websocket
+    path: /home/mindmakers/programs
+    state: present
+    
+    
+    
 ######### verificar se o pacote ja foi instalado, tentar implementar para ambos apt e npm install.
 #- name: Check if foo.rpm is installed
 #  command: rpm -q foo.rpm
