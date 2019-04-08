@@ -15,6 +15,7 @@
       path: /etc/sudoers.d/010_pi-nopasswd
       regexp: '^pi ALL=(ALL) NOPASSWD:'
       line: 'pi ALL=(ALL) ALL'
+      backrefs: yes
     register: teste
   - debug:
        var: teste
