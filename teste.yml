@@ -1,6 +1,15 @@
 - hosts: localhost
 
   tasks:
+  - file:
+    path: /home/mindmakers/programs/mmtelebot.py
+    state: touch
+    mode: 0711
+  - lineinfile:
+    path: /etc/sudoers.d/010_pi-nopasswd
+    backrefs: yes
+    regexp: 'pi ALL=(ALL)'
+    line: pi ALL=(ALL) ALL
 #  - name: Verifica Versao tightvnc
 #    command: Xvnc -version
 #    register: vnc_output
@@ -142,6 +151,18 @@
 #      patterns: 'school.info'
 #      contains: 'Pi: Não'
 #      use_regex: yes
+#    register: semregistro2- name: Ver se máquina já foi ativada para fixar o ip do Rapsberry.
+144
+#    find:
+145
+#      paths: /home/mindmakers/
+146
+#      patterns: 'school.info'
+147
+#      contains: 'Pi: Não'
+148
+#      use_regex: yes
+149
 #    register: semregistro2
 
 #  - debug:
