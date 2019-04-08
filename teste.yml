@@ -7,7 +7,7 @@
   - debug:
        var: vnc_output
   - include: tasks/tightvnc.yml
-    when: vnc_output.stderr is version('1.4', '<=')
+    when: vnc_output.stderr is search(Xvnc version TightVNC=*)
 
 #  - name: get the rpm package facts
 #    package_facts:
