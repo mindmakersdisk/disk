@@ -117,7 +117,7 @@
   when: not npmsphero.stat.exists
 - name: Verificando se as dependências npm websocket já foram instaladas
   stat:
-     path: /home/mindmakers/programs/verify/npmsphero
+     path: /home/mindmakers/programs/verify/websocket
   register: websocket
 - name: Instalando pacote do npm "websocket"
   npm:
