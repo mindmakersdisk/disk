@@ -1,5 +1,5 @@
 - name: Verifica Versao tightvnc
-     command: Xvnc -version
+  command: Xvnc -version
   register: vnc_output
 - name: Instalando tightvncserver
   apt:
