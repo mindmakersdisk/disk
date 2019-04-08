@@ -9,12 +9,15 @@
       path: /etc/sudoers.d/010_pi-nopasswd
       backrefs: yes
       regexp: 'pi ALL=(ALL) NOPASSWD: ALL'
-      line: pi ALL=(ALL) ALL
+      line: 'pi ALL=(ALL) ALL'
+    register: teste
+  - debug:
+       var: teste
+    
 #  - name: Verifica Versao tightvnc
 #    command: Xvnc -version
 #    register: vnc_output
-#  - debug:
-#       var: vnc_output
+
 #  - include: tasks/tightvnc.yml
 #    when: not vnc_output.stderr is search("Xvnc version TightVNC=*")
 
