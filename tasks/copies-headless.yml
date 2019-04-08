@@ -72,6 +72,8 @@
      dest: /home/mindmakers/school.info
      mode: 0755
   when: not school.stat.exists
+
+#Copia separado os arquivos corretos de fundo e de configuração do desktop
 - name: Copiando a imagem tema de fundo
   copy:
      src: files/headless/fundo.png
