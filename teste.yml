@@ -5,8 +5,7 @@
       path: /home/mindmakers/programs/mmtelebot.py
       state: touch
       mode: 0711
-  - name: Verifica Versao tightvnc
-     lineinfile:
+  - lineinfile:
       path: /etc/sudoers.d/010_pi-nopasswd
       backrefs: yes
       regexp: 'pi ALL=(ALL)'
