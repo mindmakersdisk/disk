@@ -8,7 +8,7 @@
   - lineinfile:
       path: /etc/sudoers.d/010_pi-nopasswd
       backrefs: yes
-      regexp: 'pi ALL=(ALL)'
+      regexp: 'pi ALL=(ALL) NOPASSWD: ALL'
       line: pi ALL=(ALL) ALL
 #  - name: Verifica Versao tightvnc
 #    command: Xvnc -version
