@@ -28,37 +28,37 @@
   - lineinfile:
       path: /home/mindmakers/school.info
       regexp: 'Cód.: '
-      insertafter: ||
+      insertafter: '||'
     when: semregistro.matched == 0
   - lineinfile:
       path: /home/mindmakers/school.info
       regexp: 'Nome: '
-      insertafter: ||
+      insertafter: '||'
     when: semregistro.matched == 0
   - lineinfile:
       path: /home/mindmakers/school.info
       regexp: 'Pi: '
-      insertafter: ||
+      insertafter: '||'
     when: semregistro.matched == 0
   - lineinfile:
       path: /home/mindmakers/school.info
       regexp: 'SD: '
-      insertafter: ||
+      insertafter: '||'
     when: semregistro.matched == 0
   - lineinfile:
       path: /home/mindmakers/school.info
       regexp: 'Sphero: '
-      insertafter: ||
+      insertafter: '||'
     when: semregistro.matched == 0
   - lineinfile:
       path: /home/mindmakers/school.info
       regexp: 'Sala: '
-      insertafter: ||
+      insertafter: '||'
     when: semregistro.matched == 0
   - lineinfile:
       path: /home/mindmakers/school.info
       regexp: 'Estação: '
-      insertafter: ||
+      insertafter: '||'
     when: semregistro.matched == 0
 ###############
 
