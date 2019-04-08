@@ -22,6 +22,16 @@
 
 #when: rpm_check.rc == 1
 
+#Based on the Bruce P answer above, a similar approach for apt/deb files is
+
+#- name: Check if foo is installed
+#  command: dpkg-query -l foo
+#  register: deb_check
+
+#- name: Execute script if foo is not installed
+#  command: somescript
+#  when: deb_check.stdout.find('no packages found') != -1
+
 ######
   
   # Verifica se school.info ainda tem Pi não registrado para. true se não tiver e false se tiver.
