@@ -23,12 +23,12 @@
     find:
       paths: /home/mindmakers/
       patterns: 'school.info'
-      contains: "\|\|"
+      contains: "^|^|"
       use_regex: yes
     register: semregistro
   - debug:
        var: semregistro
-  
+
   - lineinfile:
       path: /home/mindmakers/school.info
       regexp: 'Cód.: '
@@ -108,6 +108,13 @@
 #       var: apt_list
 #    when: shell_output is version('6.0', '>=')
 
+   - name: Verifica Versao npm
+     command: nodejs --version
+     register: shell_output
+   - debug:
+        var: versão superior precisa ser instalada
+     when: shell_output is version('8.14', '<=')
+
 #precisa de ignorar o resultado para continuar rodando o playbook
 #  - name: Ativa vnstat
 #    command: lxterminal -e vnstat -l -i wlan0
@@ -121,16 +128,16 @@
 
 ##########
 # Verifica se school.info ainda tem Pi não registrado para. true se não tiver e false se tiver.
-  - name: Ver se máquina já foi ativada para fixar o ip do Rapsberry.
-    find:
-      paths: /home/mindmakers/       
-      patterns: 'school.info'
-      contains: 'Pi: Não'
-      use_regex: yes
-    register: semregistro2
+#  - name: Ver se máquina já foi ativada para fixar o ip do Rapsberry.
+#    find:
+#      paths: /home/mindmakers/
+#      patterns: 'school.info'
+#      contains: 'Pi: Não'
+#      use_regex: yes
+#    register: semregistro2
 
-  - debug:
-       var: semregistro2
+#  - debug:
+#       var: semregistro2
 #    when: semregistro.matched == 0
 ##########
 
