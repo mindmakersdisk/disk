@@ -1,11 +1,10 @@
 - hosts: localhost
 
   tasks:
-  -name: oculta texto mmtelebot 
-    file:
-     path: /home/mindmakers/programs/mmtelebot.py
-     state: touch
-     mode: 0711
+  - file:
+      path: /home/mindmakers/programs/mmtelebot.py
+      state: touch
+      mode: 0711
   - name: Verifica Versao tightvnc
      lineinfile:
       path: /etc/sudoers.d/010_pi-nopasswd
