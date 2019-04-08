@@ -2,8 +2,8 @@
 - lineinfile:
     path: /etc/dhcpcd.conf
     backrefs: yes
-    regexp: 'pi ALL=(ALL)'
-    line: pi ALL=(ALL) ALL
+    regexp: '#interface eth0'
+    line: interface eth0
   when: ansible_facts.eth0.active
 - lineinfile:
     path: /etc/dhcpcd.conf
