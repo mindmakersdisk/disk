@@ -123,10 +123,10 @@
       patterns: 'school.info'
       contains: 'Pi: Não'
       use_regex: yes
-    register: semregistro
+    register: semregistro2
 
   - debug:
-       var: semregistro
+       var: semregistro2
 #    when: semregistro.matched == 0
 ##########
 
