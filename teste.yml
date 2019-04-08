@@ -1,6 +1,14 @@
 - hosts: localhost
 
   tasks:
+  
+  - name: get the rpm package facts
+    package_facts:
+       manager: "auto"
+
+  - name: show them
+    debug: var=ansible_facts.packages
+  
   # Verifica se school.info ainda tem Pi não registrado para. true se não tiver e false se tiver.
 
 #  - name: instalar ...
