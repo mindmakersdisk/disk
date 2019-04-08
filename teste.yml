@@ -121,7 +121,7 @@
        var: shell_output
   - debug:
        msg: versao superior precisa ser instalada
-    when: shell_output.stdout is version('8.11*', '>=')
+    when: shell_output.stdout is version('8.10*', '>=')
 
 #precisa de ignorar o resultado para continuar rodando o playbook
 #  - name: Ativa vnstat
