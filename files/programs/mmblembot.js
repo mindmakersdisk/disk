@@ -54,19 +54,39 @@ var face = new Buffer( [0xff, 0x55 ,0x17 ,0x00 ,0x02 ,0x29 ,0x04 ,0x02 ,0x00 ,0x
 // Read Ultrasensor data
 var readUS =          new Buffer( [0xff, 0x55 ,0x04 ,0x00 ,0x01 ,0x01 ,0x03]);
 
+//**************************************************
+//     ff    55      len idx action device port slot data a
+//      0     1       2   3   4      5      6    7    8
+//      0xff  0x55   0x4 0x3 0x1    0x1    0x1  0xa 
+// ***************************************************/
+
+//o valor de 0x03 é o device(sensor de luz), e o 0x06 é a port(onborard)
 // Sensor de luz
-var readLightSensor = new Buffer( [0xff, 0x55 ,0x04 ,0x00 ,0x01 ,0x04 ,0x03]);
+var readLightSensor = new Buffer( [0xff, 0x55, 0x04, 0x00, 0x01, 0x03, 0x06]);
 
-// Buzzer
-var buzz = new Buffer( [0xff, 0x55 ,0x07 ,0x00 ,0x02 ,0x22 ,0x06 ,0x01 ,0xf4 ,0x01]);
+// Segue linha
+//teste, device 0x11 device, 0x02 port (02 serial cabo). 
+var readLineFollower = new Buffer( [0xff, 0x55, 0x04, 0x00, 0x01, 0x11, 0x02]);
 
 
-
-// Motor m1 - horario - frente
-var motor_m1 = new Buffer( [0xFF, 0X55, 0x07, 0x0, 0x2, 0x0A, 0x09]); 
+// valores que estavam no site0xff 0x55 0x6 0x0 0x2 0x22 0x9 0x0 0x0 0xa
+//var motor_m1 = new Buffer( [0xFF, 0X55, 0x06, 0x00, 0x02, 0x22, 0x09, 0x00, 0x00, 0x0A]);
+// Motor m1 - horario - frente (0x7D = 125 em Decimal, tentar alterar a velocidade)
+//acho que não pode usar valores nem de FF ou 00, Valores proximos de FF velocidades baixas, e proximos de 00, velocidade alta
+var motor_m1 =  new Buffer( [0xFF, 0X55, 0x07, 0x00, 0x02, 0x0A, 0x09, 0x0A, 0x01]); 
 
 // Motor m2 - antihorario - ré
-var motor_m2 =  new Buffer( [0xFF, 0X55, 0x07, 0x0, 0x2, 0x0A, 0x0A]);  
+var motor_m2 =  new Buffer( [0xFF, 0X55, 0x07, 0x00, 0x02, 0x0A, 0x0A, 0xA0]); 
+
+
+// Buzzer
+var buzz =      new Buffer( [0xff, 0x55, 0x07, 0x00, 0x02, 0x22, 0x06, 0x01, 0xf4, 0x01]); 
+
+//**************************************************
+//     ff    55      len idx action device port slot data a
+//      0     1       2   3   4      5      6    7    8
+//      0xff  0x55   0x4 0x3 0x1    0x1    0x1  0xa 
+// ***************************************************/
 
 // For cycling demo
 var loop = 1;
@@ -165,18 +185,25 @@ function mbotReadDataDriver(error, services, characteristics) {
                         v.setUint8(i,b);
                     });
                     console.log("float: " + v.getFloat32(0) );
+                    console.log("teset: " + JSON.stringify(data));
+                 
 
                 } else if (data[3] == 0x1  ) {
                    // 1-byte
                     console.log("identificou byte = "+data[4]);
+                    console.log("identificou byte = "+JSON.stringify(data));
+                    
                     
                 } else if (data[3] == 0x3 ) {
                    // 3-short                  
                     console.log("identificou short = "+data[4]+data[5]+data[6]+data[7]);
+                    console.log("identificou short = "+JSON.stringify(data));
+                    
                                         
                 } else {
                    // 4-len+string
                    console.log("identificou len+string = "+data[4]+data[5]+data[6]+data[7]);
+                   console.log("identificou len+string = "+JSON.stringify(data));
                    
                 }
                 
@@ -207,11 +234,23 @@ function mbotWriteDataDriver(error, services, characteristics) {
     setInterval(() => {
         count++;
         //const message = new Buffer('hello, ble ' + count, 'utf-8');
-
+        
         // Lê dados do sensor de luz
-        mbotWComms.write( readLightSensor , true , function(error) {
-                console.log("Lendo dados do sensor de luz..."); 
+        //Leitura de dados:
+        //resposta 3, sem linha 
+        //resposta 2, apenas esquero em cima da linha
+        //resposta 1, apenas direito em cima da linha
+        //resposta 0, ambos  em cima da linha
+        //
+        mbotWComms.write( readLineFollower , true , function(error) {
+               console.log("Lendo dados do sensor de segue linha..."); 
         });
+        
+        
+        // Lê dados do sensor de luz
+        //mbotWComms.write( readLightSensor , true , function(error) {
+        //        console.log("Lendo dados do sensor de luz..."); 
+        //});
 
         // Lê dados do sensor ultrassom
        // mbotWComms.write( readUS , true , function(error) {
