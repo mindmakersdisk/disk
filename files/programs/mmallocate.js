@@ -33,18 +33,31 @@ fs.readFile('/home/mindmakers/school.info', function(err,data)
               escolainfo = data.toString();
               console.log('--------------------------------------------------');
               console.log('--- Alocação de Disco para Escola. Registro Atual:');
-              escolaid= escolainfo.substring(escolainfo.indexOf('Cód.:')+5,escolainfo.indexOf('Nome:')-1).trim();
-             // console.log(escolaid);
-              escolanome= escolainfo.substring(escolainfo.indexOf('Nome:')+5,escolainfo.indexOf('Pi:',)-1).trim();
-             // console.log(escolanome);
-             pi_registrado= escolainfo.substring(escolainfo.indexOf('Pi:')+3,escolainfo.indexOf('SD:',)-1).trim();
-             // console.log(pi);
-             sd_registrado= escolainfo.substring(escolainfo.indexOf('SD:')+3,escolainfo.indexOf('Sphero:',)-1).trim();
-             // console.log(sd);
-             sprk_registrado= escolainfo.substring(escolainfo.indexOf('Sphero:')+7,escolainfo.indexOf('----',)-1).trim();
-             // console.log(sprk_registrado);
+              
+              escolaidIni =escolainfo.indexOf('Cód.:')+5;
+              escolaid= escolainfo.substring(escolaidIni,escolainfo.indexOf('||'),escolaidIni).trim();
+              //console.log(escolaid);
+              escolanomeIni =escolainfo.indexOf('Nome:')+5;
+              escolanome= escolainfo.substring(escolanomeIni,escolainfo.indexOf('||',escolanomeIni)).trim();
+              //console.log(escolanome);
+              piIni = escolainfo.indexOf('Pi:')+3;
+              pi_registrado= escolainfo.substring(piIni,escolainfo.indexOf('||',piIni)).trim();
+              //console.log(pi_registrado);
+              sdIni = escolainfo.indexOf('SD:')+3;
+              sd_registrado= escolainfo.substring(sdIni,escolainfo.indexOf('||',sdIni)).trim();
+              //console.log(sd_registrado);
+              sprkIni = escolainfo.indexOf('Sphero:')+7
+              sprk_registrado= escolainfo.substring(sprkIni,escolainfo.indexOf('||',sprkIni)).trim();
+              //console.log(sprk_registrado);
+              salaIni = escolainfo.indexOf('Sala:')+5
+              sala_registrado= escolainfo.substring(salaIni,escolainfo.indexOf('||',salaIni)).trim();
+              //console.log(sala_registrado);
+              estacaoIni = escolainfo.indexOf('Estação:')+8
+              estacao_registrado= escolainfo.substring(estacaoIni,escolainfo.indexOf('||',estacaoIni)).trim();
+              //console.log(estacao_registrado);
+             
             console.log('');
-            console.log(escolainfo);
+            console.log(escolainfo.replace(/\|\|/g,''));
             console.log('');
 
             
@@ -97,7 +110,7 @@ function rotinaAlocacao() {
           // Testa se imagem está configurada
           obtemVersaoImagemDisco();
        
-          idescola_informado=answers.idescola.toLowerCase();
+          idescola_informado=answers.idescola;
           
           recuperaNomeEscola(answers);
         
@@ -178,14 +191,16 @@ function atualizaSchoolInfo() {
      escolanome=escolanome_recuperado;
 
   }
-  
-  escolainfoatualizada = "----- Identificação de Desktop Mind Makers ------\n" +
-                         "Cód.: "+escolaid+"\n"+
-                         "Nome: "+escolanome+"\n"+
-                         "Pi: Não registrado\n"+
-                         "SD: Não registrado\n"+
-                         "Sphero: Não registrado\n"+
-                         "--------------------------------------------";  
+                          
+    escolainfoatualizada = "----- Identificação de Desktop Mind Makers ------\n" +
+                         "Cód.: "+escolaid+"||\n"+
+                         "Nome: "+escolanome+"||\n"+
+                         "Pi: ||\n"+
+                         "SD: ||\n"+
+                         "Sphero: ||\n"+
+                         "Sala: ||\n"+
+                         "Estação: ||\n"+
+                         "--------------------------------------------";                         
   
   fs.writeFile('/home/mindmakers/school.info', escolainfoatualizada, function(err,data) 
         {
@@ -196,7 +211,7 @@ function atualizaSchoolInfo() {
           } else {
             console.log('------------- Alocação OK! ------------------');
             console.log('---------------------------------------------');
-            console.log(escolainfoatualizada);
+            console.log(escolainfoatualizada.replace(/\|\|/g,''));
             // Encerra com sucesso
             process.exit();
           
