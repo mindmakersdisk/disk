@@ -198,7 +198,7 @@ var questions = [
   {
     type: 'number',
     name: 'sala',
-    message: "Se possuir mais de uma sala, atribua um código numérico inteiro para esta. Atual:"+sala_registrado,
+    message: "Se possuir mais de uma sala, atribua um código numérico inteiro para esta (atual:"+sala_registrado+")",
     default: 1,
     when: function (answers) {
       return answers.opcao;
@@ -210,7 +210,7 @@ var questions = [
   {
     type: 'number',
     name: 'codigo',
-    message: "Atribua um código numérico inteiro para identificar essa estação, de 1 a 16 (tolerância até 20). Atual:"+estacao_registrado,
+    message: "Atribua um código numérico inteiro para identificar essa estação, de 1 a 20 (atual:"+estacao_registrado,
     default: 1,
     when: function (answers) {
       return answers.opcao;
@@ -285,7 +285,7 @@ var questionsLoginSimplificado = [
   {
     type: 'input',
     name: 'numeroSalas',
-    message: "Quantas turmas simultâneas de Mind Makers pode ter a escola?",
+    message: "Quantas turmas simultâneas de Pensamento Computacional pode ter a escola?",
     when: function (answers) {
       return (answers.loginSimplificado.toString().indexOf('Login Simplificado')>-1);
     }
@@ -293,7 +293,7 @@ var questionsLoginSimplificado = [
   {
     type: 'number',
     name: 'sala',
-    message: "Se possuir mais de uma sala, atribua um código numérico inteiro para esta. Atual:"+sala_registrado,
+    message: "Se possuir mais de uma sala, atribua um código numérico inteiro para esta (atual:"+sala_registrado+")",
     default: 1,
     validate: function (valor) {
       return Number.isInteger(valor) && parseInt(valor)>=1 && parseInt(valor)<=10;
@@ -302,7 +302,7 @@ var questionsLoginSimplificado = [
   {
     type: 'number',
     name: 'codigo',
-    message: "Atribua um código numérico inteiro para identificar essa estação, de 1 a 16 (tolerância até 20). Atual:"+estacao_registrado,
+    message: "Atribua um código numérico inteiro para identificar essa estação, de 1 a 20 (atual:"+estacao_registrado+")",
     default: 1,
     validate: function (valor) {
       return Number.isInteger(valor) && parseInt(valor)>=1 && parseInt(valor)<=20;
@@ -382,8 +382,6 @@ function executaRegistros() {
                 atualizaAtalhoLoginSimplificadoEscola(answers);
             
             } 
-            
-            console.log('entrou aqui');
                 
             sala_informado=answers.sala;
           
@@ -422,14 +420,13 @@ function executaRegistros() {
 
             sala_informado=answers.sala;
             //console.log('sala = '+sala_informado);
-
+            estacao_informado=answers.codigo;
+            
             registraAtivosEscolaPlataforma(answers);
             atualizaAtalhoSphero();   
             
             if (perguntas===questions)   
                 atualizaAtalhoLoginSimplificadoEscola(answers);
-            
-            estacao_informado=answers.codigo;
             
             totalAcessosPlataformaPendentes=2;
             servicoRecorrente=setInterval(monitoraAcessosAssincronosPlataforma,2000);  
@@ -519,7 +516,7 @@ function registraAtivosEscolaPlataforma(resposta) {
   
         salaInt = parseInt(sala_informado);
         estacaoInt = parseInt(estacao_informado);
-        console.log('s='+salaInt+' estacao='+estacaoInt);
+       // console.log('s='+salaInt+' estacao='+estacaoInt);
 
         atualizaEstacao(resposta.login,resposta.senha,pi_identificado,sd_identificado,escolaid,versaoImagemDisco,salaInt,estacaoInt);
         
@@ -825,7 +822,7 @@ function atualizaSchoolInfo() {
           
             console.log('------------- Ativação OK! ------------------');
             console.log('---------------------------------------------');
-            console.log(escolainfoatualizada.replace(/\|\|/,''));
+            console.log(escolainfoatualizada.replace(/\|\|/g,''));
             console.log('');
 
             var fd = 
