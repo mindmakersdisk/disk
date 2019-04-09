@@ -30,11 +30,14 @@ fs.readFile('/home/mindmakers/school.info', function(err,data)
               process.exit(1);
           } else {
              escolainfo = data.toString();
-             escolaid= escolainfo.substring(escolainfo.indexOf('Cód.:')+5,escolainfo.indexOf('Nome:')-1).trim();
+             escolaidIni =escolainfo.indexOf('Cód.:')+5;
+             escolaid= escolainfo.substring(escolaidIni,escolainfo.indexOf('||'),escolaidIni).trim();
              // console.log(escolaid);
-             pi_registrado= escolainfo.substring(escolainfo.indexOf('Pi:')+3,escolainfo.indexOf('SD:',)-1).trim();
+             piIni = escolainfo.indexOf('Pi:')+3;
+             pi_registrado= escolainfo.substring(piIni,escolainfo.indexOf('||',piIni)).trim();
              // console.log(pi);
-             sd_registrado= escolainfo.substring(escolainfo.indexOf('SD:')+3,escolainfo.indexOf('Sphero:',)-1).trim();
+             sdIni = escolainfo.indexOf('SD:')+3;
+             sd_registrado= escolainfo.substring(sdIni,escolainfo.indexOf('||',sdIni)).trim();
              // console.log(sd);
             // Verifica se está configurado e se está alocado (pré-requisitos para ativação)
             obtemVersaoImagemDisco();
@@ -73,7 +76,7 @@ function atualizaVersaoEstacao() {
             function(error, response, body){
                 if (!body.success || error) {
                     if (!body.success)
-                      console.log('Erro ao atualizar versão da estação na plataforma: '+body.err);
+                      console.log('Erro ao atualizar versão da estação na plataforma: '+JSON.stringify(body.err));
                     else
                       console.log('Erro ao atualizar versão da estação na plataforma: '+error);
                 } else {               
