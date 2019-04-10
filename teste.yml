@@ -28,19 +28,19 @@
 #    when: not vnc_output.stderr is search("Xvnc version TightVNC-*")
 ############
 
-  - name: get the rpm package facts
-    package_facts:
-       manager: "auto"
+#  - name: get the rpm package facts
+#    package_facts:
+#       manager: "auto"
 
-  - name: show them
-    debug: var=ansible_facts.packages
+#  - name: show them
+#    debug: var=ansible_facts.packages
 
 
-#  - name: Instalando pacote do npm "websocket" verificar se da skip se já estiver instalado
-#  npm:
-#    name: websocket
-#    path: /home/mindmakers/programs
-#    state: present
+  - name: Instalando pacote do npm "websocket" verificar se da skip se já estiver instalado
+    npm:
+      name: websocket
+      path: /home/mindmakers/programs
+      state: present
 
 #tentativa adicionar || o final das linhas do arquivo school.info
 
