@@ -40,7 +40,7 @@
     npm:
       name: websocket
       path: /home/mindmakers/programs
-      state: present
+#      state: present
 
 #tentativa adicionar || o final das linhas do arquivo school.info
 
