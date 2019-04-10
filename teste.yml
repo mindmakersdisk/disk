@@ -58,7 +58,7 @@
        var: npm_output
   - debug:
        msg: executou o baguio
-    when: npm_output.stdout is version('7.9.0', '<') 
+    when: npm_output.stdout is version('6.9.0', '<') 
 #  - name: Atualiza o npm se versão < 6.9
 #    npm: name={{item}} global=yes
 #    with_items:
