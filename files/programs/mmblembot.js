@@ -1,6 +1,6 @@
 /*
  Mind Makers - mBot Controller
- 
+
  Adaptqado de:
 
 // Author: fcgdam/PrimalCortex 2018.
@@ -41,12 +41,42 @@ const mbotServiceUUID       = "ffe1";
 const mbotReadEndPointUUID  = "ffe2";
 const mbotWriteEndPointUUID = "ffe3";
 
+const ir_A = 45;
+const ir_B = 46;
+const ir_C = 47;
+const ir_D = 44;
+const ir_E = 43;
+const ir_F = 0D;
+const ir_UP = 40;
+const ir_DOWN = 19;
+const ir_LEFT = 07;
+const ir_RIGHT = 09;
+const ir_SETTINGS = 15;
+const ir_R0 = 16;
+const ir_R1 = 0C;
+const ir_R2 = 18;
+const ir_R3 = 5E;
+const ir_R4 = 08;
+const ir_R5 = 1C;
+const ir_R6 = 5A;
+const ir_R7 = 42;
+const ir_R8 = 52;
+const ir_R9 = 4A;
+
 // For demo purposes
 // Some commands:
 
 // Onboard RGB WS2812 leds
+var ledColor0 = new Buffer([0xff, 0x55, 0x09, 0x00, 0x02, 0x08, 0x07, 0x02, 0x00, 0x00, 0x00, 0x00]);
 var ledColor1 = new Buffer([0xff, 0x55, 0x09, 0x00, 0x02, 0x08, 0x07, 0x02, 0x00, 0xff, 0xFF, 0x00]);
 var ledColor2 = new Buffer([0xff, 0x55, 0x09, 0x00, 0x02, 0x08, 0x07, 0x02, 0x00, 0x00, 0x00, 0xFF]);
+
+var ledRight1 = new Buffer([0xff, 0x55, 0x09, 0x00, 0x02, 0x08, 0x07, 0x02, 0x01, 0xff, 0xFF, 0x00]);
+var ledRight2 = new Buffer([0xff, 0x55, 0x09, 0x00, 0x02, 0x08, 0x07, 0x02, 0x01, 0xff, 0xFF, 0x00]);
+
+var ledLeft1 = new Buffer([0xff, 0x55, 0x09, 0x00, 0x02, 0x08, 0x07, 0x02, 0x02, 0xff, 0xFF, 0x00]);
+var ledLeft2 = new Buffer([0xff, 0x55, 0x09, 0x00, 0x02, 0x08, 0x07, 0x02, 0x02, 0xff, 0xFF, 0x00]);
+
 
 // Led Matrix connected to Port 0x04  -----------------------v
 var face = new Buffer( [0xff, 0x55 ,0x17 ,0x00 ,0x02 ,0x29 ,0x04 ,0x02 ,0x00 ,0x00 ,0x00 ,0x00 ,0x40 ,0x48 ,0x44 ,0x42 ,0x02 ,0x02 ,0x02 ,0x02 ,0x42 ,0x44 ,0x48 ,0x40 ,0x00 ,0x00]);
@@ -57,7 +87,7 @@ var readUS =          new Buffer( [0xff, 0x55 ,0x04 ,0x00 ,0x01 ,0x01 ,0x03]);
 //**************************************************
 //     ff    55      len idx action device port slot data a
 //      0     1       2   3   4      5      6    7    8
-//      0xff  0x55   0x4 0x3 0x1    0x1    0x1  0xa 
+//      0xff  0x55   0x4 0x3 0x1    0x1    0x1  0xa
 // ***************************************************/
 
 //o valor de 0x03 é o device(sensor de luz), e o 0x06 é a port(onborard)
@@ -65,27 +95,66 @@ var readUS =          new Buffer( [0xff, 0x55 ,0x04 ,0x00 ,0x01 ,0x01 ,0x03]);
 var readLightSensor = new Buffer( [0xff, 0x55, 0x04, 0x00, 0x01, 0x03, 0x06]);
 
 // Segue linha
-//teste, device 0x11 device, 0x02 port (02 serial cabo). 
 var readLineFollower = new Buffer( [0xff, 0x55, 0x04, 0x00, 0x01, 0x11, 0x02]);
 
+//Botão onboard pressionado?
+var read_onboard_button_pressed =  new Buffer( [0xFF, 0X55, 0x05, 0x00, 0x01, 0x23, 0x07, 0x00]);
 
-// valores que estavam no site0xff 0x55 0x6 0x0 0x2 0x22 0x9 0x0 0x0 0xa
-//var motor_m1 = new Buffer( [0xFF, 0X55, 0x06, 0x00, 0x02, 0x22, 0x09, 0x00, 0x00, 0x0A]);
-// Motor m1 - horario - frente (0x7D = 125 em Decimal, tentar alterar a velocidade)
-//acho que não pode usar valores nem de FF ou 00, Valores proximos de FF velocidades baixas, e proximos de 00, velocidade alta
-var motor_m1 =  new Buffer( [0xFF, 0X55, 0x07, 0x00, 0x02, 0x0A, 0x09, 0x0A, 0x01]); 
+//Botão onboard não pressionado?
+var read_onboard_button_released =  new Buffer( [0xFF, 0X55, 0x05, 0x00, 0x01, 0x23, 0x07, 0x01]);
 
-// Motor m2 - antihorario - ré
-var motor_m2 =  new Buffer( [0xFF, 0X55, 0x07, 0x00, 0x02, 0x0A, 0x0A, 0xA0]); 
+// Motor m1 - horario - frente 255
+var motor_m1 =  new Buffer( [0xFF, 0X55, 0x06, 0x00, 0x02, 0x0A, 0x09, 0x01, 0xFF]);
+// Motor m2 -  horario - frente 255
+var motor_m2 =  new Buffer( [0xFF, 0X55, 0x06, 0x00, 0x02, 0x0A, 0x0A, 0xFF, 0x00]);
 
+//ambos motores param
+var motor_stop =  new Buffer( [0xFF, 0X55, 0x07, 0x00, 0x02, 0x05, 0x00, 0x00, 0x00, 0x00]);
+
+//ambos motores avançam a 255
+var motor_run255 =  new Buffer( [0xFF, 0X55, 0x07, 0x00, 0x02, 0x05, 0x01, 0xFF, 0xFF, 0x00]);
+
+var motor_run100 =  new Buffer( [0xFF, 0X55, 0x07, 0x00, 0x02, 0x05, 0x9C, 0xFF, 0x64, 0x00]);
+
+//ambos motores dão ré a 255
+var motor_reverse255 =  new Buffer( [0xFF, 0X55, 0x07, 0x00, 0x02, 0x05, 0xFF, 0x00, 0x01, 0xFF]);
+
+var motor_reverse100 =  new Buffer( [0xFF, 0X55, 0x07, 0x00, 0x02, 0x05, 0x64, 0x00, 0x9C, 0xFF]);
+
+//ambos motores viram a direita a 255
+var motor_turnright255 =  new Buffer( [0xFF, 0X55, 0x07, 0x00, 0x02, 0x05, 0x01, 0xFF, 0x01, 0xFF]);
+
+//ambos motores viram a direita a 100
+var motor_turnright100 =  new Buffer( [0xFF, 0X55, 0x07, 0x00, 0x02, 0x05, 0x9C, 0xFF, 0x9C, 0xFF]);
+
+//ambos motores viram a esquerda a 255
+var motor_turnleft255 =  new Buffer( [0xFF, 0X55, 0x07, 0x00, 0x02, 0x05, 0xFF, 0x00, 0xFF, 0x00]);
+
+//ambos motores viram a esquerda a 100
+var motor_turnleft100 =  new Buffer( [0xFF, 0X55, 0x07, 0x00, 0x02, 0x05, 0x64, 0x00, 0x64, 0x00]);
+
+//servo na porta 1, slot 1, 0 graus
+var servo_0 =  new Buffer( [0xFF, 0X55, 0x06, 0x00, 0x02, 0x0B, 0x01, 0x01, 0x00]);
+
+//servo na porta 1, slot 1, 45 graus
+var servo_1 =  new Buffer( [0xFF, 0X55, 0x06, 0x00, 0x02, 0x0B, 0x01, 0x01, 0x2B]);
+
+//servo na porta 1, slot 1, 90 graus
+var servo_2 =  new Buffer( [0xFF, 0X55, 0x06, 0x00, 0x02, 0x0B, 0x01, 0x01, 0x5A]);
+
+//servo na porta 1, slot 1, 135 graus
+var servo_3 =  new Buffer( [0xFF, 0X55, 0x06, 0x00, 0x02, 0x0B, 0x01, 0x01, 0x87]);
+
+//servo na porta 1, slot 1, 180 graus
+var servo_4 =  new Buffer( [0xFF, 0X55, 0x06, 0x00, 0x02, 0x0B, 0x01, 0x01, 0xB4]);
 
 // Buzzer
-var buzz =      new Buffer( [0xff, 0x55, 0x07, 0x00, 0x02, 0x22, 0x06, 0x01, 0xf4, 0x01]); 
+var buzz =      new Buffer( [0xff, 0x55, 0x07, 0x00, 0x02, 0x22, 0x06, 0x01, 0xf4, 0x01]);
 
 //**************************************************
 //     ff    55      len idx action device port slot data a
 //      0     1       2   3   4      5      6    7    8
-//      0xff  0x55   0x4 0x3 0x1    0x1    0x1  0xa 
+//      0xff  0x55   0x4 0x3 0x1    0x1    0x1  0xa
 // ***************************************************/
 
 // For cycling demo
@@ -109,7 +178,7 @@ noble.on('discover', function(peripheral) {
 
     console.log('! Found device with local name: ' + localName );
 
-    if ( localName == devName ) { 
+    if ( localName == devName ) {
         noble.stopScanning();
         console.log('! Mbot robot found! ');
         console.log("  - Stopped scanning...");
@@ -135,8 +204,8 @@ function connectTombot(peripheral) {
             var mbotService = services[0];
 //            console.log("Characte: " , chars[0].uuid);
 //            console.log("Characte: " , chars[1].uuid);
-    
-            if (!error) {	    
+
+            if (!error) {
                 console.log("! mbot BLE service found!");
 
                 for( var i in chars ) {
@@ -145,7 +214,7 @@ function connectTombot(peripheral) {
 
                     if ( chars[i].uuid == mbotWriteEndPointUUID )
                         mbotWriteDataDriver( error, mbotService, chars[i] );
-                } 
+                }
 
                 console.log("- End scanning BLE characteristics.");
             } else {
@@ -171,7 +240,7 @@ function mbotReadDataDriver(error, services, characteristics) {
         // To be perfect we need to "slide" the buffer looking for 0xff0x55
         if ( data[0] == 0xff )      // Command header
             if ( data[1] == 0x55 )
-                if ( data[3] == 0x2 ) { // Float value 
+                if ( data[3] == 0x2 ) { // Float value
                     var buf = new Buffer(4);
                     buf[3] = data[4];
                     buf[2] = data[5];
@@ -185,31 +254,31 @@ function mbotReadDataDriver(error, services, characteristics) {
                         v.setUint8(i,b);
                     });
                     console.log("float: " + v.getFloat32(0) );
-                    console.log("teset: " + JSON.stringify(data));
-                 
+                    console.log("teste: " + JSON.stringify(data));
+
 
                 } else if (data[3] == 0x1  ) {
                    // 1-byte
                     console.log("identificou byte = "+data[4]);
                     console.log("identificou byte = "+JSON.stringify(data));
-                    
-                    
+
+
                 } else if (data[3] == 0x3 ) {
-                   // 3-short                  
+                   // 3-short
                     console.log("identificou short = "+data[4]+data[5]+data[6]+data[7]);
                     console.log("identificou short = "+JSON.stringify(data));
-                    
-                                        
+
+
                 } else {
                    // 4-len+string
                    console.log("identificou len+string = "+data[4]+data[5]+data[6]+data[7]);
                    console.log("identificou len+string = "+JSON.stringify(data));
-                   
+
                 }
-                
-                
-                
-                
+
+
+
+
     });
 
     // subscribe to be notified whenever the peripheral update the characteristic
@@ -234,28 +303,38 @@ function mbotWriteDataDriver(error, services, characteristics) {
     setInterval(() => {
         count++;
         //const message = new Buffer('hello, ble ' + count, 'utf-8');
-        
+
         // Lê dados do sensor de luz
         //Leitura de dados:
-        //resposta 3, sem linha 
+        //resposta 3, sem linha
         //resposta 2, apenas esquero em cima da linha
         //resposta 1, apenas direito em cima da linha
         //resposta 0, ambos  em cima da linha
         //
-        mbotWComms.write( readLineFollower , true , function(error) {
-               console.log("Lendo dados do sensor de segue linha..."); 
-        });
-        
-        
+        //mbotWComms.write( readLineFollower , true , function(error) {
+        //       console.log("Lendo dados do sensor de segue linha...");
+        //});
+
         // Lê dados do sensor de luz
         //mbotWComms.write( readLightSensor , true , function(error) {
-        //        console.log("Lendo dados do sensor de luz..."); 
+        //        console.log("Lendo dados do sensor de luz...");
         //});
 
         // Lê dados do sensor ultrassom
        // mbotWComms.write( readUS , true , function(error) {
-       //         console.log("Lendo dados do sensor ultrassom..."); 
+       //         console.log("Lendo dados do sensor ultrassom...");
        // });
+
+       // Pergunta se botão da placa está pressionado
+      // mbotWComms.write( read_onboard_button_pressed , true , function(error) {
+      //         console.log("Lendo dados do sensor ultrassom...");
+      // });
+
+      // Pergunta se botão da placa NÃO está pressionado
+     // mbotWComms.write( read_onboard_button_released , true , function(error) {
+     //         console.log("Lendo dados do sensor ultrassom...");
+     // });
+
 
         loop = ++loop % 2;
 
@@ -272,19 +351,63 @@ process.stdin.on('keypress', (str, key) => {
     process.exit();
   } else {
     console.log(`You pressed the "${str}" key`);
-    
-    if (key.name=='right') {
-          mbotWComms.write( motor_m1 , true, function(error) {
-                console.log("motor direito para frente");
-            });   
-    }
-    
-     if (key.name=='left') {
-         mbotWComms.write( motor_m2 , true, function(error) {
-                console.log("motor esquerdo para tras");
+
+    if (key.name=='space') {
+          mbotWComms.write( motor_stop , true, function(error) {
+                console.log("motores param");
             });
     }
-    
+
+    if (key.name=='up') {
+          mbotWComms.write( motor_run255 , true, function(error) {
+                console.log("ambos motores para frente");
+            });
+    }
+    if (key.name=='w') {
+          mbotWComms.write( motor_run100 , true, function(error) {
+                console.log("ambos motores para frente");
+            });
+    }
+
+    if (key.name=='down') {
+          mbotWComms.write( motor_reverse255 , true, function(error) {
+                console.log("ambos motores para trás");
+            });
+    }
+    if (key.name=='s') {
+          mbotWComms.write( motor_reverse100 , true, function(error) {
+                console.log("ambos motores para trás");
+            });
+    }
+
+    if (key.name=='right') {
+          mbotWComms.write( motor_turnright255 , true, function(error) {
+                console.log("ambos motores viram para direita");
+            });
+    }
+    if (key.name=='d') {
+          mbotWComms.write( motor_turnright100 , true, function(error) {
+                console.log("ambos motores viram para direita");
+            });
+    }
+
+    if (key.name=='left') {
+         mbotWComms.write( motor_turnleft255 , true, function(error) {
+                console.log("ambos motores viram para esquerda");
+            });
+    }
+    if (key.name=='a') {
+         mbotWComms.write( motor_turnleft100 , true, function(error) {
+                console.log("ambos motores viram para esquerda");
+            });
+    }
+
+    if (key.name=='0') {
+          mbotWComms.write( ledColor0 , true, function(error) {
+                console.log("Write Led Color1 OK");
+            });
+    }
+
     if (key.name=='1') {
           mbotWComms.write( ledColor1 , true, function(error) {
                 console.log("Write Led Color1 OK");
@@ -300,8 +423,38 @@ process.stdin.on('keypress', (str, key) => {
                 console.log("Barulho");
             });
     }
-    
-    
+    if (key.name=='4') {
+         mbotWComms.write( servo_0 , true, function(error) {
+                console.log("Barulho");
+            });
+    }
+    if (key.name=='5') {
+         mbotWComms.write( servo_1 , true, function(error) {
+                console.log("Barulho");
+            });
+    }
+    if (key.name=='6') {
+         mbotWComms.write( servo_2 , true, function(error) {
+                console.log("Barulho");
+            });
+    }
+    if (key.name=='7') {
+         mbotWComms.write( servo_3 , true, function(error) {
+                console.log("Barulho");
+            });
+    }
+    if (key.name=='8') {
+         mbotWComms.write( servo_4 , true, function(error) {
+                console.log("Barulho");
+            });
+    }
+    if (key.name=='9') {
+         mbotWComms.write( read_onboard_button_pressed , true, function(error) {
+                console.log("Barulho");
+            });
+    }
+
+
     console.log();
     console.log(key);
     console.log();
