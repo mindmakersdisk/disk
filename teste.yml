@@ -56,7 +56,7 @@
   - debug:
        var: deb_check
   - include: tasks/tightvnc.yml
-    when: deb_check.stdout.find('tightvncserve <') != -1
+    when: deb_check.stdout.find('nenhuma descrição disponível') != -1
 
 ######
 
