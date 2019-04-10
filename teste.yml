@@ -36,69 +36,26 @@
 #    debug: var=ansible_facts.packages
 
 
-  - name: Instalando pacote do npm "websocket" verificar se da skip se já estiver instalado
-    npm:
-      name: websocket
-      path: /home/mindmakers/programs
+#  - name: Instalando pacote do npm "websocket" verificar se da skip se já estiver instalado
+#    npm:
+#      name: websocket
+#      path: /home/mindmakers/programs
 #      state: present
 
 #tentativa adicionar || o final das linhas do arquivo school.info
 
-#  - name: Ver se máquina já foi ativada para fixar o ip do Rapsberry.
-#    find:
-#      paths: /home/mindmakers/
-#      patterns: 'school.info'
-#      contains: "^||"
-#      use_regex: yes
-#    register: semregistro
-#  - debug:
-#       var: semregistro
 
-#  - lineinfile:
-#      path: /home/mindmakers/school.info
-#      regexp: 'Cód.: '
-#      insertafter: '||'
-#    when: semregistro.matched == 0
-#  - lineinfile:
-#      path: /home/mindmakers/school.info
-#      regexp: 'Nome: '
-#      insertafter: '||'
-#    when: semregistro.matched == 0
-#  - lineinfile:
-#      path: /home/mindmakers/school.info
-#      regexp: 'Pi: '
-#      insertafter: '||'
-#    when: semregistro.matched == 0
-#  - lineinfile:
-#      path: /home/mindmakers/school.info
-#      regexp: 'SD: '
-#      insertafter: '||'
-#    when: semregistro.matched == 0
-#  - lineinfile:
-#      path: /home/mindmakers/school.info
-#      regexp: 'Sphero: '
-#      insertafter: '||'
-#    when: semregistro.matched == 0
-#  - lineinfile:
-#      path: /home/mindmakers/school.info
-#      regexp: 'Sala: '
-#      insertafter: '||'
-#    when: semregistro.matched == 0
-#  - lineinfile:
-#      path: /home/mindmakers/school.info
-#      regexp: 'Estação: '
-#      insertafter: '||'
-#    when: semregistro.matched == 0
-###############
 
 ######### verificar se o pacote ja foi instalado, tentar implementar para ambos apt e npm install.
-#- name: Check if foo.rpm is installed
-#  command: rpm -q foo.rpm
-#  register: rpm_check
+  - name: Check if foo.rpm is installed
+    command: rpm -q websocket
+    register: rpm_check
+  - debug:
+       var: rpm_check
 
-#- name: Execute script if foo.rpm is not installed
-#  command: somescript
-#  when: rpm_check.stdout.find('is not installed') != -1
+  - name: Execute script if foo.rpm is not installed
+    command: somescript
+    when: rpm_check.stdout.find('is not installed') != -1
 #The rpm command will also exit with a 0 if the package exists, or a 1 if the package isn't found, so another possibility is to use:
 
 #when: rpm_check.rc == 1
