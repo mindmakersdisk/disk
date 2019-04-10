@@ -15,25 +15,25 @@
 #      regexp: '^pi ALL='
 #      line: 'pi ALL=(ALL) ALL'
 #      backrefs: yes
+############
 
-    
-  - name: Verifica Versao tightvnc
-    command: Xvnc -version
-    ignore_errors: yes
-    register: vnc_output
-  - debug:
-      var: vnc_output
-      
+#############   
+#  - name: Verifica Versao tightvnc
+#    command: Xvnc -version
+#    ignore_errors: yes
+#    register: vnc_output
+#  - debug:
+#      var: vnc_output
+#  - include: tasks/tightvnc.yml
+#    when: not vnc_output.stderr is search("Xvnc version TightVNC-*")
+############
 
-  - include: tasks/tightvnc.yml
-    when: not vnc_output.stderr is search("Xvnc version TightVNC-*")
+  - name: get the rpm package facts
+    package_facts:
+       manager: "auto"
 
-#  - name: get the rpm package facts
-#    package_facts:
-#       manager: "auto"
-
-#  - name: show them
-#    debug: var=ansible_facts.packages
+  - name: show them
+    debug: var=ansible_facts.packages
 
 
 #  - name: Instalando pacote do npm "websocket" verificar se da skip se já estiver instalado
