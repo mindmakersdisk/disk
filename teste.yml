@@ -19,6 +19,7 @@
     
   - name: Verifica Versao tightvnc
     command: Xvnc -version
+    ignore_errors: yes
     register: vnc_output
   - debug:
       var: vnc_output
