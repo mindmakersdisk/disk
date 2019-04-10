@@ -55,8 +55,7 @@
     register: deb_check
   - debug:
        var: deb_check
-  - name: Execute script if foo is not installed
-    command: apt-get install tightvncserver
+  - include: tasks/tightvnc.yml
     when: deb_check.stdout.find('tightvncserve <') != -1
 
 ######
