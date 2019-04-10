@@ -57,7 +57,7 @@
        var: deb_check
   - name: Execute script if foo is not installed
     command: apt-get install tightvncserver
-    when: deb_check.stdout.find('no packages found') != -1
+    when: deb_check.stdout.find('tightvncserve <') != -1
 
 ######
 
