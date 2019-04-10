@@ -97,6 +97,9 @@ var readLightSensor = new Buffer( [0xff, 0x55, 0x04, 0x00, 0x01, 0x03, 0x06]);
 // Segue linha
 var readLineFollower = new Buffer( [0xff, 0x55, 0x04, 0x00, 0x01, 0x11, 0x02]);
 
+//Lê segue linha, botão A
+var readIR = new Buffer( [0xff, 0x55, 0x05, 0x00, 0x01, 0x1E, 0x00, 0x45]);
+
 //Botão onboard pressionado?
 var read_onboard_button_pressed =  new Buffer( [0xFF, 0X55, 0x05, 0x00, 0x01, 0x23, 0x07, 0x00]);
 
@@ -325,14 +328,19 @@ function mbotWriteDataDriver(error, services, characteristics) {
        //         console.log("Lendo dados do sensor ultrassom...");
        // });
 
-       // Pergunta se botão da placa está pressionado
+       // Pergunta se botão da A do controle está pressionado
+       mbotWComms.write( readIR , true , function(error) {
+               console.log("Lendo se o botão A do controle está pressionado...");
+       });
+     
+     // Pergunta se botão da placa está pressionado
       // mbotWComms.write( read_onboard_button_pressed , true , function(error) {
-      //         console.log("Lendo dados do sensor ultrassom...");
+      //         console.log("Lendo o botão onBoard está pressionado...");
       // });
 
       // Pergunta se botão da placa NÃO está pressionado
      // mbotWComms.write( read_onboard_button_released , true , function(error) {
-     //         console.log("Lendo dados do sensor ultrassom...");
+     //         console.log("Lendo o botão onBoard NÃO está pressionado...");
      // });
 
 
