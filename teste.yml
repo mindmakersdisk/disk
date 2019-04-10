@@ -51,14 +51,14 @@
 
 
 #verificação de versão funcionando!!
-  - name: Check if npm is installed
-    command: dpkg-query -l npm
-    register: deb_check_npm
-  - debug:
-       var: deb_check_npm
-  - debug:
-       mgs: fez o treco
-    when: deb_check_npm.stdout.find('<nenhuma>') != -1
+#  - name: Check if npm is installed
+#    command: dpkg-query -l npm
+#    register: deb_check_npm
+#  - debug:
+#       var: deb_check_npm
+#  - debug:
+#       mgs: fez o treco
+#    when: deb_check_npm.stdout.find('<nenhuma>') != -1
   - name: Verifica Versao npm
     command: nodejs --version
     register: node_output
@@ -71,6 +71,7 @@
     apt:
       name: nodejs
     force_apt_get: yes
+    when: npm_output.stdout is version('8.15.0', '<') 
 #  - name: Atualiza o npm se versão < 6.9
 #    npm: name={{item}} global=yes
 #    with_items:
