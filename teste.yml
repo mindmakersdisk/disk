@@ -60,7 +60,9 @@
 #       mgs: fez o treco
 #    when: deb_check_npm.stdout.find('<nenhuma>') != -1
   - name: Verifica Versao npm
-    command: cd /home/pi/mindmakers/programs & npm ls --depth 0 
+    command: npm ls --depth 0 
+    args:
+       chdir: /home/pi/mindmakers/programs/
     register: npm_dep_output
   - debug:
        var: npm_dep_output
