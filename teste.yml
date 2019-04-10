@@ -1,26 +1,31 @@
 - hosts: localhost
 
   tasks:
-  - file:
-       path: /home/mindmakers/programs/mmtelebot.py
-       state: touch
-       mode: 0711
+####Funcionando mas precisa ver se vai usar  
+#  - file:
+#       path: /home/mindmakers/programs/mmtelebot.py
+#       state: touch
+#       mode: 0711
 #tornar arquivo mmtelebot somente execultavem para níveis grupo e owner
 
+#Funcionando mas precisa validar quais comandos realmente pode fazer sem o sudo.
 #força pedir senha apra usar comando sudo para usuários pi.       
-  - lineinfile:
-      path: /etc/sudoers.d/010_pi-nopasswd
-      regexp: '^pi ALL='
-      line: 'pi ALL=(ALL) ALL'
-      backrefs: yes
+#  - lineinfile:
+#      path: /etc/sudoers.d/010_pi-nopasswd
+#      regexp: '^pi ALL='
+#      line: 'pi ALL=(ALL) ALL'
+#      backrefs: yes
 
     
-#  - name: Verifica Versao tightvnc
-#    command: Xvnc -version
-#    register: vnc_output
+  - name: Verifica Versao tightvnc
+    command: Xvnc -version
+    register: vnc_output
+  - debug:
+      msg: vnc_output
+      
 
-#  - include: tasks/tightvnc.yml
-#    when: not vnc_output.stderr is search("Xvnc version TightVNC=*")
+  - include: tasks/tightvnc.yml
+    when: not vnc_output.stderr is search("Xvnc version TightVNC-*")
 
 #  - name: get the rpm package facts
 #    package_facts:
