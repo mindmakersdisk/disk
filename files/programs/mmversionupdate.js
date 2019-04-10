@@ -81,7 +81,7 @@ function atualizaVersaoEstacao() {
               'alocadoescola':escolaid,
               'computadorserial':pi_registrado,
               'discoserial':sd_registrado,
-              'versaoimagemdisco':versaoImagemDisco
+              'versaoimagemdisco':versaoImagemDisco,
               'sala':sala_registrado,
               'codigo':estacao_registrado}
             },
