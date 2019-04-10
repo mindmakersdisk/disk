@@ -62,7 +62,7 @@
   - name: Verifica Versao npm
     command: npm ls --depth 0 
     args:
-       chdir: /home/pi/mindmakers/programs/
+       chdir: /home/mindmakers/programs/
     register: npm_dep_output
   - debug:
        var: npm_dep_output
