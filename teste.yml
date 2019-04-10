@@ -21,7 +21,7 @@
     command: Xvnc -version
     register: vnc_output
   - debug:
-      msg: vnc_output
+      var: vnc_output
       
 
   - include: tasks/tightvnc.yml
