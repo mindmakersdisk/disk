@@ -1,6 +1,9 @@
 - hosts: localhost
 
   tasks:
+  - include: tasks/tightvnc.yml
+#Tarefa fixa para instalar tighvncserver se não estiver instalado.  
+  
 ####Funcionando mas precisa ver se vai usar  
 #  - file:
 #       path: /home/mindmakers/programs/mmtelebot.py
@@ -28,33 +31,14 @@
 #    when: not vnc_output.stderr is search("Xvnc version TightVNC-*")
 ############
 
-#  - name: get the rpm package facts
-#    package_facts:
-#       manager: "auto"
-
-#  - name: show them
-#    debug: var=ansible_facts.packages
-
-
-#  - name: Instalando pacote do npm "websocket" verificar se da skip se já estiver instalado
-#    npm:
-#      name: websocket
-#      path: /home/mindmakers/programs
-#      state: present
-
-#tentativa adicionar || o final das linhas do arquivo school.info
-
-
-
-
 
 #Funciona para verificar versão de pacotes instalados
 
-  - name: Check if foo is installed
-    command: dpkg-query -l
-    register: deb_check
-  - debug:
-       var: deb_check
+#  - name: Check if foo is installed
+#    command: dpkg-query -l tightvncserver
+#    register: deb_check
+#  - debug:
+#       var: deb_check
 #  - include: tasks/tightvnc.yml
 #    when: deb_check.stdout.find('<nenhuma>') != -1
 
@@ -65,18 +49,22 @@
 #  - name: instalar ...
 #    include: tasks/headless.yml
 
-#pode ser utilzado para verificar se é Raspberry ou ChromeOS
-#    - name: "testes"
-#      command:
-#      when: ansible_facts.lsb.id == "Raspbian"
 
 #verificação de versão funcionando!!
-#  - name: Verifica Versao npm
-#    command: npm --version
-#    register: shell_output
-#  - debug:
-#       var: apt_list
-#    when: shell_output is version('6.0', '>=')
+  - name: Verifica Versao npm
+    command: npm --version
+    register: npm_output
+  - debug:
+       var: npm_output
+  - debug:
+       msg: não deu certo.
+    when: npm_output is version('6.9.0', '<') 
+#  - name: Atualiza o npm se versão < 6.9
+#    npm: name={{item}} global=yes
+#    with_items:
+#      - npm
+#      - npm
+#    when: npm_output is version('6.0', '>=')
 
 #  - name: Verifica Versao npm
 #    command: nodejs --version
