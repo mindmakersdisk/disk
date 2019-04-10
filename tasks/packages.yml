@@ -30,25 +30,22 @@
   apt:
      name: scratch2
      state: latest
-- name: Verificando se o npm já foi instalado
-  stat:
-     path: /home/mindmakers/programs/verify/npm69
-  register: npm
-- name: Instalando npm 1.4.0
+- name: Check if npm is installed
+  command: dpkg-query -l npm
+  register: deb_check_npm
+- name: Instalando npm 1.4.21 se o pacote não estiver instalado
   apt:
      name: npm
-  when: not npm.stat.exists
-- name: Atualizando npm para 6.9.0
+  when: deb_check_npm.stdout.find('<nenhuma>') != -1
+- name: Verifica Versao npm
+  command: npm --version
+  register: npm_output 
+- name: Atualizando npm se versão <6.9.0
   npm: name={{item}} global=yes
   with_items:
     - npm
     - npm
-  when: not npm.stat.exists
-- name: Criando pasta de verificação de instalação do npm 6.9.0
-  file:
-    path: /home/mindmakers/programs/verify/npm69
-    state: directory
-    mode: 0444
+  when: npm_output.stdout is version('6.9.0', '<')
 - name: Verificando se as dependências npm do Sphero já foram instaladas
   stat:
      path: /home/mindmakers/programs/verify/npmsphero
