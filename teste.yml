@@ -106,7 +106,7 @@
     npm:
       name: keypress
       path: /home/mindmakers/programs
-  when: npm_dep_output.stdout.find('keypress') != -1
+    when: npm_dep_output.stdout.find('keypress') != -1
   - name: Instalando pacote do npm "webworker-threads"
     npm:
       name: webworker-threads
