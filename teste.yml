@@ -47,28 +47,29 @@
 
 
 ######### verificar se o pacote ja foi instalado, tentar implementar para ambos apt e npm install.
-  - name: Check if foo.rpm is installed
-    command: rpm -q nodejs
-    register: rpm_check
-  - debug:
-       var: rpm_check
+#  - name: Check if foo.rpm is installed
+#    command: rpm -q nodejs
+#    register: rpm_check
+#  - debug:
+#       var: rpm_check
 
-  - name: Execute script if foo.rpm is not installed
-    command: apt-get install nodejs
-    when: rpm_check.stdout.find('is not installed') != -1
+#  - name: Execute script if foo.rpm is not installed
+#    command: apt-get install nodejs
+#    when: rpm_check.stdout.find('is not installed') != -1
 #The rpm command will also exit with a 0 if the package exists, or a 1 if the package isn't found, so another possibility is to use:
 
 #when: rpm_check.rc == 1
 
 #Based on the Bruce P answer above, a similar approach for apt/deb files is
 
-#- name: Check if foo is installed
-#  command: dpkg-query -l foo
-#  register: deb_check
-
-#- name: Execute script if foo is not installed
-#  command: somescript
-#  when: deb_check.stdout.find('no packages found') != -1
+  - name: Check if foo is installed
+    command: dpkg-query -l nodejs
+    register: deb_check
+  - debug:
+       var: deb_check
+  - name: Execute script if foo is not installed
+    command: somescript
+    when: deb_check.stdout.find('no packages found') != -1
 
 ######
 
