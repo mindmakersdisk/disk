@@ -60,13 +60,17 @@
        mgs: fez o treco
     when: deb_check_npm.stdout.find('<nenhuma>') != -1
   - name: Verifica Versao npm
-    command: npm --version
-    register: npm_output
+    command: nodejs --version
+    register: node_output
   - debug:
-       var: npm_output
+       var: node_output
   - debug:
        msg: executou o baguio
-    when: npm_output.stdout is version('6.9.0', '<') 
+    when: npm_output.stdout is version('8.15.0', '<') 
+  - name: Instalando Nodejs 8.15.3
+    apt:
+      name: nodejs
+    force_apt_get: yes
 #  - name: Atualiza o npm se versão < 6.9
 #    npm: name={{item}} global=yes
 #    with_items:
