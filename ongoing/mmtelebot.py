@@ -28,10 +28,12 @@ f.readline()
 escolaid=f.readline()
 escolanome=f.readline()
 if len(escolanome) > 5:
-    escolanome = escolanome[5:-1]
+    escolanome = escolanome[5:-3]
 pi=f.readline()[1:-1]
 sd=f.readline()[1:-1]
 sphero=f.readline()[1:-1]
+sala=f.readline()[6:-3]
+estacao=f.readline()[10:-3]
 
 computadorid=''
 if len(pi) > 5:
@@ -54,9 +56,9 @@ def handle(msg):
 
     # Comparing the incoming message to send a reply according to it
     if command == '/oi':
-       bot.sendMessage (chat_id, str("Oi! Eu sou o computador "+piIdentificado+" da escola '"+escolanome+"'. Tenho a data/hora: "+ 
-                                              str(now.day) + str("/") + str(now.month) + str("/") + str(now.year)+
-                                              str(" ") + str(now.hour) + str(":") + str(now.minute) + str(":") + str(now.second)))
+       bot.sendMessage (chat_id, str("Oi! Sou a estação '"+estacao+"' da sala '"+sala+"' da escola '"+escolanome+"' (Pi:"+piIdentificado+"). Fui iniciada em: "+ 
+                                      str(now.day) + str("/") + str(now.month) + str("/") + str(now.year)+
+                                       str(" ") + str(now.hour) + str(":") + str(now.minute) + str(":") + str(now.second))+' chatid='+str(chat_id))
     elif command == '/off':
  #   desligar
        call("sudo nohup shutdown -h now",shell=True)
@@ -78,8 +80,8 @@ def handle(msg):
  #       bot.sendMessage(chat_id, str("Green led is OFF"))
  #       GPIO.output(green_led_pin, False)
 
-# Insert your telegram token below
-bot = telepot.Bot('611887569:AAG2ke6zp4rVo5q3bMP5zm4MlxpHZjBCNG0')
+# Insert your telegram token below - exemplo da escola de teste Max
+bot = telepot.Bot('839612365:AAFMxkcavMtycgmtCR6pWyaJKMMPJe-bkHA')
 print (bot.getMe())
 
 # Start listening to the telegram bot and whenever a message is  received, the handle function will be called.
