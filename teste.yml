@@ -51,6 +51,14 @@
 
 
 #verificação de versão funcionando!!
+  - name: Check if npm is installed
+    command: dpkg-query -l npm
+    register: deb_check_npm
+  - debug:
+       var: deb_check_npm
+  - debug:
+       mgs: fez o treco
+    when: deb_check.stdout.find('<nenhuma>') != -1
   - name: Verifica Versao npm
     command: npm --version
     register: npm_output
