@@ -48,15 +48,15 @@
 
 
 
-#Based on the Bruce P answer above, a similar approach for apt/deb files is
+#Funciona para verificar versão de pacotes instalados
 
   - name: Check if foo is installed
-    command: dpkg-query -l tightvncserver
+    command: dpkg-query -l
     register: deb_check
   - debug:
        var: deb_check
-  - include: tasks/tightvnc.yml
-    when: deb_check.stdout.find('<nenhuma>') != -1
+#  - include: tasks/tightvnc.yml
+#    when: deb_check.stdout.find('<nenhuma>') != -1
 
 ######
 
