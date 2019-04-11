@@ -2,7 +2,7 @@
 - hosts: localhost
 
   tasks:
-    - include: local.yml
+    - import_playbook: local.yml
     - name: Verificando se diretório Desktop existe.
       stat:
         path: /home/pi/Desktop
