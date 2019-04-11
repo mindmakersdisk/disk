@@ -10,10 +10,13 @@
     "debug": "^4.1.1",
     "express": "^4.16.4",
     "grunt": "^1.0.3",
+    "inquirer": "^6.2.2",
     "keypress": "^0.2.1",
     "noble": "^1.9.1",
+    "request": "^2.88.0",
     "serialport": "^7.1.4",
     "sphero": "^0.9.2",
+    "websocket": "^1.0.28",
     "webworker-threads": "^0.7.17"
   },
   "devDependencies": {},
