@@ -1,10 +1,6 @@
-- name: Update all packages to the latest version
-  apt:
-    upgrade: dist
-    
-# - name: Update FULL all packages to the latest version
+# - name: Atualizando a distribuição do sistema.
 #   apt:
-#     upgrade: full
+#     upgrade: dist
 
 - name: Removendo pacotes desnecessários do cache
   apt:
