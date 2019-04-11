@@ -1,6 +1,6 @@
-#- name: Update all packages to the latest version
-#  apt:
-#    upgrade: dist
+- name: Update all packages to the latest version
+  apt:
+    upgrade: dist
 
 - name: Removendo pacotes desnecessários do cache
   apt:
