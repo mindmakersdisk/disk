@@ -8,6 +8,7 @@
 - name: Atualizando Repositórios
   apt:
      update_cache: yes
+  when: not nodejs.stat.exists
 - name: Verifica Versao npm
   command: nodejs --version
   register: node_output
@@ -17,7 +18,7 @@
   apt:
      name: nodejs
      # force_apt_get: yes
-  when: node_output.stdout is version('8.15.0', '<')
+  when: node_output.stdout is version('8.12.0', '<')
   # when: not nodejs.stat.exists
 - name: Criando pasta de verificação de instalação do node 8.15.3
   file:
@@ -58,70 +59,76 @@
   stat:
      path: /home/mindmakers/programs/verify/npmsphero
   register: npmsphero
+- name: Copia packages.json para iniciar npm
+  copy:
+     src: files/package.json
+     dest: /home/mindmakers/programs/
+     mode: 0755
+  when: not npmsphero.stat.exists
 - name: Instalando pacote do npm "bluetooth-hci-socket"
   npm:
     name: bluetooth-hci-socket
     path: /home/mindmakers/programs
     executable: /usr/bin/npm --unsafe-perm=true
-  when: not npmsphero.stat.exists
+  # when: not npmsphero.stat.exists
 - name: Instalando pacote do npm "bluebird"
   npm:
     name: bluebird
     path: /home/mindmakers/programs
-  when: not npmsphero.stat.exists
+  # when: not npmsphero.stat.exists
 - name: Instalando pacote do npm "browser-serialport"
   npm:
     name: browser-serialport
     path: /home/mindmakers/programs
-  when: not npmsphero.stat.exists
+  # when: not npmsphero.stat.exists
 - name: Instalando pacote do npm "debug"
   npm:
     name: debug
     path: /home/mindmakers/programs
-  when: not npmsphero.stat.exists
+  # when: not npmsphero.stat.exists
 - name: Instalando pacote do npm "express"
   npm:
     name: express
     path: /home/mindmakers/programs
-  when: not npmsphero.stat.exists
+  # when: not npmsphero.stat.exists
 - name: Instalando pacote do npm "grunt"
   npm:
     name: grunt
     path: /home/mindmakers/programs
-  when: not npmsphero.stat.exists
+  # when: not npmsphero.stat.exists
 - name: Instalando pacote do npm "keypress"
   npm:
     name: keypress
     path: /home/mindmakers/programs
-  when: not npmsphero.stat.exists
+  # when: not npmsphero.stat.exists
 - name: Instalando pacote do npm "webworker-threads"
   npm:
     name: webworker-threads
     path: /home/mindmakers/programs
     executable: /usr/bin/npm --unsafe-perm=true
-  when: not npmsphero.stat.exists
+  # when: not npmsphero.stat.exists
 - name: Instalando pacote do npm "noble"
   npm:
     name: noble
     path: /home/mindmakers/programs
     executable: /usr/bin/npm --unsafe-perm=true
-  when: not npmsphero.stat.exists
+  # when: not npmsphero.stat.exists
 - name: Instalando pacote do npm "sphero"
   npm:
     name: sphero
     path: /home/mindmakers/programs
-  when: not npmsphero.stat.exists
+  # when: not npmsphero.stat.exists
 - name: Instalando pacote do npm "serialport"
   npm:
     name: serialport
     path: /home/mindmakers/programs
     executable: /usr/bin/npm --unsafe-perm=true
-  when: not npmsphero.stat.exists
+  # when: not npmsphero.stat.exists
 - name: Instalando pacote do npm "request"
   npm:
     name: request
     path: /home/mindmakers/programs
-  when: not npmsphero.stat.exists
+  # when: not npmsphero.stat.exists
 - name: Verificando se as dependências npm websocket já foram instaladas
   stat:
      path: /home/mindmakers/programs/verify/websocket
@@ -130,12 +137,12 @@
   npm:
     name: websocket
     path: /home/mindmakers/programs
-  when: not websocket.stat.exists
+  # when: not websocket.stat.exists
 - name: Instalando pacote do npm "inquirer"
   npm:
     name: inquirer
     path: /home/mindmakers/programs
-  when: not websocket.stat.exists
+  # when: not websocket.stat.exists
 - name: Criando pasta de verificação websocket
   file:
     path: /home/mindmakers/programs/verify/websocket
