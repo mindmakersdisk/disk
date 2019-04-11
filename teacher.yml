@@ -1,7 +1,7 @@
 # Arquivo playbook complementar - imagem para do professor
 - import_playbook: local.yml
 - name: teste
-  hosts: all
+  hosts: localhost
   tasks:
    - name: Verificando se diretório Desktop existe.
      stat:
