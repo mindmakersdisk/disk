@@ -11,6 +11,8 @@
 - name: Verifica Versao npm
   command: nodejs --version
   register: node_output
+- debug:
+    var: node_output
 - name: Instalando Nodejs 8.15.3
   apt:
      name: nodejs
@@ -38,10 +40,11 @@
 - name: Check if npm is installed
   command: dpkg-query -l npm
   register: deb_check_npm
+  ignore_errors: yes
 - name: Instalando npm 1.4.21 se o pacote não estiver instalado
   apt:
      name: npm
-  when: deb_check_npm.stdout.find('<nenhuma>') != -1
+  when: deb_check_npm.stdout.find('não foram encontrados pacotes') != -1
 - name: Verifica Versao npm
   command: npm --version
   register: npm_output
