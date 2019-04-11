@@ -8,10 +8,15 @@
 - name: Atualizando Repositórios
   apt:
      update_cache: yes
+- name: Verifica Versao npm
+  command: nodejs --version
+  register: node_output
 - name: Instalando Nodejs 8.15.3
   apt:
      name: nodejs
-  when: not nodejs.stat.exists
+     # force_apt_get: yes
+  when: node_output.stdout is version('8.15.0', '<')
+  # when: not nodejs.stat.exists
 - name: Criando pasta de verificação de instalação do node 8.15.3
   file:
     path: /home/mindmakers/programs/verify/node815
@@ -39,7 +44,7 @@
   when: deb_check_npm.stdout.find('<nenhuma>') != -1
 - name: Verifica Versao npm
   command: npm --version
-  register: npm_output 
+  register: npm_output
 - name: Atualizando npm se versão <6.9.0
   npm: name={{item}} global=yes
   with_items:
