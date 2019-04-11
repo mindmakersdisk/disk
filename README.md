@@ -12,7 +12,7 @@ _**Como verificar sucesso dessa etapa?**_
 
 ### 2. Instalar o Sistema Operacional Raspbian (Padrão para o Raspberry Pi, derivado do Debian)
 
-2.1. Baixar o arquivo do Sistema Operacional "Raspbian Stretch with desktop and recommended software", de https://www.raspberrypi.org/downloads/raspbian/ para um computador central de controle (estação Windows, por exemplo). O link direto para download do arquivo ZIP com esta versão é: https://downloads.raspberrypi.org/raspbian_full_latest
+2.1. Baixar o arquivo do Sistema Operacional "Raspbian Stretch with desktop and recommended software", de https://www.raspberrypi.org/downloads/raspbian/ para um computador central de controle (estação Windows, por exemplo). O link direto para download do arquivo ZIP com esta versão é: http://downloads.raspberrypi.org/raspbian_full/images/raspbian_full-2018-11-15/2018-11-13-raspbian-stretch-full.zip
 
 Obs.: O último empacotamento de arquivo do Raspbian homologado pela Mind Makers em março/2019 tem versão 4.14 de 2018-11-13. Versões posteriores devem funcionar, mas caso o pacote seja superior, recomenda-se confirmar essa informação através do suporte@mindmakers.cc.
 
