@@ -41,27 +41,81 @@ const mbotServiceUUID       = "ffe1";
 const mbotReadEndPointUUID  = "ffe2";
 const mbotWriteEndPointUUID = "ffe3";
 
-const ir_A = 45;
-const ir_B = 46;
-const ir_C = 47;
-const ir_D = 44;
-const ir_E = 43;
-const ir_F = 0D;
-const ir_UP = 40;
-const ir_DOWN = 19;
-const ir_LEFT = 07;
-const ir_RIGHT = 09;
-const ir_SETTINGS = 15;
-const ir_R0 = 16;
-const ir_R1 = 0C;
-const ir_R2 = 18;
-const ir_R3 = 5E;
-const ir_R4 = 08;
-const ir_R5 = 1C;
-const ir_R6 = 5A;
-const ir_R7 = 42;
-const ir_R8 = 52;
-const ir_R9 = 4A;
+const ir_A = 0x45;
+const ir_B = 0x46;
+const ir_C = 0x47;
+const ir_D = 0x44;
+const ir_E = 0x43;
+const ir_F = 0x0D;
+const ir_UP = 0x40;
+const ir_DOWN = 0x19;
+const ir_LEFT = 0x07;
+const ir_RIGHT = 0x09;
+const ir_SETTINGS = 0x15;
+const ir_R0 = 0x16;
+const ir_R1 = 0x0C;
+const ir_R2 = 0x18;
+const ir_R3 = 0x5E;
+const ir_R4 = 0x08;
+const ir_R5 = 0x1C;
+const ir_R6 = 0x5A;
+const ir_R7 = 0x42;
+const ir_R8 = 0x52;
+const ir_R9 = 0x4A;
+///////////////////////////////
+// var InfraRed = {
+//     a: 0x45,
+//     b: 0x46,
+//     c: 0x47,
+//     d: 0x44,
+//     e: 0x43,
+//     f: 0x0D,
+//     up: 0x40,
+//     down: 0x19,
+//     left: 0x07,
+//     right: 0x09,
+//     settings: 0x15,
+//     r0: 0x16,
+//     r1: 0x0C,
+//     r2: 0x18,
+//     r3: 0x5E,
+//     r4: 0x08,
+//     r5: 0x1C,
+//     r6: 0x5A,
+//     r7: 0x42,
+//     r8: 0x52,
+//     r9: 0x4A
+// };
+
+/////////////////////////////
+//teste mudar velocidade somente com um comando e um array de valores.
+// var servo_value = [ 0x00, 0x2B, 0x5A, 0x87, 0xB4 ];
+// var s = 0;
+// var servo =  new Buffer( [0xFF, 0X55, 0x06, 0x00, 0x02, 0x0B, 0x01, 0x01, servo_value[s]]);
+//
+// var motor_speed = [ 0x01, 0x64, 0x96, 0xC8, 0xFF];
+// var m = 0;
+// var motor_run =  new Buffer( [0xFF, 0X55, 0x07, 0x00, 0x02, 0x05, motor_speed[m], 0xFF, 0xFF - motor_speed[m], 0x00]);
+// var motor_reverse =  new Buffer( [0xFF, 0X55, 0x07, 0x00, 0x02, 0x05, 0xFF - motor_speed[m], 0x00, motor_speed[m], 0xFF]);
+// var motor_turnright =  new Buffer( [0xFF, 0X55, 0x07, 0x00, 0x02, 0x05, motor_speed[m], 0xFF, motor_speed[m], 0xFF]);
+// var motor_turnleft =  new Buffer( [0xFF, 0X55, 0x07, 0x00, 0x02, 0x05, 0xFF - motor_speed[m], 0x00, 0xFF - motor_speed[m], 0x00]);
+
+// //atualização servo
+// servo[8] = servo_value[s];
+//
+// //atualização
+// motor_run[6] = motor_speed[m];
+// motor_run[8] = 0xFF - motor_speed[m];
+//
+// motor_reverse[6] =  0xFF - motor_speed[m];
+// motor_reverse[8] =  0xFF - motor_speed[m];
+//
+// motor_turnright[6] = motor_speed[m];
+// motor_turnright[8] = motor_speed[m];
+//
+// motor_turnleft[6] = 0xFF - motor_speed[m];
+// motor_turnleft[6] = 0xFF - motor_speed[m];
+////////////////////////
 
 // For demo purposes
 // Some commands:
@@ -79,10 +133,10 @@ var ledLeft2 = new Buffer([0xff, 0x55, 0x09, 0x00, 0x02, 0x08, 0x07, 0x02, 0x02,
 
 
 // Led Matrix connected to Port 0x04  -----------------------v
-var face = new Buffer( [0xff, 0x55 ,0x17 ,0x00 ,0x02 ,0x29 ,0x04 ,0x02 ,0x00 ,0x00 ,0x00 ,0x00 ,0x40 ,0x48 ,0x44 ,0x42 ,0x02 ,0x02 ,0x02 ,0x02 ,0x42 ,0x44 ,0x48 ,0x40 ,0x00 ,0x00]);
+var face = new Buffer( [0xff, 0x55, 0x17, 0x00, 0x02, 0x29, 0x04, 0x02, 0x00, 0x00, 0x00, 0x00, 0x40, 0x48, 0x44, 0x42, 0x02, 0x02, 0x02, 0x02, 0x42, 0x44, 0x48, 0x40, 0x00, 0x00]);
 
 // Read Ultrasensor data
-var readUS =          new Buffer( [0xff, 0x55 ,0x04 ,0x00 ,0x01 ,0x01 ,0x03]);
+var readUS =          new Buffer( [0xff, 0x55, 0x04, 0x00, 0x01, 0x01 ,0x03]);
 
 //**************************************************
 //     ff    55      len idx action device port slot data a
@@ -332,7 +386,7 @@ function mbotWriteDataDriver(error, services, characteristics) {
        mbotWComms.write( readIR , true , function(error) {
                console.log("Lendo se o botão A do controle está pressionado...");
        });
-     
+
      // Pergunta se botão da placa está pressionado
       // mbotWComms.write( read_onboard_button_pressed , true , function(error) {
       //         console.log("Lendo o botão onBoard está pressionado...");
@@ -433,35 +487,122 @@ process.stdin.on('keypress', (str, key) => {
     }
     if (key.name=='4') {
          mbotWComms.write( servo_0 , true, function(error) {
-                console.log("Barulho");
+                console.log("servo a 0 graus");
             });
     }
     if (key.name=='5') {
          mbotWComms.write( servo_1 , true, function(error) {
-                console.log("Barulho");
+                console.log("servo a 45 graus");
             });
     }
     if (key.name=='6') {
          mbotWComms.write( servo_2 , true, function(error) {
-                console.log("Barulho");
+                console.log("servo a 90 graus");
             });
     }
     if (key.name=='7') {
          mbotWComms.write( servo_3 , true, function(error) {
-                console.log("Barulho");
+                console.log("servo a 135 graus");
             });
     }
     if (key.name=='8') {
          mbotWComms.write( servo_4 , true, function(error) {
-                console.log("Barulho");
+                console.log("servo a 180 graus");
             });
     }
     if (key.name=='9') {
          mbotWComms.write( read_onboard_button_pressed , true, function(error) {
-                console.log("Barulho");
+                console.log("Botão na placa pressionado?");
             });
-    }
 
+    ///////////////////////////
+    // }
+    // if (key.name=='i') {
+    //      mbotWComms.write( motor_run , true, function(error) {
+    //             console.log("ambos motores vão para frente");
+    //         });
+    // }
+    // if (key.name=='k') {
+    //      mbotWComms.write( motor_reverse , true, function(error) {
+    //             console.log("ambos motores vão para trás");
+    //         });
+    // }
+    // if (key.name=='j') {
+    //      mbotWComms.write( motor_turnleft , true, function(error) {
+    //             console.log("ambos motores vão para esquerda");
+    //         });
+    // }
+    // if (key.name=='l') {
+    //      mbotWComms.write( motor_turnright , true, function(error) {
+    //             console.log("ambos motores vão para direita");
+    //         });
+    // }
+    // if (key.name=='o') {
+    //      mbotWComms.write( servo , true, function(error) {
+    //             console.log("ativa o servo");
+    //         });
+    // }
+    // if (key.name=='+') {
+    //   if(m<4){
+    //     m +=1;
+    //
+    //     //atualização
+    //     motor_run[6] = motor_speed[m];
+    //     motor_run[8] = 0xFF - motor_speed[m];
+    //     console.log("motor_run será = "+JSON.stringify(motor_run));
+    //
+    //     motor_reverse[6] =  0xFF - motor_speed[m];
+    //     motor_reverse[8] =  0xFF - motor_speed[m];
+    //     console.log("motor_reverse será = "+JSON.stringify(motor_reverse));
+    //
+    //     motor_turnright[6] = motor_speed[m];
+    //     motor_turnright[8] = motor_speed[m];
+    //     console.log("motor_turnright será = "+JSON.stringify(motor_turnright));
+    //
+    //     motor_turnleft[6] = 0xFF - motor_speed[m];
+    //     motor_turnleft[6] = 0xFF - motor_speed[m];
+    //     console.log("motor_turnleft será = "+JSON.stringify(motor_turnleft));
+    //     console.log("Aperte 'i' 'j' 'k' 'l' para ativar a nova velocidade");
+    //
+    //   }
+    // }
+    // if (key.name=='-') {
+    //   if(m>0){
+    //     m -=1;
+    //
+    //     //atualização
+    //     motor_run[6] = motor_speed[m];
+    //     motor_run[8] = 0xFF - motor_speed[m];
+    //     motor_reverse[6] =  0xFF - motor_speed[m];
+    //     motor_reverse[8] =  0xFF - motor_speed[m];
+    //     motor_turnright[6] = motor_speed[m];
+    //     motor_turnright[8] = motor_speed[m];
+    //     motor_turnleft[6] = 0xFF - motor_speed[m];
+    //     motor_turnleft[6] = 0xFF - motor_speed[m];
+    //     console.log("motor_run será = "+JSON.stringify(motor_run));
+    //     console.log("motor_reverse será = "+JSON.stringify(motor_reverse));
+    //     console.log("motor_turnright será = "+JSON.stringify(motor_turnright));
+    //     console.log("motor_turnleft será = "+JSON.stringify(motor_turnleft));
+    //     console.log("Aperte 'i' 'j' 'k' 'l' para ativar a nova velocidade");
+    //   }
+    // }
+    // if (key.name=='*') {
+    //   if(s<4){
+    //     s+=1;
+    //     servo[8] = servo_value[s];
+    //     console.log("servo será = "+JSON.stringify(servo));
+    //     console.log("Aperte 'o' para ativar a nova abertura do servo");
+    //   }
+    // }
+    // if (key.name=='/') {
+    //   if(s>0){
+    //     s-=1;
+    //     servo[8] = servo_value[s];
+    //     console.log("servo será = "+JSON.stringify(servo));
+    //     console.log("Aperte 'o' para ativar a nova abertura do servo");
+    //   }
+    // }
+    ///////////////////////////
 
     console.log();
     console.log(key);
