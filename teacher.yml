@@ -10,6 +10,6 @@
 #  register: p
 #- include: tasks/teacher-pt.yml
 #  when: not p.stat.exists
-#- include: tasks/teacher-en.yml
+- include: tasks/teacher-en.yml
 #  when: p.stat.exists
       
