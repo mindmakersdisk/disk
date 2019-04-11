@@ -1,0 +1,24 @@
+- name: Verificando ícone mindmakers.desktop
+  stat:
+     path: /home/pi/Desktop/mindmakers.desktop
+  register: mmdesk
+- name: Copiando atalho mindmakers.desktop versão de professor
+  copy:
+     src: files/teacher/mindmakers.desktop
+     dest: /home/pi/Desktop/mindmakers.desktop
+     owner: pi
+     group: pi
+     mode: 0755
+  when: not mmdesk.stat.exists
+- file:
+    path: /home/pi/Desktop/update.desktop
+    state: touch
+    attributes: -i
+- name: Copiando versão de professor do update.desktop
+  copy:
+     src: files/teacher/update.desktop
+     dest: /home/pi/Desktop
+     owner: pi
+     group: pi
+     attributes: +i
+     mode: 0755
