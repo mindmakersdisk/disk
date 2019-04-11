@@ -2,7 +2,7 @@
 - hosts: localhost
 
   tasks:
-  import_playbook: local.yml
+    #- import_playbook: local.yml
 
     - name: Verificando se diretório Desktop existe.
       stat:
