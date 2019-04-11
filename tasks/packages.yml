@@ -143,6 +143,6 @@
     path: /home/mindmakers/programs/verify/npmsphero
     state: directory
     mode: 0444
-- name: Instalando Telepot
-  pip:
-    name: telepot
+# - name: Instalando Telepot
+#   pip:
+#     name: telepot
