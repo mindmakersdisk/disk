@@ -1,15 +1,15 @@
 # Arquivo playbook complementar - imagem para do professor
 - import_playbook: local.yml
 
-  tasks:
+#  tasks:
     
 
-    - name: Verificando se diretório Desktop existe.
-      stat:
-        path: /home/pi/Desktop
-      register: p
-    - include: tasks/teacher-pt.yml
-      when: not p.stat.exists
-    - include: tasks/teacher-en.yml
-      when: p.stat.exists
+- name: Verificando se diretório Desktop existe.
+  stat:
+     path: /home/pi/Desktop
+  register: p
+- include: tasks/teacher-pt.yml
+  when: not p.stat.exists
+- include: tasks/teacher-en.yml
+  when: p.stat.exists
       
