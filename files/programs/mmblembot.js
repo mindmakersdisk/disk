@@ -1,36 +1,9 @@
 /*
- Mind Makers - mBot Controller
-
- Adaptqado de:
-
-// Author: fcgdam/PrimalCortex 2018.
-//
-// Sample code to connect the computer to the mBot Bluetooth module.
-//
-// One of the versions of the mbot v1.1 comes with an onboard bluetooth module.
-// This module, according to the schematics is wired to the TX/RX arduino pins, and uses the baud rate of 115200.
-// So it is possible to communicate with mbot through bluetooth to send commands and receive data. This is what mblock program does.
-//
-// This code is a stepping stone to enable computer <-> mbot communications so that we can use another protocol and programs instead of mblock.
-//
-// As far as I'm aware with the available devices that I have:
-//
-// mBot bluetooth advertises Makeblock_LE name.
-//
-// After connecting there is one service that has two characteristics:
-//
-// Service UUID: 0000ffe1-0000-1000-8000-00805f9b34fb   -> We can use the short notation ffe1
-//
-//  READ UUID: 0000ffe2-0000-1000-8000-00805f9b34fb -> We can use the short notation ffe2
-//
-//  WRITE UUID: 0000ffe3-0000-1000-8000-00805f9b34fb -> We can use the short notation ffe3
-//
-// After some testing with some BLE tools, the above UUIDs are the ones that allow to communicate with mbot through BLE.
-// Also the READ characteristic supports notification, so our callback for read will be triggered when there is data available from the mBot.
-//
-// So basically when writing to the write characteristic will send data to the mbot, and when data is available, we get notified.
-//
-// Overall this works just fine, not very fast, but allows to build on top of this much nicer projects. */
+ Mind Makers - mBot BLE Controller
+ 
+ Paulo Alvim 04/2019
+ Copyright(c) Mind Makers Editora Educacional Ltda. Todos os direitos reservados
+*/
 
 const noble   = require('noble');
 
@@ -40,6 +13,9 @@ const devName               = "Makeblock_LE";
 const mbotServiceUUID       = "ffe1";
 const mbotReadEndPointUUID  = "ffe2";
 const mbotWriteEndPointUUID = "ffe3";
+
+/********************** VALORES HEXADECIMAIS DO FIRMWARE DO MBOT ******************************************
+ *********************************************************************************************************/
 
 const ir_A = 0x45;
 const ir_B = 0x46;
@@ -162,6 +138,7 @@ var read_onboard_button_released =  new Buffer( [0xFF, 0X55, 0x05, 0x00, 0x01, 0
 
 // Motor m1 - horario - frente 255
 var motor_m1 =  new Buffer( [0xFF, 0X55, 0x06, 0x00, 0x02, 0x0A, 0x09, 0x01, 0xFF]);
+
 // Motor m2 -  horario - frente 255
 var motor_m2 =  new Buffer( [0xFF, 0X55, 0x06, 0x00, 0x02, 0x0A, 0x0A, 0xFF, 0x00]);
 
@@ -214,56 +191,130 @@ var buzz =      new Buffer( [0xff, 0x55, 0x07, 0x00, 0x02, 0x22, 0x06, 0x01, 0xf
 //      0xff  0x55   0x4 0x3 0x1    0x1    0x1  0xa
 // ***************************************************/
 
+
+/********************** VALORES HEXADECIMAIS DO FIRMWARE DO MBOT  - FIM **********************************
+ *********************************************************************************************************/
+
 // For cycling demo
 var loop = 1;
 
 noble.on('stateChange', function(state) {
-    console.log("- Bluetooth state change");
 
-    if (state === 'poweredOn') {
-        console.log("  - Start scanning...");
+     if (state === 'poweredOff') {
+        console.log('');
+        console.error('\x1b[31m','O Bluetooth não está ativado! Ative no ícone superior direito em seu computador e tente novamente.');
+        console.error('\x1b[0m','');
+        process.exit(1);
+    } else if (state === 'poweredOn') {
+        console.log('---------------------------------------------------------------');
+        console.log('                    Serviço Bluetooth Ativo                    ');
+        console.log('---------------------------------------------------------------');  
+
+        console.log('Procurando por um mBot com módulo BLE a menos de 2m...');
         noble.startScanning();
     } else {
-        console.log("  - Stopped scanning...");
+        console.log('Encerrando procura por dispositivos Bluetooth');
         noble.stopScanning();
     }
 });
+
+var contadorIntervalo = 0;
+var macaddressConectado = null;
+var notificouClienteConexao=false;
+var monitoriaTask=null;
 
 noble.on('discover', function(peripheral) {
+ 
     var advertisement = peripheral.advertisement;
     var localName = advertisement.localName;
-
-    console.log('! Found device with local name: ' + localName );
-
-    if ( localName == devName ) {
-        noble.stopScanning();
-        console.log('! Mbot robot found! ');
-        console.log("  - Stopped scanning...");
-        console.log('- Connecting to ' + localName + ' ['+ peripheral.id + ']');
+   
+    if (localName == devName  && peripheral.rssi>-60) {
+     
+   //     console.log('! Found device with local name: ' + localName );
+   //     console.log('- Connecting to ' + localName + ' ['+ peripheral.id + ']');
         connectTombot( peripheral );
+
     }
 });
+
+noble.on('disconnect', function(data) {
+
+   console.log('mBot desconectado'+data);
+   
+   notificaClienteDesconexao('');
+   
+   notificouClienteConexao=false;
+   macaddressConectado=null;
+
+});
+
+
+function notificaClienteDesconexao(error) {
+  
+  if (error=null) error='';
+  
+      console.log('');
+      console.error('\x1b[31m','Perdeu a conexão com o circuito eletrônico digital...');
+      console.error('\x1b[0m','');
+ 
+      if (temClienteConectado()) {
+          wsServer.connections[0].send('desconectado:'+error);
+      }
+  
+}
+
+
+function notificaCliente(componente,valor) {
+  
+      if (temClienteConectado()) {
+          wsServer.connections[0].send(componente+","+valor);
+      }
+  
+}
+
+function temClienteConectado() {
+  
+  return wsServer!= null && wsServer.connections != null && wsServer.connections[0] != null
+  
+}
+
+function decimalParaHexa(numeroDecimal) {
+
+  var hexString = numeroDecimal.toString(16);
+  return parseInt(hexString, 16);
+  
+}
+
+
 
 function connectTombot(peripheral) {
 
     peripheral.connect(error => {
-        console.log('! Connected to', peripheral.id);
-
-        // specify the services and characteristics to discover
+         console.log('    Conectado ao mBot com macaddress:' + peripheral.uuid);
+     
+         macaddressConectado = peripheral.uuid;
+         
+           if (temClienteConectado()) {
+                 wsServer.connections[0].send('conectado:'+macaddressConectado);
+                 notificouClienteConexao=true;
+                 contadorIntervalo=0;
+          }
+         
+        // Serviço e caracteristicas a serem descobertas
         const serviceUUIDs   = [mbotServiceUUID];
         const charReadUUIDs  = [mbotReadEndPointUUID];
         const charWriteUUIDs = [mbotWriteEndPointUUID];
 
-        // The second parameter defines the set of BLE characteristics that we want to find.
-        // But if I specify the mbot read and write chracteristics as an array, noble returns an empty array.
-        // So I filter after the discovery.
+        // Caracteristica BLE que queremos encontrar
+        // Se especificar as características read e write como um array, noble retorna um array vazio.
+        // Então filtra após descobrir.
         peripheral.discoverSomeServicesAndCharacteristics( serviceUUIDs, [], function(error, services, chars ) {
             var mbotService = services[0];
 //            console.log("Characte: " , chars[0].uuid);
 //            console.log("Characte: " , chars[1].uuid);
 
             if (!error) {
-                console.log("! mbot BLE service found!");
+               // console.log("Descobriu serviços do mBot...");
 
                 for( var i in chars ) {
                     if ( chars[i].uuid == mbotReadEndPointUUID )
@@ -273,25 +324,63 @@ function connectTombot(peripheral) {
                         mbotWriteDataDriver( error, mbotService, chars[i] );
                 }
 
-                console.log("- End scanning BLE characteristics.");
+              //  console.log("- End scanning BLE characteristics.");
             } else {
-                console.log("! mbot BLE service not found... Sorry!");
+                console.log("Não encontrou servições BLE para o mBot...");
             }
         });
 
+        
     });
 
-    peripheral.on('disconnect', () => console.log('! Mbot has disconnected...'));
+    peripheral.on('disconnect', () => console.log('mBot foi desconectado...'));
 }
 
+var ultimoContador=-1;
+
+function monitoraDispositivoConectado() {
+  
+  if (contadorIntervalo==ultimoContador) {
+      console.log('contadorIntervalo='+contadorIntervalo+' e ultimoContador='+ultimoContador);
+      ultimoContador=contadorIntervalo;
+      
+      // Assume que conexão está congelada
+      notificaClienteDesconexao();
+      
+      clearInterval(monitoriaTask);
+      
+      noble.startScanning();
+      
+  } else {
+      ultimoContador=-1;
+  }
+  
+}
+
+var poolSensor=0;
+
 function mbotReadDataDriver(error, services, characteristics) {
+    
     var mbotRComms = characteristics;
 
-    console.log('! mbot READ BLE characteristic found.');
+ //   console.log('! mbot READ BLE characteristic found.');
+
 
     // data callback receives notifications
     mbotRComms.on('data', (data, isNotification) => {
-        console.log('> mbot data received: "' + data.toString('hex') + '"');
+       //console.log('> mbot data received: "' + data.toString('hex') + '"');
+              
+               contadorIntervalo++;
+          
+          // Se não notificou cliente da conexão notifica agora
+          if (temClienteConectado() &&  (contadorIntervalo==300 || !notificouClienteConexao)) {
+                 //console.log('Entrou para notificar conexao');
+                 wsServer.connections[0].send('conectado:'+macaddressConectado);
+                 notificouClienteConexao=true;
+                 contadorIntervalo=0;
+          }
+              
+              
         // This doesn't work all the time.
         // We are epecting that the received data is a complete answer starting by 0xff and 0x55
         // To be perfect we need to "slide" the buffer looking for 0xff0x55
@@ -310,40 +399,37 @@ function mbotReadDataDriver(error, services, characteristics) {
                     buf.forEach( function (b,i) {
                         v.setUint8(i,b);
                     });
-                    console.log("float: " + v.getFloat32(0) );
-                    console.log("teste: " + JSON.stringify(data));
+                    
+                   // console.log("float: " + v.getFloat32(0) );
+                    //console.log("teste: " + JSON.stringify(data));
+                       
+                    if (poolSensor==0)  {  
+                        notificaCliente(LINESENSOR,v.getFloat32(0)) 
+                        poolSensor=1;   
+                    } else if (poolSensor==1) {   
+                        notificaCliente(LIGHTSENSOR,v.getFloat32(0))  
+                        poolSensor=2;     
+                    } else if (poolSensor==2) {   
+                        notificaCliente(ULTRASOUNDSENSOR,v.getFloat32(0))   
+                        poolSensor=0; 
+                    } 
+                        
 
 
-                } else if (data[3] == 0x1  ) {
-                   // 1-byte
-                    console.log("identificou byte = "+data[4]);
-                    console.log("identificou byte = "+JSON.stringify(data));
-
-
-                } else if (data[3] == 0x3 ) {
-                   // 3-short
-                    console.log("identificou short = "+data[4]+data[5]+data[6]+data[7]);
-                    console.log("identificou short = "+JSON.stringify(data));
-
-
-                } else {
-                   // 4-len+string
-                   console.log("identificou len+string = "+data[4]+data[5]+data[6]+data[7]);
-                   console.log("identificou len+string = "+JSON.stringify(data));
-
-                }
-
-
-
-
+                } 
+                
+                
     });
 
     // subscribe to be notified whenever the peripheral update the characteristic
     mbotRComms.subscribe(error => {
         if (error) {
-            console.error('! Error subscribing to mbot BLE characteristic');
+            console.error('Erro ao subscrever para ouvir características do mbot BLE');
+            notificaClienteDesconexao(error);
         } else {
-            console.log('! Subscribed for mbot read notifications');
+              console.log('\x1b[0m\x1b[32m','Leitura de componentes digitais do mBot via bluetooth ativada');
+              console.log('\x1b[0m','---------------------------------------------------------------------');
+              monitoriaTask = setInterval(monitoraDispositivoConectado,3000);
         }
     });
 }
@@ -353,7 +439,7 @@ var mbotWComms=null;
 function mbotWriteDataDriver(error, services, characteristics) {
     mbotWComms = characteristics;
 
-    console.log('! mbot WRITE BLE characteristic found.');
+    //console.log('! mbot WRITE BLE characteristic found.');
 
     // create an interval to send data to the service
     let count = 0;
@@ -368,40 +454,32 @@ function mbotWriteDataDriver(error, services, characteristics) {
         //resposta 1, apenas direito em cima da linha
         //resposta 0, ambos  em cima da linha
         //
-        //mbotWComms.write( readLineFollower , true , function(error) {
-        //       console.log("Lendo dados do sensor de segue linha...");
-        //});
+        if (poolSensor==0) {
+            mbotWComms.write( readLineFollower , true , function(error) {
+                  // console.log("Lendo dados do sensor de segue linha...");
+           });
 
-        // Lê dados do sensor de luz
-        //mbotWComms.write( readLightSensor , true , function(error) {
-        //        console.log("Lendo dados do sensor de luz...");
-        //});
+        } else if (poolSensor==1) {
 
-        // Lê dados do sensor ultrassom
-       // mbotWComms.write( readUS , true , function(error) {
-       //         console.log("Lendo dados do sensor ultrassom...");
-       // });
+            // Lê dados do sensor de luz
+            mbotWComms.write( readLightSensor , true , function(error) {
+                  //  console.log("Lendo dados do sensor de luz...");
+            });
+         
+        } else if (poolSensor==2) {
 
-       // Pergunta se botão da A do controle está pressionado
-       mbotWComms.write( readIR , true , function(error) {
-               console.log("Lendo se o botão A do controle está pressionado...");
-       });
+            // Lê dados do sensor ultrassom
+            mbotWComms.write( readUS , true , function(error) {
+                   // console.log("Lendo dados do sensor ultrassom...");
+            });
 
-     // Pergunta se botão da placa está pressionado
-      // mbotWComms.write( read_onboard_button_pressed , true , function(error) {
-      //         console.log("Lendo o botão onBoard está pressionado...");
-      // });
-
-      // Pergunta se botão da placa NÃO está pressionado
-     // mbotWComms.write( read_onboard_button_released , true , function(error) {
-     //         console.log("Lendo o botão onBoard NÃO está pressionado...");
-     // });
-
+        }
+        
 
         loop = ++loop % 2;
 
         //if ( (count % 5) == 0) console.log(".");
-    }, 1500);
+    }, 100);
 }
 
 
@@ -514,7 +592,7 @@ process.stdin.on('keypress', (str, key) => {
          mbotWComms.write( read_onboard_button_pressed , true, function(error) {
                 console.log("Botão na placa pressionado?");
             });
-
+    }
     ///////////////////////////
     // }
     // if (key.name=='i') {
@@ -609,4 +687,422 @@ process.stdin.on('keypress', (str, key) => {
     console.log();
   }
 });
-console.log('Press any key...');
+
+const BUZZER='buzzer';
+
+const DCMOTORM1='dcmotorm1';
+const DCMOTORM2='dcmotorm2';
+const DCMOTOR_FORWARD='forward';
+const DCMOTOR_BACK='back';
+
+// Velocidade na posição 8
+const DCMOTORS='dcmotors';
+const DCMOTORS_BACK='dcmotorsBack';
+const DCMOTORS_RIGHT='dcmotorsRight';
+const DCMOTORS_LEFT='dcmotorsLeft';
+
+const SERVOMOTOR='servomotor';
+const LEDLEFT='ledleft';
+const LEDRIGHT='ledright';
+const LEDBOTH='ledboth';
+const PLAYNOTE='playnote';
+
+const LINESENSOR='linesensor';
+const ULTRASOUNDSENSOR='ultrasoundsensor';
+const LIGHTSENSOR='lightsensor';
+
+const BUTTON='button';
+const BUTTON_PRESSED='pressed';
+const BUTTON_RELEASED='released';
+
+const IRSENSOR='irsensor';
+
+// Recebe comando obtido do Blockly e envia para mBot.
+function escreveParaMBot(comando,valor) {
+  
+  if (comando==BUZZER) {
+       
+       mbotWComms.write( buzz , true, function(error) {
+                //console.log(BUZZER);
+            });
+            
+  } else if (comando==DCMOTORM1) {
+      
+        var dcMotorM1BaseBufferMax =  new Buffer( [0xFF, 0X55, 0x06, 0x00, 0x02, 0x0A, 0x09, 0x01, 0xFF]);
+ 
+        var sentidoPotencia = valor.split(',');
+        var sentido = sentidoPotencia[0];
+        var potencia = sentidoPotencia[1];        
+ 
+        if (sentido = DCMOTOR_FORWARD) {
+            var velm1 = 255 - parseInt(potencia);
+            if (velm1==0) velm1=1;
+            dcMotorM1BaseBufferMax.writeUInt8(velm1,7);
+        } else {
+            dcMotorM1BaseBufferMax.writeUInt8(Oxff,7);
+            dcMotorM1BaseBufferMax.writeUInt8(parseInt(potencia),8);              
+        }
+
+        mbotWComms.write( dcMotorM1BaseBufferMax , true, function(error) {
+          //  console.log("Motor M1 pra frente com "+valor,dcMotorM1BaseBufferMax);
+        });  
+        
+      
+  } else if (comando==DCMOTORM2) {
+      
+       var dcMotorM2BaseBufferMax =  new Buffer( [0xFF, 0X55, 0x06, 0x00, 0x02, 0x0A, 0x0A, 0xFF, 0x00]);
+ 
+       var sentidoPotencia = valor.split(',');
+       var sentido = sentidoPotencia[0];
+       var potencia = sentidoPotencia[1];   
+        
+       if (sentido = DCMOTOR_FORWARD) {
+             dcMotorM2BaseBufferMax.writeUInt8(parseInt(potencia),7);
+        } else {
+            var velm1 = 255 - parseInt(potencia);
+            if (velm1==0) velm1=1;
+            dcMotorM1BaseBufferMax.writeUInt8(velm1,7);              
+            dcMotorM1BaseBufferMax.writeUInt8(Oxff,8);
+        }
+      
+        mbotWComms.write( dcMotorM2BaseBufferMax , true, function(error) {
+          //  console.log("Motor M2 pra frente com "+valor,dcMotorM2BaseBufferMax);
+        });  
+      
+  } else if (comando==DCMOTORS || comando==DCMOTORS_BACK || comando==DCMOTORS_RIGHT || comando==DCMOTORS_LEFT) {
+      
+        const DCMOTORS_STOP =  new Buffer( [0xFF, 0X55, 0x07, 0x00, 0x02, 0x05, 0x00, 0x00, 0x00, 0x00]);
+        var dcMotorsBaseBufferMax =  new Buffer( [0xFF, 0X55, 0x07, 0x00, 0x02, 0x05, 0x01, 0xFF, 0xFF, 0x00]);
+              
+        var sentidoPotenciaCalibragem = valor.split(',');  
+        valor = sentidoPotenciaCalibragem[0];
+        var potenciaAdicionalEsquerda=parseInt(sentidoPotenciaCalibragem[1]);
+        var potenciaAdicionalDireita=parseInt(sentidoPotenciaCalibragem[2]);
+    
+        if (parseInt(valor)==0) {
+            mbotWComms.write( DCMOTORS_STOP , true, function(error) {
+            //    console.log("para motores ");
+            });  
+        } else {
+            // Cada motor gira para um sentido oposto ao do outro e não podem ser 0 (mínimo 1)
+            var velm1 = 255 - parseInt(valor);
+            
+            // para frente conforme valor
+            if (comando==DCMOTORS) {   
+                velm1 = velm1-potenciaAdicionalEsquerda;  
+                if (velm1<=0) velm1=1;
+                veldir = parseInt(valor)+potenciaAdicionalDireita;
+                if (veldir>255) veldir=255;    
+                console.log(velm1+', '+veldir);            
+                dcMotorsBaseBufferMax.writeUInt8(velm1,6);
+                dcMotorsBaseBufferMax.writeUInt8(255,7);
+                dcMotorsBaseBufferMax.writeUInt8(veldir,8);
+                dcMotorsBaseBufferMax.writeUInt8(0,9);
+            } else if (comando==DCMOTORS_BACK) {
+                dcMotorsBaseBufferMax.writeUInt8(255,6);  
+                dcMotorsBaseBufferMax.writeUInt8(velm1,7);
+                dcMotorsBaseBufferMax.writeUInt8(0,8);              
+                dcMotorsBaseBufferMax.writeUInt8(parseInt(valor),9);
+            } else if (comando==DCMOTORS_RIGHT) {
+                dcMotorsBaseBufferMax.writeUInt8(255,6);  
+                dcMotorsBaseBufferMax.writeUInt8(velm1,7);
+                dcMotorsBaseBufferMax.writeUInt8(255,8);              
+                dcMotorsBaseBufferMax.writeUInt8(velm1,9);
+            } else if (comando==DCMOTORS_LEFT) {
+                dcMotorsBaseBufferMax.writeUInt8(0,6);  
+                dcMotorsBaseBufferMax.writeUInt8(parseInt(valor),7);
+                dcMotorsBaseBufferMax.writeUInt8(0,8);              
+                dcMotorsBaseBufferMax.writeUInt8(parseInt(valor),9);
+            }
+                        
+            mbotWComms.write( dcMotorsBaseBufferMax , true, function(error) {
+          //      console.log("ambos motores "+valor,dcMotorsBaseBufferMax);
+            });  
+            
+        }
+      
+  } else if (comando==SERVOMOTOR) {
+      
+      var servoMotorsBaseBuffer180Max =  new Buffer( [0xFF, 0X55, 0x06, 0x00, 0x02, 0x0B, 0x01, 0x01, 0xB4]);
+     
+      var anguloPortaSlot = valor.split(',');
+     
+      var porta = parseInt(anguloPortaSlot[0]);
+      var slot = parseInt(anguloPortaSlot[1]);
+      var angulo = parseInt(anguloPortaSlot[2]);
+            
+      if (angulo > 120) angulo = 120;
+
+      servoMotorsBaseBuffer180Max.writeUInt8(porta,6);          
+      servoMotorsBaseBuffer180Max.writeUInt8(slot,7);    
+      servoMotorsBaseBuffer180Max.writeUInt8(angulo,8);
+      
+      mbotWComms.write( servoMotorsBaseBuffer180Max , true, function(error) {
+       // console.log("servo no angulo"+valor,servoMotorsBaseBuffer180Max);
+      }); 
+      
+  } else if (comando==LEDLEFT || comando==LEDRIGHT || comando==LEDBOTH) {
+      
+     var ledBase = new Buffer([0xff, 0x55, 0x09, 0x00, 0x02, 0x08, 0x07, 0x02, 0x02, 0xff, 0xFF, 0xff]);   
+     var rgb = valor.split(',');
+     
+     if (comando==LEDLEFT) 
+        ledBase.writeUInt8(2,8); 
+     else if (comando==LEDRIGHT) 
+        ledBase.writeUInt8(1,8);
+     else
+        ledBase.writeUInt8(0,8);     
+     
+     ledBase.writeUInt8(parseInt(rgb[0]),9);  
+     ledBase.writeUInt8(parseInt(rgb[1]),10);
+     ledBase.writeUInt8(parseInt(rgb[2]),11);              
+     
+      mbotWComms.write( ledBase , true, function(error) {
+        //console.log("LED"+valor,ledBase);
+      }); 
+
+      
+  }  else if (comando==PLAYNOTE) {
+ 
+     var buzzBase = new Buffer( [0xff, 0x55, 0x07, 0x00, 0x02, 0x22, 0x06, 0x01, 0xf4, 0x01]);     
+     
+     var notaTempo = valor.split(',');
+     
+     var nota = notaTempo[0];
+     var tempo = notaTempo[1];     
+     
+     // nota
+   if (nota=='C2') {
+        buzzBase.writeUInt8(0x41,6); 
+        buzzBase.writeUInt8(0x00,7); 
+     } else if (nota=='D2') {
+        buzzBase.writeUInt8(0x49,6); 
+        buzzBase.writeUInt8(0x00,7); 
+     } else if (nota=='E2') {
+        buzzBase.writeUInt8(0x52,6); 
+        buzzBase.writeUInt8(0x00,7); 
+     } else if (nota=='F2') {
+        buzzBase.writeUInt8(0x57,6); 
+        buzzBase.writeUInt8(0x00,7); 
+     } else if (nota=='G2') {
+        buzzBase.writeUInt8(0x62,6); 
+        buzzBase.writeUInt8(0x00,7); 
+     } else if (nota=='A2') {
+        buzzBase.writeUInt8(0x6E,6); 
+        buzzBase.writeUInt8(0x00,7); 
+     } else if (nota=='B2') {
+        buzzBase.writeUInt8(0x7B,6); 
+        buzzBase.writeUInt8(0x00,7); 
+     } else if (nota=='C3') {
+        buzzBase.writeUInt8(0x83,6); 
+        buzzBase.writeUInt8(0x00,7); 
+     } else if (nota=='D3') {
+        buzzBase.writeUInt8(0x93,6); 
+        buzzBase.writeUInt8(0x00,7); 
+     } else if (nota=='E3') {
+        buzzBase.writeUInt8(0xa5,6); 
+        buzzBase.writeUInt8(0x00,7); 
+     } else if (nota=='F3') {
+        buzzBase.writeUInt8(0xaf,6); 
+        buzzBase.writeUInt8(0x00,7); 
+     } else if (nota=='G3') {
+        buzzBase.writeUInt8(0xc4,6); 
+        buzzBase.writeUInt8(0x00,7); 
+     } else if (nota=='A3') {
+        buzzBase.writeUInt8(0xdc,6); 
+        buzzBase.writeUInt8(0x00,7); 
+     } else if (nota=='B3') {
+        buzzBase.writeUInt8(0xf7,6); 
+        buzzBase.writeUInt8(0x00,7); 
+     } else if (nota=='C4') {
+        buzzBase.writeUInt8(0x06,6); 
+        buzzBase.writeUInt8(0x01,7); 
+     } else if (nota=='D4') {
+        buzzBase.writeUInt8(0x26,6); 
+        buzzBase.writeUInt8(0x01,7); 
+     } else if (nota=='E4') {
+        buzzBase.writeUInt8(0x4a,6); 
+        buzzBase.writeUInt8(0x01,7); 
+     } else if (nota=='F4') {
+        buzzBase.writeUInt8(0x5d,6); 
+        buzzBase.writeUInt8(0x01,7); 
+     } else if (nota=='G4') {
+        buzzBase.writeUInt8(0x88,6); 
+        buzzBase.writeUInt8(0x01,7); 
+     } else if (nota=='A4') {
+        buzzBase.writeUInt8(0xb8,6); 
+        buzzBase.writeUInt8(0x01,7); 
+     } else if (nota=='B4') {
+        buzzBase.writeUInt8(0xee,6); 
+        buzzBase.writeUInt8(0x01,7); 
+     } else if (nota=='C5') {
+        buzzBase.writeUInt8(0x0b,6); 
+        buzzBase.writeUInt8(0x02,7); 
+     } else if (nota=='D5') {
+        buzzBase.writeUInt8(0x4b,6); 
+        buzzBase.writeUInt8(0x02,7); 
+     } else if (nota=='E5') {
+        buzzBase.writeUInt8(0x93,6); 
+        buzzBase.writeUInt8(0x02,7); 
+     } else if (nota=='F5') {
+        buzzBase.writeUInt8(0xba,6); 
+        buzzBase.writeUInt8(0x02,7); 
+     } else if (nota=='G5') {
+        buzzBase.writeUInt8(0x10,6); 
+        buzzBase.writeUInt8(0x03,7); 
+     } else if (nota=='A5') {
+        buzzBase.writeUInt8(0x70,6); 
+        buzzBase.writeUInt8(0x03,7); 
+     } else if (nota=='B5') {
+        buzzBase.writeUInt8(0xdc,6); 
+        buzzBase.writeUInt8(0x03,7); 
+     } else if (nota=='C6') {
+        buzzBase.writeUInt8(0x17,6); 
+        buzzBase.writeUInt8(0x04,7); 
+     } else if (nota=='D6') {
+        buzzBase.writeUInt8(0x97,6); 
+        buzzBase.writeUInt8(0x04,7); 
+     } else if (nota=='E6') {
+        buzzBase.writeUInt8(0x27,6); 
+        buzzBase.writeUInt8(0x05,7); 
+     } else if (nota=='F6') {
+        buzzBase.writeUInt8(0x75,6); 
+        buzzBase.writeUInt8(0x05,7); 
+     } else if (nota=='G6') {
+        buzzBase.writeUInt8(0x20,6); 
+        buzzBase.writeUInt8(0x06,7); 
+     } else if (nota=='A6') {
+        buzzBase.writeUInt8(0xE0,6); 
+        buzzBase.writeUInt8(0x06,7); 
+     } else if (nota=='B6') {
+        buzzBase.writeUInt8(0xB8,6); 
+        buzzBase.writeUInt8(0x07,7); 
+     } else if (nota=='C7') {
+        buzzBase.writeUInt8(0x2D,6); 
+        buzzBase.writeUInt8(0x08,7); 
+     } else if (nota=='D7') {
+        buzzBase.writeUInt8(0x0D,6); 
+        buzzBase.writeUInt8(0x09,7); 
+     } else if (nota=='E7') {
+        buzzBase.writeUInt8(0x4D,6); 
+        buzzBase.writeUInt8(0x0A,7); 
+     } else if (nota=='F7') {
+        buzzBase.writeUInt8(0xEA,6); 
+        buzzBase.writeUInt8(0x0A,7); 
+     } else if (nota=='G7') {
+        buzzBase.writeUInt8(0x40,6); 
+        buzzBase.writeUInt8(0x0C,7); 
+     } else if (nota=='A7') {
+        buzzBase.writeUInt8(0xC0,6); 
+        buzzBase.writeUInt8(0x0D,7); 
+     } else if (nota=='B7') {
+        buzzBase.writeUInt8(0x6F,6); 
+        buzzBase.writeUInt8(0x0F,7); 
+     } else if (nota=='C8') {
+        buzzBase.writeUInt8(0x5A,6); 
+        buzzBase.writeUInt8(0x10,7); 
+     } else if (nota=='D8') {
+        buzzBase.writeUInt8(0x5B,6); 
+        buzzBase.writeUInt8(0x12,7); 
+     } 
+      
+     // tempo
+     if (tempo=='1/8') {
+        buzzBase.writeUInt8(0x7d,8); 
+        buzzBase.writeUInt8(0x00,9); 
+     } else if (tempo=='1/4') {
+        buzzBase.writeUInt8(0xfa,8); 
+        buzzBase.writeUInt8(0x00,9); 
+     } else if (tempo=='1/2') {
+        buzzBase.writeUInt8(0xf4,8); 
+        buzzBase.writeUInt8(0x01,9); 
+     } else if (tempo=='1') {
+        buzzBase.writeUInt8(0xe8,8); 
+        buzzBase.writeUInt8(0x03,9); 
+     } else if (tempo=='2') {
+        buzzBase.writeUInt8(0xd0,8); 
+        buzzBase.writeUInt8(0x07,9); 
+     } 
+      
+      mbotWComms.write( buzzBase , true, function(error) {
+        //console.log("BUZZ NOTE "+nota + " tempo "+tempo,buzzBase);
+      }); 
+      
+      
+  }
+  
+}
+
+
+/* WEB SOCKET DAQUI EM DIANTE */
+
+var WebSocketServer = require('websocket').server;
+
+var http = require('http');
+ 
+var server = http.createServer(function(request, response) {
+   // console.log((new Date()) + ' Received request for ' + request.url);
+    response.writeHead(404);
+    response.end();
+});
+server.listen(8081, function() {
+    console.log('---------------------------------------------------------------');
+    console.log('            '+(new Date().toLocaleString()) + ' Servidor ouvindo na porta 8081');
+    console.log('---------------------------------------------------------------');    
+});
+ 
+wsServer = new WebSocketServer({
+    httpServer: server,
+    // You should not use autoAcceptConnections for production
+    // applications, as it defeats all standard cross-origin protection
+    // facilities built into the protocol and the browser.  You should
+    // *always* verify the connection's origin and decide whether or not
+    // to accept it.
+    autoAcceptConnections: false
+});
+ 
+function originIsAllowed(origin) {
+   // console.log('entrou para permitir origin');
+  // put logic here to detect whether the specified origin is allowed.
+  return true;
+}
+ 
+wsServer.on('request', function(request) {
+  
+    //console.log('UM CLIENTE ENTROU EM REQUEST');
+  
+    if (!originIsAllowed(request.origin)) {
+      // Make sure we only accept requests from an allowed origin
+      request.reject();
+      console.log((new Date().toLocaleString()) + ' Conexão com origem ' + request.origin + ' rejeitada.');
+      return;
+    }
+    
+    var connection = request.accept('echo-protocol', request.origin);
+    console.log((new Date().toLocaleString()) + ' Conexão aceita.');
+    
+     if (temClienteConectado()) {
+                 wsServer.connections[0].send('conectado:'+macaddressConectado);
+                 notificouClienteConexao=true;
+                 contadorIntervalo=0;
+          }
+   
+    connection.on('message', function(comandoValorStr) {
+
+      console.log('RECEBEU MENSAGEM ',comandoValorStr.utf8Data);
+      
+      var comandoValor = JSON.parse(comandoValorStr.utf8Data);
+      
+      console.log('RECEBEU MENSAGEM ',comandoValor.valor);
+                  
+      escreveParaMBot(comandoValor.comando,comandoValor.valor);
+      
+    });
+    
+    connection.on('close', function(reasonCode, description) {
+        console.log((new Date().toLocaleString()) + ' Conexão ' + connection.remoteAddress + ' finalizada.');
+    });
+});
+
+
+
