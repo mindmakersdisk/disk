@@ -1,8 +1,8 @@
 #!/bin/bash
 
-pi="$(sudo grep -w "Pi:" /home/mindmakers/school.info | sed 's/.*: //')"
-sd="$(sudo grep -w "SD:" /home/mindmakers/school.info | sed 's/.*: //')"
-#lê arquivo school.info e identifica padrão passado (Pi:), e pega valores depois do ":  " e aloca na variável.
+pi="$(sudo grep -w "Pi:" /home/mindmakers/school.info | sed 's/.*: //' | sed 's/||//')"
+sd="$(sudo grep -w "SD:" /home/mindmakers/school.info | sed 's/.*: //' | sed 's/||//')"
+#lê arquivo school.info e identifica padrão passado (Pi:), substitui qualquer ciosa antes do : por '', retira || do final da linha e aloca na variável.
 
 
 echo pi=$pi \& sd=$sd
