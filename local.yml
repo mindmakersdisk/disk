@@ -12,37 +12,19 @@
       register: ansb
     - include: tasks/ansibleupdate.yml
       when: not ansb.stat.exists
+    - name: Verificando se diretório Desktop existe.
+      stat:
+        path: /home/pi/Desktop
+      register: p
+    - include: tasks/student-pt.yml
+      when: not p.stat.exists
+    - include: tasks/student-en.yml
+      when: p.stat.exists
 
 - import_playbook: student.yml
 
 - hosts: localhost
   tasks:
-    # - name: Verificando versão do Ansible.
-    #   stat:
-    #     path: /home/mindmakers/programs/verify/ansible27
-    #   register: ansb
-    # - include: tasks/ansibleupdate.yml
-    #   when: not ansb.stat.exists
-#     # - fail:
-#     #      msg: "Comando errado, se estiver tentando atualizar Chromebook, utilize o termo chomebook.yml ao final do comando"
-#     #   when: not ansible_facts.lsb.id == "Raspbian"
-#     - name: Verificando se diretório Desktop existe.
-#       stat:
-#         path: /home/pi/Desktop
-#       register: p
-#     - include: tasks/copies-pt.yml
-#       when: not p.stat.exists
-#     - include: tasks/copies-en.yml
-#       when: p.stat.exists
-#     - include: tasks/copies.yml
-#     - include: tasks/packages.yml
-#     - include: tasks/packages-uninstall.yml
-#     - include: tasks/3dslash.yml
-#     - include: tasks/hide-games.yml
-#     - include: tasks/install-extension.yml
-#     - include: tasks/mblock.yml
-#     - include: tasks/raspi-config.yml
-#     - include: tasks/apt-get.yml
  # Copia as notas de liberação e o atalho com nome da versão atualizados
     - include: tasks/final-version-copies-pt.yml
       when: not p.stat.exists

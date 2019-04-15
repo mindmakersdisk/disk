@@ -21,9 +21,9 @@
       stat:
         path: /home/pi/Desktop
       register: p
-    - include: tasks/copies-pt-headless.yml
+    - include: tasks/headless-pt.yml
       when: not p.stat.exists
-    - include: tasks/copies-en-headless.yml
+    - include: tasks/headless-en.yml
       when: p.stat.exists
     - include: tasks/tightvnc.yml
     - include: tasks/copies-headless.yml

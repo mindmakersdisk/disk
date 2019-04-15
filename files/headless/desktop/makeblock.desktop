@@ -1,10 +1,10 @@
-#!/usr/bin/env xdg-open
 [Desktop Entry]
-Version=1.0
-Terminal=false
-Type=Application
 Name=mBot Connection
 Name[pt_BR]=Conexão mBot
-Exec=/usr/bin/chromium-browser --profile-directory=Default --app-id=clgdmbbhmdlbcgdffocenbbeclodbndh
-Icon=chrome-clgdmbbhmdlbcgdffocenbbeclodbndh-Default
-StartupWMClass=crx_clgdmbbhmdlbcgdffocenbbeclodbndh
+Comment=
+Icon=/usr/share/icons/mbot.png
+Exec=bash /home/mindmakers/programs/shells/mbot-connect.sh
+Type=Application
+Encoding=UTF-8
+Terminal=true
+Categories=None;

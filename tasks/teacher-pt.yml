@@ -1,3 +1,8 @@
+- name: Copiando a imagem tema de fundo
+  copy:
+     src: files/teacher/fundo.png
+     dest: /home/mindmakers
+     mode: 0755
 - name: Verificando ícone mindmakers.desktop
   stat:
      path: "/home/pi/Área de Trabalho/mindmakers.desktop"

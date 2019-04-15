@@ -1,4 +1,4 @@
-- name: Check if foo is installed
+- name: Verificando se tightvncserver está instalado
   command: dpkg-query -l tightvncserver
   register: deb_check
   ignore_errors: yes

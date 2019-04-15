@@ -2,10 +2,10 @@
   stat:
      path: /home/mindmakers/programs/verify/node815
   register: nodejs
-- name: Instalando Nodejs 8.15.3
+- name: Instalando Nodejs 8.15.*
   shell: 'curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -'
   when: not nodejs.stat.exists
-- name: Instalando Nodejs 8.15.3
+- name: Instalando Nodejs 8.15.*
   apt:
      name: [nodejs]
   when: not nodejs.stat.exists

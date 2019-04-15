@@ -1,6 +1,12 @@
 # Arquivo playbook complementar - imagem para do professor
-- name: teste
-  hosts: localhost
+- hosts: localhost
+  pre_tasks:
+    - name: Atualizando Repositórios
+      apt:
+         update_cache: yes
+         cache_valid_time: 3600
+      changed_when: False
+      
   tasks:
    - name: Verificando se diretório Desktop existe.
      stat:
@@ -10,16 +16,20 @@
      when: not p.stat.exists
    - include: tasks/teacher-en.yml
      when: p.stat.exists
+
 - import_playbook: student.yml
 
-#  tasks:
-
-
-#- name: Verificando se diretório Desktop existe.
-#  stat:
-#     path: /home/pi/Desktop
-#  register: p
-#- include: tasks/teacher-pt.yml
-#  when: not p.stat.exists
-#- import_task: tasks/teacher-en.yml
-#  when: p.stat.exists
+- hosts: localhost
+  tasks:
+    - name: Verificando se diretório Desktop existe.
+      stat:
+        path: /home/pi/Desktop
+      register: p
+ # Copia as notas de liberação e o atalho com nome da versão atualizados
+    - include: tasks/final-version-copies-pt.yml
+      when: not p.stat.exists
+    - include: tasks/final-version-copies-en.yml
+      when: p.stat.exists
+    - include: tasks/version_update.yml
+    - include: tasks/reboot.yml
+# Não acrescentar tarefas após estas últimas.
