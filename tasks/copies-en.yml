@@ -3,6 +3,9 @@
     state: directory
     attributes: -i
     recurse: yes
+- file:
+    path: /home/pi/Desktop/mblock.desktop
+    state: absent
 - name: Copiando demais atalhos para o Desktop
   copy:
      src: files/desktop/

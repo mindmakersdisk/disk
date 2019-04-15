@@ -3,6 +3,9 @@
     state: directory
     attributes: -i
     recurse: yes
+- file:
+    path: "/home/pi/Área de Trabalho/mblock.desktop"
+    state: absent
 - name: Copiando demais atalhos para a Área de Trabalho
   copy:
      src: files/desktop/
