@@ -7,12 +7,12 @@
       changed_when: False
 
   tasks:
-    - name: Verificando versão do Ansible.
-      stat:
-        path: /home/mindmakers/programs/verify/ansible27
-      register: ansb
-    - include: tasks/ansibleupdate.yml
-      when: not ansb.stat.exists
+    # - name: Verificando versão do Ansible.
+    #   stat:
+    #     path: /home/mindmakers/programs/verify/ansible27
+    #   register: ansb
+    # - include: tasks/ansibleupdate.yml
+    #   when: not ansb.stat.exists
     # - fail:
     #      msg: "Comando errado, se estiver tentando atualizar Chromebook, utilize o termo chomebook.yml ao final do comando"
     #   when: not ansible_facts.lsb.id == "Raspbian"
@@ -41,4 +41,3 @@
     - include: tasks/version_update.yml
     - include: tasks/reboot.yml
 # Não acrescentar tarefas após estas últimas.
-- import_playbook: teste.yml
