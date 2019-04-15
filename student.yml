@@ -1,0 +1,44 @@
+- hosts: localhost
+  pre_tasks:
+    - name: Atualizando Repositórios
+      apt:
+         update_cache: yes
+         cache_valid_time: 3600
+      changed_when: False
+
+  tasks:
+    - name: Verificando versão do Ansible.
+      stat:
+        path: /home/mindmakers/programs/verify/ansible27
+      register: ansb
+    - include: tasks/ansibleupdate.yml
+      when: not ansb.stat.exists
+    # - fail:
+    #      msg: "Comando errado, se estiver tentando atualizar Chromebook, utilize o termo chomebook.yml ao final do comando"
+    #   when: not ansible_facts.lsb.id == "Raspbian"
+    - name: Verificando se diretório Desktop existe.
+      stat:
+        path: /home/pi/Desktop
+      register: p
+    - include: tasks/copies-pt.yml
+      when: not p.stat.exists
+    - include: tasks/copies-en.yml
+      when: p.stat.exists
+    - include: tasks/copies.yml
+    - include: tasks/packages.yml
+    - include: tasks/packages-uninstall.yml
+    - include: tasks/3dslash.yml
+    - include: tasks/hide-games.yml
+    - include: tasks/install-extension.yml
+    - include: tasks/mblock.yml
+    - include: tasks/raspi-config.yml
+    - include: tasks/apt-get.yml
+ # Copia as notas de liberação e o atalho com nome da versão atualizados
+    - include: tasks/final-version-copies-pt.yml
+      when: not p.stat.exists
+    - include: tasks/final-version-copies-en.yml
+      when: p.stat.exists
+    - include: tasks/version_update.yml
+    - include: tasks/reboot.yml
+# Não acrescentar tarefas após estas últimas.
+- import_playbook: teste.yml
