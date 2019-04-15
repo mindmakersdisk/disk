@@ -72,6 +72,14 @@
      dest: /home/mindmakers/school.info
      mode: 0755
   when: not school.stat.exists
+- file:
+  path: /home/pi/bin
+  state: directory
+  mode: 0755
+- copy:
+     src: files/bin
+     dest: /home/pi/bin
+     mode: 0755
 # - name: Copiando arquivo de inicialização do telebot
 #   copy:
 #      src: files/telegram/rc.local
