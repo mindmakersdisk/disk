@@ -285,11 +285,21 @@ function decimalParaHexa(numeroDecimal) {
   
 }
 
-
+const charReadUUIDs  = [mbotReadEndPointUUID];
+const charWriteUUIDs = [mbotWriteEndPointUUID];
+var mbotService;
+var characteristics;
 
 function connectTombot(peripheral) {
 
     peripheral.connect(error => {
+     
+           if (error) {
+                console.log('Erro ao tentar conectar: '+error);
+               notificaClienteDesconexao(error);
+               return;
+            }
+
          console.log('    Conectado ao mBot com macaddress:' + peripheral.uuid);
      
          macaddressConectado = peripheral.uuid;
@@ -297,21 +307,33 @@ function connectTombot(peripheral) {
            if (temClienteConectado()) {
                  wsServer.connections[0].send('conectado:'+macaddressConectado);
                  notificouClienteConexao=true;
-                 contadorIntervalo=0;
           }
          
         // Serviço e caracteristicas a serem descobertas
         const serviceUUIDs   = [mbotServiceUUID];
-        const charReadUUIDs  = [mbotReadEndPointUUID];
-        const charWriteUUIDs = [mbotWriteEndPointUUID];
+        //const charReadUUIDs  = [mbotReadEndPointUUID];
+        // const charWriteUUIDs = [mbotWriteEndPointUUID];
 
         // Caracteristica BLE que queremos encontrar
         // Se especificar as características read e write como um array, noble retorna um array vazio.
         // Então filtra após descobrir.
         peripheral.discoverSomeServicesAndCharacteristics( serviceUUIDs, [], function(error, services, chars ) {
-            var mbotService = services[0];
+            
+             mbotService = services[0];
 //            console.log("Characte: " , chars[0].uuid);
 //            console.log("Characte: " , chars[1].uuid);
+
+             characteristics=chars;
+
+             contadorIntervalo++;
+              
+              // Se não notificou cliente da conexão notifica agora
+              if (temClienteConectado() &&  (contadorIntervalo==300 || !notificouClienteConexao)) {
+                console.log('Entrou para notificar conexao');
+                     wsServer.connections[0].send('conectado:'+peripheral.uuid);
+                     notificouClienteConexao=true;
+                     contadorIntervalo=0;
+              }
 
             if (!error) {
                // console.log("Descobriu serviços do mBot...");
@@ -333,7 +355,11 @@ function connectTombot(peripheral) {
         
     });
 
-    peripheral.on('disconnect', () => console.log('mBot foi desconectado...'));
+    peripheral.on('disconnect', () => { 
+        
+        console.log('mBot foi desconectado, tentando reconexão... Se não reconectar, feche este serviço com "control+C" e reinicie novamente.')
+        noble.startScanning();
+        });
 }
 
 var ultimoContador=-1;
@@ -341,7 +367,9 @@ var ultimoContador=-1;
 function monitoraDispositivoConectado() {
   
   if (contadorIntervalo==ultimoContador) {
+      
       console.log('contadorIntervalo='+contadorIntervalo+' e ultimoContador='+ultimoContador);
+      
       ultimoContador=contadorIntervalo;
       
       // Assume que conexão está congelada
@@ -370,7 +398,7 @@ function mbotReadDataDriver(error, services, characteristics) {
     mbotRComms.on('data', (data, isNotification) => {
        //console.log('> mbot data received: "' + data.toString('hex') + '"');
               
-               contadorIntervalo++;
+        contadorIntervalo++;
           
           // Se não notificou cliente da conexão notifica agora
           if (temClienteConectado() &&  (contadorIntervalo==300 || !notificouClienteConexao)) {
@@ -404,13 +432,16 @@ function mbotReadDataDriver(error, services, characteristics) {
                     //console.log("teste: " + JSON.stringify(data));
                        
                     if (poolSensor==0)  {  
-                        notificaCliente(LINESENSOR,v.getFloat32(0)) 
+                        // Mitiga problema de contaminação. TODO Melhorar em versão 1.01
+                        if (v.getFloat32(0)>=0 && v.getFloat32(0)<=3)
+                            notificaCliente(LINESENSOR,v.getFloat32(0)) 
                         poolSensor=1;   
                     } else if (poolSensor==1) {   
                         notificaCliente(LIGHTSENSOR,v.getFloat32(0))  
                         poolSensor=2;     
-                    } else if (poolSensor==2) {   
-                        notificaCliente(ULTRASOUNDSENSOR,v.getFloat32(0))   
+                    } else if (poolSensor==2) {  
+                         if (v.getFloat32(0)>=0 && v.getFloat32(0)<=400) 
+                            notificaCliente(ULTRASOUNDSENSOR,v.getFloat32(0))   
                         poolSensor=0; 
                     } 
                         
@@ -435,6 +466,11 @@ function mbotReadDataDriver(error, services, characteristics) {
 }
 
 var mbotWComms=null;
+
+const SUBSCRICAO='subscricao';
+var usaSensorLinha=false;
+var usaSensorLuz=false;
+var usaSensorUltrasom=false;
 
 function mbotWriteDataDriver(error, services, characteristics) {
     mbotWComms = characteristics;
@@ -490,201 +526,113 @@ process.stdin.on('keypress', (str, key) => {
   if (key.ctrl && key.name === 'c') {
     process.exit();
   } else {
-    console.log(`You pressed the "${str}" key`);
+  //  console.log(`You pressed the "${str}" key`);
 
     if (key.name=='space') {
           mbotWComms.write( motor_stop , true, function(error) {
-                console.log("motores param");
+                //console.log("motores param");
             });
     }
 
     if (key.name=='up') {
-          mbotWComms.write( motor_run255 , true, function(error) {
-                console.log("ambos motores para frente");
+          mbotWComms.write( motor_run100 , true, function(error) {
+                //console.log("ambos motores para frente");
             });
     }
     if (key.name=='w') {
           mbotWComms.write( motor_run100 , true, function(error) {
-                console.log("ambos motores para frente");
+                //console.log("ambos motores para frente");
             });
     }
 
     if (key.name=='down') {
-          mbotWComms.write( motor_reverse255 , true, function(error) {
-                console.log("ambos motores para trás");
+          mbotWComms.write( motor_reverse100 , true, function(error) {
+                //console.log("ambos motores para trás");
             });
     }
     if (key.name=='s') {
           mbotWComms.write( motor_reverse100 , true, function(error) {
-                console.log("ambos motores para trás");
+                //console.log("ambos motores para trás");
             });
     }
 
     if (key.name=='right') {
-          mbotWComms.write( motor_turnright255 , true, function(error) {
-                console.log("ambos motores viram para direita");
+          mbotWComms.write( motor_turnright100 , true, function(error) {
+                //console.log("ambos motores viram para direita");
             });
     }
     if (key.name=='d') {
           mbotWComms.write( motor_turnright100 , true, function(error) {
-                console.log("ambos motores viram para direita");
+                //console.log("ambos motores viram para direita");
             });
     }
 
     if (key.name=='left') {
-         mbotWComms.write( motor_turnleft255 , true, function(error) {
-                console.log("ambos motores viram para esquerda");
+         mbotWComms.write( motor_turnleft100 , true, function(error) {
+                //console.log("ambos motores viram para esquerda");
             });
     }
     if (key.name=='a') {
          mbotWComms.write( motor_turnleft100 , true, function(error) {
-                console.log("ambos motores viram para esquerda");
+                //console.log("ambos motores viram para esquerda");
             });
     }
 
     if (key.name=='0') {
           mbotWComms.write( ledColor0 , true, function(error) {
-                console.log("Write Led Color1 OK");
+                //console.log("Write Led Color1 OK");
             });
     }
 
     if (key.name=='1') {
           mbotWComms.write( ledColor1 , true, function(error) {
-                console.log("Write Led Color1 OK");
+                //console.log("Write Led Color1 OK");
             });
     }
      if (key.name=='2') {
          mbotWComms.write( ledColor2 , true, function(error) {
-                console.log("Write Led Color2 OK");
+                //console.log("Write Led Color2 OK");
             });
     }
     if (key.name=='3') {
          mbotWComms.write( buzz , true, function(error) {
-                console.log("Barulho");
+                //console.log("Barulho");
             });
     }
     if (key.name=='4') {
          mbotWComms.write( servo_0 , true, function(error) {
-                console.log("servo a 0 graus");
+                //console.log("servo a 0 graus");
             });
     }
     if (key.name=='5') {
          mbotWComms.write( servo_1 , true, function(error) {
-                console.log("servo a 45 graus");
+                //console.log("servo a 45 graus");
             });
     }
     if (key.name=='6') {
          mbotWComms.write( servo_2 , true, function(error) {
-                console.log("servo a 90 graus");
+                //console.log("servo a 90 graus");
             });
     }
     if (key.name=='7') {
          mbotWComms.write( servo_3 , true, function(error) {
-                console.log("servo a 135 graus");
+              //  console.log("servo a 135 graus");
             });
     }
-    if (key.name=='8') {
-         mbotWComms.write( servo_4 , true, function(error) {
-                console.log("servo a 180 graus");
-            });
-    }
+  //  if (key.name=='8') {
+  //       mbotWComms.write( servo_4 , true, function(error) {
+  //              console.log("servo a 180 graus");
+  //          });
+  //  }
     if (key.name=='9') {
          mbotWComms.write( read_onboard_button_pressed , true, function(error) {
                 console.log("Botão na placa pressionado?");
             });
     }
-    ///////////////////////////
-    // }
-    // if (key.name=='i') {
-    //      mbotWComms.write( motor_run , true, function(error) {
-    //             console.log("ambos motores vão para frente");
-    //         });
-    // }
-    // if (key.name=='k') {
-    //      mbotWComms.write( motor_reverse , true, function(error) {
-    //             console.log("ambos motores vão para trás");
-    //         });
-    // }
-    // if (key.name=='j') {
-    //      mbotWComms.write( motor_turnleft , true, function(error) {
-    //             console.log("ambos motores vão para esquerda");
-    //         });
-    // }
-    // if (key.name=='l') {
-    //      mbotWComms.write( motor_turnright , true, function(error) {
-    //             console.log("ambos motores vão para direita");
-    //         });
-    // }
-    // if (key.name=='o') {
-    //      mbotWComms.write( servo , true, function(error) {
-    //             console.log("ativa o servo");
-    //         });
-    // }
-    // if (key.name=='+') {
-    //   if(m<4){
-    //     m +=1;
-    //
-    //     //atualização
-    //     motor_run[6] = motor_speed[m];
-    //     motor_run[8] = 0xFF - motor_speed[m];
-    //     console.log("motor_run será = "+JSON.stringify(motor_run));
-    //
-    //     motor_reverse[6] =  0xFF - motor_speed[m];
-    //     motor_reverse[8] =  0xFF - motor_speed[m];
-    //     console.log("motor_reverse será = "+JSON.stringify(motor_reverse));
-    //
-    //     motor_turnright[6] = motor_speed[m];
-    //     motor_turnright[8] = motor_speed[m];
-    //     console.log("motor_turnright será = "+JSON.stringify(motor_turnright));
-    //
-    //     motor_turnleft[6] = 0xFF - motor_speed[m];
-    //     motor_turnleft[6] = 0xFF - motor_speed[m];
-    //     console.log("motor_turnleft será = "+JSON.stringify(motor_turnleft));
-    //     console.log("Aperte 'i' 'j' 'k' 'l' para ativar a nova velocidade");
-    //
-    //   }
-    // }
-    // if (key.name=='-') {
-    //   if(m>0){
-    //     m -=1;
-    //
-    //     //atualização
-    //     motor_run[6] = motor_speed[m];
-    //     motor_run[8] = 0xFF - motor_speed[m];
-    //     motor_reverse[6] =  0xFF - motor_speed[m];
-    //     motor_reverse[8] =  0xFF - motor_speed[m];
-    //     motor_turnright[6] = motor_speed[m];
-    //     motor_turnright[8] = motor_speed[m];
-    //     motor_turnleft[6] = 0xFF - motor_speed[m];
-    //     motor_turnleft[6] = 0xFF - motor_speed[m];
-    //     console.log("motor_run será = "+JSON.stringify(motor_run));
-    //     console.log("motor_reverse será = "+JSON.stringify(motor_reverse));
-    //     console.log("motor_turnright será = "+JSON.stringify(motor_turnright));
-    //     console.log("motor_turnleft será = "+JSON.stringify(motor_turnleft));
-    //     console.log("Aperte 'i' 'j' 'k' 'l' para ativar a nova velocidade");
-    //   }
-    // }
-    // if (key.name=='*') {
-    //   if(s<4){
-    //     s+=1;
-    //     servo[8] = servo_value[s];
-    //     console.log("servo será = "+JSON.stringify(servo));
-    //     console.log("Aperte 'o' para ativar a nova abertura do servo");
-    //   }
-    // }
-    // if (key.name=='/') {
-    //   if(s>0){
-    //     s-=1;
-    //     servo[8] = servo_value[s];
-    //     console.log("servo será = "+JSON.stringify(servo));
-    //     console.log("Aperte 'o' para ativar a nova abertura do servo");
-    //   }
-    // }
-    ///////////////////////////
 
-    console.log();
-    console.log(key);
-    console.log();
+ //   console.log();
+ //   console.log(key);
+ //   console.log();
   }
 });
 
@@ -717,8 +665,34 @@ const BUTTON_RELEASED='released';
 
 const IRSENSOR='irsensor';
 
+const COMANDO_FINAL="comandoFinal";
+
+function retornaFim() {
+    
+    notificaCliente(COMANDO_FINAL,"");
+        
+}
+
 // Recebe comando obtido do Blockly e envia para mBot.
 function escreveParaMBot(comando,valor) {
+    
+  if (comando==COMANDO_FINAL) {
+      // Devolve mensagem após 5 segundos, avisando que execução finalizou.
+      setTimeout(retornaFim,2000);
+  }
+    
+  // Comando que apenas restringe a captura de sensores  
+  if (comando==SUBSCRICAO) {
+      
+      var sensores=valor.split(',');
+  
+      usaSensorLinha=sensores[0]=="true";
+      usaSensorLuz=sensores[1]=="true";
+      usaSensorUltrasom=sensores[2]=="true";
+      
+  } 
+    
+  // Comandos a enviar imediatamente  
   
   if (comando==BUZZER) {
        
@@ -793,7 +767,7 @@ function escreveParaMBot(comando,valor) {
                 if (velm1<=0) velm1=1;
                 veldir = parseInt(valor)+potenciaAdicionalDireita;
                 if (veldir>255) veldir=255;    
-                console.log(velm1+', '+veldir);            
+                //console.log(velm1+', '+veldir);            
                 dcMotorsBaseBufferMax.writeUInt8(velm1,6);
                 dcMotorsBaseBufferMax.writeUInt8(255,7);
                 dcMotorsBaseBufferMax.writeUInt8(veldir,8);
@@ -1089,11 +1063,11 @@ wsServer.on('request', function(request) {
    
     connection.on('message', function(comandoValorStr) {
 
-      console.log('RECEBEU MENSAGEM ',comandoValorStr.utf8Data);
+     // console.log('RECEBEU MENSAGEM ',comandoValorStr.utf8Data);
       
       var comandoValor = JSON.parse(comandoValorStr.utf8Data);
       
-      console.log('RECEBEU MENSAGEM ',comandoValor.valor);
+     // console.log('RECEBEU MENSAGEM ',comandoValor.valor);
                   
       escreveParaMBot(comandoValor.comando,comandoValor.valor);
       
