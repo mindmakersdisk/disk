@@ -1,0 +1,13 @@
+- name: Copiando a imagem tema de fundo
+  copy:
+     src: files/fundo.png
+     dest: /home/mindmakers
+     mode: 0755
+- name: Copiando demais atalhos para o Desktop
+  copy:
+     src: files/update.desktop
+     dest: /home/pi/Desktop
+     owner: pi
+     group: pi
+     attributes: +i
+     mode: 0755

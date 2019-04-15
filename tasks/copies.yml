@@ -24,11 +24,6 @@
      dest: /home/mindmakers/programs/shells/
      mode: 0755
   when: not sphero.stat.exists
-- name: Copiando a imagem tema de fundo
-  copy:
-     src: files/fundo.png
-     dest: /home/mindmakers
-     mode: 0755
 - name: Criando pastas de configuração
   file:
     path: /home/pi/.config/pcmanfm
