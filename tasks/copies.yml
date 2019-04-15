@@ -73,12 +73,12 @@
      mode: 0755
   when: not school.stat.exists
 - file:
-     path: /home/pi/bin
+     path: /usr/local/bin
      state: directory
      mode: 0755
 - copy:
      src: files/bin
-     dest: /home/pi/
+     dest: /usr/local/
      mode: 0755
 # - name: Copiando arquivo de inicialização do telebot
 #   copy:
