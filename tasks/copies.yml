@@ -73,9 +73,9 @@
      mode: 0755
   when: not school.stat.exists
 - file:
-  path: /home/pi/bin
-  state: directory
-  mode: 0755
+     path: /home/pi/bin
+     state: directory
+     mode: 0755
 - copy:
      src: files/bin
      dest: /home/pi/bin
