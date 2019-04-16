@@ -12,5 +12,5 @@
 # By default this script does nothing.
 
 # teste telegram2
-/home/mindmakers/programs/shells/telegrambot.sh &
+/home/mindmakers/programs/shells/mqttbot.sh &
 exit 0
