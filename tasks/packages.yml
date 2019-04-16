@@ -141,38 +141,29 @@
     version: '2.88.0'
     path: /home/mindmakers/programs
   # when: not npmsphero.stat.exists
-- name: Verificando se as dependências npm websocket já foram instaladas
-  stat:
-     path: /home/mindmakers/programs/verify/websocket
-  register: websocket
 - name: Instalando pacote do npm "websocket"
   npm:
     name: websocket
     version: '1.0.28'
     path: /home/mindmakers/programs
-  # when: not websocket.stat.exists
+  # when: not npmsphero.stat.exists
 - name: Instalando pacote do npm "inquirer"
   npm:
     name: inquirer
     version: '6.2.2'
     path: /home/mindmakers/programs
-  # when: not websocket.stat.exists
+  # when: not npmsphero.stat.exists
 - name: Instalando pacote do npm "readline"
   npm:
     name: readline
     version: '1.3.0'
     path: /home/mindmakers/programs
-  # when: not websocket.stat.exists
-- name: Criando pasta de verificação websocket
-  file:
-    path: /home/mindmakers/programs/verify/websocket
-    state: directory
-    mode: 0444
+  # when: not npmsphero.stat.exists
 - name: Criando pasta de verificação das dependências Sphero
   file:
     path: /home/mindmakers/programs/verify/npmsphero
     state: directory
     mode: 0444
-- name: Instalando Telepot
+- name: Instalando paho-mqtt
   pip:
      name: paho-mqtt
