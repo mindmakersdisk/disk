@@ -51,8 +51,16 @@
      owner: pi
      group: pi
      mode: 0755
-- file:
+- name: Tornando ícones dentro da pasta Scratch2 imutáveis
+  file:
     path: "/home/pi/Área de Trabalho/Scratch2"
     state: directory
     attributes: +i
     recurse: yes
+- file:
+    path: /usr/local/bin/alocar-para-instrutor.sh
+    state: touch
+    attributes: -i
+- file:
+    path: /usr/local/bin/alocar-para-instrutor.sh
+    state: absent
