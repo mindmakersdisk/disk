@@ -90,49 +90,49 @@
       name: bluetooth-hci-socket
       path: /home/mindmakers/programs
       executable: /usr/bin/npm --unsafe-perm=true
-    when: npm_dep_output.stdout.find('bluetooth-hci-socket@') != -1
+    when: npm_dep_output.stdout.find('bluetooth-hci-socket') != -1
   - name: Instalando pacote do npm "bluebird"
     npm:
       name: bluebird
       path: /home/mindmakers/programs
-    when: npm_dep_output.stdout.find('├── bluebird@') != -1
+    when: npm_dep_output.stdout.find('├── bluebird') != -1
   - name: Instalando pacote do npm "browser-serialport"
     npm:
       name: browser-serialport
       path: /home/mindmakers/programs
-    when: npm_dep_output.stdout.find('├── browser-serialport@') != -1
+    when: npm_dep_output.stdout.find('├── browser-serialport') != -1
   - name: Instalando pacote do npm "debug"
     npm:
       name: debug
       path: /home/mindmakers/programs
-    when: npm_dep_output.stdout.find('├── debug@') != -1
+    when: npm_dep_output.stdout.find('├── debug') != -1
   - name: Instalando pacote do npm "express"
     npm:
       name: express
       path: /home/mindmakers/programs
-    when: npm_dep_output.stdout.find('├── express@') != -1
+    when: npm_dep_output.stdout.find('├── express') != -1
   - name: Instalando pacote do npm "grunt"
     npm:
       name: grunt
       path: /home/mindmakers/programs
-    when: npm_dep_output.stdout.find('├── grunt@') != -1
+    when: npm_dep_output.stdout.find('├── grunt') != -1
   - name: Instalando pacote do npm "keypress"
     npm:
       name: keypress
       path: /home/mindmakers/programs
-    when: npm_dep_output.stdout.find('├── keypress@') != -1
+    when: npm_dep_output.stdout.find('├── keypress') != -1
   - name: Instalando pacote do npm "webworker-threads"
     npm:
       name: webworker-threads
       path: /home/mindmakers/programs
       executable: /usr/bin/npm --unsafe-perm=true
-    when: npm_dep_output.stdout.find('├── webworker-threads@') != -1
+    when: npm_dep_output.stdout.find('├── webworker-threads') != -1
   - name: Instalando pacote do npm "noble"
     npm:
       name: noble
       path: /home/mindmakers/programs
       executable: /usr/bin/npm --unsafe-perm=true
-    when: npm_dep_output.stdout.find('├── noble@') != -1
+    when: npm_dep_output.stdout.find('├── noble') != -1
   - name: Instalando pacote do npm "sphero"
     npm:
       name: sphero
@@ -154,22 +154,22 @@
       name: serialport
       path: /home/mindmakers/programs
       executable: /usr/bin/npm --unsafe-perm=true
-    when: npm_dep_output.stdout.find('├── serialport@') != -1
+    when: npm_dep_output.stdout.find('├── serialport') != -1
   - name: Instalando pacote do npm "request"
     npm:
       name: request
       path: /home/mindmakers/programs
-    when: npm_dep_output.stdout.find('├── request@') != -1
+    when: npm_dep_output.stdout.find('├── request') != -1
   - name: Instalando pacote do npm "websocket"
     npm:
       name: websocket
       path: /home/mindmakers/programs
-    when: npm_dep_output.stdout.find('├── websocket@') != -1
+    when: npm_dep_output.stdout.find('├── websocket') != -1
   - name: Instalando pacote do npm "inquirer"
     npm:
       name: inquirer
       path: /home/mindmakers/programs
-    when: npm_dep_output.stdout.find('├── inquirer@') != -1
+    when: npm_dep_output.stdout.find('├── inquirer') != -1
 #  - name: Atualiza o npm se versão < 6.9
 #    npm: name={{item}} global=yes
 #    with_items:
