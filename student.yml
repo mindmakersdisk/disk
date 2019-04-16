@@ -10,14 +10,6 @@
     # - fail:
     #      msg: "Comando errado, se estiver tentando atualizar Chromebook, utilize o termo chomebook.yml ao final do comando"
     #   when: not ansible_facts.lsb.id == "Raspbian"
-    - name: Verificando se diretório Desktop existe.
-      stat:
-        path: /home/pi/Desktop
-      register: p
-    - include: tasks/copies-pt.yml
-      when: not p.stat.exists
-    - include: tasks/copies-en.yml
-      when: p.stat.exists
     - include: tasks/copies.yml
     - include: tasks/packages.yml
     - include: tasks/packages-uninstall.yml

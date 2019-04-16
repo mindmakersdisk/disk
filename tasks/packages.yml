@@ -157,6 +157,12 @@
     # version: '6.2.2'
     path: /home/mindmakers/programs
   # when: not websocket.stat.exists
+- name: Instalando pacote do npm "readline"
+  npm:
+    name: readline
+    # version: '1.3.0'
+    path: /home/mindmakers/programs
+  # when: not websocket.stat.exists
 - name: Criando pasta de verificação websocket
   file:
     path: /home/mindmakers/programs/verify/websocket

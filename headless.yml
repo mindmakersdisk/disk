@@ -26,14 +26,12 @@
     - include: tasks/headless-en.yml
       when: p.stat.exists
     - include: tasks/tightvnc.yml
+
+- import_playbook: student.yml
+
+- hosts: localhost
+  tasks:
     - include: tasks/copies-headless.yml
-    - include: tasks/packages.yml
-    - include: tasks/packages-uninstall.yml
-    - include: tasks/hide-games.yml
-    - include: tasks/install-extension.yml
-    - include: tasks/mblock.yml
-    - include: tasks/raspi-config.yml
-    - include: tasks/apt-get.yml
  # Copia as notas de liberação e o atalho com nome da versão atualizados
     - include: tasks/final-version-copies-pt.yml
       when: not p.stat.exists
