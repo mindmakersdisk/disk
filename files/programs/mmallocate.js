@@ -9,9 +9,10 @@
   Copyright(c) Mind Makers Editora Educacional Ltda. Todos os direitos reservados
 */
 
-const request = require('request')  
+const request = require('request'); 
 var inquirer = require('inquirer');
 var fs = require('fs');
+var gcloudRegistry = require('./mmallocatecloud');
 
 // Informado
 var idescola_informado='';
@@ -144,6 +145,19 @@ function recuperaNomeEscola(resposta) {
             }
         );
   
+}async function quickstart(
+  projectId = 'YOUR_PROJECT_ID', // Your Google Cloud Platform project ID
+  bucketName = 'my-new-bucket' // The name for the new bucket
+) {
+  // Imports the Google Cloud client library
+  const {Storage} = require('@google-cloud/storage');
+
+  // Creates a client
+  const storage = new Storage({projectId});
+
+  // Creates the new bucket
+  await storage.createBucket(bucketName);
+  console.log(`Bucket ${bucketName} created.`);
 }
 
 // Recupera imagem da escola - pendente de implementações futuras.
@@ -191,6 +205,9 @@ function atualizaSchoolInfo() {
      escolanome=escolanome_recuperado;
 
   }
+  
+    // Cria Registry para escola
+    gcloudRegistry.criaIoTRegistry(escolaid);
                           
     escolainfoatualizada = "----- Identificação de Desktop Mind Makers ------\n" +
                          "Cód.: "+escolaid+"||\n"+
@@ -213,7 +230,7 @@ function atualizaSchoolInfo() {
             console.log('---------------------------------------------');
             console.log(escolainfoatualizada.replace(/\|\|/g,''));
             // Encerra com sucesso
-            process.exit();
+
           
           }
         
@@ -221,7 +238,6 @@ function atualizaSchoolInfo() {
         );
         
 }
-
 
 function obtemVersaoImagemDisco() {
   
