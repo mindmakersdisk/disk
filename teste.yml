@@ -7,8 +7,8 @@
   - name: Verifica Versao npm
     command: nodejs --version
     register: node_output
-  - debug:
-       var: node_output
+#  - debug:
+#       var: node_output
   - name: Instalando Nodejs 8.15.1
     apt:
        name: nodejs
@@ -75,8 +75,8 @@
        chdir: /home/mindmakers/programs/
     register: npm_dep_output
     ignore_errors: yes
-#  - debug:
-#       var: npm_dep_output
+  - debug:
+       var: npm_dep_output
 
  # - name: Instalando Nodejs 8.15.3
  #   apt:
