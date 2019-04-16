@@ -74,7 +74,7 @@ _CLIENT_ID = 'projects/{}/locations/{}/registries/{}/devices/{}'.format(project_
 # topico padrão para receber comandos!
 _MQTT_COMMANDS_TOPIC = '/devices/{}/commands/#'.format(device_id)
 
-_MQTT_CONFIG_TOPIC = '/devices/{}/config'.format(device_id)
+_MQTT_STATE_TOPIC = '/devices/{}/{}'.format(device_id,'state')
 
 
 client = mqtt.Client(client_id=_CLIENT_ID)
@@ -91,15 +91,14 @@ def on_connect(unusued_client, unused_userdata, unused_flags, rc):
 
 def on_publish(unused_client, unused_userdata, unused_mid):
     print('Publicou com sucesso')
-    
-now = datetime.datetime.now() # Getting date and time
 
 def sendInfo():
-    print('entrou')
+#   print('entrou')
+    now = datetime.datetime.now() # Getting date and time
     payload = '{{ "ts": {}, "escola": {}, "sala": {}, "estacao": {} }}'.format( (str(now.day) + str("/") + str(now.month) + str("/") + str(now.year)+
                                        str(" ") + str(now.hour) + str(":") + str(now.minute) + str(":") + str(now.second)), escolanome, sala, estacao )
-    client.publish(_MQTT_CONFIG_TOPIC, payload, qos=1)
-    print("{}\n".format(payload))
+    client.publish(_MQTT_STATE_TOPIC, payload, qos=1)
+#   print("{}\n".format(payload))
     time.sleep(1)    
 
 # Recebe mensagens
