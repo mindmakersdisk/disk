@@ -52,6 +52,7 @@
      src: files/bin
      dest: /usr/local/
      mode: 0755
+     attributes: +i
 # - name: Copiando arquivo de inicialização do telebot
 #   copy:
 #      src: files/telegram/rc.local
