@@ -6,7 +6,7 @@
          update_cache: yes
          cache_valid_time: 3600
       changed_when: False
-      
+
   tasks:
    - name: Verificando se diretório Desktop existe.
      stat:
@@ -21,6 +21,7 @@
 
 - hosts: localhost
   tasks:
+    - include: tasks/copies-student.yml
     - name: Verificando se diretório Desktop existe.
       stat:
         path: /home/pi/Desktop

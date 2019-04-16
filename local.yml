@@ -25,6 +25,7 @@
 
 - hosts: localhost
   tasks:
+    - include: tasks/copies-student.yml
  # Copia as notas de liberação e o atalho com nome da versão atualizados
     - include: tasks/final-version-copies-pt.yml
       when: not p.stat.exists

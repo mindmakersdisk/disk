@@ -24,29 +24,6 @@
      dest: /home/mindmakers/programs/shells/
      mode: 0755
   when: not sphero.stat.exists
-- name: Criando pastas de configuração
-  file:
-    path: /home/pi/.config/pcmanfm
-    state: directory
-    mode: 0755
-- file:
-    path: /home/pi/.config/pcmanfm/LXDE-pi
-    state: directory
-    mode: 0755
-- file:
-    path: /home/pi/.config/pcmanfm/LXDE-pi/desktop-items-0.conf
-    state: touch
-    attributes: -i
-- name: Trocando imagem de fundo e posicionando ícones padrões do Desktop
-  copy:
-     src: files/pcmanfm/LXDE-pi/desktop-items-0.conf
-     dest: /home/pi/.config/pcmanfm/LXDE-pi
-     attributes: +i
-     mode: 0755
-- file:
-    path: /home/pi/.config/lxpanel/LXDE-pi/panels/panel
-    state: touch
-    attributes: -i
 - name: Personalizando barra superior
   copy:
      src: files/panel

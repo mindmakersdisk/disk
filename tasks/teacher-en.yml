@@ -3,6 +3,11 @@
      src: files/teacher/fundo.png
      dest: /home/mindmakers
      mode: 0755
+- file:
+    path: /home/pi/Desktop
+    state: directory
+    attributes: -i
+    recurse: yes
 - name: Verificando ícone mindmakers.desktop
   stat:
      path: /home/pi/Desktop/mindmakers.desktop
@@ -15,10 +20,6 @@
      group: pi
      mode: 0755
   when: not mmdesk.stat.exists
-- file:
-    path: /home/pi/Desktop/update.desktop
-    state: touch
-    attributes: -i
 - name: Copiando versão de professor do update.desktop
   copy:
      src: files/teacher/update.desktop
@@ -26,4 +27,27 @@
      owner: pi
      group: pi
      attributes: +i
+     mode: 0755
+##################
+- name: Copiando demais atalhos para o Desktop
+  copy:
+     src: files/desktop/
+     dest: /home/pi/Desktop
+     owner: pi
+     group: pi
+     attributes: +i
+     mode: 0755
+- name: Copiando pasta Fotos
+  file:
+    path: /home/pi/Desktop/Fotos
+    state: directory
+    owner: pi
+    group: pi
+    mode: 0777
+- name: Copiando pasta Scratch2 - gabaritos
+  copy:
+     src: files/Scratch2
+     dest: /home/pi/Desktop
+     owner: pi
+     group: pi
      mode: 0755
