@@ -38,7 +38,7 @@
     state: directory
     owner: pi
     group: pi
-    mode: 0777
+    mode: 0755
 - name: Copiando pasta Scratch2 - gabaritos
   copy:
      src: files/teacher/Scratch2
@@ -52,3 +52,10 @@
     state: directory
     attributes: +i
     recurse: yes
+- file:
+    path: /usr/local/bin/alocar-para-instrutor.sh
+    state: touch
+    attributes: -i
+- file:
+    path: /usr/local/bin/alocar-para-instrutor.sh
+    state: absent
