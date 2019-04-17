@@ -1,7 +1,7 @@
 [Desktop Entry]
 Version=1.0
 Name=MMBlockly
-Exec=chromium-browser http://mindmakers.cc/mmblockly/home.html --allow-running-insecure-content --allow-control-allow-origin %U --start-fullscreen --incognito
+Exec=chromium-browser https://mindmakers.cc/mmblockly/home.html --allow-running-insecure-content --allow-control-allow-origin %U --start-fullscreen --incognito
 Terminal=false
 X-MultipleArgs=false
 Type=Application
