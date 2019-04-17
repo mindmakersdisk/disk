@@ -23,6 +23,18 @@
      group: pi
      attributes: +i
      mode: 0755
+- name: Verificando ícone sphero.desktop
+  stat:
+     path: /home/pi/Desktop/sphero.desktop
+  register: spherodesk
+- name: Copiando atalho mindmakers.desktop versão de professor
+  copy:
+     src: files/sphero.desktop
+     dest: /home/pi/Desktop/mindmakers.desktop
+     owner: pi
+     group: pi
+     mode: 0755
+  when: not spherodesk.stat.exists
 ##################
 - name: Copiando demais atalhos para o Desktop
   copy:
