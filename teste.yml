@@ -4,7 +4,14 @@
 #  - include: tasks/tightvnc.yml
 #Tarefa fixa para instalar tighvncserver se não estiver instalado.
 
-  - lineinfile:
+  - name: Escondendo Python-games
+    lineinfile:
+      path: /usr/share/applications/python-games.desktop
+      regexp: 'NoDisplay=true'
+      line: 'NoDisplay=true'
+      insertafter: EOF
+  - name: Escondendo Minecraft
+    lineinfile:
       path: /usr/share/raspi-ui-overrides/applications/minecraft-pi.desktop
       regexp: 'NoDisplay=true'
       line: 'NoDisplay=true'
