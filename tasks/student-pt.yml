@@ -1,6 +1,6 @@
 - name: Copiando a imagem tema de fundo
   copy:
-     src: files/fundo.png
+     src: files/fundo.jpg
      dest: /home/mindmakers
      mode: 0755
 - file:
