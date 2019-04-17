@@ -4,11 +4,11 @@
   - include: tasks/tightvnc.yml
 #Tarefa fixa para instalar tighvncserver se não estiver instalado.
 
-- lineinfile:
-    path: /usr/share/raspi-ui-overrides/applications/minecraft-pi.desktop
-    regexp: 'StartupNotify=true'
-    insertafter: 'NoDisplay=true'
-    state: present
+  - lineinfile:
+      path: /usr/share/raspi-ui-overrides/applications/minecraft-pi.desktop
+      regexp: 'NoDisplay=true'
+      insertafter: EOF
+      state: present
 
 #  - name: Verifica Versao npm
 #    command: nodejs --version
