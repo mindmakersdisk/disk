@@ -1,8 +1,10 @@
 ########### IMAGEM DE DISCO MIND MAKERS ###########
 
 Versão 2.0 17/04/2019
-- novo serviço de conexão bluetooth 4 (BLE) com mBot, como solução de desenvolvimento via Mind Makers Blockly, substituindo o ScratchX com extensão mBot.
-- Novo serviço de conexão bluetooth 4 (BLE) com littleBits através do BLE Bit, como solução de IoT via MMBlockly, substituindo o Cloudbit.
+- Sala IoT: sala totalmente interligada com padrão da internet das coisas, para controle automatizado via comandos de voz do instrutor e programação.
+- Novo serviço e atalho de conexão bluetooth 4 (BLE) com mBot, como solução de desenvolvimento via MMBlockly, substituindo o ScratchX com extensão mBot.
+- Novo serviço e atalho de conexão bluetooth 4 (BLE) com littleBits através do BLE Bit, como solução de IoT via MMBlockly, substituindo o Cloudbit.
+- Novo serviço e atalho de conexão bluetooth 4 (BLE) com Sphero, informando versão do firmware e tempo de timeout.
 - Automação completa da atualização de versões da imagem de disco através do Ansible.
 - Automação completa da ativação de desktops Raspberry Pi, incluindo configuração de atalho do Sphero e Login Simplificado.
 - Retirada de prefixos "www" dos links para a plataforma para "https://mindmakers.cc" como solução de contorno para falhas do provedor Net/Claro/Embratel.
@@ -13,4 +15,3 @@ Versão 2.0 17/04/2019
 - Novo atalho para atualização automatizada da versão da imagem de disco (exige senha especial de atualização).
 - Novo atalho para ativação automatizada de estação, configuração de atalhos do Sphero e de Login Simplificado (exige login/senha do instrutor)
 - Novo atalho para teste automatizado de sala de aula, configurando a máquina e abrindo monitoria para execução de baterias de teste.
-- Novo atalho para conexão universal de robôs e circuitos eletrônicos da Mind Makers utilizando Bluetooth LE.
