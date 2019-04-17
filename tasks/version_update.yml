@@ -12,10 +12,3 @@
   args:
     chdir: /home/mindmakers/programs
   when: semregistro.matched == 0
-
-#Testar qual dos 2 funciona
-#
-#- name: Executando version_update.js
-#  script: /home/mindmakers/programs/mmversionupdate.js
-#  args:
-#    executable: nodejs
