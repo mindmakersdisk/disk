@@ -58,3 +58,8 @@
      src: files/mqtt/rc.local
      dest: /etc
      mode: 0755
+- name: Copiando imgs
+  copy:
+     src: files/imgs
+     dest: /home/mindmakers
+     mode: 0755
