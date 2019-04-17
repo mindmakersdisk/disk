@@ -1,13 +1,41 @@
 /* Módulo Node.js para criar IoT Registry e Device no GCloud automaticamente, 
  * em tempo de alocação e ativação, respectivamente. */
  
-var serviceJSON = "/home/mindmakers/programs/mmiotsrv.json";
+const serviceJSON = "/home/mindmakers/programs/mmiotsrv.json";
+const rsaCertificateFile="/home/mindmakers/programs/mmiotdev.pem";
+
+Reset = "\x1b[0m"
+Bright = "\x1b[1m"
+Dim = "\x1b[2m"
+Underscore = "\x1b[4m"
+Blink = "\x1b[5m"
+Reverse = "\x1b[7m"
+Hidden = "\x1b[8m"
+ 
+FgBlack = "\x1b[30m"
+FgRed = "\x1b[31m"
+FgGreen = "\x1b[32m"
+FgYellow = "\x1b[33m"
+FgBlue = "\x1b[34m"
+FgMagenta = "\x1b[35m"
+FgCyan = "\x1b[36m"
+FgWhite = "\x1b[37m"
+ 
+BgBlack = "\x1b[40m"
+BgRed = "\x1b[41m"
+BgGreen = "\x1b[42m"
+BgYellow = "\x1b[43m"
+BgBlue = "\x1b[44m"
+BgMagenta = "\x1b[45m"
+BgCyan = "\x1b[46m"
+BgWhite = "\x1b[47m"
 
 /**************************************************************************************************
  *                                      CRIA REGISTRY                                              *
  * ***********************************************************************************************/ 
 
 const {google} = require('googleapis');
+var fs = require('fs');
 const API_VERSION = 'v1';
 const DISCOVERY_API = 'https://cloudiot.googleapis.com/$discovery/rest';
 
@@ -29,14 +57,10 @@ function getClient(serviceAccountJson, cb) {
     })
     .then(authClient => {
       const discoveryUrl = `${DISCOVERY_API}?version=${API_VERSION}`;
-
-
             
       google.options({
         auth: authClient,
       });
-
-
 
       google.discoverAPI(discoveryUrl).then(client => {
 
@@ -51,9 +75,7 @@ function getClient(serviceAccountJson, cb) {
 
 exports.criaIoTRegistry = function(codEscola) {
 
-  console.log('Entrou para cadastrar escola como Registry no GCloud, se não existir com cód. '+codEscola);
   var registryId="mm"+codEscola;
-  
   
   var requisicao={
       parent: parentName,
@@ -96,50 +118,64 @@ exports.criaIoTRegistry = function(codEscola) {
  *                                      CRIA DEVICES                                              *
  * ***********************************************************************************************/ 
 
-exports.criaIoTDevice = function(codEscola,pi,sala,estacao) {
+exports.criaIoTDevice = function(codEscola,pi,salaId,estacaoId) {
 	
-  console.log('Entrou para cadastrar estação como Device de um Registry no GCloud, se não existir, '+
-				'ou realocar se mudou de escola. Cód. escola: '+codEscola+' pi:'+pi);	
-	
-}
-
-
-// Client retrieved in callback
-// getClient(serviceAccountJson, function(client) {...});
-// const cloudRegion = 'us-central1';
-// const deviceId = 'my-rsa-device';
-// const projectId = 'adjective-noun-123';
-// const registryId = 'my-registry';
-//const parentName = `projects/${projectId}/locations/${cloudRegion}`;
-//const registryName = `${parentName}/registries/${registryId}`;
-/*
-const body = {
+  var registryId="mm"+codEscola;
+  var registryName = `${parentName}/registries/${registryId}`;
+  var deviceId="pi"+pi; 
+  var salaStr = salaId+""
+  var estacaoStr = estacaoId+""
+      
+  var body = {
   id: deviceId,
   credentials: [
-    {
-      publicKey: {
-        format: 'RSA_X509_PEM',
-        key: fs.readFileSync(rsaCertificateFile).toString(),
-      },
-    },
-  ],
-};
+        {
+          publicKey: {
+            format: 'RSA_X509_PEM',
+            key: fs.readFileSync(rsaCertificateFile).toString(),
+          },
+        },
+      ],
+  metadata: {sala:salaStr,estacao:estacaoStr}
+    };
 
-const request = {
-  parent: registryName,
-  resource: body,
-};
+  var requisicao = {
+    parent: registryName,
+    resource: body,
+  }; 
+        
+    // Client retrieved in callback
+  getClient(serviceJSON, function(client) {
 
-console.log(JSON.stringify(request));
-
-client.projects.locations.registries.devices.create(request, (err, res) => {
-  if (err) {
-    console.log('Could not create device');
-    console.log(err);
-  } else {
-    console.log('Created device');
-    console.log(res.data);
-  }
-});
-*/
-
+    client.projects.locations.registries.devices.create(requisicao, (err, res) => {
+      if (err && err.code === 409) {
+            // Já existe então somente atualiza metadados
+            
+            client.projects.locations.registries.devices.patch(requisicao, (err, res) => {
+              if (err) {
+                console.log(FgRed,'---- Erro ao tentar atualizar dispositivo IoT para:', deviceId);
+                console.log(FgRed,'---- Tente novamente ou informe ao suporte da Mind Makers ----');
+                console.log(err);
+              } else {
+                console.log('---- Dispositivo IoT Atualizado com Sucesso! ----');
+                //console.log(res.data);
+              }
+            });
+            
+            
+      } else if (err) {
+        console.log('');
+        console.log(FgRed,'---- Não foi possível criar ou atualizar dispositivo IoT  ----');
+        console.log(FgRed,'---- Tente novamente ou informe ao suporte da Mind Makers ----');
+        console.log(err);
+      } else {
+        console.log(Reset,'---- Dispositivo IoT Criado com Sucesso! ----');
+       // console.log(res.data);
+      }
+      // Encerra
+      process.exit();
+    });
+      
+  });          
+	
+}
