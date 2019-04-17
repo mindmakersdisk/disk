@@ -6,8 +6,8 @@
 
 - lineinfile:
     path: /usr/share/raspi-ui-overrides/applications/minecraft-pi.desktop
-    regexp: 'NoDisplay=true'
-    insertafter: EOF
+    regexp: 'StartupNotify=true'
+    insertafter: 'NoDisplay=true'
     state: present
 
 #  - name: Verifica Versao npm
