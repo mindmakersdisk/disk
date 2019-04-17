@@ -131,9 +131,9 @@
 - name: Instalando pacote do npm "serialport"
   npm:
     name: serialport
-    version: '7.1.4'
+    version: '4.0.7'
     path: /home/mindmakers/programs
-    executable: /usr/bin/npm --unsafe-perm=true
+    executable: /usr/bin/npm --unsafe-perm=true --build-from-source=true
   # when: not npmsphero.stat.exists
 - name: Instalando pacote do npm "request"
   npm:
