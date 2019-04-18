@@ -1,15 +1,15 @@
 /*
   Alocação de Imagem de Disco para Escola
-   
+
   1. Obter o código da escola disponível para colar, obtido da Mind Makers através do suporte@mindmakers.cc ou SAC
   2. Abrir o terminal mudar o diretório corrente com 'cd /home/mindmakers/programs'
-  3. Executar a alocação com "sudo node mmallocate.js". 
+  3. Executar a alocação com "sudo node mmallocate.js".
 
   Paulo Alvim 03/2019
   Copyright(c) Mind Makers Editora Educacional Ltda. Todos os direitos reservados
 */
 
-const request = require('request'); 
+const request = require('request');
 var inquirer = require('inquirer');
 var fs = require('fs');
 var gcloudRegistry = require('./mmallocatecloud');
@@ -25,16 +25,16 @@ var escolanome='';
 // Recuperados
 var escolanome_recuperado='';
 
-fs.readFile('/home/mindmakers/school.info', function(err,data) 
+fs.readFile('/home/mindmakers/school.info', function(err,data)
         {
           if (err)
               console.log(err);
           else {
-          
+
               escolainfo = data.toString();
               console.log('--------------------------------------------------');
               console.log('--- Alocação de Disco para Escola. Registro Atual:');
-              
+
               escolaidIni =escolainfo.indexOf('Cód.:')+5;
               escolaid= escolainfo.substring(escolaidIni,escolainfo.indexOf('||'),escolaidIni).trim();
               //console.log(escolaid);
@@ -56,14 +56,14 @@ fs.readFile('/home/mindmakers/school.info', function(err,data)
               estacaoIni = escolainfo.indexOf('Estação:')+8
               estacao_registrado= escolainfo.substring(estacaoIni,escolainfo.indexOf('||',estacaoIni)).trim();
               //console.log(estacao_registrado);
-             
+
             console.log('');
             console.log(escolainfo.replace(/\|\|/g,''));
             console.log('');
 
-            
+
             rotinaAlocacao();
-            
+
           }
         });
 
@@ -105,20 +105,20 @@ var questions = [
 function rotinaAlocacao() {
 
   inquirer.prompt(questions).then(answers => {
-       
+
         if (answers.opcao) {
 
           // Testa se imagem está configurada
           obtemVersaoImagemDisco();
-       
+
           idescola_informado=answers.idescola;
-          
+
           recuperaNomeEscola(answers);
-        
+
         }
-            
-  });   
-  
+
+  });
+
 }
 
 
@@ -139,76 +139,63 @@ function recuperaNomeEscola(resposta) {
                     escolaretorno=JSON.parse(body);
                     escolanome_recuperado=escolaretorno.nomeEscola;
                     console.log('Escola "'+escolanome_recuperado+'" recuperada com sucesso! ');
-                    
+
                     atualizaSchoolInfo();
                 }
             }
         );
-  
-}async function quickstart(
-  projectId = 'YOUR_PROJECT_ID', // Your Google Cloud Platform project ID
-  bucketName = 'my-new-bucket' // The name for the new bucket
-) {
-  // Imports the Google Cloud client library
-  const {Storage} = require('@google-cloud/storage');
 
-  // Creates a client
-  const storage = new Storage({projectId});
-
-  // Creates the new bucket
-  await storage.createBucket(bucketName);
-  console.log(`Bucket ${bucketName} created.`);
 }
 
 // Recupera imagem da escola - pendente de implementações futuras.
 function recuperaImagemEscola(resposta) {
-  
+
        request('https://mindmakers.cc/api/Escolas/logo/publico?id='+resposta.idescola,
             function(error, response, body) {
-               
+
                 if (!body.success) {
-                   console.log('Erro ao recuperar logo: '+body.err);
+                   console.log('Erro ao recuperar logo: '+JSON.stringify(body.err));
                    console.log(body);
                 } else {
-                    
+
                     // Salva logotipo da escola
-                    
+
                     console.log('Vai salvar logotipo da escola');
                 }
             }
         );
-    
-  
+
+
 }
 
 
 /* FUNÇÕES QUE ATUALIZAM INFORMAÇṌES LOCAIS*/
 
 function statPath(path) {
-  
+
   try {
-    
+
     return fs.statSync(path);
-    
+
   } catch (ex) {
       return false;
-  } 
-  
+  }
+
 }
 
 /* Grava mudanças no arquivo de registro */
 function atualizaSchoolInfo() {
-  
+
   if (escolanome_recuperado != null && escolanome_recuperado!='') {
 
      escolaid=idescola_informado;
      escolanome=escolanome_recuperado;
 
   }
-  
+
     // Cria Registry para escola
     gcloudRegistry.criaIoTRegistry(escolaid);
-                          
+
     escolainfoatualizada = "----- Identificação de Desktop Mind Makers ------\n" +
                          "Cód.: "+escolaid+"||\n"+
                          "Nome: "+escolanome+"||\n"+
@@ -217,9 +204,9 @@ function atualizaSchoolInfo() {
                          "Sphero: ||\n"+
                          "Sala: ||\n"+
                          "Estação: ||\n"+
-                         "--------------------------------------------";                         
-  
-  fs.writeFile('/home/mindmakers/school.info', escolainfoatualizada, function(err,data) 
+                         "--------------------------------------------";
+
+  fs.writeFile('/home/mindmakers/school.info', escolainfoatualizada, function(err,data)
         {
           if (err) {
               console.log('Erro ao gravar arquivo de alocação: '+err);
@@ -231,35 +218,35 @@ function atualizaSchoolInfo() {
             console.log(escolainfoatualizada.replace(/\|\|/g,''));
             // Encerra com sucesso
 
-          
+
           }
-        
+
         }
         );
-        
+
 }
 
 function obtemVersaoImagemDisco() {
-  
+
   var existeEmPortugues = statPath('/home/pi/Área de Trabalho/mindmakers.desktop');
-  
+
   if (existeEmPortugues) {
-    
+
     atalho_mm_conteudo= fs.readFileSync('/home/pi/Área de Trabalho/releasenotes.desktop')+'';
-    
+
   } else {
-    
+
     // versão em ingles
-    atalho_mm_conteudo= fs.readFileSync('/home/pi/Desktop/releasenotes.desktop')+'';    
-  
+    atalho_mm_conteudo= fs.readFileSync('/home/pi/Desktop/releasenotes.desktop')+'';
+
   }
-   
+
    // obtém versão
    var inicial = atalho_mm_conteudo.indexOf('Name[pt_BR]=')+12;
-    
+
    var final = atalho_mm_conteudo.indexOf('Type')-1;
-   
-   
+
+
    if (inicial == -1 || final == -1) {
        console.err('Não foi possível identificar a versão da imagem do disco investigando o atalho padrão de notas de liberação');
        console.err('Para alocar uma imagem de disco a uma escola, ela precisa estar corretamente configurada.');
@@ -267,12 +254,11 @@ function obtemVersaoImagemDisco() {
        // Encerra com falha
        process.exit(1);
    }
-   
-   var versaoImagemDisco = atalho_mm_conteudo.substring(inicial,final);
-   
-   console.log('Identificada a versão da imagem de disco como '+versaoImagemDisco);
-   
-   return versaoImagemDisco;
-  
-}
 
+   var versaoImagemDisco = atalho_mm_conteudo.substring(inicial,final);
+
+   console.log('Identificada a versão da imagem de disco como '+versaoImagemDisco);
+
+   return versaoImagemDisco;
+
+}
