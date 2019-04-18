@@ -176,3 +176,6 @@
 - name: Instalando paho-mqtt
   pip:
      name: paho-mqtt
+- name: Instalando pip keyboard
+  pip:
+     name: keyboard
