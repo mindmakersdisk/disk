@@ -31,6 +31,9 @@
 - name: Instalando vnstat
   apt:
      name: vnstat
+- name: Instalando android-tools
+  apt:
+     name: android-tools-adb
 - name: Atualizando a versão do Chromium-browser
   apt:
      name: chromium-browser=72*
