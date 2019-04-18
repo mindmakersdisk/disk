@@ -52,7 +52,7 @@ estacao=f.readline()[10:-3].strip()
 
 # TODO Abortar se não estiver ativado
 
-# TODO Analisar se podemos reusar, inclusive o certificado.
+# Certificado
 ssl_private_key_filepath = '/home/mindmakers/programs/mm_private.pem'
 ssl_algorithm = 'RS256' 
 root_cert_filepath = '/home/mindmakers/programs/roots.pem'
