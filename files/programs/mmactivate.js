@@ -136,17 +136,21 @@ noble.on('discover', function(peripheral) {
 
       // registro completo se houver alguma diferença
       sprk_identificado = peripheral.address+'';
+      //console.log('Encerrando procura após encontrar');
+      noble.stopScanning();
 
       executaRegistros();
 
   }
 
-  if (numeroScans>=4 && global_jsondevicelist.length==0) {
+  if (numeroScans>=5 && global_jsondevicelist.length==0) {
 
     if (!modoregistro) {
 
        console.log('Não localizei um Sphero SPRK+ próximo. Se desejar registrar,aproxime uma unidade a menos de 20cm para identificação automática.');
        console.log('');
+       //console.log('Encerrando procura sem encontrar');
+       noble.stopScanning();
 
        executaRegistros();
     }
