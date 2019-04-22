@@ -51,8 +51,6 @@
   stat:
      path: /home/pi/Desktop/mindmakers.desktop
   register: mmdesk
-- debug:
-     var: mmdesk
 - name: Copiando atalho mindmakers.desktop
   copy:
      src: files/mindmakers.desktop
@@ -65,7 +63,7 @@
   stat:
      path: /home/pi/Desktop/sphero.desktop
   register: spherodesk
-- name: Copiando atalho mindmakers.desktop versão de professor
+- name: Copiando atalho sphero.desktop
   copy:
      src: files/sphero.desktop
      dest: /home/pi/Desktop/sphero.desktop
