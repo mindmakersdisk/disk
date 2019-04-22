@@ -143,7 +143,7 @@ noble.on('discover', function(peripheral) {
 
   }
 
-  if (numeroScans>=5 && global_jsondevicelist.length==0) {
+  if (numeroScans>=4 && global_jsondevicelist.length==0) {
 
     if (!modoregistro) {
 
