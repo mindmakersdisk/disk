@@ -65,7 +65,7 @@
 - name: Copiando atalho mindmakers.desktop versão de professor
   copy:
      src: files/sphero.desktop
-     dest: "/home/pi/Área de Trabalho/mindmakers.desktop"
+     dest: "/home/pi/Área de Trabalho/sphero.desktop"
      owner: pi
      group: pi
      mode: 0755
