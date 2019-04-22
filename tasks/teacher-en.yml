@@ -27,7 +27,7 @@
   stat:
      path: /home/pi/Desktop/sphero.desktop
   register: spherodesk
-- name: Copiando atalho mindmakers.desktop versão de professor
+- name: Copiando atalho sphero.desktop
   copy:
      src: files/sphero.desktop
      dest: /home/pi/Desktop/sphero.desktop
