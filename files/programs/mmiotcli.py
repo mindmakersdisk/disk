@@ -52,7 +52,7 @@ estacao=f.readline()[10:-3].strip()
 
 # TODO Abortar se não estiver ativado
 
-# TODO Analisar se podemos reusar, inclusive o certificado.
+# Certificado
 ssl_private_key_filepath = '/home/mindmakers/programs/mm_private.pem'
 ssl_algorithm = 'RS256' 
 root_cert_filepath = '/home/mindmakers/programs/roots.pem'
@@ -61,6 +61,7 @@ gcp_location = 'us-central1'
 registry_id = 'mm'+escolaid
 device_id = 'pi'+pi
 dir_base_imgs = '/home/mindmakers/imgs'
+chromium_base = 'chromium-browser'
 
 # end of user-variables
 
@@ -173,7 +174,11 @@ def sendInfo():
 def exibeMsg(msg):
     nomeImg = msg[4:]
     #logging.info(dir_base_imgs+'/'+nomeImg)
-    pyimg.show(dir_base_imgs+'/'+nomeImg)    
+    pyimg.show(dir_base_imgs+'/'+nomeImg)  
+      
+def executaUrl(msg):
+    url = msg[4:]
+    os.system(chromium_base+' ' + url + ' --start-fullscreen --no-sandbox')
         
 
 # Recebe mensagens
@@ -192,6 +197,8 @@ def respondToMsg(msg):
        call("sudo vcgencmd display_power 1",shell=True) 
     elif msg.startswith("img-") == True:
        exibeMsg(msg)
+    elif msg.startswith("url-") == True:
+       executaUrl(msg)
     else:
         print(msg)
 

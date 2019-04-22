@@ -51,6 +51,8 @@
   stat:
      path: /home/pi/Desktop/mindmakers.desktop
   register: mmdesk
+- debug:
+     var: mmdesk
 - name: Copiando atalho mindmakers.desktop
   copy:
      src: files/mindmakers.desktop
