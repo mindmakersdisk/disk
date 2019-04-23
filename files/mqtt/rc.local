@@ -11,6 +11,9 @@
 #
 # By default this script does nothing.
 
+sleep 15
+
 # teste mqtt 2 
-sudo nice --10 python /home/mindmakers/programs/mmiotcli.py &
+sudo nice --10 /home/mindmakers/programs/mmiotcli.py &
+
 exit 0
