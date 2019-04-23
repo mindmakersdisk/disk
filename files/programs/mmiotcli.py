@@ -213,7 +213,7 @@ client.on_message = on_message
 
 client.tls_set(ca_certs=root_cert_filepath) # Replace this with 3rd party cert if that was used when creating registry
 client.connect('mqtt.googleapis.com', 8883)
-client.subscribe(_MQTT_COMMANDS_TOPIC, qos=1)
+client.subscribe(_MQTT_COMMANDS_TOPIC, qos=0)
 client.loop_start()
 
 # FUTURAMENTE - TRABALHAR COM GPIOs
