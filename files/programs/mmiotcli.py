@@ -178,7 +178,7 @@ def exibeMsg(msg):
       
 def executaUrl(msg):
     url = msg[4:]
-    os.system(chromium_base+' ' + url + ' --start-fullscreen --no-sandbox')
+    call(chromium_base+' ' + url + ' --start-fullscreen --no-sandbox',shell=True)
         
 
 # Recebe mensagens
@@ -206,6 +206,10 @@ def on_message(unused_client, unused_userdata, message):
     payload = str(message.payload)
    # print('Recebeu mensagem \'{}\' on topic \'{}\''.format(payload, message.topic))
     respondToMsg(payload)
+    
+def on_disconnect(client,userdata,rc=0):
+    logging.error("Erro de conexão, vai parar o laço IoT")
+    client.loop_stop()
 
 client.on_connect = on_connect
 client.on_publish = on_publish
@@ -214,7 +218,7 @@ client.on_message = on_message
 client.tls_set(ca_certs=root_cert_filepath) # Replace this with 3rd party cert if that was used when creating registry
 client.connect('mqtt.googleapis.com', 8883)
 client.subscribe(_MQTT_COMMANDS_TOPIC, qos=0)
-client.loop_start()
+client.loop_forever()
 
 # FUTURAMENTE - TRABALHAR COM GPIOs
 # Could set this granularity to whatever we want based on device, monitoring needs, etc
@@ -225,6 +229,6 @@ client.loop_start()
 #GPIO.setup(red_led_pin, GPIO.OUT) # Declaring the GPIO 21 as output pin
 #GPIO.setup(green_led_pin, GPIO.OUT) # Declaring the GPIO 20 as output pin
 
-time.sleep(999)
+#time.sleep(120)
 
-client.loop_stop()
+#client.loop_stop()
