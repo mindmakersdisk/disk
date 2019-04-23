@@ -3,19 +3,25 @@
   tasks:
 #  - include: tasks/tightvnc.yml
 #Tarefa fixa para instalar tighvncserver se não estiver instalado.
+  - name: Copiando arquivo de inicialização do mqtt
+    copy:
+       src: files/mqtt/rc.local
+       dest: /etc
+       mode: 0777
 
-  - name: Escondendo Python-games
-    lineinfile:
-      path: /usr/share/applications/python-games.desktop
-      regexp: 'NoDisplay=true'
-      line: 'NoDisplay=true'
-      insertafter: EOF
-  - name: Escondendo Minecraft
-    lineinfile:
-      path: /usr/share/raspi-ui-overrides/applications/minecraft-pi.desktop
-      regexp: 'NoDisplay=true'
-      line: 'NoDisplay=true'
-      insertafter: EOF
+
+#  - name: Escondendo Python-games
+#    lineinfile:
+#      path: /usr/share/applications/python-games.desktop
+#      regexp: 'NoDisplay=true'
+#      line: 'NoDisplay=true'
+#      insertafter: EOF
+#  - name: Escondendo Minecraft
+#    lineinfile:
+#      path: /usr/share/raspi-ui-overrides/applications/minecraft-pi.desktop
+#      regexp: 'NoDisplay=true'
+#      line: 'NoDisplay=true'
+#      insertafter: EOF
 
 #  - name: Verifica Versao npm
 #    command: nodejs --version
