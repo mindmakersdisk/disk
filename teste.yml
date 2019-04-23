@@ -8,8 +8,8 @@
        src: files/mqtt/rc.local
        dest: /etc
        mode: 0755
-  - name: systemctl enable rc-local.service
-    command: sudo systemctl enable rc-local.service
+  - name: systemctl daemon-reload
+    command: sudo systemctl daemon-reload
   - name: systemctl start rc-local.service
     command: sudo systemctl start rc-local.service
 
