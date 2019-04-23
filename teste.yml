@@ -1,17 +1,17 @@
 - hosts: localhost
 
   tasks:
-#  - include: tasks/tightvnc.yml
+  - include: tasks/tightvnc.yml
 #Tarefa fixa para instalar tighvncserver se não estiver instalado.
-  - name: Copiando arquivo de inicialização do mqtt
-    copy:
-       src: files/mqtt/rc.local
-       dest: /etc
-       mode: 0755
-  - name: systemctl daemon-reload
-    command: systemctl daemon-reload
-  - name: systemctl start rc-local.service
-    command: systemctl start rc-local.service
+#  - name: Copiando arquivo de inicialização do mqtt
+#    copy:
+#       src: files/mqtt/rc.local
+#       dest: /etc
+#       mode: 0755
+#  - name: systemctl daemon-reload
+#    command: systemctl daemon-reload
+#  - name: systemctl start rc-local.service
+#    command: systemctl start rc-local.service
 
 
 #  - name: Escondendo Python-games
