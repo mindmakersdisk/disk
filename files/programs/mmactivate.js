@@ -258,7 +258,7 @@ var questionsSphero = [
   {
     type: 'confirm',
     name: 'opcao',
-    message: "Deseja ativar o Sphero acima identificado? Isso vai alterar o atalho de execução para usá-lo."
+    message: "Deseja ativar o Sphero acima identificado para uso nessa estação?"
 
   },
   {
