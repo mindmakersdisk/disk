@@ -176,7 +176,7 @@ def exibeMsg(msg):
     nomeImg = msg[4:]
     #logging.info(dir_base_imgs+'/'+nomeImg)
     #pyimg.show(dir_base_imgs+'/'+nomeImg)  
-    call("sudo killall fbi",shell=True)
+    #call("sudo killall fbi",shell=True)
     call("sudo fbi -T 10 --noverbose -t 10 --once -a "+dir_base_imgs+'/'+nomeImg,shell=True)
       
 def executaUrl(msg):
