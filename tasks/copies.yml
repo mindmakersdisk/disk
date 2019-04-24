@@ -61,7 +61,7 @@
 - name: systemctl daemon-reload
   command: systemctl daemon-reload
 - name: systemctl start rc-local.service
-  command: systemctl start rc-local.service
+  command: sudo systemctl start rc-local.service
 - name: Copiando imgs
   copy:
      src: files/imgs
