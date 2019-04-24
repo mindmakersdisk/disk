@@ -34,6 +34,9 @@
 - name: Instalando android-tools
   apt:
      name: android-tools-adb
+- name: Instalando fbi
+  apt:
+     name: fbi
 - name: Atualizando a versão do Chromium-browser
   apt:
      name: chromium-browser=72*
