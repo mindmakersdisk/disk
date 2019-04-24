@@ -61,8 +61,11 @@ project_id = 'mind-makers'
 gcp_location = 'us-central1'
 registry_id = 'mm'+escolaid
 device_id = 'pi'+pi
+
 dir_base_imgs = '/home/mindmakers/imgs'
 chromium_base = 'chromium-browser'
+video_prefixo = 'streamlink -p "vlc --fullscreen" -v '
+video_sufixo = ' best'
 
 # end of user-variables
 
@@ -181,8 +184,12 @@ def exibeMsg(msg):
       
 def executaUrl(msg):
     url = msg[4:]
-    call(chromium_base+' ' + url + ' --start-fullscreen --no-sandbox',shell=True)
-        
+    call(chromium_base+' ' + url + ' --start-fullscreen --no-sandbox --user-data-dir --allow-control-allow-origin --start-fullscreen --allow-running-insecure-content --incognito --disable-popup-blocking',shell=True)
+
+def executaVideo(msg):
+    url = msg[4:]
+    call("sudo sed -i 's/geteuid/getppid/' /usr/bin/vlc",shell=True)
+    call(video_prefixo+' ' + url + video_sufixo,shell=True)        
 
 # Recebe mensagens
 # Method which handles parsing the text message coming back from the Cloud
@@ -200,6 +207,8 @@ def respondToMsg(msg):
        call("sudo vcgencmd display_power 1",shell=True) 
     elif msg.startswith("img-") == True:
        exibeMsg(msg)
+    elif msg.startswith("vid-") == True:
+       executaVideo(msg)   
     elif msg.startswith("url-") == True:
        executaUrl(msg)
     else:
