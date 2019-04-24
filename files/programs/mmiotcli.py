@@ -23,9 +23,10 @@ import jwt
 import sys
 import logging
 import keyboard 
+
 logging.basicConfig(level=logging.DEBUG)
 
-import pyimg
+#import pyimg
 
 import paho.mqtt.client as mqtt
 import RPi.GPIO as GPIO     # Importing the GPIO library to use the GPIO pins of Raspberry pi
@@ -174,7 +175,9 @@ def sendInfo():
 def exibeMsg(msg):
     nomeImg = msg[4:]
     #logging.info(dir_base_imgs+'/'+nomeImg)
-    pyimg.show(dir_base_imgs+'/'+nomeImg)  
+    #pyimg.show(dir_base_imgs+'/'+nomeImg)  
+    call("sudo killall fbi",shell=True)
+    call("sudo fbi -T 10 --noverbose -t 10 --once -a "+dir_base_imgs+'/'+nomeImg,shell=True)
       
 def executaUrl(msg):
     url = msg[4:]
@@ -232,3 +235,4 @@ client.loop_forever()
 #time.sleep(120)
 
 #client.loop_stop()
+
