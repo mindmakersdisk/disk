@@ -49,13 +49,6 @@
      group: pi
      attributes: +i
      mode: 0755
-- name: Criando pasta Fotos na Área de Trabalho
-  file:
-    path: "/home/pi/Área de Trabalho/Fotos"
-    state: directory
-    owner: pi
-    group: pi
-    mode: 0755
 - name: Copiando pasta Scratch2 para a Área de Trabalho
   copy:
      src: files/Scratch2
