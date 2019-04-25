@@ -51,10 +51,17 @@
     owner: pi
     group: pi
     mode: 0755
+- name: Copiando pasta Scratch2
+  copy:
+     src: files/Scratch2
+     dest: /home/pi/Desktop
+     owner: pi
+     group: pi
+     mode: 0755
 - name: Copiando pasta Scratch2 - gabaritos
   copy:
-     src: files/teacher/Scratch2
-     dest: /home/pi/Desktop
+     src: files/teacher/Gabaritos
+     dest: /home/pi/Desktop/Scratch2
      owner: pi
      group: pi
      mode: 0755
