@@ -20,6 +20,9 @@
 - file:
     path: /home/pi/Desktop/sphero_desconecta.desktop
     state: absent
+- file:
+    path: /home/pi/Desktop/Fotos
+    state: absent
 - name: Copiando atalho mindmakers.desktop versão de professor
   copy:
      src: files/teacher/mindmakers.desktop
