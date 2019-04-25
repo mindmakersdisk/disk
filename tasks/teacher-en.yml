@@ -56,13 +56,6 @@
      group: pi
      attributes: +i
      mode: 0755
-- name: Copiando pasta Fotos
-  file:
-    path: /home/pi/Desktop/Fotos
-    state: directory
-    owner: pi
-    group: pi
-    mode: 0755
 - name: Copiando pasta Scratch2
   copy:
      src: files/Scratch2
@@ -70,7 +63,7 @@
      owner: pi
      group: pi
      mode: 0755
-- name: Copiando pasta Scratch2 - gabaritos
+- name: Copiando pasta Scratch2 - Gabaritos
   copy:
      src: files/teacher/Gabaritos
      dest: /home/pi/Desktop/Scratch2
