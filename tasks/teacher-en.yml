@@ -8,6 +8,18 @@
     state: directory
     attributes: -i
     recurse: yes
+- file:
+    path: /home/pi/Desktop/mblock.desktop
+    state: absent
+- file:
+    path: /home/pi/Desktop/ativacao.desktop
+    state: absent
+- file:
+    path: /home/pi/Desktop/capturafoto.desktop
+    state: absent
+- file:
+    path: /home/pi/Desktop/sphero_desconecta.desktop
+    state: absent
 - name: Copiando atalho mindmakers.desktop versão de professor
   copy:
      src: files/teacher/mindmakers.desktop
