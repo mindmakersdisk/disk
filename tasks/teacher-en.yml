@@ -3,6 +3,11 @@
      src: files/teacher/fundo.png
      dest: /home/mindmakers
      mode: 0755
+- name: Copiando a imagem tema de fundo
+  copy:
+     src: files/fundo-en.png
+     dest: /home/mindmakers
+     mode: 0755
 - file:
     path: /home/pi/Desktop
     state: directory
