@@ -53,23 +53,23 @@ const MACROS_VALIDAS = [DEMO1,DEMO2,DEMO3,TESTE];
 
 
 // Robogode 0 a 16
-const ORIGINAL = 'original';
-const O_3D = '3d';
-const BASQUETE = 'basquete';
-const BOX = 'box';
-const ENGENHEIRO = 'engenheiro';
-const EXPLORADOR = 'explorador';
-const FAZENDEIRO = 'fazendeiro';
-const GARI = 'gari';
-const LENHADOR = 'lenhador';
-const MARATONISTA = 'maratonista';
-const MARINHEIRO = 'marinheiro';
-const MUSICO = 'musico';
-const NEVE = 'neve';
-const PAPERCRAFT = 'papercraft';
-const POLICIAL = 'policial';
-const SOCIAL = 'social';
-const TURISTA = 'turista';
+const ORIGINAL = 'o_original';
+const O_3D = 'o_3d';
+const BASQUETE = 'o_basquete';
+const BOX = 'o_boxe';
+const ENGENHEIRO = 'o_engenheiro';
+const EXPLORADOR = 'o_explorador';
+const FAZENDEIRO = 'o_fazendeiro';
+const GARI = 'o_gari';
+const LENHADOR = 'o_lenhador';
+const MARATONISTA = 'o_maratonista';
+const MARINHEIRO = 'o_marinheiro';
+const MUSICO = 'o_musico';
+const NEVE = 'o_neve';
+const PAPERCRAFT = 'o_papercraft';
+const POLICIAL = 'o_policial';
+const SOCIAL = 'o_social';
+const TURISTA = 'o_turista';
 const ROBOGODES = [ORIGINAL,O_3D,BASQUETE,BOX,ENGENHEIRO,EXPLORADOR,FAZENDEIRO,GARI,LENHADOR,
                           MARATONISTA,MARINHEIRO,MARINHEIRO,MUSICO,NEVE,PAPERCRAFT,POLICIAL,SOCIAL,TURISTA];
 
@@ -162,6 +162,58 @@ function validaComando(comando) {
   
 }
 
+
+
+// Envia comandos para um, todos os computadores de uma sala
+// ou todos os computadores de alunos. Para enviar para todos, omitir estacao.
+function enviarComandoComputadoresSala(comando,complemento,idEscola,sala,incluiInstrutor,estacao) {
+    
+  console.log('Vai enviar comandos para idEscola='+idEscola+ ' e sala = '+sala+' com comando: '+comando+' e complemento: '+complemento+' com estação: '+estacao);  
+    
+  if (complemento!=null) {
+  
+     if (comando==EXIBE_IMAGEM && complemento.indexOf('.')==-1)
+         complemento = complemento + '.png';
+  
+     comando = comando + "-"+complemento;
+  
+  }
+
+  var escola = escolaMap.get(idEscola);
+  
+  if (escola == null) {
+      throw new Error("Não encontrou escola "+idEscola);
+  }
+  
+  var estacoes = escola.get(sala);
+  
+  if (estacoes == null) {
+      throw new Error("Não encontrou estações na sala "+sala+" da escola "+idEscola);
+  }
+  
+  if (estacao != null) {
+    
+     var pi = estacoes.get(estacao);
+    
+     if (pi == null) {
+       throw new Error("Não encontrou estação "+estacao+" na sala "+sala+" da escola "+idEscola);
+     }
+     
+     enviaComandosMQTT('mm'+idEscola,'pi'+estacoes.get(estacao),comando)
+     
+  } else {
+    
+    for (var pi of estacoes.values()) { 
+      
+      enviaComandosMQTT('mm'+idEscola,'pi'+pi,comando)
+      
+    }
+
+  }
+
+}
+
+
 /************************************************************
  *          MACROS DE AUTOMAÇÃO DE SALA IoT                 *
  *  
@@ -231,7 +283,7 @@ function macroDemo1(idEscola, idSala) {
     
   for (var estacao of estacoes.keys()) {
       
-    enviarComandoComputadoresSala(EXIBE_IMAGEM, estacao,idEscola,idSala);  
+    enviarComandoComputadoresSala(EXIBE_IMAGEM, estacao,idEscola,idSala,null,estacao);  
       
   }  
   
@@ -242,7 +294,7 @@ function macroDemo1(idEscola, idSala) {
   if (estacaoInstrutor != null && estacaoInstrutor != '') 
       enviarComandoComputadoresSala(EXIBE_IMAGEM, ROBOGODES[0],idEscola,idSala,null,estacaoInstrutor);  
   
-  // 10 segundo depois, envia imagens dos robogodes e roboladies aleatoriamente para todos
+  // 8 segundo depois, envia imagens dos robogodes e roboladies aleatoriamente para todos
   setTimeout(macroDemo1Submacro,10000,idEscola,idSala);
   
 }
@@ -278,7 +330,8 @@ function macroDemo1Submacro(idEscola, idSala) {
   }  
   
   // Envia imagem diferente para máquina do instrutor
-  enviarComandoComputadoresSala(EXIBE_IMAGEM, estacao,idEscola,idSala);  
+  // TODO Acertar quando tiver configuração do instrutor
+  enviarComandoComputadoresSala(EXIBE_IMAGEM, "t.jpg",idEscola,idSala,null,"1");  
   
   
 }
@@ -349,6 +402,7 @@ function recuperaEscolaPiMap() {
   estacaoMap=new Map();
   estacaoMap.set('1','000000000ac7721a');
   //estacaoMap.set('2','000000008fbf32b1');
+  estacaoMap.set('2','000000009eff7df5');
 
   salaMap=new Map();
   salaMap.set('1',estacaoMap);
@@ -363,9 +417,10 @@ function recuperaEscolaPiMap() {
   
   escolaMap.set('861127b0-0465-11e9-960e-d5e2953c462d',salaMap);
   
-  /* ESCOLA BH SAVASSI MAX */
+  /* ESCOLA BH SAVASSI */
   
   estacaoMap=new Map();
+  estacaoMap.set('11','00000000bb7d91ba');
   estacaoMap.set('1','00000000972868d9');
   estacaoMap.set('2','000000001b6aa9b3');
   estacaoMap.set('3','00000000edee082e'); 
@@ -376,7 +431,6 @@ function recuperaEscolaPiMap() {
   estacaoMap.set('8','0000000046391710');
   estacaoMap.set('9','0000000071413bc3');
   estacaoMap.set('10','000000003c5f2d0d');
-  estacaoMap.set('11','00000000bb7d91ba');
   estacaoMap.set('12','000000005ea200f4');
   
   salaMap=new Map();
@@ -388,54 +442,6 @@ function recuperaEscolaPiMap() {
   
 }
 
-
-
-// Envia comandos para desligar um, todos os computadores de uma sala
-// ou todos os computadores de aluno. Para enviar para todos, deve omitir estacao.
-function enviarComandoComputadoresSala(comando,complemento,idEscola,sala,incluiInstrutor,estacao) {
-    
-  if (complemento!=null) {
-  
-     if (comando==EXIBE_IMAGEM && complemento.indexOf('.')==-1)
-         complemento = complemento + '.png';
-  
-     comando = comando + "-"+complemento;
-  
-  }
-
-  var escola = escolaMap.get(idEscola);
-  
-  if (escola == null) {
-      throw new Error("Não encontrou escola "+idEscola);
-  }
-  
-  var estacoes = escola.get(sala);
-  
-  if (estacoes == null) {
-      throw new Error("Não encontrou estações na sala "+sala+" da escola "+idEscola);
-  }
-  
-  if (estacao != null) {
-    
-     var pi = estacoes.get(estacao);
-    
-     if (pi == null) {
-       throw new Error("Não encontrou estação "+estacao+" na sala "+sala+" da escola "+idEscola);
-     }
-     
-     enviaComandosMQTT('mm'+idEscola,'pi'+estacoes.get(estacao),comando)
-     
-  } else {
-    
-    for (var pi of estacoes.values()) { 
-      
-      enviaComandosMQTT('mm'+idEscola,'pi'+pi,comando)
-      
-    }
-
-  }
-
-}
 
 /*---------------------- GOOGLE CLOUD APIS DAQUI EM DIANTE ------------------------
  * -------------------------------------------------------------------------------*/
@@ -499,23 +505,26 @@ function enviaComandosMQTT(registryId, deviceId, commandMessage) {
     //subfolder: <your-subfolder>
   };
   
-  // Client retrieved in callback
-  getClient(serviceJSON, function(client) {
 
-    client.projects.locations.registries.devices.sendCommandToDevice(
-      request,
-      (err, data) => {
-        if (err) {
-          console.log('Não pode enviar comando:', request);
-          console.log('Erro: ', err);
-        } else {
-          console.log('Sucesso:', data.status);
-        }
-      }
-    );
     
-  });  
-   
+    // Client retrieved in callback
+    getClient(serviceJSON, function(client) {
+
+      client.projects.locations.registries.devices.sendCommandToDevice(
+        request,
+        (err, data) => {
+          if (err) {
+            console.log('Não pode enviar comando:', request);
+            console.log('Erro: ', err);
+          } else {
+            console.log('Sucesso:', data.status);
+          }
+        }
+      );
+      
+    });  
+    
+
 }
 
 
