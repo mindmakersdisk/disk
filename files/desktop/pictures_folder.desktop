@@ -1,7 +1,6 @@
 [Desktop Entry]
 Name=Pictures
 Name[pt_BR]=Fotos
-Comment=Tira foto com raspberry camera
 Icon=folder
 Exec=pcmanfm /home/pi/Pictures
 Type=Application
