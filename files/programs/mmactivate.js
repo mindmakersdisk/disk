@@ -1,14 +1,14 @@
 /*
-  Inventário e Ativação Automatizada de Ativos 
-   
+  Inventário e Ativação Automatizada de Ativos
+
   1. Aproxime um Sphero se desajar ativar junto, ou seja, alterar o atalho de execução e registrar o SPRK no inventário da escola (opcional)
-  2. Execute com o atalho adequado ou de terminal do diretório /home/mindmakers/programas -> "sudo node mmactivate.js". 
+  2. Execute com o atalho adequado ou de terminal do diretório /home/mindmakers/programas -> "sudo node mmactivate.js".
 
   Paulo Alvim 03/2019
   Copyright(c) Mind Makers Editora Educacional Ltda. Todos os direitos reservados
 */
 
-const request = require('request')  
+const request = require('request')
 //const si = require('systeminformation')
 var noble = require('/home/mindmakers/programs/node_modules/noble/index.js')
 var inquirer = require('inquirer');
@@ -50,13 +50,13 @@ var totalAcessosPlataformaPendentes=-1;
 var servicoRecorrente;
 var tentativas=0;
 
-fs.readFile('/home/mindmakers/school.info', function(err,data) 
+fs.readFile('/home/mindmakers/school.info', function(err,data)
         {
           if (err) {
               console.log(err);
               process.exit(1);
           } else {
-          
+
               escolainfo = data.toString();
               escolaidIni =escolainfo.indexOf('Cód.:')+5;
               escolaid= escolainfo.substring(escolaidIni,escolainfo.indexOf('||'),escolaidIni).trim();
@@ -84,12 +84,12 @@ fs.readFile('/home/mindmakers/school.info', function(err,data)
             console.log('');
             console.log('--- Identificação automática de ativos');
             getSDSerialNumber();
-            getPiSerial();  
-            
+            getPiSerial();
+
             // Verifica se está configurado e se está alocado (pré-requisitos para ativação)
-            
+
             obtemVersaoImagemDisco();
-            
+
             if (escolaid==null || escolaid=='' || escolaid.toString().toLowerCase().indexOf('não')>-1) {
                console.log('');
                console.error('\x1b[31m','Não foi possível identificar uma escola para a qual esse disco foi alocado');
@@ -97,10 +97,10 @@ fs.readFile('/home/mindmakers/school.info', function(err,data)
                console.error('\x1b[31m','Reexecute a alocação ou contate suporte@mindmakers.cc para obter apoio.');
                console.log('');
                process.exit(1);
-      
+
             }
-            
-                     
+
+
             noble.on('stateChange', function(state) {
               if (state === 'poweredOn') {
                 console.log('Procurando por Sphero SPRK+ a menos de 20cm...');
@@ -110,44 +110,46 @@ fs.readFile('/home/mindmakers/school.info', function(err,data)
                 noble.stopScanning();
               }
             });
-            
+
           }
         });
 
 noble.on('discover', function(peripheral) {
-  
+
   numeroScans++;
-  
+
   //console.log('Encontrou dispositivos bluetooth low energy (BLE). Scan no. '+numeroScans);
-  
+
   if (peripheral.rssi>-65  && (
-            (''+peripheral.advertisement.localName).indexOf('SK') == 0 || 
+            (''+peripheral.advertisement.localName).indexOf('SK') == 0 ||
             (''+peripheral.advertisement.localName).indexOf('Sphero')==0)) {
-    
+
       console.log('Sphero SPRK+:'+peripheral.address + ' [Nome:'+peripheral.advertisement.localName +
                 ', Conectável:' + peripheral.connectable + ', RSSI:' + peripheral.rssi+']');
       console.log('');
-      
-      
+
+
       global_jsondevicelist.push({"address":peripheral.address,
  				"localname":peripheral.advertisement.localName,
-				"rssi":peripheral.rssi, 
+				"rssi":peripheral.rssi,
 				"manufacter":JSON.stringify(peripheral.advertisement.manufacturerData.toString('hex'))});
 
       // registro completo se houver alguma diferença
       sprk_identificado = peripheral.address+'';
-      
+      noble.stopScanning();
+
       executaRegistros();
-  
-  } 
+
+  }
 
   if (numeroScans>=4 && global_jsondevicelist.length==0) {
-    
+
     if (!modoregistro) {
-        
+
        console.log('Não localizei um Sphero SPRK+ próximo. Se desejar registrar,aproxime uma unidade a menos de 20cm para identificação automática.');
        console.log('');
-     
+       noble.stopScanning();
+
        executaRegistros();
     }
 
@@ -263,7 +265,7 @@ var questionsSphero = [
     message: "Informe seu usuário Mind Makers:",
      when: function (answers) {
       return answers.opcao;
-    }   
+    }
   },
   {
     type: 'password',
@@ -271,7 +273,7 @@ var questionsSphero = [
     message: "Senha:",
     when: function (answers) {
       return answers.opcao;
-    }   
+    }
   }
 
 ];
@@ -325,21 +327,21 @@ function getSDSerialNumber() {
    var serial_line = cont_array[cont_array.length-2];
 
    var serial = serial_line.split(":");
-   
+
    pi_identificado=(serial[1].slice(1)+'').trim();
 
    console.log('PI Serial:'+serial[1].slice(1));
-  
-  
+
+
 }
 
 function getPiSerial(){
 
    var SDSerial = fs.readFileSync('/sys/block/mmcblk0/device/serial');
-  
+
   // Também pode ser usado no futuro, identifica o modelo.
   // var SDCID = fs.readFileSync('/sys/block/mmcblk0/device/cid');
-   
+
    sd_identificado=(SDSerial+'').trim();
 
    console.log('SD Serial: '+SDSerial /*+ ' CID='+ SDCID */);
@@ -351,7 +353,7 @@ function executaRegistros() {
 
    if (soSpheroPendente()) {
      // Faz registro somente do Sphero
-         
+
       modoregistro=true;
       inquirer.prompt(questionsSphero).then(answers => {
         if (answers.opcao) {
@@ -361,87 +363,87 @@ function executaRegistros() {
           servicoRecorrente=setInterval(monitoraAcessosAssincronosPlataforma,2000);
         }
         modoregistro=false;
-      });        
-   
+      });
+
    } else if (tudoOk()) {
-     
-      // Opção de Login Simplificao apenas     
+
+      // Opção de Login Simplificao apenas
       modoregistro=true;
 
-      console.log('-------------------------------------------------------');     
+      console.log('-------------------------------------------------------');
       console.log('--- Todas as configurações de ativação já estão ok! ---');
       console.log('-------------------------------------------------------');
       console.log('');
-      
+
       if (!existeAtalhoMindMakers()) {
           // Então é headless
           return;
       }
-      
+
       inquirer.prompt(questionsLoginSimplificado).then(answers => {
-                  
+
             if (answers.loginSimplificado!=null && answers.loginSimplificado.toString().indexOf('Não')==-1) {
-              
+
                 atualizaAtalhoLoginSimplificadoEscola(answers);
-            
-            } 
-                
+
+            }
+
             sala_informado=answers.sala;
-          
+
             estacao_informado=answers.codigo;
-            
+
             salaInt = parseInt(sala_informado);
             estacaoInt = parseInt(estacao_informado);
 
-            atualizaVersaoEstacao(escolaid,pi_identificado,sd_identificado,versaoImagemDisco,salaInt,estacaoInt); 
+            atualizaVersaoEstacao(escolaid,pi_identificado,sd_identificado,versaoImagemDisco,salaInt,estacaoInt);
 
             totalAcessosPlataformaPendentes=0;
-            servicoRecorrente=setInterval(monitoraAcessosAssincronosPlataforma,2000);                 
-            
+            servicoRecorrente=setInterval(monitoraAcessosAssincronosPlataforma,2000);
+
             modoregistro=false;
-              
-      });   
-    
-          
+
+      });
+
+
    } else {
-     
+
       // Faz registro geral
       var perguntas = questions;
-      
+
       if (!existeAtalhoMindMakers()) {
           // Então é headless
           perguntas=questionsHeadless;
       }
-        
+
       modoregistro=true;
       inquirer.prompt(perguntas).then(answers => {
-        
+
         if (answers.opcao) {
-          
+
             idescola_informado=escolaid;
             escolanome_recuperado= escolanome;
 
             sala_informado=answers.sala;
             //console.log('sala = '+sala_informado);
             estacao_informado=answers.codigo;
-            
+
             registraAtivosEscolaPlataforma(answers);
-            atualizaAtalhoSphero();   
-            
-            if (perguntas===questions)   
+            atualizaAtalhoSphero();
+
+            if (perguntas===questions)
                 atualizaAtalhoLoginSimplificadoEscola(answers);
-            
+
             totalAcessosPlataformaPendentes=2;
-            servicoRecorrente=setInterval(monitoraAcessosAssincronosPlataforma,2000);  
- 
+            servicoRecorrente=setInterval(monitoraAcessosAssincronosPlataforma,2000);
+
         } else {
           console.log('');
           process.exit(0);
         }
-        
+
         modoregistro=false;
-            
-      });   
+
+      });
   }
 }
 
@@ -453,7 +455,7 @@ function soSpheroPendente() {
   return (pi_identificado == pi_registrado) &&
         (sd_identificado == sd_registrado) &&
         (sprk_identificado!='' && sprk_identificado!=sprk_registrado);
-  
+
 }
 
 function tudoOk() {
@@ -461,7 +463,7 @@ function tudoOk() {
   return (pi_identificado == pi_registrado) &&
         (sd_identificado == sd_registrado) &&
         (sprk_identificado=='' || sprk_identificado==sprk_registrado);
-  
+
 }
 
 
@@ -471,39 +473,39 @@ function tudoOk() {
 function registraAtivosEscolaPlataforma(resposta) {
   //console.log(resposta)
   // Registra PI
-  
+
      request({url: 'https://mindmakers.cc/api/Escolas/ativo/publico',
             method: 'POST',
-              json: {'username':resposta.login,'password':resposta.senha, 'tipo':'Raspberry','alocadoescola':escolaid, 
-                           'chaveNatural':pi_identificado,'acao': 'registrar','observacao': 'ativação automática'}},    
-            function(error, response, body){                
+              json: {'username':resposta.login,'password':resposta.senha, 'tipo':'Raspberry','alocadoescola':escolaid,
+                           'chaveNatural':pi_identificado,'acao': 'registrar','observacao': 'ativação automática'}},
+            function(error, response, body){
                 if (!body.success || error) {
                   if (!body.success)
-                    console.log('Erro ao registrar PI: '+body.err);
+                    console.log('Erro ao registrar PI: '+JSON.stringify(body.err));
                   else
-                    console.log('Erro ao registrar PI: '+error);                  
+                    console.log('Erro ao registrar PI: '+error);
                 } else {
                     totalAcessosPlataformaPendentes=totalAcessosPlataformaPendentes-1;
                     console.log('PI registrado com sucesso! ');
                 }
             }
         );
-    
-  
-  
+
+
+
   // Registra SD
-  
+
      request({url: 'https://mindmakers.cc/api/Escolas/ativo/publico',
             method: 'POST',
-            json: {'username':resposta.login,'password':resposta.senha, 'tipo':'CartaoSD','alocadoescola':escolaid, 
+            json: {'username':resposta.login,'password':resposta.senha, 'tipo':'CartaoSD','alocadoescola':escolaid,
                            'chaveNatural':sd_identificado,'acao': 'registrar',
-              'observacao': 'ativação automática'}},                 
+              'observacao': 'ativação automática'}},
             function(error, response, body){
                 if (!body.success || error) {
-                    if (!body.sucess)
-                        console.log('Erro ao registrar SD: '+body.err);
+                    if (!body.success)
+                        console.log('Erro ao registrar SD: '+JSON.stringify(body.err));
                     else
-                        console.log('Erro ao registrar SD: '+error);  
+                        console.log('Erro ao registrar SD: '+error);
 
                 } else {
                     totalAcessosPlataformaPendentes=totalAcessosPlataformaPendentes-1;
@@ -511,50 +513,50 @@ function registraAtivosEscolaPlataforma(resposta) {
                 }
             }
         );
-        
+
 
   // Registra Estação somente se está ativando para uma escola informada.
         
      if (escolaid!=null && escolaid!='') {
-  
+
         salaInt = parseInt(sala_informado);
         estacaoInt = parseInt(estacao_informado);
        // console.log('s='+salaInt+' estacao='+estacaoInt);
 
         atualizaEstacao(resposta.login,resposta.senha,pi_identificado,sd_identificado,escolaid,versaoImagemDisco,salaInt,estacaoInt,verificaInstrutor());
-        
-        
-      }  
-      
+
+
+      }
+
 
 }
 
 function atualizaEstacao(login,senha,pi,sd,escolaid,versao,sala,estacao,indInstrutor) {
-  
+
           request({url: 'https://mindmakers.cc/api/Escolas/estacao/publico',
             method: 'POST',
             json: {'username':login,'password':senha, 'computadorserial':pi,
-                            'discoserial':sd, 'alocadoescola':escolaid, 
-                           'versaoimagemdisco':versao,'sala':sala,'codigo':estacao,'indinstrutor':indInstrutor}},                 
+                            'discoserial':sd, 'alocadoescola':escolaid,
+                           'versaoimagemdisco':versao,'sala':sala,'codigo':estacao,'indinstrutor':indInstrutor}},
             function(error, response, body){
                 if (!body.success || error) {
-                  if (!body.sucess)
-                    console.log('Erro ao registrar Estacao: '+body.err);
+                  if (!body.success)
+                    console.log('Erro ao registrar Estacao: '+JSON.stringify(body.err));
                   else
-                    console.log('Erro ao registrar Estacao: '+error);                    
+                    console.log('Erro ao registrar Estacao: '+error);
                   console.log('');
                   process.exit(1);
                 } else {
                     console.log('Estação registrada com sucesso!');
                 }
             }
-        );    
-  
-  
+        );
+
+
 }
 
 function atualizaVersaoEstacao(escolaid,pi,sd,versao,sala,estacao) {
-    
+
      request({url: 'https://mindmakers.cc/api/Escolas/atualizaVersaoEstacao/publico',
             method: 'POST',
             json: {
@@ -568,57 +570,57 @@ function atualizaVersaoEstacao(escolaid,pi,sd,versao,sala,estacao) {
             function(error, response, body){
                 if (!body.success || error) {
                     if (!body.success)
-                      console.log('Erro ao atualizar versão da estação na plataforma: '+body.err);
+                      console.log('Erro ao atualizar versão da estação na plataforma: '+JSON.stringify(body.err));
                     else
                       console.log('Erro ao atualizar versão da estação na plataforma: '+error);
-                } else {               
+                } else {
                     console.log('Versão da estação atualizada na plataforma com sucesso! ');
                 }
             }
         );
-    
+
 }
 
 
 
 function registraSpheroPlataforma(resposta) {
-  
+
     if (sprk_identificado=='')
        return;
 
     // Registra SPRK+
    // console.log('chave = '+sprk_identificado);
-    
+
      request({url: 'https://mindmakers.cc/api/Escolas/ativo/publico',
             method: 'POST',
             json: {
               'username':resposta.login,
               'password':resposta.senha,
               'tipo':'SPRKPlus',
-              'alocadoescola':escolaid, 
+              'alocadoescola':escolaid,
               'chaveNatural':sprk_identificado,
               'acao': 'registrar',
               'observacao': 'ativação automática'}
             },
             function(error, response, body){
                // console.log('ERROR ---------------------------');
-               // console.log(error);      
+               // console.log(error);
              //   console.log('RESPONSE---------------------------');
              //   console.log(response);
               //  console.log('BODY---------------------------');
-              //  console.log(body);       
+              //  console.log(body);
                 if (!body.success || error) {
                     if (!body.success)
-                      console.log('Erro ao registrar SPRK+: '+body.err);
+                      console.log('Erro ao registrar SPRK+: '+JSON.stringify(body.err));
                     else
                       console.log('Erro ao registrar SPRK+: '+error);
                 } else {
-                    totalAcessosPlataformaPendentes=totalAcessosPlataformaPendentes-1;                 
+                    totalAcessosPlataformaPendentes=totalAcessosPlataformaPendentes-1;
                     console.log('SPRK+ registrado com sucesso! ');
                 }
             }
         );
-    
+
 }
 
 
@@ -628,98 +630,98 @@ function registraSpheroPlataforma(resposta) {
 
 /* Atualiza atalho do servidor Sphero */
 function atualizaAtalhoSphero() {
-  
+
   if (sprk_identificado=='') {
      console.log('Não modificou o atalho do Sphero pois não encontrou nenhum SPRK+ próximo');
        return;
   }
-  
+
   var sprkshell = fs.readFileSync('/home/mindmakers/programs/shells/sphero-connect+.sh')+'';
-   
+
    // substitui macaddress
    var ponto_chave = sprkshell.indexOf('.js')+3;
-   
+
     sprkshell_parteinicial=sprkshell.substring(0,ponto_chave);
-    
+
     sprkshell_partefinal=sprkshell.substring(sprkshell.indexOf('sudo fuser',ponto_chave)-1);
-   
+
     sprkshell_novo=sprkshell_parteinicial+' '+sprk_identificado+'\n'+sprkshell_partefinal;
-   
+
    // grava
-  
-  fs.writeFile('/home/mindmakers/programs/shells/sphero-connect+.sh', sprkshell_novo, function(err,data) 
+
+  fs.writeFile('/home/mindmakers/programs/shells/sphero-connect+.sh', sprkshell_novo, function(err,data)
         {
           if (err)
               console.log(err);
           else {
-          
+
             console.log('Alterou a configuração para usar o Sphero '+sprk_identificado+' neste computador!');
 
           }
         }
         );
-  
+
 }
 
 function statPath(path) {
-  
+
   try {
-    
+
     return fs.statSync(path);
-    
+
   } catch (ex) {
       return false;
-  } 
-  
+  }
+
 }
 
 function atualizaAtalhoLoginSimplificadoEscola(resposta) {
-  
-  if (resposta.loginSimplificado.toString().indexOf('Não')>-1) 
+
+  if (resposta.loginSimplificado.toString().indexOf('Não')>-1)
      return
-  
+
   var atalho_mm_conteudo;
-  
+
   var existeEmPortugues = statPath('/home/pi/Área de Trabalho/mindmakers.desktop');
-  
+
   if (existeEmPortugues) {
-    
+
     atalho_mm_conteudo= fs.readFileSync('/home/pi/Área de Trabalho/mindmakers.desktop')+'';
-    
+
   } else {
-    
+
     // versão em ingles
-    atalho_mm_conteudo= fs.readFileSync('/home/pi/Desktop/mindmakers.desktop')+'';    
-  
+    atalho_mm_conteudo= fs.readFileSync('/home/pi/Desktop/mindmakers.desktop')+'';
+
   }
-   
+
    // substitui URL
    var ponto_chave = atalho_mm_conteudo.indexOf('Exec=')+5;
-   
+
     conteudo_parteinicial=atalho_mm_conteudo.substring(0,ponto_chave);
-    
+
     conteudo_partefinal=atalho_mm_conteudo.substring(atalho_mm_conteudo.indexOf('--allow-control-allow-origin'));
-    
+
    // console.log(conteudo_parteinicial);
-   //console.log(conteudo_partefinal);    
+   //console.log(conteudo_partefinal);
     var msg_final='';
     if (resposta.loginSimplificado.toString().indexOf('Login Simplificado')>-1) {
         conteudo_novo=conteudo_parteinicial+'chromium-browser https://mindmakers.cc/login-simplificado?id='+escolaid+
                             '&quantSalas='+resposta.numeroSalas+' '+conteudo_partefinal;
-                            
+
         msg_final='Configurou o atalho Mind Makers para usar Login Simplificado suportando '+resposta.numeroSalas+' turmas simultâneas (permite ao aluno selecionar sua senha)!';
-        
-    } else { 
+
+    } else {
         conteudo_novo=conteudo_parteinicial+'chromium-browser https://mindmakers.cc/login/'+' '+conteudo_partefinal;
-        msg_final='Configurou o atalho Mind Makers para usar login padrão (exige do aluno informar sua senha)!';      
+        msg_final='Configurou o atalho Mind Makers para usar login padrão (exige do aluno informar sua senha)!';
     }
-    
+
    // grava
    //console.log('conteudo_novo'+conteudo_novo);
-   
+
    if (existeEmPortugues) {
-    
-      fs.writeFile('/home/pi/Área de Trabalho/mindmakers.desktop', conteudo_novo, function(err,data) 
+
+      fs.writeFile('/home/pi/Área de Trabalho/mindmakers.desktop', conteudo_novo, function(err,data)
         {
           if (err)
               console.log(err);
@@ -729,37 +731,37 @@ function atualizaAtalhoLoginSimplificadoEscola(resposta) {
           }
         }
         );
-    
+
   } else {
-    
-      fs.writeFile('/home/pi/Desktop/mindmakers.desktop', conteudo_novo, function(err,data) 
+
+      fs.writeFile('/home/pi/Desktop/mindmakers.desktop', conteudo_novo, function(err,data)
         {
           if (err)
               console.log(err);
           else {
-          
+
             console.log(msg_final);
             console.log('');
 
           }
         }
         );
-  
+
   }
-  
+
 }
 
 function monitoraAcessosAssincronosPlataforma() {
-  
+
  // console.log('entrou na monitoria')
-  
+
   // Somente depois de todos os serviços de registro ocorrem ok, alterar o arquivo local.
   if (totalAcessosPlataformaPendentes<=0) {
-    
+
     atualizaSchoolInfo();
 
     clearInterval(servicoRecorrente);
-    
+
   } else {
       tentativas++;
       if (tentativas>5) {
@@ -771,19 +773,19 @@ function monitoraAcessosAssincronosPlataforma() {
          process.exit(1);
        }
   }
-  
+
 }
 
 
 /* Grava mudanças no arquivo de registro */
 function atualizaSchoolInfo() {
-  
-  
+
+
   // Muda Pi?
   if (pi_registrado!=pi_identificado) {
      pi_registrado=pi_identificado;
   }
-  
+
   // Muda SD?
   if (sd_registrado!=sd_identificado) {
      sd_registrado=sd_identificado;
@@ -793,7 +795,7 @@ function atualizaSchoolInfo() {
   if (sprk_registrado!=sprk_identificado && sprk_identificado!='') {
      sprk_registrado=sprk_identificado;
   }
-  
+
   // Muda Sala?
   if (sala_registrado!=sala_informado && sala_informado!='') {
      sala_registrado=sala_informado;
@@ -803,7 +805,7 @@ function atualizaSchoolInfo() {
   if (estacao_registrado!=estacao_informado && estacao_informado!='') {
      estacao_registrado=estacao_informado;
   }
-  
+
   escolainfoatualizada = "----- Identificação de Desktop Mind Makers ------\n" +
                          "Cód.: "+escolaid+"||\n"+
                          "Nome: "+escolanome+"||\n"+
@@ -812,60 +814,60 @@ function atualizaSchoolInfo() {
                          "Sphero: "+sprk_registrado+"||\n"+
                          "Sala: "+sala_registrado+"||\n"+
                          "Estação: "+estacao_registrado+"||\n"+
-                         "--------------------------------------------";  
-  
-  fs.writeFile('/home/mindmakers/school.info', escolainfoatualizada, function(err,data) 
+                         "--------------------------------------------";
+
+  fs.writeFile('/home/mindmakers/school.info', escolainfoatualizada, function(err,data)
         {
           if (err) {
               console.log(err);
               // Encerra com falha
               process.exit(1);
           } else {
-          
+
             console.log('------------- Ativação OK! ------------------');
             console.log('---------------------------------------------');
             console.log(escolainfoatualizada.replace(/\|\|/g,''));
             console.log('');
 
-            var fd = 
+            var fd =
             console.error('\x1b[32m','-------------- Confira a Data/Hora do Sistema Abaixo ---------------');
             console.error('\x1b[0m\x1b[1m','            '+(new Date()).toString("yyyyMMddHHmmss").replace(/T/,' ').replace(/\..+/,'').substring(4));
             console.error('\x1b[0m\x1b[32m','-- Se não estiver atual, a porta NTP 123 pode estar bloqueada ------');
             console.error('\x1b[0m\x1b[32m','-- Ela precisa ser liberada para sincronia do horário --------------');
             console.error('\x1b[0m\x1b[32m','-- Havendo dúvidas, contate suporte@mindmakers.cc ------------------');
             console.log('');
-          
+
           }
-          
+
            gcloudRegistry.criaIoTDevice(escolaid,pi_registrado,sala_registrado,estacao_registrado);
-        
+
         }
         );
-        
+
 }
 
 
 function obtemVersaoImagemDisco() {
-  
+
   var ePortugues = statPath('/home/pi/Área de Trabalho');
-  
+
   if (ePortugues) {
-    
+
     atalho_mm_conteudo= fs.readFileSync('/home/pi/Área de Trabalho/releasenotes.desktop')+'';
-    
+
   } else {
-    
+
     // versão em ingles
-    atalho_mm_conteudo= fs.readFileSync('/home/pi/Desktop/releasenotes.desktop')+'';    
-  
+    atalho_mm_conteudo= fs.readFileSync('/home/pi/Desktop/releasenotes.desktop')+'';
+
   }
-   
+
    // obtém versão
    var inicial = atalho_mm_conteudo.indexOf('Name[pt_BR]=')+12;
-    
+
    var final = atalho_mm_conteudo.indexOf('Type')-1;
-   
-   
+
+
    if (inicial == -1 || final == -1) {
        console.err('Não foi possível identificar a versão da imagem do disco investigando o atalho padrão de notas de liberação');
        console.err('Para ativar uma estação ela precisa estar usando uma imagem de disco corretamente configurada.');
@@ -873,61 +875,61 @@ function obtemVersaoImagemDisco() {
        // Encerra com falha
        process.exit(1);
    }
-   
+
    versaoImagemDisco = atalho_mm_conteudo.substring(inicial,final);
-   
+
    console.log('Identificada a versão da imagem de disco como '+versaoImagemDisco);
 
-  
+
 }
 
 function verificaInstrutor() {
-  
+
   var ePortugues = statPath('/home/pi/Área de Trabalho');
 
   var atalho_instrutor;
-  
+
   if (ePortugues) {
-    
+
     atalho_instrutor= fs.readFileSync('/home/pi/Área de Trabalho/update.desktop')+'';
-    
+
   } else {
-    
+
     // versão em ingles
-    atalho_instrutor= fs.readFileSync('/home/pi/Desktop/update.desktop')+'';    
-  
+    atalho_instrutor= fs.readFileSync('/home/pi/Desktop/update.desktop')+'';
+
   }
-   
+
    // obtém versão
    return atalho_instrutor.indexOf('teacher.sh')>-1;
 
-  
+
 }
 
 function existeAtalhoMindMakersPortugues() {
-  
+
   try {
     var ret = statPath('/home/pi/Área de Trabalho/mindmakers.desktop');
     return ret;
   } catch (e) {
     return false;
   }
-  
+
 }
 
 function existeAtalhoMindMakersIngles() {
-  
+
   try {
     var ret =  statPath('/home/pi/Desktop/mindmakers.desktop');
     return ret;
   } catch (e) {
     return false;
   }
-  
+
 }
 
 function existeAtalhoMindMakers() {
- 
+
     return existeAtalhoMindMakersPortugues() || existeAtalhoMindMakersIngles();
-    
+
 }

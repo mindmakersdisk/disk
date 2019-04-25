@@ -56,10 +56,17 @@
     owner: pi
     group: pi
     mode: 0755
+- name: Copiando pasta Scratch2 para a Área de Trabalho
+  copy:
+     src: files/Scratch2
+     dest: "/home/pi/Área de Trabalho"
+     owner: pi
+     group: pi
+     mode: 0755
 - name: Copiando pasta Scratch2 - gabaritos para a Área de Trabalho
   copy:
-     src: files/teacher/Scratch2
-     dest: "/home/pi/Área de Trabalho"
+     src: files/teacher/Gabaritos
+     dest: "/home/pi/Área de Trabalho/Scratch2"
      owner: pi
      group: pi
      mode: 0755
