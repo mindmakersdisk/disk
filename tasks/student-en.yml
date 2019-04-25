@@ -28,6 +28,9 @@
 - file:
     path: /home/pi/Desktop/sphero_desconecta.desktop
     state: absent
+- file:
+    path: /home/pi/Desktop/Fotos
+    state: absent
 - name: Copiando demais atalhos para o Desktop
   copy:
      src: files/desktop/
