@@ -118,7 +118,7 @@
 #    command: lxterminal -e vnstat -l
 #    when: ansible_facts.ansible_eth0.active
   - name: lingua OS.
-    command: 'cat /etc/default/locale | grep LANG= '
+    shell: 'cat /etc/default/locale | grep LANG= '
     register: lang
   - debug:
       var: lang
