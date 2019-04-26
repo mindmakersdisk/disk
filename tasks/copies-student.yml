@@ -30,5 +30,4 @@
     path: /home/pi/.config/pcmanfm/LXDE-pi/desktop-items-0.conf
     state: touch
     attributes: +i
-  when: lang.stdout.find('LANG=en') != -1
      
