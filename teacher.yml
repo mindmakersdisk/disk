@@ -26,6 +26,7 @@
       stat:
         path: /home/pi/Desktop
       register: p
+    - shell: 'amixer cset numid=3 2'
  # Copia as notas de liberação e o atalho com nome da versão atualizados
     - include: tasks/final-version-copies-pt.yml
       when: not p.stat.exists
