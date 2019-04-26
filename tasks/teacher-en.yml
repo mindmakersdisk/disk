@@ -28,6 +28,9 @@
 - file:
     path: /home/pi/Desktop/Fotos
     state: absent
+- file:
+    path: /home/pi/Desktop/Scratch2
+    state: absent
 - name: Copiando atalho mindmakers.desktop versão de professor
   copy:
      src: files/teacher/mindmakers.desktop
@@ -64,23 +67,23 @@
      group: pi
      attributes: +i
      mode: 0755
-- name: Copiando pasta Scratch2
-  copy:
-     src: files/Scratch2
-     dest: /home/pi/Desktop
-     owner: pi
-     group: pi
-     mode: 0755
 - name: Copiando pasta Scratch2 - Gabaritos
   copy:
      src: files/teacher/Gabaritos
-     dest: /home/pi/Desktop/Scratch2
+     dest: /home/mindmakers/Scratch2/portuguese
+     owner: pi
+     group: pi
+     mode: 0755
+- name: Copiando pasta Scratch2 - Answer-Sheet
+  copy:
+     src: files/teacher/Answer-Sheet
+     dest: /home/mindmakers/Scratch2/english
      owner: pi
      group: pi
      mode: 0755
 - name: Tornando ícones dentro da pasta Scratch2 imutáveis
   file:
-    path: /home/pi/Desktop/Scratch2
+    path: /home/mindmakers/Scratch2
     state: directory
     attributes: +i
     recurse: yes
@@ -91,3 +94,13 @@
 - file:
     path: /usr/local/bin/alocar-para-instrutor.sh
     state: absent
+- name: Verificando OS em inglês
+  shell: 'cat /etc/default/locale | grep LANG= '
+  register: lang
+- name: Alterando fundo.png para fundo-en.png
+  lineinfile:
+    path: /home/pi/Desktop/scratch2_folder.desktop
+    regexp: '^Exec=pcmanfm /home/mindmakers/Scratch2/portuguese'
+    line: 'Exec=pcmanfm /home/mindmakers/Scratch2/english'
+    backrefs: yes
+  when: lang.stdout.find('LANG=en') != -1
