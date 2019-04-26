@@ -9,7 +9,6 @@ var http = require('http');
 const request = require('request');  
 const express = require('express');  
 const app = express();
-var fs = require('fs');
 
 var bodyParser = require('body-parser');
 
@@ -110,7 +109,7 @@ const MINDMAKERS = ['m','i','n','d','m','a','k','e','r','s'];
  *  incluiistrutor='S' se desejar incluir estacao do instrutor em comandos coletivos.
  * 
  * *********************************************************/
-app.post('/api/Sala/comando', (req, resp) => {  
+app.post('/api/E/comando', (req, resp) => {  
 
   comando = req.body.comando
   
@@ -410,7 +409,7 @@ function recuperaEscolaPiMap() {
   estacaoMap=new Map();
   estacaoMap.set('1','000000009eff7df5');
 
-  salaMap.set('2',estacaoMap);
+  salaMap.set('2',estacaoMap); 
 
   // Convenção para indicar a estacao do instrutor de uma sala (opcional, pois o instrutor pode usar notebook próprio)
   salaMap.set('2'+ESTACAO_INSTRUTOR,'1');
@@ -447,7 +446,6 @@ function recuperaEscolaPiMap() {
  * -------------------------------------------------------------------------------*/
 
 const {google} = require('googleapis');
-var fs = require('fs');
 const API_VERSION = 'v1';
 const DISCOVERY_API = 'https://cloudiot.googleapis.com/$discovery/rest';
 const serviceJSON = "/home/mindmakers/programs/mmiotsrv.json";
