@@ -117,15 +117,14 @@
 #  - name: Ativa vnstat
 #    command: lxterminal -e vnstat -l
 #    when: ansible_facts.ansible_eth0.active
-  - name: Ver se máquina já foi ativada para fixar o ip do Rapsberry.
-    find:
-      paths: /etc/default
-      patterns: 'locale'
-      contains: 'LANG='
-      use_regex: yes
+  - name: lingua OS.
+    command: cat /etc/default/locale | grep LANG=
     register: lang
   - debug:
       var: lang
+  - debug:
+      msg: deb_check.stdout.find('pt_BR')
+    when: deb_check.stdout.find('pt_BR') != -1
 
 ##########
 # Verifica se school.info ainda tem Pi não registrado para. true se não tiver e false se tiver.
