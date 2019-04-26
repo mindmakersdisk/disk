@@ -124,7 +124,7 @@
       contains: 'LANG='
       use_regex: yes
     register: lang
-  - debug
+  - debug:
       var: lang
 
 ##########
