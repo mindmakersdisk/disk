@@ -8,6 +8,7 @@
       changed_when: False
 
   tasks:
+   - include: tasks/copies-student.yml
    - name: Verificando se diretório Desktop existe.
      stat:
         path: /home/pi/Desktop
@@ -21,7 +22,6 @@
 
 - hosts: localhost
   tasks:
-    - include: tasks/copies-student.yml
     - name: Verificando se diretório Desktop existe.
       stat:
         path: /home/pi/Desktop
