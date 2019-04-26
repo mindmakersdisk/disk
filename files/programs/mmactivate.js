@@ -106,7 +106,7 @@ fs.readFile('/home/mindmakers/school.info', function(err,data)
                 console.log('Procurando por Sphero SPRK+ a menos de 20cm...');
                 noble.startScanning();
               } else {
-               console.log('Encerrando procura');
+                console.log('Encerrando procura');
                 noble.stopScanning();
               }
             });
@@ -307,10 +307,10 @@ var questionsLoginSimplificado = [
   {
     type: 'number',
     name: 'codigo',
-    message: "Atribua um código numérico inteiro para identificar essa estação, de 1 a 20 (atual:"+estacao_registrado+")",
+    message: "Atribua um código numérico inteiro para identificar essa estação, de 1 a 21 (atual:"+estacao_registrado+")",
     default: 1,
     validate: function (valor) {
-      return Number.isInteger(valor) && parseInt(valor)>=1 && parseInt(valor)<=20;
+      return Number.isInteger(valor) && parseInt(valor)>=1 && parseInt(valor)<=21;
     },
   }
 
@@ -395,7 +395,7 @@ function executaRegistros() {
             salaInt = parseInt(sala_informado);
             estacaoInt = parseInt(estacao_informado);
 
-            atualizaVersaoEstacao(escolaid,pi_identificado,sd_identificado,versaoImagemDisco,salaInt,estacaoInt);
+            atualizaVersaoEstacao(escolaid,pi_identificado,sd_identificado,versaoImagemDisco,salaInt,estacaoInt,verificaInstrutor());
 
             totalAcessosPlataformaPendentes=0;
             servicoRecorrente=setInterval(monitoraAcessosAssincronosPlataforma,2000);
@@ -480,10 +480,11 @@ function registraAtivosEscolaPlataforma(resposta) {
                            'chaveNatural':pi_identificado,'acao': 'registrar','observacao': 'ativação automática'}},
             function(error, response, body){
                 if (!body.success || error) {
-                  if (!body.success)
+                  if (!body.success){
                     console.log('Erro ao registrar PI: '+JSON.stringify(body.err));
-                  else
+                  }else{
                     console.log('Erro ao registrar PI: '+error);
+                  }
                 } else {
                     totalAcessosPlataformaPendentes=totalAcessosPlataformaPendentes-1;
                     console.log('PI registrado com sucesso! ');
@@ -502,11 +503,11 @@ function registraAtivosEscolaPlataforma(resposta) {
               'observacao': 'ativação automática'}},
             function(error, response, body){
                 if (!body.success || error) {
-                    if (!body.success)
+                    if (!body.success){
                         console.log('Erro ao registrar SD: '+JSON.stringify(body.err));
-                    else
+                    }else{
                         console.log('Erro ao registrar SD: '+error);
-
+                    }
                 } else {
                     totalAcessosPlataformaPendentes=totalAcessosPlataformaPendentes-1;
                     console.log('Cartão SD registrado com sucesso! ');
@@ -516,7 +517,7 @@ function registraAtivosEscolaPlataforma(resposta) {
 
 
   // Registra Estação somente se está ativando para uma escola informada.
-        
+
      if (escolaid!=null && escolaid!='') {
 
         salaInt = parseInt(sala_informado);
@@ -540,12 +541,15 @@ function atualizaEstacao(login,senha,pi,sd,escolaid,versao,sala,estacao,indInstr
                            'versaoimagemdisco':versao,'sala':sala,'codigo':estacao,'indinstrutor':indInstrutor}},
             function(error, response, body){
                 if (!body.success || error) {
-                  if (!body.success)
+                  if (!body.success){
                     console.log('Erro ao registrar Estacao: '+JSON.stringify(body.err));
-                  else
+                    console.log('');
+                    process.exit(1);
+                  }else{
                     console.log('Erro ao registrar Estacao: '+error);
-                  console.log('');
-                  process.exit(1);
+                    console.log('');
+                    process.exit(1);
+                  }
                 } else {
                     console.log('Estação registrada com sucesso!');
                 }
@@ -555,7 +559,7 @@ function atualizaEstacao(login,senha,pi,sd,escolaid,versao,sala,estacao,indInstr
 
 }
 
-function atualizaVersaoEstacao(escolaid,pi,sd,versao,sala,estacao) {
+function atualizaVersaoEstacao(escolaid,pi,sd,versao,sala,estacao,indInstrutor) {
 
      request({url: 'https://mindmakers.cc/api/Escolas/atualizaVersaoEstacao/publico',
             method: 'POST',
@@ -565,14 +569,20 @@ function atualizaVersaoEstacao(escolaid,pi,sd,versao,sala,estacao) {
               'discoserial':sd,
               'versaoimagemdisco':versao,
               'sala':sala,
-              'codigo':estacao}
+              'codigo':estacao,
+              'indinstrutor':indInstrutor}
             },
             function(error, response, body){
                 if (!body.success || error) {
-                    if (!body.success)
+                    if (!body.success){
                       console.log('Erro ao atualizar versão da estação na plataforma: '+JSON.stringify(body.err));
-                    else
+                      console.log('');
+                      process.exit(1);
+                    }else{
                       console.log('Erro ao atualizar versão da estação na plataforma: '+error);
+                      console.log('');
+                      process.exit(1);
+                    }
                 } else {
                     console.log('Versão da estação atualizada na plataforma com sucesso! ');
                 }
@@ -580,7 +590,6 @@ function atualizaVersaoEstacao(escolaid,pi,sd,versao,sala,estacao) {
         );
 
 }
-
 
 
 function registraSpheroPlataforma(resposta) {
@@ -610,10 +619,11 @@ function registraSpheroPlataforma(resposta) {
               //  console.log('BODY---------------------------');
               //  console.log(body);
                 if (!body.success || error) {
-                    if (!body.success)
+                    if (!body.success){
                       console.log('Erro ao registrar SPRK+: '+JSON.stringify(body.err));
-                    else
+                    }else{
                       console.log('Erro ao registrar SPRK+: '+error);
+                    }
                 } else {
                     totalAcessosPlataformaPendentes=totalAcessosPlataformaPendentes-1;
                     console.log('SPRK+ registrado com sucesso! ');
