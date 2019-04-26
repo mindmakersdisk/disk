@@ -3,17 +3,7 @@
   tasks:
   - include: tasks/tightvnc.yml
 #Tarefa fixa para instalar tighvncserver se não estiver instalado.
-#  - name: Copiando arquivo de inicialização do mqtt
-#    copy:
-#       src: files/mqtt/rc.local
-#       dest: /etc
-#       mode: 0755
-#  - name: systemctl daemon-reload
-#    command: systemctl daemon-reload
-#  - name: systemctl start rc-local.service
-#    command: systemctl start rc-local.service
-
-
+]
 #  - name: Escondendo Python-games
 #    lineinfile:
 #      path: /usr/share/applications/python-games.desktop
@@ -37,12 +27,7 @@
 #       name: nodejs
        #force_apt_get: yes
 #    when: node_output.stdout is version('8.12.0', '<')
-####Funcionando mas precisa ver se vai usar
-#  - file:
-#       path: /home/mindmakers/programs/mmtelebot.py
-#       state: touch
-#       mode: 0711
-#tornar arquivo mmtelebot somente execultavem para níveis grupo e owner
+
 
 #Funcionando mas precisa validar quais comandos realmente pode fazer sem o sudo.
 #força pedir senha apra usar comando sudo para usuários pi.
@@ -132,7 +117,15 @@
 #  - name: Ativa vnstat
 #    command: lxterminal -e vnstat -l
 #    when: ansible_facts.ansible_eth0.active
-
+  - name: Ver se máquina já foi ativada para fixar o ip do Rapsberry.
+    find:
+      paths: /etc/default
+      patterns: 'locale'
+      contains: 'LANG='
+      use_regex: yes
+    register: lang
+  - debug
+      var: lang
 
 ##########
 # Verifica se school.info ainda tem Pi não registrado para. true se não tiver e false se tiver.
