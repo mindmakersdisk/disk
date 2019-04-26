@@ -44,7 +44,7 @@ _**Como verificar sucesso dessa etapa?**_
 - _Conferir se o Timezone está correto, abrindo o terminal e digitando "date", confirmando que a hora está correta para o Brasil_
 - _Conferir se o mouse e teclado estão configurados ok. Para testar o teclado, digite um "ç" e um "ã" em uma janela de terminal com o teclado, confirmando que são corretamente exibidos.
 - _Conferir se o monitor está corretamente configurado. Importante: não é relevante que o monitor siga a resolução padrão neste momento, pois ela será configurada automaticamente em passos posteriores. Confira apenas que a imagem é apresentada_
-- _Conferir a versão corrente do SO digitando o comando "lsb_release -a" em uma janela de terminal, conferindo se Release é 9.4. Obs.: essa versão será atualizada em passos posteriores via Ansible_
+- _Conferir a versão corrente do SO digitando o comando "lsb_release -a" em uma janela de terminal, conferindo se Release é 9.8. Obs.: essa versão será atualizada em passos posteriores via Ansible_
 - _Abrir o navegador Chromium e confirmar que a internet está sendo acessada corretamente_
 
 ### 3. Instalar o gerenciador automático de configuração Ansible
