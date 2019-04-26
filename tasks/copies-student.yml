@@ -44,3 +44,7 @@
     state: directory
     attributes: +i
     recurse: yes
+#- file:
+#    path: /home/pi/.config/pcmanfm/LXDE-pi/desktop-items-0.conf
+#    state: touch
+#    attributes: +i
