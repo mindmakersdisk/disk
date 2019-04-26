@@ -123,8 +123,8 @@
   - debug:
       var: lang.stdout.find('pt_BR')
   - debug:
-      msg: lang.stdout.find('pt_BR')
-    when: lang.stdout.find('LANG=pt_BR') != -1
+      msg: sistema em ingles
+    when: lang.stdout.find('LANG=en') != -1
 
 ##########
 # Verifica se school.info ainda tem Pi não registrado para. true se não tiver e false se tiver.
