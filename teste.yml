@@ -117,22 +117,22 @@
 #  - name: Ativa vnstat
 #    command: lxterminal -e vnstat -l
 #    when: ansible_facts.ansible_eth0.active
-  - name: lingua OS.
+  - name: Verificando OS em inglês
     shell: 'cat /etc/default/locale | grep LANG= '
     register: lang
+  - name: Alterando fundo.png para fundo-en.png
+    lineinfile:
+      path: /home/pi/.config/pcmanfm/LXDE-pi/desktop-items-0.conf
+      regexp: '^wallpaper=/home/mindmakers/fundo.png'
+      line: 'wallpaper=/home/mindmakers/fundo-en.png'
+      backrefs: yes
+    when: lang.stdout.find('LANG=en') != -1
 #  - debug:
 #      var: lang.stdout.find('pt_BR')
 #  - debug:
 #      msg: sistema em ingles
 #    when: lang.stdout.find('LANG=en') != -1
-  - lineinfile:
-      path: /home/pi/.config/pcmanfm/LXDE-pi/desktop-items-0.conf
-      regexp: '^wallpaper=/home/mindmakers/fundo.png'
-      line: 'wallpaper=/home/mindmakers/fundo-en.png'
-      backrefs: yes
-    register: teste
-  - debug:
-      var: teste
+
 
 ##########
 # Verifica se school.info ainda tem Pi não registrado para. true se não tiver e false se tiver.
