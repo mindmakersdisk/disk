@@ -26,8 +26,8 @@
     line: 'wallpaper=/home/mindmakers/fundo-en.png'
     backrefs: yes
   when: lang.stdout.find('LANG=en') != -1
-- file:
-    path: /home/pi/.config/pcmanfm/LXDE-pi/desktop-items-0.conf
-    state: touch
-    attributes: +i
+#- file:
+#    path: /home/pi/.config/pcmanfm/LXDE-pi/desktop-items-0.conf
+#    state: touch
+#    attributes: +i
      
