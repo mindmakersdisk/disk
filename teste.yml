@@ -120,11 +120,19 @@
   - name: lingua OS.
     shell: 'cat /etc/default/locale | grep LANG= '
     register: lang
+#  - debug:
+#      var: lang.stdout.find('pt_BR')
+#  - debug:
+#      msg: sistema em ingles
+#    when: lang.stdout.find('LANG=en') != -1
+  - lineinfile:
+      path: /home/pi/.config/pcmanfm/LXDE-pi/desktop-items-0.conf
+      regexp: '^wallpaper=/home/mindmakers/fundo.png'
+      line: 'wallpaper=/home/mindmakers/fundo-en.png'
+      backrefs: yes
+    register: teste
   - debug:
-      var: lang.stdout.find('pt_BR')
-  - debug:
-      msg: sistema em ingles
-    when: lang.stdout.find('LANG=en') != -1
+      var: teste
 
 ##########
 # Verifica se school.info ainda tem Pi não registrado para. true se não tiver e false se tiver.
@@ -134,7 +142,8 @@
 #      patterns: 'school.info'
 #      contains: 'Pi: Não'
 #      use_regex: yes
-#    register: semregistro2- name: Ver se máquina já foi ativada para fixar o ip do Rapsberry.
+#    register: semregistro2
+#  - name: Ver se máquina já foi ativada para fixar o ip do Rapsberry.
 #    find:
 #      paths: /home/mindmakers/
 #      patterns: 'school.info'
