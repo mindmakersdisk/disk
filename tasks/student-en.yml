@@ -81,3 +81,23 @@
      group: pi
      mode: 0755
   when: not spherodesk.stat.exists
+- name: Verificando OS em inglês
+  shell: 'cat /etc/default/locale | grep LANG= '
+  register: lang
+- file:
+    path: /home/pi/.config/pcmanfm/LXDE-pi/desktop-items-0.conf
+    state: touch
+    attributes: -i
+  when: lang.stdout.find('LANG=en') != -1
+- name: Alterando fundo.png para fundo-en.png
+  lineinfile:
+    path: /home/pi/.config/pcmanfm/LXDE-pi/desktop-items-0.conf
+    regexp: '^wallpaper=/home/mindmakers/fundo.png'
+    line: 'wallpaper=/home/mindmakers/fundo-en.png'
+    backrefs: yes
+  when: lang.stdout.find('LANG=en') != -1
+- file:
+    path: /home/pi/.config/pcmanfm/LXDE-pi/desktop-items-0.conf
+    state: touch
+    attributes: +i
+  when: lang.stdout.find('LANG=en') != -1
