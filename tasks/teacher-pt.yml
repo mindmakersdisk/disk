@@ -54,7 +54,7 @@
      group: pi
      attributes: +i
      mode: 0755
-- name: Tornando ícones dentro da pasta Scratch2 imutáveis
+- name: Tornando ícones dentro da pasta Scratch2 mutáveis
   file:
     path: /home/mindmakers/Scratch2
     state: directory
