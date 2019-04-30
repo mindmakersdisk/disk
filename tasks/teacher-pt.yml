@@ -54,6 +54,12 @@
      group: pi
      attributes: +i
      mode: 0755
+- name: Tornando ícones dentro da pasta Scratch2 imutáveis
+  file:
+    path: /home/mindmakers/Scratch2
+    state: directory
+    attributes: -i
+    recurse: yes
 - name: Copiando pasta Scratch2 - Gabaritos
   copy:
      src: files/teacher/Gabaritos
