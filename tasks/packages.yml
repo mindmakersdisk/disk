@@ -168,7 +168,7 @@
 - name: Instalando pacote do npm "googleapis"
   npm:
     name: googleapis
-    version: '39.2.0'
+    #version: '39.2.0'
     path: /home/mindmakers/programs
   # when: not npmsphero.stat.exists
 - name: Criando pasta de verificação das dependências Sphero
