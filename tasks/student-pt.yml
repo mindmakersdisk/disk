@@ -24,6 +24,12 @@
 - file:
     path: "/home/pi/Área de Trabalho/mblock.desktop"
     state: absent
+# - file:
+#     path: /home/mindmakers/Scratch2/portuguese/Gabaritos
+#     state: absent
+# - file:
+#     path: /home/mindmakers/Scratch2/english/Answer-Sheet
+#     state: absent
 - name: Copiando demais atalhos para a Área de Trabalho
   copy:
      src: files/desktop/

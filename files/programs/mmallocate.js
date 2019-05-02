@@ -199,8 +199,8 @@ function atualizaSchoolInfo() {
     escolainfoatualizada = "----- Identificação de Desktop Mind Makers ------\n" +
                          "Cód.: "+escolaid+"||\n"+
                          "Nome: "+escolanome+"||\n"+
-                         "Pi: ||\n"+
-                         "SD: ||\n"+
+                         "Pi: Não registrado||\n"+
+                         "SD: Não registrado||\n"+
                          "Sphero: ||\n"+
                          "Sala: ||\n"+
                          "Estação: ||\n"+
