@@ -4,6 +4,13 @@
   - include: tasks/tightvnc.yml
 #Tarefa fixa para instalar tighvncserver se não estiver instalado.
 
+  - name: Verificando se NPM está instalado
+    command: dpkg-query -l npm
+    register: deb_check_npm
+    ignore_errors: yes
+    
+  - debug:
+       var: deb_check_npm
 #  - name: Escondendo Python-games
 #    lineinfile:
 #      path: /usr/share/applications/python-games.desktop
