@@ -182,6 +182,6 @@
 - name: Instalando pip keyboard
   pip:
      name: keyboard
-- name: Instalando pip keyboard
+- name: Instalando pip logging
   pip:
      name: logging
