@@ -95,17 +95,17 @@
     state: touch
     attributes: -i
   when: lang.stdout.find('LANG=en') != -1
-- name: Alterando fundo.png para fundo-en.png
+- name: Alterando atalho da pasta Scratch2
   lineinfile:
     path: "/home/pi/Área de Trabalho/scratch2_folder.desktop"
     regexp: '^Exec=pcmanfm /home/mindmakers/Scratch2/portuguese'
     line: 'Exec=pcmanfm /home/mindmakers/Scratch2/english'
     backrefs: yes
   when: lang.stdout.find('LANG=en') != -1
-- file:
-    path: "/home/pi/Área de Trabalho/scratch2_folder.desktop"
-    state: touch
-    attributes: +i
+# - file:
+#     path: "/home/pi/Área de Trabalho/scratch2_folder.desktop"
+#     state: touch
+#     attributes: +i
 - file:
     path: /home/pi/Scratch2
     state: absent
