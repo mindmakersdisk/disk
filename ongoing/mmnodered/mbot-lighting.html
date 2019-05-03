@@ -1,0 +1,26 @@
+<script type="text/javascript">
+    RED.nodes.registerType('mbot-lighting',{
+        category: 'Mind Makers',
+        defaults: {
+            name: {value:""}
+        },
+        inputs:0,
+        color: '#a6bbcf',
+        outputs:1,
+        icon: "bluetooth.png",
+        label: function() {
+            return this.name||"sensor de luz mBot";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="mbot-lighting">
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i>Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="mbot-lighting">
+    <p>Um componente que recebe mensagens do sensor de ultrasom do robô mBot</p>
+</script>
