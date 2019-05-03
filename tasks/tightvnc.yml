@@ -2,12 +2,12 @@
   command: dpkg-query -l tightvncserver
   register: deb_check
   ignore_errors: yes
-- debug:
-    var: deb_check
+#- debug:
+#    var: deb_check
 - name: Instalando tightvncserver
   apt:
      name: tightvncserver
-  when: deb_check.stdout.find('<nenhuma>') != -1
+  when: deb_check_npm is failed
   # when: deb_check_npm.stderr.find('não foram encontrados pacotes') != -1
 - name: Copiando arquivo vncserver
   copy:
