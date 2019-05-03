@@ -11,6 +11,13 @@
     
   - debug:
        var: deb_check_npm
+  
+  - name: Instalando npm 1.4* se o pacote não estiver instalado
+  apt:
+     name: npm
+  when: deb_check_npm.failed is true
+  
+  
 #  - name: Escondendo Python-games
 #    lineinfile:
 #      path: /usr/share/applications/python-games.desktop
