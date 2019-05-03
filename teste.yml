@@ -15,7 +15,7 @@
   - name: Instalando npm 1.4* se o pacote não estiver instalado
     apt:
        name: npm
-    when: deb_check_npm.failed is true
+    when: deb_check_npm is failed
   
   
 #  - name: Escondendo Python-games
