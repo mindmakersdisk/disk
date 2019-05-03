@@ -1,0 +1,27 @@
+<script type="text/javascript">
+    RED.nodes.registerType('prog-mbot',{
+        category: 'Mind Makers',
+        defaults: {
+            name: {value:""}
+        },
+        inputs:1,
+        outputs:0,
+        color: '#A6BBCF',
+        align: 'right',
+        icon: "bluetooth.png",
+        label: function() {
+            return this.name||"programa mBot";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="prog-mbot">
+    <div class="form-row">
+        <label for="node-input-name">Name<i class="icon-tag"></i></label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="prog-mbot">
+    <p>Um componente que envia programas Javascript via bluetooth para o robô mBot</p>
+</script>
