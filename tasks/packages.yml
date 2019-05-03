@@ -51,7 +51,7 @@
 - name: Instalando npm 1.4* se o pacote não estiver instalado
   apt:
      name: npm
-  when: deb_check_npm.stderr.find('não foram encontrados pacotes') != -1
+  when: deb_check_npm is failed
 - name: Verifica Versao npm
   command: npm --version
   register: npm_output
