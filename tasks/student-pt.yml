@@ -78,6 +78,10 @@
     backrefs: yes
   when: lang.stdout.find('LANG=en') != -1
 - file:
+    path: "/home/pi/Área de Trabalho/scratch2_folder.desktop"
+    state: touch
+    attributes: +i
+- file:
     path: /home/pi/Scratch2
     state: absent
 - shell: 'sudo ln -s /home/mindmakers/Scratch2/english /home/pi/Scratch2'
