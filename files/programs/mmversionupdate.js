@@ -19,6 +19,7 @@ var escolaid='';
 var escolanome='';
 var pi_registrado='';
 var sd_registrado='';
+var indInstrutor = verificaInstrutor();
 
 // Identificados
 var versaoImagemDisco='';
@@ -57,7 +58,7 @@ fs.readFile('/home/mindmakers/school.info', function(err,data)
                console.error('\x1b[31m','Como estação ainda não está ativada, não atualiza versão.');
                console.log('');
                process.exit(1);
-      
+
             }
 
             atualizaVersaoEstacao();
@@ -83,7 +84,8 @@ function atualizaVersaoEstacao() {
               'discoserial':sd_registrado,
               'versaoimagemdisco':versaoImagemDisco,
               'sala':sala_registrado,
-              'codigo':estacao_registrado}
+              'codigo':estacao_registrado,
+              'indinstrutor':indInstrutor}
             },
             function(error, response, body){
                 if (!body.success || error) {
@@ -147,6 +149,28 @@ function obtemVersaoImagemDisco() {
 
    console.log('Identificada a versão da imagem de disco como '+versaoImagemDisco);
 
+
+}
+
+function verificaInstrutor() {
+
+  var ePortugues = statPath('/home/pi/Área de Trabalho');
+
+  var atalho_instrutor;
+
+  if (ePortugues) {
+
+    atalho_instrutor= fs.readFileSync('/home/pi/Área de Trabalho/update.desktop')+'';
+
+  } else {
+
+    // versão em ingles
+    atalho_instrutor= fs.readFileSync('/home/pi/Desktop/update.desktop')+'';
+
+  }
+
+   // obtém versão
+   return atalho_instrutor.indexOf('teacher.sh')>-1;
 
 }
 
