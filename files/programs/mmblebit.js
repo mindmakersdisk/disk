@@ -20,7 +20,7 @@ var blebitSignalCharacteristic=null;
                      
 noble.on('stateChange', function(state) {
 
-  console.log('Estado = '+state);
+  //console.log('Estado = '+state);
   if (state === 'poweredOff') {
     console.log('');
     console.error('\x1b[31m','O Bluetooth não está ativado! Ative no ícone superior direito em seu computador e tente novamente.');
@@ -50,11 +50,18 @@ var monitoriaTask=null;
 noble.on('discover', function(peripheral) {
   
   if ((''+peripheral.advertisement.localName).indexOf('w30') == 0 &&
-          peripheral.rssi>-80) {
+          peripheral.rssi>-60) {
 
    //console.log(peripheral);    
    // console.log(peripheral.advertisement);
    // console.log(peripheral.advertisement.serviceData); 
+   
+   peripheral.once('disconnect', (error) => {
+          
+     //console.log('Desconectou ',error);
+      erroConexao(error)
+      
+   });
      
     peripheral.connect(function(error) {
     
@@ -77,6 +84,17 @@ noble.on('discover', function(peripheral) {
             notificouClienteConexao=true;
            
          }
+         
+          if (temNodeRedConectado()) {
+           
+             ipc.server.broadcast(
+                'littlebits.conectado',
+                {
+                    id:ipc.config.id
+                }
+              );
+           
+         }
       
          var obj = peripheral.advertisement.serviceData[0];
          //console.log(obj.data[0]);
@@ -96,7 +114,7 @@ noble.on('discover', function(peripheral) {
               
               // Se não notificou cliente da conexão notifica agora
               if (temClienteConectado() &&  (contadorIntervalo==300 || !notificouClienteConexao)) {
-                console.log('Entrou para notificar conexao');
+                     console.log('Entrou para notificar conexao');
                      wsServer.connections[0].send('conectado:'+peripheral.uuid);
                      notificouClienteConexao=true;
                      contadorIntervalo=0;
@@ -110,9 +128,22 @@ noble.on('discover', function(peripheral) {
                   
 //                  console.log(wsServer);
                   
+                  // Envia para MMBlockly se ativo
                   if (temClienteConectado())
                      wsServer.connections[0].send(data[2]+'');
                       
+                  // Envia para Node-Red se ativo
+                  if (temNodeRedConectado()) {
+                     
+                     ipc.server.broadcast(
+                        'littlebits.message',
+                        {
+                            id:ipc.config.id,
+                            message : data[2]+''
+                        }
+                      );
+                    
+                  }
                  
                 
                 }
@@ -120,6 +151,7 @@ noble.on('discover', function(peripheral) {
           });
 
           characteristic.subscribe(function(error) {
+            //console.log('entrou para subscrever');
             if (error)
                notificaClienteDesconexao(error);
             else {
@@ -155,7 +187,7 @@ function monitoraDispositivoConectado() {
       noble.startScanning();
       
   } else {
-      ultimoContador=contadorIntervalo;    
+      ultimoContador=-1;    
   }
   
 }
@@ -166,7 +198,7 @@ function escreveParaCircuito(valor) {
   
       if (characteristic==null) {
           console.log('Não pode enviar mensagem para circuito porque não está conectado.');
-          return;
+          return "Erro ao tentar enviar";
       }
       
    
@@ -177,7 +209,17 @@ function escreveParaCircuito(valor) {
      // Quando escrevemos para o BLE Bit, a mensagem varia apenas neste segmento abaixo, de 0x00 a 0xff.
     //    bufWrite.writeUInt8(0xff, 2);  ou bufWrite.writeUInt8(255, 2);    => maximo 
     //    bufWrite.writeUInt8(0x00, 2);  ou bufWrite.writeUInt8(0, 2);    => minimo 
-      bufWrite.writeUInt8(parseInt(valor.utf8Data), 2);
+    
+      //console.log(valor + ' utf8'+valor.utf8Data+'');
+    
+      if (valor.utf8Data != null && valor.utf8Data !== 'undefined') {
+        // console.log('entrou');
+         bufWrite.writeUInt8(parseInt(valor.utf8Data), 2);
+      } else { 
+         var valorUnsigned = parseInt(valor) >>>0;
+        // console.log('entro ascii = ' + valorUnsigned);
+         bufWrite.writeUInt8(valorUnsigned, 2);         
+      }
                 
       characteristic.write(bufWrite, true, function (error) {
                         if (!error) {
@@ -196,7 +238,7 @@ function escreveParaCircuito(valor) {
 
 noble.on('disconnect', function(data) {
 
-   console.log('BLE Bit desconectado'+data);
+   console.log('BLE Bit desconectado: '+data);
    
    notificaClienteDesconexao('');
    
@@ -207,13 +249,18 @@ noble.on('disconnect', function(data) {
 
 function erroConexao(error) {
   
-  console.log('Erro de conexão'+error);
+  if (!error)
+      error = "Dispositivo parece desligado";
+  
+   console.log('Erro de conexão: '+error);
  
    notificaClienteDesconexao(error);  
 
    notificouClienteConexao=false;
    
    macaddressConectado=null;
+   
+   noble.startScanning();
   
 }
 
@@ -229,11 +276,28 @@ function notificaClienteDesconexao(error) {
       wsServer.connections[0].send('desconectado:'+error);
   }
   
+   if (temNodeRedConectado()) {
+                     
+       ipc.server.broadcast(
+          'littlebits.desconectado',
+          {
+              id:ipc.config.id,
+              message : error
+          }
+        );
+                                      
+   }
 }
 
 function temClienteConectado() {
   
   return wsServer!= null && wsServer.connections != null && wsServer.connections[0] != null
+  
+}
+
+function temNodeRedConectado() {
+
+  return ipc!= null && ipc.server != null 
   
 }
 
@@ -311,3 +375,54 @@ wsServer.on('request', function(request) {
         console.log((new Date().toLocaleString()) + ' Conexão ' + connection.remoteAddress + ' finalizada.');
     });
 });
+
+/******************** COMUNICAÇÃO INTER NODE.JS PARA USO COM NODE-RED ****************************/
+
+const ipc = require('node-ipc');
+
+ipc.config.id = 'littlebits';
+ipc.config.retry= 1500;
+ipc.config.silent=true;
+
+ipc.serveNet(
+    function(){
+        ipc.server.on(
+            'to.message',
+            function(data,socket){
+                ipc.log('Recebeu mensagem de', (data.id), (data.message));
+//                console.log('vai enviar para circuito littlebits '+data.message);
+                var erro = escreveParaCircuito(data.message);
+                
+                if (erro) {
+                  
+                    ipc.server.emit(
+                        socket,
+                        'error.message',
+                        {
+                            id      : ipc.config.id,
+                            message : erro
+                        }
+                    );
+                  
+                }
+                
+/*
+                if(messages.hello && messages.goodbye){
+                    ipc.log('got all required events, telling clients to kill connection');
+                    ipc.server.broadcast(
+                        'kill.connection',
+                        {
+                            id:ipc.config.id
+                        }
+                    );
+                }
+                 */
+            }
+        );
+    }
+);
+
+
+
+
+ipc.server.start();

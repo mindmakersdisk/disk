@@ -1,7 +1,7 @@
 {
   "name": "node-red-contrib-mindmakers",
   "version": "1.0.0",
-  "description": "Componentes que interagem com circuitos eletrônicos e robôs utilizados pela Mind Makers",
+  "description": "Componentes que interagem com circuitos eletrônicos, robôs e estações da sala Mind Makers",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Erro: Nenhum teste especificado\" && exit 1"
@@ -17,7 +17,9 @@
             "prog-mbot": "program-mbot.js",
             "mbot-sound": "mbot-ultrasound.js",
             "mbot-lighting": "mbot-lighting.js",  
-            "mbot-line": "mbot-followline.js"                            
+            "mbot-line": "mbot-followline.js",
+            "to-station": "to-station.js",  
+            "from-station": "from-station.js"                              
         }
     }
 }
