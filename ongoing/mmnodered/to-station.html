@@ -1,0 +1,28 @@
+<script type="text/javascript">
+    RED.nodes.registerType('to-station',{
+        category: 'Mind Makers',
+        color: '#87A980',
+        defaults: {
+            name: {value:""}
+        },
+        inputs:1,
+        outputs:0,
+        color: '#87A980',
+        align: 'right',
+        icon: "white-globe.png",
+        label: function() {
+            return this.name||"para estação";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="to-station">
+    <div class="form-row">
+        <label for="node-input-name">Name<i class="icon-tag"></i></label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="to-station">
+    <p>Um componente que envia mensagens via Internet para outras estações da sala</p>
+</script>
