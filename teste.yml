@@ -7,6 +7,12 @@
    - name: Instalando android-tools
      apt:
         name: android-tools-adb
+   - name: Instalando gnuplot
+     apt:
+        name: gnuplot
+   - name: Instalando screen
+     apt:
+        name: screen 
    - file:
        path: /home/mindmakers/verify/aiStarter
        state: directory
