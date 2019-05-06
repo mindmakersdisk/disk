@@ -85,7 +85,7 @@
 #       path: /home/mindmakers/programs/mmnodered
 #       global: yes
    - name: Instalando pacote do npm "node-red-mindmakers"
-     shell: 'cd /home/mindmakers/programs/mmnodered && sudo npm install'
+     shell: 'sudo npm -g install /home/mindmakers/programs/mmnodered'
  # when: not npmsphero.stat.exists
 
 #  - name: Verificando se NPM está instalado
