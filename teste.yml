@@ -13,19 +13,26 @@
    - name: Instalando screen
      apt:
         name: screen 
+         
+   - name: Verificando se mBot já existe
+     stat:
+        path: /home/mindmakers/programs/verify/aiStarter
+     register: aiStarter
    - file:
-       path: /home/mindmakers/verify/aiStarter
+       path: /home/mindmakers/programs/verify/aiStarter
        state: directory
        mode: 0755
    - name: Baixando arquivo de instalação aiStarter-- Este passo pode demorar --
      get_url:
        url: http://appinv.us/aisetup_linux_deb
-       dest: /home/mindmakers/verify/aiStarter
+       dest: /home/mindmakers/programs/verify/aiStarter
        timeout: 60
        mode: 0744
+     when: not aiStarter.stat.exists
    - name: Instalando aiStarted do pacote .deb
      apt:
        deb: /home/mindmakers/verify/aiStarter/appinventor2-setup_2.3_all.deb
+     when: not aiStarter.stat.exists
 ##Copia dos arquivos
    - name: Copiando arquivos de imagens
      copy:
@@ -49,7 +56,7 @@
 #acima student-en.yml
    - name: Copiando programas executáveis aiStarter
      copy:
-        src: ongoing/appinventor
+        src: ongoing/appinventor/usr
         dest: /usr
         mode: 0755
    - file:
@@ -70,11 +77,9 @@
    # when: not npmsphero.stat.exists
    - name: Instalando pacote do npm "node-red-dashboard"
      npm:
-       name: node-ipc
+       name: node-red-dashboard
        global: yes
-     # version: '1.3.0'
        path: /home/mindmakers/programs
- # when: not npmsphero.stat.exists
    - name: Instalando pacote do npm "node-red-mindmakers"
      npm:
        path: /home/mindmakers/programs/mmnodered
