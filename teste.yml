@@ -4,52 +4,52 @@
    # - include: tasks/tightvnc.yml
 #Tarefa fixa para instalar tighvncserver se não estiver instalado.
 #Download a instalação dos arquivos para o aiStarter
-#    - name: Instalando android-tools
-#      apt:
-#         name: android-tools-adb
-#   - file:
-#        path: /home/mindmakers/verify/aiStarter
-#        state: directory
-#        mode: 0755
-#    - name: Baixando arquivo de instalação aiStarter-- Este passo pode demorar --
-#      get_url:
-#        url: http://appinv.us/aisetup_linux_deb
-#        dest: /home/mindmakers/verify/aiStarter
-#        timeout: 60
-#        mode: 0744
-#    - name: Instalando aiStarted do pacote .deb
-#      apt:
-#        deb: /home/mindmakers/verify/aiStarter/appinventor2-setup_2.3_all.deb
-# ##Copia dos arquivos
-#    - name: Copiando arquivos de imagens
-#      copy:
-#         src: ongoing/icons
-#         dest: /usr/share
-#         mode: 0777
-#    - name: Copiando programas executáveis
-#      copy:
-#         src: ongoing/programs
-#         dest: /home/mindmakers
-#         mode: 0755
-# #### acima padrão
-#    - name: Copiando demais atalhos para o Desktop
-#      copy:
-#         src: files/desktop/
-#         dest: /home/pi/Desktop
-#         owner: pi
-#         group: pi
-#         attributes: +i
-#         mode: 0755
-# #acima student-en.yml
-#    - name: Copiando programas executáveis aiStarter
-#      copy:
-#         src: ongoing/appinventor
-#         dest: /usr
-#         mode: 0755
-#    - file:
-#        path: /usr/google/appinventor/commands-for-Appinventor/adb
-#        state: absent
-#    - shell: 'sudo ln -v -s /usr/bin/adb /usr/google/appinventor/commands-for-Appinventor/adb'
+   - name: Instalando android-tools
+     apt:
+        name: android-tools-adb
+   - file:
+       path: /home/mindmakers/verify/aiStarter
+       state: directory
+       mode: 0755
+   - name: Baixando arquivo de instalação aiStarter-- Este passo pode demorar --
+     get_url:
+       url: http://appinv.us/aisetup_linux_deb
+       dest: /home/mindmakers/verify/aiStarter
+       timeout: 60
+       mode: 0744
+   - name: Instalando aiStarted do pacote .deb
+     apt:
+       deb: /home/mindmakers/verify/aiStarter/appinventor2-setup_2.3_all.deb
+##Copia dos arquivos
+   - name: Copiando arquivos de imagens
+     copy:
+        src: ongoing/icons
+        dest: /usr/share
+        mode: 0777
+   - name: Copiando programas executáveis
+     copy:
+        src: ongoing/programs
+        dest: /home/mindmakers
+        mode: 0755
+#### acima padrão
+   - name: Copiando demais atalhos para o Desktop
+     copy:
+        src: files/desktop/
+        dest: /home/pi/Desktop
+        owner: pi
+        group: pi
+        attributes: +i
+        mode: 0755
+#acima student-en.yml
+   - name: Copiando programas executáveis aiStarter
+     copy:
+        src: ongoing/appinventor
+        dest: /usr
+        mode: 0755
+   - file:
+       path: /usr/google/appinventor/commands-for-Appinventor/adb
+       state: absent
+   - shell: 'sudo ln -v -s /usr/bin/adb /usr/google/appinventor/commands-for-Appinventor/adb'
 
 
 
@@ -66,7 +66,7 @@
      npm:
        name: node-ipc
        global: yes
-       # version: '1.3.0'
+     # version: '1.3.0'
        path: /home/mindmakers/programs
  # when: not npmsphero.stat.exists
    - name: Instalando pacote do npm "node-red-mindmakers"
