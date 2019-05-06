@@ -80,10 +80,12 @@
        name: node-red-dashboard
        global: yes
        path: /home/mindmakers/programs
+#   - name: Instalando pacote do npm "node-red-mindmakers"
+#     npm:
+#       path: /home/mindmakers/programs/mmnodered
+#       global: yes
    - name: Instalando pacote do npm "node-red-mindmakers"
-     npm:
-       path: /home/mindmakers/programs/mmnodered
-       global: yes
+     shell: 'cd /home/mindmakers/programs/mmnodered && sudo npm install'
  # when: not npmsphero.stat.exists
 
 #  - name: Verificando se NPM está instalado
