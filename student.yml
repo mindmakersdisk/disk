@@ -16,6 +16,6 @@
     - include: tasks/3dslash.yml
     - include: tasks/hide-games.yml
     - include: tasks/install-extension.yml
-    # - include: tasks/mblock.yml
+    - include: tasks/mt6.yml
     - include: tasks/raspi-config.yml
     - include: tasks/apt-get.yml

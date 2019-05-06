@@ -26,5 +26,5 @@
     path: /home/mindmakers/programs/verify/ansible27
     state: directory
     mode: 0444
-- name: Instalando pacote Ansible 2.7
+- name: Instalando pacote Ansible 2.7.*
   shell: 'apt-get install -y ansible'

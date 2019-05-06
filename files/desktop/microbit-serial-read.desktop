@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Read Serial from microbit
+Name[pt_BR]=Ler serial do microbit
+Comment=
+Icon=/usr/share/icons/screen.png
+Exec=bash /home/mindmakers/programs/shells/microbit-serial-read.sh
+Type=Application
+Encoding=UTF-8
+Terminal=true
+Categories=None;
