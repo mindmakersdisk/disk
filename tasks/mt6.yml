@@ -21,8 +21,8 @@
   when: not aiStarter.stat.exists
 - name: Instalando aiStarted do pacote .deb
   apt:
-    deb: /home/mindmakers/verify/aiStarter/appinventor2-setup_2.3_all.deb
-  when: not aiStarter.stat.exists
+    deb: /home/mindmakers/programs/verify/aiStarter/appinventor2-setup_2.3_all.deb
+  #when: not aiStarter.stat.exists
 - name: Copiando programas executáveis aiStarter
   copy:
      src: files/appinventor/usr
