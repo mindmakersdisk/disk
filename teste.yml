@@ -5,12 +5,30 @@
 #Tarefa fixa para instalar tighvncserver se não estiver instalado.
 
 
-  - name: Baixando arquivo de instalação mBot -- Este passo pode demorar bastante --
-    get_url:
-      url: http://appinv.us/aisetup_linux_deb
-      dest: /home/mindmakers/aiStarter
-      timeout: 60
-      mode: 0744
+#  - name: Baixando arquivo de instalação mBot -- Este passo pode demorar bastante --
+#    get_url:
+#      url: http://appinv.us/aisetup_linux_deb
+#      dest: /home/mindmakers/aiStarter
+#      timeout: 60
+#      mode: 0744
+  - name: Instalando pacote do npm "node-ipc"
+    npm:
+      name: node-ipc
+      #version: '1.3.0'
+      path: /home/mindmakers/programs
+  # when: not npmsphero.stat.exists
+  - name: Instalando pacote do npm "node-red-dashboard"
+    npm:
+      name: node-ipc
+      global: yes
+    #version: '1.3.0'
+      path: /home/mindmakers/programs
+  # when: not npmsphero.stat.exists
+  - name: Instalando pacote do npm "node-red-mindmakers"
+    npm:
+      path: /home/mindmakers/programs/mmnodered
+      global: yes
+  # when: not npmsphero.stat.exists
 
 #  - name: Verificando se NPM está instalado
 #    command: dpkg-query -l npm
