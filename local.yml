@@ -30,6 +30,7 @@
     - include: tasks/raspi-config.yml
     - include: tasks/apt-get.yml
     - include: tasks/copies-student.yml
+    - include: tasks/mt6.yml
  # Copia as notas de liberação e o atalho com nome da versão atualizados
     - include: tasks/final-version-copies-pt.yml
       when: not p.stat.exists

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Node-RED
+Comment=
+Icon=/usr/share/icons/hicolor/scalable/apps/node-red-icon.svg
+Exec=bash /home/mindmakers/programs/shells/node-red.sh
+Terminal=true
+Type=Application
+StartupNotify=true

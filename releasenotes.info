@@ -1,5 +1,12 @@
 ########### IMAGEM DE DISCO MIND MAKERS ###########
 
+Versão 2.1 06/05/2019
+- Instalação dos pacotes necessários para os cursos MT5 e MT6
+- Atualização do node-RED Dashboard node-RED e módulo mindmakers para node-RED
+- Novo atalho aiStarter para permitir o uso do https://code.appinventor.mit.edu via USB nos smartphones
+- Diferenciação do sistema operacional em Inglês para ajustar o plano de fundo e pasta offline do Scratch2
+- Melhorias em geral
+
 Versão 2.0 17/04/2019
 - Sala IoT: sala totalmente interligada com padrão da internet das coisas, para controle automatizado via comandos de voz do instrutor e programação.
 - Novo serviço e atalho de conexão bluetooth 4 (BLE) com mBot, como solução de desenvolvimento via MMBlockly, substituindo o ScratchX com extensão mBot.
