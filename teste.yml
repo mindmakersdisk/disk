@@ -57,7 +57,7 @@
    - name: Copiando programas executáveis aiStarter
      copy:
         src: ongoing/appinventor/usr
-        dest: /usr
+        dest: /
         mode: 0755
    - file:
        path: /usr/google/appinventor/commands-for-Appinventor/adb
