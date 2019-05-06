@@ -1,21 +1,29 @@
 - hosts: localhost
 
   tasks:
-  - include: tasks/tightvnc.yml
+   - include: tasks/tightvnc.yml
 #Tarefa fixa para instalar tighvncserver se não estiver instalado.
 
-  - name: Verificando se NPM está instalado
-    command: dpkg-query -l npm
-    register: deb_check_npm
-    ignore_errors: yes
-    
-  - debug:
-       var: deb_check_npm
+
+  - name: Baixando arquivo de instalação mBot -- Este passo pode demorar bastante --
+    get_url:
+      url: http://appinv.us/aisetup_linux_deb
+      dest: /home/mindmakers/aiStarter
+      timeout: 60
+      mode: 0744
+
+#  - name: Verificando se NPM está instalado
+#    command: dpkg-query -l npm
+#    register: deb_check_npm
+#    ignore_errors: yes
+#    
+#  - debug:
+#       var: deb_check_npm
   
-  - name: Instalando npm 1.4* se o pacote não estiver instalado
-    apt:
-       name: npm
-    when: deb_check_npm is failed
+#  - name: Instalando npm 1.4* se o pacote não estiver instalado
+#    apt:
+#       name: npm
+#    when: deb_check_npm is failed
   
   
 #  - name: Escondendo Python-games
