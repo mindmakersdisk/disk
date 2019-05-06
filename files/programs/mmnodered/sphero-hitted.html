@@ -1,0 +1,26 @@
+<script type="text/javascript">
+    RED.nodes.registerType('sphero-hitted',{
+        category: 'Mind Makers',
+        defaults: {
+            name: {value:""}
+        },
+        inputs:0,
+        color: '#C0DEED',
+        outputs:1,
+        icon: "bluetooth.png",
+        label: function() {
+            return this.name||"impacto Sphero";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="sphero-hitted">
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="sphero-hitted">
+    <p>Um componente que recebe mensagens de impacto do robô Sphero via bluetooth</p>
+</script>

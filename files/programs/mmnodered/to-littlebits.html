@@ -1,0 +1,28 @@
+<script type="text/javascript">
+    RED.nodes.registerType('to-littlebits',{
+        category: 'Mind Makers',
+        color: '#a6bbcf',
+        defaults: {
+            name: {value:""}
+        },
+        inputs:1,
+        outputs:0,
+        color: '#FFCC66',
+        align: 'right',
+        icon: "bluetooth.png",
+        label: function() {
+            return this.name||"para littleBits";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="to-littlebits">
+    <div class="form-row">
+        <label for="node-input-name">Name<i class="icon-tag"></i></label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="to-littlebits">
+    <p>Um componente que envia mensagens bluetooth para circuitos feitos com littleBits via BLEBit</p>
+</script>
