@@ -34,7 +34,7 @@
 #### acima padrão
    - name: Copiando demais atalhos para o Desktop
      copy:
-        src: files/desktop/
+        src: ongoing/desktop/
         dest: /home/pi/Desktop
         owner: pi
         group: pi
