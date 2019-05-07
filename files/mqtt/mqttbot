@@ -24,7 +24,7 @@ start() {
   echo 'Starting service…' >&2
   sudo python /home/mindmakers/programs/mmiotcli.py &> /var/log/mqttbot.log & echo \$!
   
-  sleep 2
+  sleep 15
     if pgrep -f mmiotcli.py > /dev/null
     then
       echo "$NAME is now running"
