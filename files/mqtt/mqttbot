@@ -1,4 +1,5 @@
-#!/bin/sh -e
+
+#!/bin/sh
 ### BEGIN INIT INFO
 # Provides:          mqttbot
 # Required-Start:    networking $local_fs $remote_fs $network
@@ -7,7 +8,13 @@
 ### END INIT INFO
 #acima adptado vncserver e outros
 
-sleep 20
+sleep 15
 sudo python /home/mindmakers/programs/mmiotcli.py &> /var/log/mqttbot.log
+
+sleep 10
+if [ -z "$(ps axf | grep python | grep -v grep)"]
+  then
+    sudo python /home/mindmakers/programs/mmiotcli.py &> /var/log/mqttbot.log
+fi
 
 exit 0
