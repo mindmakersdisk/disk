@@ -10,4 +10,10 @@
 sleep 15
 sudo python /home/mindmakers/programs/mmiotcli.py & > /var/log/mqttbot.log
 
+sleep 10
+if [ "$running" = '' ]
+  then
+    sudo python /home/mindmakers/programs/mmiotcli.py & > /var/log/mqttbot.log
+fi
+
 exit 0
