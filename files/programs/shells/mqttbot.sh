@@ -9,5 +9,5 @@ else
   echo ''
   echo "Error! Could not start $NAME!"
   echo "trying again"
-  sudo python /home/mindmakers/programs/mmiotcli.py &>/var/log/mqttbot.log & echo \$!
+  sudo service mqttbot restart
 fi
