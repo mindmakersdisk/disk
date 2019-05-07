@@ -7,6 +7,9 @@
 ### END INIT INFO
 #acima adptado vncserver e outros
 
+NAME=mqttbot
+LOGFILE=/var/log/mqttbot.log
+
 sleep 15
 sudo python /home/mindmakers/programs/mmiotcli.py &> /var/log/mqttbot.log
 
@@ -15,5 +18,74 @@ if [ -z "$(ps axf | grep python | grep -v grep)"]
   then
     sudo python /home/mindmakers/programs/mmiotcli.py &> /var/log/mqttbot.log
 fi
+
+start() {
+  echo 'Starting service…' >&2
+  local CMD="sudo python /home/mindmakers/programs/mmiotcli.py &> \"$LOGFILE\" & echo \$!"
+  su -c "$CMD" $RUNAS > "$PIDFILE"
+  
+  sleep 2
+  PID=$(cat $PIDFILE)
+    if pgrep -f $NAME > /dev/null
+    then
+      echo "$NAME is now running"
+    else
+      echo ''
+      echo "Error! Could not start $NAME!"
+    fi
+}
+
+stop() {
+  echo 'Stopping service…' >&2
+  sudo pkill python
+  echo 'Service stopped' >&2
+}
+
+uninstall() {
+  echo -n "Are you really sure you want to uninstall this service? That cannot be undone. [yes|No] "
+  local SURE
+  read SURE
+  if [ "$SURE" = "yes" ]; then
+    stop
+    echo "Notice: log file was not removed: $LOGFILE" >&2
+    update-rc.d -f $NAME remove
+    rm -fv "$0"
+  else
+    echo "Abort!"
+  fi
+}
+
+status() {
+            if [ -z "$(ps axf | grep python | grep -v grep)" ]; then
+                printf "%s\n" "The process appears to be dead"
+            else    
+                echo "mmiotcli.py appears to be running"
+            fi
+    else
+        printf "%s\n" "Service not running"
+    fi
+}
+
+case "$1" in
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  status)
+    status
+    ;;
+  uninstall)
+    uninstall
+    ;;
+  restart)
+    $0 stop
+    sleep 1
+    $0 start
+    ;;
+  *)
+    echo "Usage: $0 {start|stop|status|uninstall|restart}"
+esac
 
 exit 0
