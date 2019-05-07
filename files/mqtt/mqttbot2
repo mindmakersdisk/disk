@@ -7,6 +7,8 @@
 ### END INIT INFO
 #acima adptado vncserver e outros
 
+running="$(ps axf | grep mmiotcli.py | grep -v grep)"
+
 sleep 15
 sudo python /home/mindmakers/programs/mmiotcli.py & > /var/log/mqttbot.log
 
