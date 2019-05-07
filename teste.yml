@@ -1,7 +1,7 @@
 - hosts: localhost
 
   tasks:
-  - include: tasks/tightvnc.yml
+#  - include: tasks/tightvnc.yml
 #Tarefa fixa para instalar tighvncserver se não estiver instalado.
 
   - name: Copiando arquivo de inicialização do mqtt
@@ -19,8 +19,8 @@
     command: sudo systemctl stop rc-local.service
   - name: Copiando arquivo de inicialização do mqtt
     copy:
-       src: files/mqtt/mqttbot
-       dest: /etc/init.d
+       src: files/mqtt/mqttbot2
+       dest: /etc/init.d/mqttbot
        mode: 0755
   - name: Configurando mqttbot
     shell: 'sudo update-rc.d mqttbot defaults'
