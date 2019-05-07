@@ -8,7 +8,7 @@
 #acima adptado vncserver e outros
 
 NAME=mqttbot
-LOGFILE="/var/log/mqttbot.log"
+LOGFILE=/var/log/mqttbot.log
 
 #sleep 15
 #sudo python /home/mindmakers/programs/mmiotcli.py &> /var/log/mqttbot.log & echo \$
@@ -20,8 +20,9 @@ LOGFILE="/var/log/mqttbot.log"
 #fi
 
 start() {
+  sleep 15
   echo 'Starting service…' >&2
-  sudo python /home/mindmakers/programs/mmiotcli.py &> \"$LOGFILE\" & echo \$!
+  sudo python /home/mindmakers/programs/mmiotcli.py &> /var/log/mqttbot.log & echo \$!
   
   sleep 2
     if pgrep -f $NAME > /dev/null
