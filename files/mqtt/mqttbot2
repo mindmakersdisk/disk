@@ -14,8 +14,8 @@ sleep 15
 sudo python /home/mindmakers/programs/mmiotcli.py &> /var/log/mqttbot.log & echo \$!
 
 sleep 10
-if [ -z "$(ps axf | grep python | grep -v grep)"]
-  then
+if [ -z "$(ps axf | grep python | grep -v grep)" ]
+then
     sudo python /home/mindmakers/programs/mmiotcli.py &> /var/log/mqttbot.log & echo \$!
 fi
 
@@ -59,9 +59,6 @@ status() {
             else    
                 echo "mmiotcli.py appears to be running"
             fi
-    else
-        printf "%s\n" "Service not running"
-    fi
 }
 
 case "$1" in
