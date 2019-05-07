@@ -60,8 +60,17 @@
      mode: 0755
 - name: systemctl daemon-reload
   command: sudo systemctl daemon-reload
-- name: systemctl start rc-local.service
-  command: sudo systemctl start rc-local.service
+# - name: systemctl start rc-local.service
+#   command: sudo systemctl start rc-local.service
+- name: systemctl stop rc-local.service
+  command: sudo systemctl stop rc-local.service
+- name: Copiando arquivo de inicialização do mqtt
+  copy:
+     src: files/mqtt/mqttbot
+     dest: /etc/init.d
+     mode: 0755
+- name: Configurando mqttbot
+  shell: 'sudo update-rc.d mqttbot defaults'
 - name: Copiando imgs
   copy:
      src: files/imgs
