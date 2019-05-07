@@ -1,0 +1,13 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          mqttbot
+# Required-Start:    networking $local_fs $remote_fs $network
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+### END INIT INFO
+#acima adptado vncserver e outros
+
+sleep 15
+sudo python /home/mindmakers/programs/mmiotcli.py & > /var/log/mqttbot.log
+
+exit 0
