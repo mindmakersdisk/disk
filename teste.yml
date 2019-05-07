@@ -19,7 +19,7 @@
     command: sudo systemctl stop rc-local.service
   - name: Copiando arquivo de inicialização do mqtt
     copy:
-       src: files/mqtt/mqttbot2
+       src: files/mqtt/mqttbot
        dest: /etc/init.d/mqttbot
        mode: 0755
   - name: Configurando mqttbot
