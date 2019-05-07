@@ -7,7 +7,7 @@
 ### END INIT INFO
 #acima copiado vncserver
 
-sleep 10
+sleep 20
 sudo python /home/mindmakers/programs/mmiotcli.py &
 
 exit 0
