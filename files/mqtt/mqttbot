@@ -1,0 +1,13 @@
+#!/bin/sh -e
+### BEGIN INIT INFO
+# Provides:          mqttbot
+# Required-Start:    networking
+# Default-Start:     3 4 5
+# Default-Stop:      0 6
+### END INIT INFO
+#acima copiado vncserver
+
+sleep 10
+sudo python /home/mindmakers/programs/mmiotcli.py &
+
+exit 0
