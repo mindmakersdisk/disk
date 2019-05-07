@@ -11,12 +11,12 @@ NAME=mqttbot
 LOGFILE=/var/log/mqttbot.log
 
 sleep 15
-sudo python /home/mindmakers/programs/mmiotcli.py &> /var/log/mqttbot.log
+sudo python /home/mindmakers/programs/mmiotcli.py &> /var/log/mqttbot.log & echo \$!
 
 sleep 10
 if [ -z "$(ps axf | grep python | grep -v grep)"]
   then
-    sudo python /home/mindmakers/programs/mmiotcli.py &> /var/log/mqttbot.log
+    sudo python /home/mindmakers/programs/mmiotcli.py &> /var/log/mqttbot.log & echo \$!
 fi
 
 start() {
