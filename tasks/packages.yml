@@ -17,7 +17,7 @@
 - name: Instalando Nodejs 8.15*
   apt:
      name: nodejs
-     #force_apt_get: yes
+     force_apt_get: yes
   #when: node_output.stdout is version('8.12.0', '<')
   # when: not nodejs.stat.exists
 - name: Criando pasta de verificação de instalação do node 8.15.*

@@ -71,8 +71,12 @@
      mode: 0755
 - name: Configurando mqttbot
   shell: 'sudo update-rc.d mqttbot defaults'
-- name: Copiando imgs
+- stat:
+     path: /home/mindmakers/imgs/z.png
+  register: imgs
+- name: Copiando imagens
   copy:
      src: files/imgs
      dest: /home/mindmakers
      mode: 0755
+  when: not imgs.stat.exists
