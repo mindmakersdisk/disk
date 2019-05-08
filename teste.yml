@@ -38,23 +38,35 @@
   #   when: node_output.stdout is version('8.12.0', '<')
 
 
-  - name: Verificando se NPM está instalado
-    command: dpkg-query -l
-    register: deb_check
-  - debug:
-      var: deb_check
-  - debug:
-      var: not deb_check.stdout.find('alkshdfalskdjfhalskjfdhs') != -1
-  - name: Instalando gnuplot
-    apt:
-       name: gnuplot
-    when: not deb_check.stdout.find('gnuplot') != -1
-  - name: Instalando screen
-    apt:
-       name: screen
-    when: not deb_check.stdout.find('screen') != -1
+  # - command: dpkg-query -l
+  #   register: dpkg_check
+  # - debug:
+  #     var: dpkg_check
+  # - debug:
+  #     var: not dpkg_check.stdout.find('alkshdfalskdjfhalskjfdhs') != -1
+  # - name: Instalando gnuplot
+  #   apt:
+  #      name: gnuplot
+  #   when: not dpkg_check.stdout.find('gnuplot') != -1
+  # - name: Instalando screen
+  #   apt:
+  #      name: screen
+  #   when: not dpkg_check.stdout.find('screen') != -1
 
-
+  - command: pip list
+    register: pip_check
+  - name: Instalando paho-mqtt
+    pip:
+       name: paho-mqtt
+    when: not pip_check.stdout.find('paho-mqtt') != -1
+  - name: Instalando pip keyboard
+    pip:
+       name: keyboard
+      when: not pip_check.stdout.find('keyboard') != -1
+  - name: Instalando pip logging
+    pip:
+       name: logging
+      when: not pip_check.stdout.find('logging') != -1
 
 
 #  - name: Instalando npm 1.4* se o pacote não estiver instalado
