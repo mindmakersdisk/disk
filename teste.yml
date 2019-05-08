@@ -4,26 +4,26 @@
 #  - include: tasks/tightvnc.yml
 #Tarefa fixa para instalar tighvncserver se não estiver instalado.
 
-  - name: Copiando arquivo de inicialização do mqtt
-    copy:
-       src: files/mqtt/rc.local
-       dest: /etc
-       mode: 0755
-  - name: systemctl daemon-reload
-    command: sudo systemctl daemon-reload
-  # - name: systemctl start rc-local.service
-  #   command: sudo systemctl start rc-local.service
-  - name: systemctl stop rc-local.service
-    command: sudo systemctl stop rc-local.service
-  - name: systemctl stop rc-local.service
-    command: sudo systemctl stop rc-local.service
-  - name: Copiando arquivo de inicialização do mqtt
-    copy:
-       src: files/mqtt/mqttbot2
-       dest: /etc/init.d/mqttbot
-       mode: 0755
-  - name: Configurando mqttbot
-    shell: 'sudo update-rc.d mqttbot defaults'
+  # - name: Copiando arquivo de inicialização do mqtt
+  #   copy:
+  #      src: files/mqtt/rc.local
+  #      dest: /etc
+  #      mode: 0755
+  # - name: systemctl daemon-reload
+  #   command: sudo systemctl daemon-reload
+  # # - name: systemctl start rc-local.service
+  # #   command: sudo systemctl start rc-local.service
+  # - name: systemctl stop rc-local.service
+  #   command: sudo systemctl stop rc-local.service
+  # - name: systemctl stop rc-local.service
+  #   command: sudo systemctl stop rc-local.service
+  # - name: Copiando arquivo de inicialização do mqtt
+  #   copy:
+  #      src: files/mqtt/mqttbot2
+  #      dest: /etc/init.d/mqttbot
+  #      mode: 0755
+  # - name: Configurando mqttbot
+  #   shell: 'sudo update-rc.d mqttbot defaults'
 
 #Download a instalação dos arquivos para o aiStarter
   # - name: Verifica Versao npm
@@ -38,13 +38,27 @@
   #   when: node_output.stdout is version('8.12.0', '<')
 
 
-#  - name: Verificando se NPM está instalado
-#    command: dpkg-query -l npm
-#    register: deb_check_npm
-#    ignore_errors: yes
-#
-#  - debug:
-#       var: deb_check_npm
+  - name: Verificando se NPM está instalado
+    command: dpkg-query -l
+    register: deb_check
+  - debug:
+      var: deb_check
+  - debug:
+      var: deb_check.stdout.find('gnuplot') != -1
+  - name: Instalando gnuplot
+    apt:
+       name: gnuplot
+    when: deb_check.stdout.find('gnuplot') != -1
+  - name: Instalando screen
+    apt:
+       name: screen
+    when: deb_check.stdout.find('screen') != -1
+  - name: Configurando VncServer
+    shell: 'sudo update-rc.d vncserver defaults'
+    when: deb_check.stdout.find('fbi') != -1
+
+
+
 
 #  - name: Instalando npm 1.4* se o pacote não estiver instalado
 #    apt:

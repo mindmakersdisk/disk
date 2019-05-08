@@ -6,7 +6,7 @@
      name: screen
 - name: Verificando se aiStarter já existe
   stat:
-     path: /home/mindmakers/programs/verify/aiStarter
+     path: /home/mindmakers/programs/verify/aiStarter/appinventor2-setup_2.3_all.deb
   register: aiStarter
 - file:
     path: /home/mindmakers/programs/verify/aiStarter
