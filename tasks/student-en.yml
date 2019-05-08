@@ -39,12 +39,22 @@
 - file:
     path: /home/pi/Desktop/Scratch2
     state: absent
-# - file:
-#     path: /home/mindmakers/Scratch2/portuguese/Gabaritos
-#     state: absent
-# - file:
-#     path: /home/mindmakers/Scratch2/english/Answer-Sheet
-#     state: absent
+- file:
+    path: /home/mindmakers/Scratch2
+    state: directory
+    attributes: -i
+    recurse: yes
+- file:
+    path: /home/mindmakers/Scratch2/portuguese/Gabaritos
+    state: absent
+- file:
+    path: /home/mindmakers/Scratch2/english/Answer-Sheet
+    state: absent
+- file:
+    path: /home/mindmakers/Scratch2
+    state: directory
+    attributes: +i
+    recurse: yes
 - name: Copiando demais atalhos para o Desktop
   copy:
      src: files/desktop/
