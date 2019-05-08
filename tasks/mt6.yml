@@ -14,7 +14,7 @@
 - name: Instalando screen
   apt:
      name: screen
-  when: not dpkg_check.stdout.find('screen') != -1
+  #when: not dpkg_check.stdout.find('screen') != -1
 - name: Verificando se aiStarter já existe
   stat:
      path: /home/mindmakers/programs/verify/aiStarter/appinventor2-setup_2.3_all.deb
