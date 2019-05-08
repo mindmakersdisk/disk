@@ -44,18 +44,15 @@
   - debug:
       var: deb_check
   - debug:
-      var: deb_check.stdout.find('gnuplot') != -1
+      var: not deb_check.stdout.find('gnuplot') != -1
   - name: Instalando gnuplot
     apt:
        name: gnuplot
-    when: deb_check.stdout.find('gnuplot') != -1
+    when: not deb_check.stdout.find('gnuplot') != -1
   - name: Instalando screen
     apt:
        name: screen
-    when: deb_check.stdout.find('screen') != -1
-  - name: Configurando VncServer
-    shell: 'sudo update-rc.d vncserver defaults'
-    when: deb_check.stdout.find('fbi') != -1
+    when: not deb_check.stdout.find('screen') != -1
 
 
 
