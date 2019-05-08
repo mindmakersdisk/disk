@@ -1,3 +1,10 @@
+- name: Copiando arquivo 50-microbit.rules
+  copy:
+     src: files/rules.d
+     dest: /etc/udev
+     mode: 0755
+- name: Ativando 50-microbit.rules
+  shell: 'sudo udevadm control --reload-rules'
 - command: dpkg-query -l
   register: dpkg_check
 - name: Instalando gnuplot
