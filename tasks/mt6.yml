@@ -1,9 +1,13 @@
+- command: dpkg-query -l
+  register: dpkg_check
 - name: Instalando gnuplot
   apt:
      name: gnuplot
+  when: not dpkg_check.stdout.find('gnuplot') != -1
 - name: Instalando screen
   apt:
      name: screen
+  when: not dpkg_check.stdout.find('screen') != -1
 - name: Verificando se aiStarter já existe
   stat:
      path: /home/mindmakers/programs/verify/aiStarter/appinventor2-setup_2.3_all.deb
