@@ -62,11 +62,11 @@
   - name: Instalando pip keyboard
     pip:
        name: keyboard
-      when: not pip_check.stdout.find('keyboard') != -1
+    when: not pip_check.stdout.find('keyboard') != -1
   - name: Instalando pip logging
     pip:
        name: logging
-      when: not pip_check.stdout.find('logging') != -1
+    when: not pip_check.stdout.find('logging') != -1
 
 
 #  - name: Instalando npm 1.4* se o pacote não estiver instalado
