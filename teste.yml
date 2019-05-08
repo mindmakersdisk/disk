@@ -67,6 +67,8 @@
     pip:
        name: logging
     when: not pip_check.stdout.find('logging') != -1
+  - debug:
+      var: not pip_check.stdout.find('alkshdfalskdjfhalskjfdhs') != -1
 
 
 #  - name: Instalando npm 1.4* se o pacote não estiver instalado
