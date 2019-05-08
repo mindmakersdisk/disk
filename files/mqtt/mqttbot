@@ -12,8 +12,9 @@ LOGFILE=/var/log/mqttbot.log
 
 start() {
   sleep 15
+  sudo bash /home/mindmakers/programs/shells/mqttbot.sh &>&2 
   echo 'Starting service…' >&2
-  sudo python /home/mindmakers/programs/mmiotcli.py &>/var/log/mqttbot.log & echo \$!
+  sudo python /home/mindmakers/programs/mmiotcli.py &>&2 & echo \$!
 
   sleep 15
     if pgrep -f mmiotcli.py > /dev/null
