@@ -35,6 +35,19 @@ var http = require('http');
 bb8.connect(function() {
 
   bb8.ping();  // Importante: evita travamentos inesperados
+  
+
+    // Notifica NODE-RED
+    if (temNodeRedConectado()) {
+       ipc.server.broadcast(
+          'sphero.conectado',
+          {
+              id:ipc.config.id
+          }
+        );
+     }
+
+      
  
   bb8.version(function(err, data) {   
      if (err) { console.error("err:", err); } 
@@ -60,10 +73,26 @@ bb8.connect(function() {
 	 	 
 	 eval(code)
 	 	 
-	 if (!eConfig) {
-		}		
-	} catch(e) {
-	 console.log('Erro ao tentar executar comando. Erro: '+e)
+	 if (!eConfig) {}		
+	
+  } catch(e) {
+	 
+      console.log('Erro ao tentar executar comando. Erro: '+e)
+
+       if (temNodeRedConectado()) {
+      
+          ipc.server.emit(
+              socket,
+              'error.message',
+              {
+                  id      : ipc.config.id,
+                  message : e
+              }
+          );
+      
+      }
+   
+   
 	}
 	code=''
   
@@ -74,13 +103,29 @@ bb8.connect(function() {
   
 bb8.detectCollisions({device: "bb8"});
 
-  bb8.on("collision", function(data) {
+bb8.on("collision", function(data) {
     console.log("Colisão detectada!");
     //console.log("  data:", data);
     
      if (temClienteConectado())
         wsServer.connections[0].send('colisao={x:'+data.x+',y:'+data.y+',xMagnitude:'+data.xMagnitude+
 	                                ',yMagnitude:'+data.xMagnitude+',speed:'+data.speed+'}');
+                                  
+     if (temNodeRedConectado()) {
+           
+         //  console.log('teste colisao');
+
+           ipc.server.broadcast(
+              'sphero.hitted',
+              {
+                  id:ipc.config.id,
+                  message:{x:data.x,y:data.y,xMagnitude:data.xMagnitude,
+                         yMagnitude:data.xMagnitude,speed:data.speed} 
+              }
+            );
+        
+        }
+                                  
   });
 
 });
@@ -205,3 +250,36 @@ wsServer.on('request', function(request) {
         console.log((new Date().toLocaleString()) + ' Conexão ' + connection.remoteAddress + ' finalizada.');
     });
 });
+
+/******************** COMUNICAÇÃO INTER NODE.JS PARA USO COM NODE-RED ****************************/
+
+const ipc = require('node-ipc');
+
+ipc.config.id = 'sphero';
+ipc.config.retry= 1500;
+ipc.config.silent=true;
+
+// Envia código para Sphero
+ipc.serveNet(
+    function(){
+        ipc.server.on(
+            'program.sphero.message',
+            function(data,socket){
+                ipc.log('Recebeu mensagem de', (data.id), (data.message));
+                console.log('vai enviar para sphero '+data.message);
+                code = data.message.replaceAll('sprk.','bb8.');
+            }
+        );
+    }
+);
+
+
+function temNodeRedConectado() {
+
+  return ipc!= null && ipc.server != null 
+  
+}
+
+
+
+ipc.server.start();
