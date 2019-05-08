@@ -1,3 +1,3 @@
 #!/bin/bash
 
-gnuplot -e "cd '~/Desktop';load 'script-grafico.dat';exit"
+sudo gnuplot -e "cd '/home/mindmakers/programs/shells/';load 'script-grafico.dat';exit"

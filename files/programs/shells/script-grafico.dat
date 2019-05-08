@@ -1,0 +1,12 @@
+#Script para o arquivo screenlog.0
+reset
+set title " "
+set xlabel "Tempo(ms)"
+set ylabel "Intensidade luminosa"
+set style data lines
+set nokey
+set grid
+set term png
+set out '/home/pi/Desktop/grafico.png'
+plot '/home/pi/Desktop/screenlog.0' u ($1):($2)
+#Fim
