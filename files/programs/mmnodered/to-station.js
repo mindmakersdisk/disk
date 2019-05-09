@@ -12,7 +12,7 @@ module.exports = function(RED) {
         this.estacao = config.estacao;
         this.numero = config.numero;
         
-        console.log('entrou configurar '+this.acao+' estacao '+this.estacao);
+        //console.log('entrou configurar '+this.acao+' estacao '+this.estacao);
         
         var node = this;
         
@@ -52,13 +52,13 @@ module.exports = function(RED) {
             var jsonMsg = {'id1':id1,'id2':id2, 
                               'acao':node.acao,'estacao':node.estacao,'numero':node.numero};
                               
-            console.log('entrou para enviar msg',jsonMsg);
+          //  console.log('entrou para enviar msg',jsonMsg);
             
             request({url: URL_BASE+'/iot/sala/code',
                     method: 'POST',
                       json: jsonMsg},    
                     function(error, response, body){ 
-                         console.log(body);             
+            //             console.log(body);             
                         if (error) {
                            console.log('Erro ao enviar comando: '+error);  
                             var msg = {payload:error};
