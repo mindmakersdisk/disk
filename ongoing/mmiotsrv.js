@@ -147,6 +147,172 @@ app.post('/api/E/comando', (req, resp) => {
   })
 })
 
+/************************************************************
+ *          SERVIÇOS DE AUTOMAÇÃO DE SALA IoT 
+ *          VIA PROGRAMAÇÃO DOS ALUNOS                      
+ *  
+ *  acao (N,G,L)
+ *  login (sem uso por hora)
+ *  senha (sem uso por hora)
+ *  id1 Id da Escola
+ *  id2 Id da Sala (opcional, assume 1)
+ *  numero Número de 1 a 20 a ser exibido
+ *  estacao (opcional, assume numero)
+ * 
+ * *********************************************************/
+app.post('/iot/sala/code', (req, resp,next) => {  
+
+  comando = EXIBE_IMAGEM;
+
+  const ACAO_NUMERO="N";
+  const ACAO_ROBOGODE="G";
+  const ACAO_ROBOLADY="L";         
+  
+  acao = req.body.acao;
+   
+  
+  /* por enquanto não exige
+  login = req.body.login
+  senha = req.body.senha
+  // TODO Validar autenticação
+  */  
+    
+  idEscola = req.body.id1
+  
+  // Sala - opcional se escola tem apenas uma sala
+  sala='1'
+  if (req.body.id2 != null &&   req.body.id2!='')
+     sala = req.body.id2+'';
+  
+  // Número a ser exibido
+  var numero = req.body.numero;
+  
+  var estacao;
+  
+  // Estação opcional, quando não passada, assume número se este foi passado. 
+  if (req.body.estacao != null &&   req.body.estacao!='')
+     estacao = req.body.estacao+'';
+  else {
+     if (numero != null && numero!='')
+        estacao = numero+'';
+  }
+
+  
+  // Validações
+  if (acao==undefined) {
+      console.log('vai retornar erro');
+      resp.json({
+          error: 'Ação deve ser informada'
+        })
+      return
+  }
+  
+ 
+    if (acao==ACAO_NUMERO && numero == undefined && estacao==undefined) {
+      throw new Error("Para enviar números informe a estação e o número desejado");
+  }
+  
+  if (acao==ACAO_NUMERO && (numero == undefined || numero==null)) {
+      throw new Error("Número para exibição não informado");
+  }
+  
+  if (parseInt(numero)<=0 || parseInt(numero)>=20)
+      throw new Error("Número para exibição tem que estar entre 1 e 20");
+  
+  // Cada escola/sala não pode receber mais que certa quantidade de chamadas por segundo, minuto e hora.
+    if (limiteChamadasPorEscolaEstourado(idEscola,sala)) {
+      throw new Error("Limite de envio de mensagens IoT para esta escola/sala estourado.");
+  }
+  
+  console.log('entrou 3  com '+idEscola+' s='+sala+' e='+estacao+' n='+numero);
+  
+  // Comando as ações
+  if (acao==ACAO_NUMERO) {
+    
+      enviarComandoComputadoresSala(EXIBE_IMAGEM, numero+'',idEscola,sala,null,estacao); 
+      
+  } else if (acao==ACAO_ROBOGODE) {
+       
+      robogodeIndice = Math.floor(Math.random() * 16);
+
+      enviarComandoComputadoresSala(EXIBE_IMAGEM, ROBOGODES[robogodeIndice],idEscola,sala,null,estacao); 
+          
+  } else if (acao==ACAO_ROBOLADY) {
+
+      roboladyIndice = Math.floor(Math.random() * 17);
+
+      enviarComandoComputadoresSala(EXIBE_IMAGEM, ROBOLADIES[roboladyIndice],idEscola,sala,null,estacao); 
+      
+    }
+
+  console.log('final sucesso');
+ 
+  resp.json({
+    msg: 'Executou comando'
+  })
+})
+
+// armazena o quantitativo de envio de comandos por escola-sala, para controlar limites que a turma pode programar  
+var controlaVolumeMap = new Map();
+var controlaFrequenciaMap = new Map();
+
+function limiteChamadasPorEscolaEstourado(idEscola,sala) {
+  
+   // Verifica se já existe, senão cria
+   var totalMsgs = controlaVolumeMap.get(idEscola+'#'+sala);
+  
+   if (totalMsgs == null) {
+      totalMsgs = 1;
+      controlaVolumeMap.set(idEscola+'#'+sala,1);
+      controlaFrequenciaMap.set(idEscola+'#'+sala,new Date());
+      return false;
+   }
+   
+   momentoAtual = new Date();
+   var momentoUltMsg = controlaFrequenciaMap.get(idEscola+'#'+sala);
+   var tempoDecorridoMiliSegs = momentoAtual - momentoUltMsg;
+   
+   totalMsgs++;
+   
+   // Se existir, verifica limite por segundo (evita loops infinitos, por exemplo)
+   if (tempoDecorridoMiliSegs<=1000 && totalMsgs>10) {
+       setTimeout(reiniciaCreditoExecucaoEscolaSala,10000,idEscola+'#'+sala);
+       return true; 
+     }
+   
+   
+   // Se existir, verifica limite por minuto (evita excesso de testes)
+   if (tempoDecorridoMiliSegs<=60000 && totalMsgs>100) {
+       setTimeout(reiniciaCreditoExecucaoEscolaSala,60*3000,idEscola+'#'+sala);  
+       return true; 
+    
+     }
+   
+   
+   // Se existir, verifica limite por 40min, aproximadamente uma aula. Como pode haver aula a seguir de outra
+   // turma, retorna este limite mais rapidamente.
+   if (tempoDecorridoMiliSegs<=(40*60000) && totalMsgs>500) {
+       setTimeout(reiniciaCreditoExecucaoEscolaSala,60*10000,idEscola+'#'+sala);  
+       return true; 
+     
+    }
+   
+   // dentro da cota, então somente atualiza contador. 
+   controlaVolumeMap.set(idEscola+'#'+sala,totalMsgs);
+   controlaFrequenciaMap.set(idEscola+'#'+sala,momentoAtual);
+   
+   return false;
+  
+}
+
+function reiniciaCreditoExecucaoEscolaSala(idEscola,sala) {
+  
+   controlaVolumeMap.set(idEscola+'#'+sala,0);
+   controlaFrequenciaMap.set(idEscola+'#'+sala,new Date());
+  
+}
+
+
 function validaComando(comando) {
   
   var i;
@@ -192,7 +358,10 @@ function enviarComandoComputadoresSala(comando,complemento,idEscola,sala,incluiI
   
   if (estacao != null) {
     
-     var pi = estacoes.get(estacao);
+     console.log(estacoes);
+     console.log(estacao);
+    
+     var pi = estacoes.get(estacao+'');
     
      if (pi == null) {
        throw new Error("Não encontrou estação "+estacao+" na sala "+sala+" da escola "+idEscola);
@@ -264,9 +433,9 @@ app.post('/api/Sala/macro', (req, resp) => {
   })
 })
 
-function macroDemo1(idEscola, idSala) {
+function macroDemo1(idEscola, sala) {
   
-  console.log('sala '+idSala);
+  console.log('sala '+sala);
   
   var escola = escolaMap.get(idEscola);
   
@@ -274,7 +443,7 @@ function macroDemo1(idEscola, idSala) {
       throw new Error("Não encontrou escola "+idEscola);
   }
   
-  var estacoes = escola.get(idSala);
+  var estacoes = escola.get(sala);
   
   if (estacoes == null) {
       throw new Error("Não encontrou estações na sala "+sala+" da escola "+idEscola);
@@ -282,29 +451,29 @@ function macroDemo1(idEscola, idSala) {
     
   for (var estacao of estacoes.keys()) {
       
-    enviarComandoComputadoresSala(EXIBE_IMAGEM, estacao,idEscola,idSala,null,estacao);  
+    enviarComandoComputadoresSala(EXIBE_IMAGEM, estacao,idEscola,sala,null,estacao);  
       
   }  
   
   // Se tiver máquina do instrutor corretamente configurada...
-  estacaoInstrutor = salaMap.get(idSala+ESTACAO_INSTRUTOR);
+  estacaoInstrutor = salaMap.get(sala+ESTACAO_INSTRUTOR);
   
   // ...envia imagem diferente para máquina do instrutor  
   if (estacaoInstrutor != null && estacaoInstrutor != '') 
-      enviarComandoComputadoresSala(EXIBE_IMAGEM, ROBOGODES[0],idEscola,idSala,null,estacaoInstrutor);  
+      enviarComandoComputadoresSala(EXIBE_IMAGEM, ROBOGODES[0],idEscola,sala,null,estacaoInstrutor);  
   
   // 8 segundo depois, envia imagens dos robogodes e roboladies aleatoriamente para todos
-  setTimeout(macroDemo1Submacro,10000,idEscola,idSala);
+  setTimeout(macroDemo1Submacro,10000,idEscola,sala);
   
 }
 
-function macroDemo1Submacro(idEscola, idSala) {
+function macroDemo1Submacro(idEscola, sala) {
   
-  console.log('entrou segunda etapa com idEscola='+idEscola+ ' e sala = '+idSala);
+  console.log('entrou segunda etapa com idEscola='+idEscola+ ' e sala = '+sala);
   
   var escola = escolaMap.get(idEscola);
   
-  var estacoes = escola.get(idSala);
+  var estacoes = escola.get(sala);
     
   var cont = 0;  
     
@@ -316,13 +485,13 @@ function macroDemo1Submacro(idEscola, idSala) {
        
       robogodeIndice = Math.floor(Math.random() * 16);
 
-      enviarComandoComputadoresSala(EXIBE_IMAGEM, ROBOGODES[robogodeIndice],idEscola,idSala,null,estacao); 
+      enviarComandoComputadoresSala(EXIBE_IMAGEM, ROBOGODES[robogodeIndice],idEscola,sala,null,estacao); 
           
     } else {
 
       roboladyIndice = Math.floor(Math.random() * 17);
 
-      enviarComandoComputadoresSala(EXIBE_IMAGEM, ROBOLADIES[roboladyIndice],idEscola,idSala,null,estacao); 
+      enviarComandoComputadoresSala(EXIBE_IMAGEM, ROBOLADIES[roboladyIndice],idEscola,sala,null,estacao); 
       
     }
       
@@ -330,7 +499,7 @@ function macroDemo1Submacro(idEscola, idSala) {
   
   // Envia imagem diferente para máquina do instrutor
   // TODO Acertar quando tiver configuração do instrutor
-  enviarComandoComputadoresSala(EXIBE_IMAGEM, "t.jpg",idEscola,idSala,null,"1");  
+  enviarComandoComputadoresSala(EXIBE_IMAGEM, "t.jpg",idEscola,sala,null,"1");  
   
   
 }
@@ -338,7 +507,7 @@ function macroDemo1Submacro(idEscola, idSala) {
 
 
 
-function macroDemo2(idEscola, idSala) {
+function macroDemo2(idEscola, sala) {
   
    var escola = escolaMap.get(idEscola);
   
@@ -360,11 +529,11 @@ function macroDemo2(idEscola, idSala) {
     
     if (cont <= 4) {
 
-        enviarComandoComputadoresSala(EXIBE_IMAGEM, MINDMAKERS[cont-1],idEscola,idSala,null,estacao); 
+        enviarComandoComputadoresSala(EXIBE_IMAGEM, MINDMAKERS[cont-1],idEscola,sala,null,estacao); 
           
     } else if (cont>=6 && cont<=11) {
 
-        enviarComandoComputadoresSala(EXIBE_IMAGEM, MINDMAKERS[cont-2],idEscola,idSala,null,estacao); 
+        enviarComandoComputadoresSala(EXIBE_IMAGEM, MINDMAKERS[cont-2],idEscola,sala,null,estacao); 
       
     }
       
@@ -372,19 +541,19 @@ function macroDemo2(idEscola, idSala) {
 
   
   // Se tiver máquina do instrutor corretamente configurada...
-  estacaoInstrutor = salaMap.get(idSala+ESTACAO_INSTRUTOR);
+  estacaoInstrutor = salaMap.get(sala+ESTACAO_INSTRUTOR);
   
   // ...envia imagem diferente para máquina do instrutor  
   if (estacaoInstrutor != null && estacaoInstrutor != '') 
-      enviarComandoComputadoresSala(EXIBE_IMAGEM, ROBOGODES[0],idEscola,idSala,null,estacaoInstrutor);  
+      enviarComandoComputadoresSala(EXIBE_IMAGEM, ROBOGODES[0],idEscola,sala,null,estacaoInstrutor);  
   
 }
 
-function macroDemo3(idEscola, idSala) {
+function macroDemo3(idEscola, sala) {
   
 }
 
-function macroTeste(idEscola, idSala) {
+function macroTeste(idEscola, sala) {
   
 }
 
@@ -415,6 +584,8 @@ function recuperaEscolaPiMap() {
   salaMap.set('2'+ESTACAO_INSTRUTOR,'1');
   
   escolaMap.set('861127b0-0465-11e9-960e-d5e2953c462d',salaMap);
+  
+  
   
   /* ESCOLA BH SAVASSI */
   
