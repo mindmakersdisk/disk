@@ -3,7 +3,10 @@
         category: 'Mind Makers',
         color: '#87A980',
         defaults: {
-            name: {value:""}
+            name: {value:""},
+            acao: {value:""},
+            numero: {value:""},
+            estacao: {value:""}
         },
         inputs:1,
         outputs:1,
@@ -14,12 +17,10 @@
             return this.name||"para estação";
         },
         oneditprepare: function() {
-            console.log('entrou no edit prepare');
-            console.log(this);
+            // TODO
         },
         oneditsave: function(node) {
-            console.log('entrou no edit save');
-            console.log('TODO');
+           // TODO validar não informar numero se não for envio de numero
         },
         
         
