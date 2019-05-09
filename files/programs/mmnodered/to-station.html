@@ -6,20 +6,46 @@
             name: {value:""}
         },
         inputs:1,
-        outputs:0,
+        outputs:1,
         color: '#87A980',
         align: 'right',
         icon: "white-globe.png",
         label: function() {
             return this.name||"para estação";
-        }
+        },
+        oneditprepare: function() {
+            console.log('entrou no edit prepare');
+            console.log(this);
+        },
+        oneditsave: function(node) {
+            console.log('entrou no edit save');
+            console.log('TODO');
+        },
+        
+        
     });
 </script>
 
 <script type="text/x-red" data-template-name="to-station">
     <div class="form-row">
-        <label for="node-input-name">Name<i class="icon-tag"></i></label>
-        <input type="text" id="node-input-name" placeholder="Name">
+        <label for="node-input-name">Nome <i class="icon-tag"></i></label>
+        <input type="text" id="node-input-name" placeholder="Nome">
+    </div>
+     <div class="form-row">
+        <label for="node-input-acao">Ação <i class="icon-action"></i></label>
+        <select id="node-input-acao" placeholder="Ação" value="N">
+            <option value="N">Exibir Número</option>
+            <option value="G">Exibir Robogode</option>
+            <option value="L">Exibir Robolady</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-numero">Número Mensagem <i class="icon-number"></i></label>
+        <input type="number" id="node-input-numero" placeholder="Número" min="1" max="20">
+    </div>
+    <div class="form-row">
+        <label for="node-input-estacao">Número Estação </label>
+        <input type="number" id="node-input-estacao" placeholder="Número" min="1" max="20">
     </div>
 </script>
 
