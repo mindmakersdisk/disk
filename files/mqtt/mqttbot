@@ -10,6 +10,8 @@
 NAME=mqttbot
 LOGFILE=/var/log/mqttbot.log
 
+. /lib/lsb/init-functions
+
 start() {
   sleep 15
   sudo bash /home/mindmakers/programs/shells/mqttbot.sh &>&2 
