@@ -3,6 +3,7 @@
   tasks:
   - include: tasks/tightvnc.yml
 #Tarefa fixa para instalar tighvncserver se não estiver instalado.
+  - include: tasks/python.yml
 
   # - name: Copiando arquivo de inicialização do mqtt
   #   copy:
