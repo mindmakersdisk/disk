@@ -1,7 +1,7 @@
 - hosts: localhost
 
   tasks:
-#  - include: tasks/tightvnc.yml
+  - include: tasks/tightvnc.yml
 #Tarefa fixa para instalar tighvncserver se não estiver instalado.
 
   # - name: Copiando arquivo de inicialização do mqtt
@@ -53,22 +53,22 @@
   #      name: screen
   #   when: not dpkg_check.stdout.find('screen') != -1
 
-  - command: pip list
-    register: pip_check
-  - name: Instalando paho-mqtt
-    pip:
-       name: paho-mqtt
-    when: not pip_check.stdout.find('paho-mqtt') != -1
-  - name: Instalando pip keyboard
-    pip:
-       name: keyboard
-    when: not pip_check.stdout.find('keyboard') != -1
-  - name: Instalando pip logging
-    pip:
-       name: logging
-    when: not pip_check.stdout.find('logging') != -1
-  - debug:
-      var: not pip_check.stdout.find('alkshdfalskdjfhalskjfdhs') != -1
+#  - command: pip list
+#    register: pip_check
+#  - name: Instalando paho-mqtt
+#    pip:
+ #      name: paho-mqtt
+ #   when: not pip_check.stdout.find('paho-mqtt') != -1
+ # - name: Instalando pip keyboard
+ #   pip:
+ #      name: keyboard
+ #   when: not pip_check.stdout.find('keyboard') != -1
+ # - name: Instalando pip logging
+ #   pip:
+ #      name: logging
+ #   when: not pip_check.stdout.find('logging') != -1
+ # - debug:
+ #     var: not pip_check.stdout.find('alkshdfalskdjfhalskjfdhs') != -1
 
 
 #  - name: Instalando npm 1.4* se o pacote não estiver instalado
