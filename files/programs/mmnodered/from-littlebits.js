@@ -66,7 +66,7 @@ module.exports = function(RED) {
                             node.status({fill:"green",shape:"dot",text:"conectado"});
                             // Apenas repassa
                             if (data.message != valor) {
-                                valor = data.message;
+                                valor = parseInt(data.message);
                                 var msg = {payload:valor};
                                 node.send(msg);
                             }
