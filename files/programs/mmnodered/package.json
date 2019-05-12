@@ -19,7 +19,9 @@
             "mbot-lighting": "mbot-lighting.js",  
             "mbot-line": "mbot-followline.js",
             "to-station": "to-station.js",  
-            "from-station": "from-station.js"                              
+            "from-station": "from-station.js",
+            "to-microbit": "to-microbit.js",
+            "from-microbit": "from-microbit.js"                                   
         }
     }
 }

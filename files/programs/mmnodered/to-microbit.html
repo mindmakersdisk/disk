@@ -1,0 +1,67 @@
+<script type="text/javascript">
+    RED.nodes.registerType('to-microbit',{
+        category: 'Mind Makers',
+        color: '#a6bbcf',
+        defaults: {
+            name: {value:""},
+            acao: {value:""},
+            indiceFiguraLED: {value:""},
+            textoLED: {value:""},
+            pinId: {value:""},
+            pinValor: {value:""}
+        },
+        inputs:1,
+        outputs:0,
+        color: '#FFCC66',
+        align: 'right',
+        icon: "bluetooth.png",
+        label: function() {
+            return this.name||"para microbit";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="to-microbit">
+    <div class="form-row">
+        <label for="node-input-name">Nome<i class="icon-tag"></i></label>
+        <input type="text" id="node-input-name" placeholder="Nome">
+    </div>
+      <div class="form-row">
+        <label for="node-input-acao">Ação <i class="icon-action"></i></label>
+        <select id="node-input-acao" placeholder="Ação" value="FIGURA">
+            <option value="FIGURA">Exibir Figura no Painel de LED</option>
+            <option value="TEXTO">Exibir Texto no Painel de LED</option>
+            <option value="PIN">Mudar Estado de Pino</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-indiceFiguraLED">Padrão <i class="icon-action"></i></label>
+        <select id="node-input-indiceFiguraLED" placeholder="Figura" value="7">
+            <option value="0">Seta Cima Direita</option>
+            <option value="1">Seta Baixo Esquerda</option>
+            <option value="2">Seta Baixo Direita</option>
+            <option value="3">Seta Cima Esquerda</option>
+            <option value="4">Diamante</option>
+            <option value="5">Sorriso</option>
+            <option value="6">Wink</option>
+            <option value="7">Sólido</option>
+            <option value="8">Apagado</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-textoLED">Texto <i class="icon-text"></i></label>
+        <input type="text" id="node-input-textoLED" placeholder="Texto">
+    </div>
+    <div class="form-row">
+        <label for="node-input-pinId">Número Pino <i class="icon-number"></i></label>
+        <input type="number" id="node-input-pinId" placeholder="Número Pino" min="0" max="2">
+    </div>
+     <div class="form-row">
+        <label for="node-input-pinValor">Estado Pino <i class="icon-number"></i></label>
+        <input type="number" id="node-input-pinValor" placeholder="Estado Pino" min="0" max="1">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="to-microbit">
+    <p>Um componente que envia mensagens bluetooth para o wearable microbit</p>
+</script>

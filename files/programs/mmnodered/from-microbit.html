@@ -1,0 +1,52 @@
+<script type="text/javascript">
+    RED.nodes.registerType('from-microbit',{
+        category: 'Mind Makers',
+        defaults: {
+            name: {value:""},
+            acao: {value:""},
+            pinId: {value:""},
+            pinSinal: {value:""}
+        },
+        inputs:0,
+        color: '#FFCC66',
+        outputs:1,
+        icon: "bluetooth.png",
+        label: function() {
+            return this.name||"de microbit";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="from-microbit">
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+      <div class="form-row">
+        <label for="node-input-acao">Monitorar <i class="icon-action"></i></label>
+        <select id="node-input-acao" placeholder="Monitorar" value="A">
+            <option value="A">Botão A</option>
+            <option value="B">Botão B</option>
+            <option value="ACELER">Acelerômetro</option>
+            <option value="MAG">Magnetômetro</option>
+            <option value="MAGBEAR">Bússola</option>
+            <option value="TEMP">Temperatura</option>
+            <option value="PIN">Pino</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-pinId">Número Pino <i class="icon-number"></i></label>
+        <input type="number" id="node-input-pinId" placeholder="Número Pino" min="0" max="2">
+    </div>
+    <div class="form-row">
+        <label for="node-input-pinSinal">Tipo Sinal Pino<i class="icon-action"></i></label>
+        <select id="node-input-pinSinal" placeholder="Tipo Sinal Pino" value="A">
+            <option value="A">Analógico</option>
+            <option value="D">Sinal</option>
+        </select>
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="from-microbit">
+    <p>Um componente que recebe mensagens de wearables microbit, enviadas via bluetooth pelo firmware da Mind Makers</p>
+</script>
