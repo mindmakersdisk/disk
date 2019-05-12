@@ -1,0 +1,43 @@
+<script type="text/javascript">
+    RED.nodes.registerType('from-mbot',{
+        category: 'Sala de Aula IoT',
+        defaults: {
+            name: {value:""},
+            acao: {value:""},
+            pinId: {value:""}
+        },
+        inputs:0,
+        color: '#A6BBCF',
+        outputs:1,
+        icon: "bluetooth.png",
+        label: function() {
+            return this.name||"de mbot";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="from-mbot">
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+      <div class="form-row">
+        <label for="node-input-acao">Monitorar <i class="icon-action"></i></label>
+        <select id="node-input-acao" placeholder="Monitorar" value="BOTAO">
+            <option value="BOTAO">Botão</option>
+            <option value="ULTRASSOM">Ultrassom</option>
+            <option value="LUMINOSIDADE">Luminosidade</option>
+            <option value="SEG_LINHA">Segue-linha</option>
+            <option value="INFRA_VERMELHO">Infra-vermelho</option>
+            <option value="PINO">Pino</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-pinId">Número Pino <i class="icon-number"></i></label>
+        <input type="number" id="node-input-pinId" placeholder="Número Pino" min="0" max="2">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="from-mbot">
+    <p>Um componente que recebe mensagens do robô mBot, enviadas via bluetooth pelo módulo BLE</p>
+</script>
