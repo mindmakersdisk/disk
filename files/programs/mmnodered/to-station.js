@@ -1,6 +1,6 @@
 module.exports = function(RED) {
   
-    const URL_BASE = "http://localhost";
+    const URL_BASE = "https://mindmakers.cc";
     
     console.log('##### mind-makers nodered-to-station instalado');
     
@@ -52,7 +52,7 @@ module.exports = function(RED) {
             var jsonMsg = {'id1':id1,'id2':id2, 
                               'acao':node.acao,'estacao':node.estacao,'numero':node.numero};
                               
-          //  console.log('entrou para enviar msg',jsonMsg);
+            console.log('entrou para enviar msg',jsonMsg);
             
             request({url: URL_BASE+'/iot/sala/code',
                     method: 'POST',
@@ -60,11 +60,11 @@ module.exports = function(RED) {
                     function(error, response, body){ 
             //             console.log(body);             
                         if (error) {
-                           console.log('Erro ao enviar comando: '+error);  
+                           console.log('Erro ao enviar comando - erro: ',error);  
                             var msg = {payload:error};
                             node.send(msg);                                              
                         } else if (body.error) {
-                           console.log('Erro ao enviar comando: '+body.error);   
+                           console.log('Erro ao enviar comando - corpo do erro: ',body.error);   
                             var msg = {payload:body.error};
                             node.send(msg);                                             
                         } else {

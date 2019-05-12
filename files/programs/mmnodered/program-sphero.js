@@ -20,7 +20,7 @@ module.exports = function(RED) {
           
         node.on('editsave', function() {
         
-                console.log('entrou aqui com '+ config.func);
+                //console.log('entrou aqui com '+ config.func);
             
             }    
         );
