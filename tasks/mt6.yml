@@ -54,3 +54,13 @@
     path: /home/mindmakers/programs
 - name: Instalando pacote do npm "node-red-mindmakers"
   shell: 'sudo npm -g install /home/mindmakers/programs/mmnodered'
+- name: Instalando pacote do npm "node-bbc-microbit"
+  npm:
+    name: bbc-microbit
+    path: /home/mindmakers/programs
+- name: Alterando atalho da pasta Scratch2
+  lineinfile:
+    path: /usr/local/bin/mqttbot.sh
+    regexp: '^sleep 30'
+    line: 'sudo service mqttbot restart'
+    backrefs: yes
