@@ -74,7 +74,7 @@ cur_time = datetime.datetime.utcnow()
 def create_jwt():
   token = {
       'iat': cur_time,
-      'exp': cur_time + datetime.timedelta(minutes=60),
+      'exp': cur_time + datetime.timedelta(minutes=30),
       'aud': project_id
   }
 
@@ -101,7 +101,8 @@ def error_str(rc):
     return '{}: {}'.format(rc, mqtt.error_string(rc))
 
 def on_connect(unusued_client, unused_userdata, unused_flags, rc):
-    print('Ao conectar', error_str(rc))
+    print('Ao conectar', error_str(rc), datetime.datetime.now().strftime('%d-%m-%Y %H:%M:%S'))
+    
 
 def on_publish(unused_client, unused_userdata, unused_mid):
     return
