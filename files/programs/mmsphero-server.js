@@ -267,7 +267,8 @@ ipc.serveNet(
             function(data,socket){
                 ipc.log('Recebeu mensagem de', (data.id), (data.message));
                 console.log('vai enviar para sphero '+data.message);
-                code = data.message.replaceAll('sprk.','bb8.');
+                //code = data.message.replaceAll('sprk.','bb8.');
+		code = data.message;
             }
         );
     }
