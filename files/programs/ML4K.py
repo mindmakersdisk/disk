@@ -31,7 +31,7 @@ def classify(imagefile):
 
 
 # CHANGE THIS to the name of the image file you want to classify
-demo = classify("/home/pi/Desktop/imagem-teste.jpg")
+demo = classify("/home/pi/Desktop/imagem.jpg")
 
 label = demo["class_name"]
 confidence = demo["confidence"]
