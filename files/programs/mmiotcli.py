@@ -74,7 +74,7 @@ cur_time = datetime.datetime.utcnow()
 def create_jwt():
   token = {
       'iat': cur_time,
-      'exp': cur_time + datetime.timedelta(minutes=30),
+      'exp': cur_time + datetime.timedelta(minutes=720),
       'aud': project_id
   }
 
