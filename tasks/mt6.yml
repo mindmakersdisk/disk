@@ -58,9 +58,9 @@
   npm:
     name: bbc-microbit
     path: /home/mindmakers/programs
-- name: Alterando atalho da pasta Scratch2
-  lineinfile:
-    path: /usr/local/bin/mqttbot.sh
-    regexp: '^sleep 30'
-    line: 'sudo service mqttbot restart'
-    backrefs: yes
+#- name: Alterando atalho da pasta Scratch2
+#  lineinfile:
+#    path: /usr/local/bin/mqttbot.sh
+#    regexp: '^sleep 30'
+#    line: 'sudo service mqttbot restart'
+#    backrefs: yes
