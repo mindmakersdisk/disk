@@ -4,13 +4,17 @@
   #- include: tasks/tightvnc.yml
 #Tarefa fixa para instalar tighvncserver se não estiver instalado.
   #- include: tasks/python.yml
+  - file:
+    path: "/home/pi/Área de Trabalho"
+    state: directory
+    attributes: -i
+    recurse: yes
   - name: Copiando update.desktop para o Desktop
     copy:
        src: files/update.desktop
        dest: "/home/pi/Área de Trabalho/"
        owner: pi
        group: pi
-       attributes: +i
        mode: 0755
   - name: Copiando demais atalhos para a Área de Trabalho
     copy:
@@ -18,7 +22,6 @@
        dest: "/home/pi/Área de Trabalho"
        owner: pi
        group: pi
-       attributes: +i
        mode: 0755
   - name: Copiando arquivos de imagens
     copy:
@@ -52,7 +55,6 @@
        dest: "/home/pi/Área de Trabalho"
        owner: pi
        group: pi
-       attributes: +i
        mode: 0755
   - name: Copiando o arquivo com as notas de liberação da versão para o disco
     copy:
