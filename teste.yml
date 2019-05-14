@@ -78,7 +78,7 @@
   - name: Instalando gnuplot
     apt:
        name: gnuplot
-    when: not dpkg_check.stdout.find('gnuplot') != -1
+    #when: not dpkg_check.stdout.find('gnuplot') != -1
   - name: Instalando screen
     apt:
        name: screen
@@ -97,7 +97,7 @@
       dest: /home/mindmakers/programs/verify/aiStarter
       timeout: 60
       mode: 0744
-    when: not aiStarter.stat.exists
+    #when: not aiStarter.stat.exists
   - name: Instalando aiStarted do pacote .deb
     apt:
       deb: /home/mindmakers/programs/verify/aiStarter/appinventor2-setup_2.3_all.deb
