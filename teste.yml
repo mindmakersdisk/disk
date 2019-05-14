@@ -5,10 +5,10 @@
 #Tarefa fixa para instalar tighvncserver se não estiver instalado.
   #- include: tasks/python.yml
   - file:
-    path: "/home/pi/Área de Trabalho"
-    state: directory
-    attributes: -i
-    recurse: yes
+       path: "/home/pi/Área de Trabalho"
+       state: directory
+       attributes: -i
+       recurse: yes
   - name: Copiando update.desktop para o Desktop
     copy:
        src: files/update.desktop
