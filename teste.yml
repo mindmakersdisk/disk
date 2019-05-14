@@ -4,32 +4,139 @@
   #- include: tasks/tightvnc.yml
 #Tarefa fixa para instalar tighvncserver se não estiver instalado.
   #- include: tasks/python.yml
-  - name: Verificando OS em inglês
-    shell: 'cat /etc/default/locale | grep LANG= '
-    register: lang
+  - name: Copiando update.desktop para o Desktop
+    copy:
+       src: files/update.desktop
+       dest: "/home/pi/Área de Trabalho/"
+       owner: pi
+       group: pi
+       attributes: +i
+       mode: 0755
+  - name: Copiando demais atalhos para a Área de Trabalho
+    copy:
+       src: files/desktop/
+       dest: "/home/pi/Área de Trabalho"
+       owner: pi
+       group: pi
+       attributes: +i
+       mode: 0755
+  - name: Copiando arquivos de imagens
+    copy:
+       src: files/icons
+       dest: /usr/share
+       mode: 0777
+  - name: Copiando programas executáveis
+    copy:
+       src: files/programs
+       dest: /home/mindmakers
+       mode: 0755
+  - name: Copiando arquivo de inicialização do mqtt
+    copy:
+       src: files/mqtt/rc.local
+       dest: /etc
+       mode: 0755
+  - name: systemctl daemon-reload
+    command: sudo systemctl daemon-reload
+  - name: systemctl stop rc-local.service
+    command: sudo systemctl stop rc-local.service
+  - name: Copiando arquivo de inicialização do mqtt
+    copy:
+       src: files/mqtt/mqttbot
+       dest: /etc/init.d
+       mode: 0755
+  - name: Configurando mqttbot
+    shell: 'sudo update-rc.d mqttbot defaults'
+  - name: Copiando o atalho notas de liberacão para a Área de Trabalho
+    copy:
+       src: releasenotes.desktop
+       dest: "/home/pi/Área de Trabalho"
+       owner: pi
+       group: pi
+       attributes: +i
+       mode: 0755
+  - name: Copiando o arquivo com as notas de liberação da versão para o disco
+    copy:
+       src: releasenotes.info
+       dest: /home/mindmakers
+       mode: 0755
+  - name: Instalando vnstat
+    apt:
+       name: vnstat
+  - name: Instalando android-tools
+    apt:
+       name: android-tools-adb
+  - name: Instalando fbi
+    apt:
+       name: fbi
+  - name: Copiando arquivo 50-microbit.rules
+    copy:
+       src: files/rules.d
+       dest: /etc/udev
+       mode: 0755
+  - name: Ativando 50-microbit.rules
+    shell: 'sudo udevadm control --reload-rules'
+  - name: Instalando gnuplot
+    apt:
+       name: gnuplot
+    when: not dpkg_check.stdout.find('gnuplot') != -1
+  - name: Instalando screen
+    apt:
+       name: screen
+    #when: not dpkg_check.stdout.find('screen') != -1
+  - name: Verificando se aiStarter já existe
+    stat:
+       path: /home/mindmakers/programs/verify/aiStarter/appinventor2-setup_2.3_all.deb
+    register: aiStarter
   - file:
-      path: /home/pi/Desktop/scratch2_folder.desktop
-      state: touch
-      attributes: -i
-    when: lang.stdout.find('LANG=en') != -1
-  - name: Alterando atalho da pasta Scratch2
-    lineinfile:
-      path: /home/pi/Desktop/scratch2_folder.desktop
-      regexp: '^Exec=pcmanfm /home/mindmakers/Scratch2/portuguese'
-      line: 'Exec=pcmanfm /home/mindmakers/Scratch2/english'
-      backrefs: yes
-    when: lang.stdout.find('LANG=en') != -1
+      path: /home/mindmakers/programs/verify/aiStarter
+      state: directory
+      mode: 0755
+  - name: Baixando arquivo de instalação aiStarter -- Este passo pode demorar --
+    get_url:
+      url: http://appinv.us/aisetup_linux_deb
+      dest: /home/mindmakers/programs/verify/aiStarter
+      timeout: 60
+      mode: 0744
+    when: not aiStarter.stat.exists
+  - name: Instalando aiStarted do pacote .deb
+    apt:
+      deb: /home/mindmakers/programs/verify/aiStarter/appinventor2-setup_2.3_all.deb
+    #when: not aiStarter.stat.exists
+  - name: Copiando programas executáveis aiStarter
+    copy:
+       src: files/appinventor/usr
+       dest: /
+       mode: 0755
+  - file:
+      path: /usr/google/appinventor/commands-for-Appinventor/adb
+      state: absent
+  - shell: 'sudo ln -v -s /usr/bin/adb /usr/google/appinventor/commands-for-Appinventor/adb'
+  # - name: Verificando OS em inglês
+  #   shell: 'cat /etc/default/locale | grep LANG= '
+  #   register: lang
+  # - file:
+  #     path: /home/pi/Desktop/scratch2_folder.desktop
+  #     state: touch
+  #     attributes: -i
+  #   when: lang.stdout.find('LANG=en') != -1
+  # - name: Alterando atalho da pasta Scratch2
+  #   lineinfile:
+  #     path: /home/pi/Desktop/scratch2_folder.desktop
+  #     regexp: '^Exec=pcmanfm /home/mindmakers/Scratch2/portuguese'
+  #     line: 'Exec=pcmanfm /home/mindmakers/Scratch2/english'
+  #     backrefs: yes
+  #   when: lang.stdout.find('LANG=en') != -1
 # - file:
 #     path: /home/pi/Desktop/scratch2_folder.desktop
 #     state: touch
 #     attributes: +i
-  - file:
-      path: /home/pi/Scratch2
-      state: absent
-  - shell: 'sudo ln -s /home/mindmakers/Scratch2/english /home/pi/Scratch2'
-    when: lang.stdout.find('LANG=en') != -1
-  - shell: 'sudo ln -s /home/mindmakers/Scratch2/portuguese /home/pi/Scratch2'
-    when: lang.stdout.find('LANG=pt') != -1
+  # - file:
+  #     path: /home/pi/Scratch2
+  #     state: absent
+  # - shell: 'sudo ln -s /home/mindmakers/Scratch2/english /home/pi/Scratch2'
+  #   when: lang.stdout.find('LANG=en') != -1
+  # - shell: 'sudo ln -s /home/mindmakers/Scratch2/portuguese /home/pi/Scratch2'
+  #   when: lang.stdout.find('LANG=pt') != -1
 
   # - name: Copiando arquivo de inicialização do mqtt
   #   copy:
