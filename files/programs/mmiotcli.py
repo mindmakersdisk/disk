@@ -24,7 +24,7 @@ import sys
 import logging
 import keyboard 
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(filename='/var/log/mmiotcli.log', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s', datefmt='%d/%m/%Y %I:%M:%S %p')
 
 #import pyimg
 
@@ -72,11 +72,13 @@ video_sufixo = ' best'
 cur_time = datetime.datetime.utcnow()
 
 def create_jwt():
+  logging.debug('create_jwt')
   token = {
       'iat': cur_time,
       'exp': cur_time + datetime.timedelta(minutes=720),
       'aud': project_id
   }
+  
 
   with open(ssl_private_key_filepath, 'r') as f:
     private_key = f.read()
@@ -101,17 +103,20 @@ def error_str(rc):
     return '{}: {}'.format(rc, mqtt.error_string(rc))
 
 def on_connect(unusued_client, unused_userdata, unused_flags, rc):
+    logging.debug('on_connect %s', error_str(rc))
     print('Ao conectar', error_str(rc), datetime.datetime.now().strftime('%d-%m-%Y %H:%M:%S'))
     
 
 def on_publish(unused_client, unused_userdata, unused_mid):
+    logging.info('publicou com sucesso')
+    print('on_publish', error_str(rc), datetime.datetime.now().strftime('%d-%m-%Y %H:%M:%S'))
     return
     #print('Publicou com sucesso')
 
 def getTemp():
     try:
         temp = os.popen("vcgencmd measure_temp").readline()
-     #   logging.info(temp)
+        logging.info(temp)
         return temp.replace("temp=","")
     except:
        e = sys.exc_info()[0]
@@ -124,14 +129,14 @@ def getTemp():
 # Index 2: free RAM                                                                 
 def getRAMinfo():
     try: 
-      #  logging.info('entrou ram')
+        logging.info('entrou ram')
         p = os.popen('free')
         i = 0
         while 1:
             i = i + 1
             line = p.readline()
             if i==2:
-      #          logging.info((line.split()[1:4][2]))
+                logging.info((line.split()[1:4][2]))
                 return(line.split()[1:4][2])
     except:
        e = sys.exc_info()[0]
@@ -139,7 +144,7 @@ def getRAMinfo():
 
 # Return % of CPU used by user as a character string                                
 def getCPUuse():
-    #logging.info('entrou CPU')
+    logging.info('entrou CPU')
     return(str(os.popen("top -n1 | awk '/Cpu\(s\):/ {print $2}'").readline().strip(\
 )))
 
@@ -149,7 +154,7 @@ def getCPUuse():
 # Index 2: remaining disk space                                                     
 # Index 3: percentage of disk used                                                  
 def getDiskSpace():
-    #logging.info('entrou disco')
+    logging.info('entrou disco')
     p = os.popen("df -h /")
     i = 0
     while 1:
@@ -178,7 +183,7 @@ def sendInfo():
         
 def exibeMsg(msg):
     nomeImg = msg[4:]
-    #logging.info(dir_base_imgs+'/'+nomeImg)
+    logging.info(dir_base_imgs+'/'+nomeImg)
     #pyimg.show(dir_base_imgs+'/'+nomeImg)  
     call("sudo killall fbi",shell=True)
     call("sudo fbi -T 10 --noverbose -t 10 --once -a "+dir_base_imgs+'/'+nomeImg,shell=True)
@@ -197,6 +202,7 @@ def executaVideo(msg):
 # This is where you could add your own messages to play with different
 # actions based on messages coming back from the Cloud
 def respondToMsg(msg):
+    logging.debug('respontToMsg: %s', msg)
     #print(msg)
     if msg == "oi":
         sendInfo()
@@ -217,10 +223,16 @@ def respondToMsg(msg):
 
 def on_message(unused_client, unused_userdata, message):
     payload = str(message.payload)
-   # print('Recebeu mensagem \'{}\' on topic \'{}\''.format(payload, message.topic))
+    logging.debug('Recebeu mensagem \'{}\' on topic \'{}\''.format(payload, message.topic))
+    print('Recebeu mensagem \'{}\' on topic \'{}\''.format(payload, message.topic), datetime.datetime.now().strftime('%d-%m-%Y %H:%M:%S'))
     respondToMsg(payload)
     
 def on_disconnect(client,userdata,rc=0):
+    print('on_disconnect', error_str(rc), datetime.datetime.now().strftime('%d-%m-%Y %H:%M:%S'))
+    print('on_disconnect', error_str(userdata), datetime.datetime.now().strftime('%d-%m-%Y %H:%M:%S'))
+    print('on_disconnect', error_str(client), datetime.datetime.now().strftime('%d-%m-%Y %H:%M:%S'))
+    print('on_disconnect: Erro de conexão, vai parar o laço IoT')
+    logging.error('rc: %s - client: %s - userdata: %s', rc, client, userdata)
     logging.error("Erro de conexão, vai parar o laço IoT")
     client.loop_stop()
 
