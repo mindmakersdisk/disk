@@ -1,0 +1,47 @@
+<script type="text/javascript">
+    RED.nodes.registerType('to-ml4k-img',{
+        category: 'Sala de Aula IoT',
+        color: '#87A980',
+        defaults: {
+            name: {value:""},
+            key: {value:""},
+            locationOfImg: {value:""}
+        },
+        inputs:1,
+        outputs:1,
+        color: '#87A982',
+        align: 'right',
+        icon: "white-globe.png",
+        label: function() {
+            return this.name||"para ml4k img";
+        },
+        oneditprepare: function() {
+            // TODO
+        },
+        oneditsave: function(node) {
+           // TODO validar não informar numero se não for envio de numero
+        },
+
+
+    });
+</script>
+
+<script type="text/x-red" data-template-name="to-ml4k-img">
+    <div class="form-row">
+        <label for="node-input-name">Nome <i class="icon-tag"></i></label>
+        <input type="text" id="node-input-name" placeholder="Nome">
+    </div>
+    <div class="form-row">
+        <label for="node-input-key">Key <i class="icon-number"></i></label>
+        <input type="text" id="node-input-key" placeholder="key">
+    </div>
+    <div class="form-row">
+        <label for="node-input-locationOfImg">locationOfImg <i class="icon-text"></i></label>
+        <input type="text" id="node-input-locationOfImg" placeholder="locationOfImg">
+    </div>
+
+</script>
+
+<script type="text/x-red" data-help-name="to-ml4k-img">
+    <p>Um componente que envia imagem para ml4k e retorna o valor</p>
+</script>
