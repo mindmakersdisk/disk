@@ -14,9 +14,9 @@ LOGFILE=/var/log/mqttbot.log
 
 start() {
   sleep 15
-  sudo bash /home/mindmakers/programs/shells/mqttbot.sh &>&2 
+  sudo bash /home/mindmakers/programs/shells/mqttbot.sh &>/var/log/mqttbot.log
   echo 'Starting service…' >&2
-  sudo python /home/mindmakers/programs/mmiotcli.py &>&2 & echo \$!
+  sudo python /home/mindmakers/programs/mmiotcli.py &>/var/log/mqttbot.log & echo \$!
 
   sleep 15
     if pgrep -f mmiotcli.py > /dev/null
@@ -52,7 +52,7 @@ uninstall() {
 
 status() {
             if [ -z "$(ps axf | grep python | grep -v grep)" ]; then
-                printf "%s\n" "The process appears to be dead"
+                printf "%s\n" "The process appears to be dead" >&2
             else
                 echo "mmiotcli.py appears to be running"
             fi
