@@ -32,15 +32,11 @@ then
 		else
 			sair;
 		fi
-	else
-		echo "Tentando conectar ao microbit via BLE... "
 
-		pergunta;
-		if [ "$resposta" = "sim" ] || [ "$resposta" = "s" ] || [ "$resposta" = "yes" ] || [ "$resposta" = "y" ] || [ "$resposta" = "" ]; then
-			executa;
-		else
-			sair;
-		fi
+	else
+
+		executa;
+		
 	fi
 
 else
