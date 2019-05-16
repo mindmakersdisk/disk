@@ -113,3 +113,5 @@
   when: lang.stdout.find('LANG=en') != -1
 - shell: 'sudo ln -s /home/mindmakers/Scratch2/portuguese /home/pi/Scratch2'
   when: lang.stdout.find('LANG=pt') != -1
+- shell: 'sudo ln -s /home/pi/Pictures /home/pi/Fotos'
+  when: lang.stdout.find('LANG=pt') != -1

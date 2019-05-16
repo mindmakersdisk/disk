@@ -9,5 +9,5 @@ else
   echo ''
   echo "Erro! Não consegui iniciar $NAME!"
   echo "tentando novamente(via shell)"
-  sudo service mqttbot restart
+  sudo service mqttbot restart >/var/log/mqttbot.log
 fi

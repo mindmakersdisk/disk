@@ -1,5 +1,6 @@
 #!/bin/sh
 
+sudo service mqttbot restart
 sleep 30
 NAME=mqttbot
 if pgrep -f mmiotcli.py > /dev/null
