@@ -48,12 +48,6 @@
      path: /usr/local/bin
      state: directory
      mode: 0755
-- name: Tornando ícones dentro da pasta Scratch2 imutáveis
-  file:
-    path: /usr/local/bin
-    state: directory
-    attributes: -i
-    recurse: yes
 - copy:
      src: files/bin
      dest: /usr/local/
