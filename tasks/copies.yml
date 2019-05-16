@@ -52,7 +52,6 @@
      src: files/bin
      dest: /usr/local/
      mode: 0755
-     attributes: +i
 - name: Copiando arquivo de inicialização do mqtt
   copy:
      src: files/mqtt/rc.local
