@@ -10,7 +10,7 @@
 - name: Instalando gnuplot
   apt:
      name: gnuplot
-  when: not dpkg_check.stdout.find('gnuplot') != -1
+  #when: not dpkg_check.stdout.find('gnuplot') != -1
 - name: Instalando screen
   apt:
      name: screen
