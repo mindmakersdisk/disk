@@ -18,20 +18,29 @@ module.exports = function(RED) {
     const request = require('request');
     var fs = require('fs');
 
-    var bitmap = fs.readFileSync(node.locationOfImg);
-    //console.log('bitmap',bitmap);
-    // convert binary data to base64 encoded string
-    var img = new Buffer(bitmap).toString('base64');
-
     node.on('input', function(msg) {
 
       if (msg.payload) {
+        msg.payload = msg.payload.replace(/[\n\t\r]/g,"");
+        //retirar \n no final da mensagem camera.sh
 
-        if (isNaN(msg.payload+'')) {
+        if(lastMsg !=''){
+           //verifica se exite uma ultima msg e substitui pela atual.
+           node.locationOfImg = msg.payload;
+           //console.log('lastMsg exite');
+           //console.log('lastMsg exite',msg.payload);
+        }else if (node.locationOfImg=='') {
           node.locationOfImg = msg.payload;
+          var lastMsg = msg.payload;
+          //armazena a ultima mensagem para comparação.
         }
 
       }
+      
+      var bitmap = fs.readFileSync(node.locationOfImg);
+      //console.log('bitmap',bitmap);
+      // convert binary data to base64 encoded string
+      var img = new Buffer(bitmap).toString('base64');
 
 
       var jsonMsg = {"data" : img};
@@ -53,7 +62,7 @@ module.exports = function(RED) {
           node.send(msg);
         } else {
           //console.log('body ',body);
-          var msg = {payload: body[0].class_name, result: body[0].class_name, confidence: body[0].confidence+'%'};
+          var msg = {payload: 'result: '+body[0].class_name+' confidence: '+body[0].confidence+'%', result: body[0].class_name, confidence: body[0].confidence+'%'};
           node.send(msg);
           console.log('Resposta: ',body[0].class_name);
           console.log('Confiança: ',+body[0].confidence,'%');
