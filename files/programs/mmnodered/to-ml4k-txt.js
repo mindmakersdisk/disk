@@ -21,11 +21,20 @@ module.exports = function(RED) {
 
       if (msg.payload) {
 
-        if (isNaN(msg.payload+'')) {
+        if(lastMsg !=''){
+           //verifica se exite uma última msg e substitui pela atual.
+           
+           node.phrase = msg.payload;
+           //console.log('lastMsg exite',msg.payload);
+        }else if (node.phrase=='') {
           node.phrase = msg.payload;
+          
+          //armazena a última mensagem para comparação.
+          var lastMsg = msg.payload;
         }
 
       }
+      
 
       //var URL_BASE = "https://machinelearningforkids.co.uk/api/scratch/";
 
@@ -48,7 +57,7 @@ module.exports = function(RED) {
           node.send(msg);
         } else {
           //console.log('body ',body);
-          var msg = {payload: body[0].class_name, result: body[0].class_name, confidence: body[0].confidence+'%'};
+          var msg = {payload: 'result: '+body[0].class_name+' confidence: '+body[0].confidence+'%', result: body[0].class_name, confidence: body[0].confidence+'%'};
           node.send(msg);
           console.log('Resposta: ',body[0].class_name);
           console.log('Confiança: ',+body[0].confidence,'%');
