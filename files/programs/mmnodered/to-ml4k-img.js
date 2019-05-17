@@ -62,7 +62,7 @@ module.exports = function(RED) {
           node.send(msg);
         } else {
           //console.log('body ',body);
-          var msg = {payload: 'result: '+body[0].class_name+' confidence: '+body[0].confidence+'%', result: body[0].class_name, confidence: body[0].confidence+'%'};
+          var msg = {payload: 'result: '+body[0].class_name+' & confidence: '+body[0].confidence+'%', result: body[0].class_name, confidence: body[0].confidence+'%'};
           node.send(msg);
           console.log('Resposta: ',body[0].class_name);
           console.log('Confiança: ',+body[0].confidence,'%');
