@@ -10,6 +10,8 @@ module.exports = function(RED) {
 
     this.key = config.key;
     this.phrase = config.phrase;
+    this.acao = config.acao;
+    this.label = config.label;
 
     //console.log('entrou configurar '+this.acao+' estacao '+this.estacao);
 
@@ -19,7 +21,7 @@ module.exports = function(RED) {
 
     node.on('input', function(msg) {
 
-      if (msg.payload) {
+      if (isNaN(msg.payload+'')) {
 
         if(lastMsg !=''){
            //verifica se exite uma última msg e substitui pela atual.
@@ -34,15 +36,22 @@ module.exports = function(RED) {
         }
 
       }
+
+      node.acao = node.acao.replace(/[\n\t\r]/g,"");
       
+      if(node.acao == 'T' ){
+        var jsonMsg = {"data" : node.phrase,
+                       "label": node.label };
+        var URL_FINAL = '/train';
+      }else{
+        var jsonMsg = {"data" : node.phrase};
+        var URL_FINAL = '/classify';
+      }
 
-      //var URL_BASE = "https://machinelearningforkids.co.uk/api/scratch/";
-
-      var jsonMsg = {"data" : node.phrase};
 
       //console.log('entrou para enviar msg',jsonMsg);
 
-      request({url: URL_BASE+node.key+'/classify',
+      request({url: URL_BASE+node.key+URL_FINAL,
       method: 'POST',
       json: jsonMsg},
       function(error, response, body){
@@ -56,11 +65,21 @@ module.exports = function(RED) {
           var msg = {payload:body.error};
           node.send(msg);
         } else {
-          //console.log('body ',body);
-          var msg = {payload: 'result: '+body[0].class_name+' & confidence: '+body[0].confidence+'%', result: body[0].class_name, confidence: body[0].confidence+'%'};
+          console.log('body ',body);
+          
+          if(node.acao == 'T' ){
+             var msg = {payload: 'textdata: '+body.textdata+' & label: '+body.label, 
+                        textdata: body.textdata, 
+                        label: body.label};
+           }else{
+             var msg = {payload: 'result: '+body[0].class_name+' & confidence: '+body[0].confidence+'%', 
+                        result: body[0].class_name, 
+                        confidence: body[0].confidence+'%'};
+           }
+          
+          console.log('msg ',msg);
           node.send(msg);
-          console.log('Resposta: ',body[0].class_name);
-          console.log('Confiança: ',+body[0].confidence,'%');
+          
 
         }
       }
