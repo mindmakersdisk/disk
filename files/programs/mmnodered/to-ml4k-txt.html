@@ -5,7 +5,9 @@
         defaults: {
             name: {value:""},
             key: {value:""},
-            phrase: {value:""}
+            phrase: {value:""},
+            acao: {value:""},
+            label: {value:""}
         },
         inputs:1,
         outputs:1,
@@ -38,6 +40,17 @@
     <div class="form-row">
         <label for="node-input-phrase">phrase <i class="icon-text"></i></label>
         <input type="text" id="node-input-phrase" placeholder="phrase">
+    </div>
+    <div class="form-row">
+        <label for="node-input-acao">Ação <i class="icon-action"></i></label>
+        <select id="node-input-acao" placeholder="Ação" value="C">
+            <option value="C">Classificar</option>
+            <option value="T">Treinar</option>
+        </select>
+    </div>
+        <div class="form-row">
+        <label for="node-input-label">Label <i class="icon-text"></i></label>
+        <input type="text" id="node-input-label" placeholder="label">
     </div>
 
 </script>

@@ -5,7 +5,10 @@
         defaults: {
             name: {value:""},
             key: {value:""},
-            locationOfImg: {value:""}
+            locationOfImg: {value:""},
+            acao: {value:""},
+            label: {value:""}
+            
         },
         inputs:1,
         outputs:1,
@@ -36,10 +39,20 @@
         <input type="text" id="node-input-key" placeholder="key">
     </div>
     <div class="form-row">
-        <label for="node-input-locationOfImg">locationOfImg <i class="icon-text"></i></label>
+        <label for="node-input-locationOfImg">LocationOfImg <i class="icon-text"></i></label>
         <input type="text" id="node-input-locationOfImg" placeholder="locationOfImg">
     </div>
-
+    <div class="form-row">
+        <label for="node-input-acao">Ação <i class="icon-action"></i></label>
+        <select id="node-input-acao" placeholder="Ação" value="C">
+            <option value="C">Classificar</option>
+            <option value="T">Treinar</option>
+        </select>
+    </div>
+        <div class="form-row">
+        <label for="node-input-label">Label <i class="icon-text"></i></label>
+        <input type="text" id="node-input-label" placeholder="label">
+    </div>
 </script>
 
 <script type="text/x-red" data-help-name="to-ml4k-img">
