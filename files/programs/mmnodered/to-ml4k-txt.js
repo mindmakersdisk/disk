@@ -65,7 +65,7 @@ module.exports = function(RED) {
           var msg = {payload:body.error};
           node.send(msg);
         } else {
-          console.log('body ',body);
+          //console.log('body ',body);
           
           if(node.acao == 'T' ){
              var msg = {payload: 'textdata: '+body.textdata+' & label: '+body.label, 
