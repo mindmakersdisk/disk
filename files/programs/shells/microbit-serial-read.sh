@@ -6,26 +6,24 @@ sair(){
   return 0
 }
 pergunta(){
-  echo -n "Pressione enter para continuar"
+  echo -n "Por quantos segundos os dados devem ser capturados? (Padrão: 60) "
   local SURE
   read SURE
   resposta=$SURE
 }
 
-echo "O programa irá coletar dados do micro:bit por 1 minuto."
+echo "O programa irá coletar dados do micro:bit."
 echo ""
-echo "E, após este tempo, irá gravar o arquivo "
+echo "Que devem estar em formato [tempo, luminosidade] "
 echo ""
-echo "screenlog.0 no ~/Desktop com os valores coletados"
-
+echo "O arquivo screenlog.0 será gravado no ~/Desktop com os valores coletados."
+echo ""
 pergunta;
-if [ "$resposta" = "sim" ] || [ "$resposta" = "s" ] || [ "$resposta" = "yes" ] || [ "$resposta" = "y" ] || [ "$resposta" = "" ]; then
-  sudo bash /home/mindmakers/programs/shells/microbit-serial-kill.sh &
-  rm -f ~/Desktop/screenlog.0
-  cd ~/Desktop
-  screen -L screenlog.0 /dev/ttyACM0 115200
-else
-  sair;
-fi
+
+sudo bash /home/mindmakers/programs/shells/microbit-serial-kill.sh $resposta &
+rm -f ~/Desktop/screenlog.0
+cd ~/Desktop
+screen -L screenlog.0 /dev/ttyACM0 115200
+
 
 $SHELL
