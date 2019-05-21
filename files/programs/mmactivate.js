@@ -1,22 +1,14 @@
 /*
   Inventário e Ativação Automatizada de Ativos
-
-  1. Aproxime um Sphero se desajar ativar junto, ou seja, alterar o atalho de execução e registrar o SPRK no inventário da escola (opcional)
-  2. Execute com o atalho adequado ou de terminal do diretório /home/mindmakers/programas -> "sudo node mmactivate.js".
-
   Paulo Alvim 03/2019
   Copyright(c) Mind Makers Editora Educacional Ltda. Todos os direitos reservados
 */
 
 const request = require('request')
 //const si = require('systeminformation')
-var noble = require('/home/mindmakers/programs/node_modules/noble/index.js')
 var inquirer = require('inquirer');
 var fs = require('fs');
 var gcloudRegistry = require('./mmallocatecloud');
-
-// Este serviço foi concebido para rodar local, por isso o uso de variáveis globais
-var global_jsondevicelist=[];
 
 // Registrados
 var escolainfo=''
@@ -29,7 +21,6 @@ var sala_registrado = '1';
 var estacao_registrado = '';
 
 // Identificados
-var sprk_identificado='';
 var pi_identificado=''
 var sd_identificado=''
 var versaoImagemDisco='';
@@ -70,15 +61,13 @@ fs.readFile('/home/mindmakers/school.info', function(err,data)
               sdIni = escolainfo.indexOf('SD:')+3;
               sd_registrado= escolainfo.substring(sdIni,escolainfo.indexOf('||',sdIni)).trim();
               //console.log(sd_registrado);
-              sprkIni = escolainfo.indexOf('Sphero:')+7
-              sprk_registrado= escolainfo.substring(sprkIni,escolainfo.indexOf('||',sprkIni)).trim();
-              //console.log(sprk_registrado);
               salaIni = escolainfo.indexOf('Sala:')+5
               sala_registrado= escolainfo.substring(salaIni,escolainfo.indexOf('||',salaIni)).trim();
               //console.log(sala_registrado);
               estacaoIni = escolainfo.indexOf('Estação:')+8
               estacao_registrado= escolainfo.substring(estacaoIni,escolainfo.indexOf('||',estacaoIni)).trim();
               //console.log(estacao_registrado);
+            
             console.log('');
             console.log(escolainfo.replace(/\|\|/g,''));
             console.log('');
@@ -100,63 +89,10 @@ fs.readFile('/home/mindmakers/school.info', function(err,data)
 
             }
 
-
-            noble.on('stateChange', function(state) {
-              if (state === 'poweredOn') {
-                console.log('Procurando por Sphero SPRK+ a menos de 20cm...');
-                noble.startScanning();
-              } else {
-                console.log('Encerrando procura');
-                noble.stopScanning();
-              }
-            });
+            executaRegistros();
 
           }
         });
-
-noble.on('discover', function(peripheral) {
-
-  numeroScans++;
-
-  //console.log('Encontrou dispositivos bluetooth low energy (BLE). Scan no. '+numeroScans);
-
-  if (peripheral.rssi>-65  && (
-            (''+peripheral.advertisement.localName).indexOf('SK') == 0 ||
-            (''+peripheral.advertisement.localName).indexOf('Sphero')==0)) {
-
-      console.log('Sphero SPRK+:'+peripheral.address + ' [Nome:'+peripheral.advertisement.localName +
-                ', Conectável:' + peripheral.connectable + ', RSSI:' + peripheral.rssi+']');
-      console.log('');
-
-
-      global_jsondevicelist.push({"address":peripheral.address,
- 				"localname":peripheral.advertisement.localName,
-				"rssi":peripheral.rssi,
-				"manufacter":JSON.stringify(peripheral.advertisement.manufacturerData.toString('hex'))});
-
-      // registro completo se houver alguma diferença
-      sprk_identificado = peripheral.address+'';
-      noble.stopScanning();
-
-      executaRegistros();
-
-  }
-
-  if (numeroScans>=4 && global_jsondevicelist.length==0) {
-
-    if (!modoregistro) {
-
-       console.log('Não localizei um Sphero SPRK+ próximo. Se desejar registrar,aproxime uma unidade a menos de 20cm para identificação automática.');
-       console.log('');
-       noble.stopScanning();
-
-       executaRegistros();
-    }
-
-  }
-
-
-});
 
 var questions = [
   {
@@ -251,33 +187,6 @@ var questionsHeadless = [
 
 ];
 
-
-var questionsSphero = [
-  {
-    type: 'confirm',
-    name: 'opcao',
-    message: "Deseja ativar o Sphero acima identificado para uso nessa estação?"
-
-  },
-  {
-    type: 'input',
-    name: 'login',
-    message: "Informe seu usuário Mind Makers:",
-     when: function (answers) {
-      return answers.opcao;
-    }
-  },
-  {
-    type: 'password',
-    name: 'senha',
-    message: "Senha:",
-    when: function (answers) {
-      return answers.opcao;
-    }
-  }
-
-];
-
 var questionsLoginSimplificado = [
   {
     type: 'list',
@@ -350,22 +259,7 @@ function getPiSerial(){
 
 function executaRegistros() {
 
-
-   if (soSpheroPendente()) {
-     // Faz registro somente do Sphero
-
-      modoregistro=true;
-      inquirer.prompt(questionsSphero).then(answers => {
-        if (answers.opcao) {
-          atualizaAtalhoSphero();
-          registraSpheroPlataforma(answers);
-          totalAcessosPlataformaPendentes=1;
-          servicoRecorrente=setInterval(monitoraAcessosAssincronosPlataforma,2000);
-        }
-        modoregistro=false;
-      });
-
-   } else if (tudoOk()) {
+    if (tudoOk()) {
 
       // Opção de Login Simplificao apenas
       modoregistro=true;
@@ -428,7 +322,6 @@ function executaRegistros() {
             estacao_informado=answers.codigo;
 
             registraAtivosEscolaPlataforma(answers);
-            atualizaAtalhoSphero();
 
             if (perguntas===questions)
                 atualizaAtalhoLoginSimplificadoEscola(answers);
@@ -447,22 +340,10 @@ function executaRegistros() {
   }
 }
 
-
-function soSpheroPendente() {
-
-//console.log('identificado='+sprk_identificado+ ' registrado = '+sprk_registrado);
-
-  return (pi_identificado == pi_registrado) &&
-        (sd_identificado == sd_registrado) &&
-        (sprk_identificado!='' && sprk_identificado!=sprk_registrado);
-
-}
-
 function tudoOk() {
 
-  return (pi_identificado == pi_registrado) &&
-        (sd_identificado == sd_registrado) &&
-        (sprk_identificado=='' || sprk_identificado==sprk_registrado);
+  return pi_identificado == pi_registrado &&
+        sd_identificado == sd_registrado;
 
 }
 
@@ -592,86 +473,11 @@ function atualizaVersaoEstacao(escolaid,pi,sd,versao,sala,estacao,indInstrutor) 
 }
 
 
-function registraSpheroPlataforma(resposta) {
-
-    if (sprk_identificado=='')
-       return;
-
-    // Registra SPRK+
-   // console.log('chave = '+sprk_identificado);
-
-     request({url: 'https://mindmakers.cc/api/Escolas/ativo/publico',
-            method: 'POST',
-            json: {
-              'username':resposta.login,
-              'password':resposta.senha,
-              'tipo':'SPRKPlus',
-              'alocadoescola':escolaid,
-              'chaveNatural':sprk_identificado,
-              'acao': 'registrar',
-              'observacao': 'ativação automática'}
-            },
-            function(error, response, body){
-               // console.log('ERROR ---------------------------');
-               // console.log(error);
-             //   console.log('RESPONSE---------------------------');
-             //   console.log(response);
-              //  console.log('BODY---------------------------');
-              //  console.log(body);
-                if (!body.success || error) {
-                    if (!body.success){
-                      console.log('Erro ao registrar SPRK+: '+JSON.stringify(body.err));
-                    }else{
-                      console.log('Erro ao registrar SPRK+: '+error);
-                    }
-                } else {
-                    totalAcessosPlataformaPendentes=totalAcessosPlataformaPendentes-1;
-                    console.log('SPRK+ registrado com sucesso! ');
-                }
-            }
-        );
-
-}
-
 
 
 
 /* FUNÇÕES QUE ATUALIZAM INFORMAÇṌES LOCAIS*/
 
-/* Atualiza atalho do servidor Sphero */
-function atualizaAtalhoSphero() {
-
-  if (sprk_identificado=='') {
-     console.log('Não modificou o atalho do Sphero pois não encontrou nenhum SPRK+ próximo');
-       return;
-  }
-
-  var sprkshell = fs.readFileSync('/home/mindmakers/programs/shells/sphero-connect+.sh')+'';
-
-   // substitui macaddress
-   var ponto_chave = sprkshell.indexOf('.js')+3;
-
-    sprkshell_parteinicial=sprkshell.substring(0,ponto_chave);
-
-    sprkshell_partefinal=sprkshell.substring(sprkshell.indexOf('sudo fuser',ponto_chave)-1);
-
-    sprkshell_novo=sprkshell_parteinicial+' '+sprk_identificado+'\n'+sprkshell_partefinal;
-
-   // grava
-
-  fs.writeFile('/home/mindmakers/programs/shells/sphero-connect+.sh', sprkshell_novo, function(err,data)
-        {
-          if (err)
-              console.log(err);
-          else {
-
-            console.log('Alterou a configuração para usar o Sphero '+sprk_identificado+' neste computador!');
-
-          }
-        }
-        );
-
-}
 
 function statPath(path) {
 
@@ -801,11 +607,6 @@ function atualizaSchoolInfo() {
      sd_registrado=sd_identificado;
   }
 
-  // Muda Sphero?
-  if (sprk_registrado!=sprk_identificado && sprk_identificado!='') {
-     sprk_registrado=sprk_identificado;
-  }
-
   // Muda Sala?
   if (sala_registrado!=sala_informado && sala_informado!='') {
      sala_registrado=sala_informado;
@@ -821,7 +622,6 @@ function atualizaSchoolInfo() {
                          "Nome: "+escolanome+"||\n"+
                          "Pi: "+pi_registrado+"||\n"+
                          "SD: "+sd_registrado+"||\n"+
-                         "Sphero: "+sprk_registrado+"||\n"+
                          "Sala: "+sala_registrado+"||\n"+
                          "Estação: "+estacao_registrado+"||\n"+
                          "--------------------------------------------";

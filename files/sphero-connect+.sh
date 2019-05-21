@@ -3,22 +3,10 @@ sudo fuser -k 80/tcp
 
 echo "********************************************************************************" 
 echo "*                                                                              *" 
-echo "*               O seu Sphero será conectado!                                   *" 
-echo "*                                                                              *" 
-echo "*               NÃO feche esta janela. Se fechar, o Sphero poderá apresentar   *" 
-echo "*               comportamento indesejado na próxima conexão.                   *" 
-echo "*                                                                              *" 
-echo "*               Utilize o Desconecta Sphero                                    *" 
-echo "*                                                                              *" 
-echo "*               para encerrar a conexão ao terminar as atividades ou           *"
-echo "*                                                                              *"  
-echo "*               em caso de mensagens de erro durante a utilização.             *" 
-echo "*                                                                              *" 
+echo "*               Serviço de configuração e conexão do Sphero!                   *" 
 echo "*                                                                              *" 
 echo "********************************************************************************" 
 
-sleep 5
-
-sudo nodejs /home/mindmakers/programs/mmsphero-server.js XX:XX:XX:XX:XX:XX  
+sudo nodejs /home/mindmakers/programs/mmsphero-server.js XX:XX:XX:XX:XX:XX
 
 sudo fuser -k 80/tcp
