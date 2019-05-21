@@ -17,7 +17,7 @@
     command: nodejs mmversionupdate.js
     args:
       chdir: /home/mindmakers/programs
-    when: semregistro.matched == 0
+    when: semregistro.matched != 0
   - name: Verifica Versao npm
     command: npm --version
     register: npm_output
