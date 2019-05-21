@@ -42,7 +42,7 @@ then
     then
 
       lxterminal -e vnstat -l -i wlan0
-      
+
     else
       echo "Nenhuma conexão de rede encontrada"
       run;

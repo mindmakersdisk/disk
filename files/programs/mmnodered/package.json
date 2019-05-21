@@ -16,6 +16,8 @@
             "sphero-hitted": "sphero-hitted.js",
             "prog-mbot": "program-mbot.js",
             "from-mbot": "from-mbot.js",
+            "to-ml4k-img": "to-ml4k-img.js",
+            "to-ml4k-txt": "to-ml4k-txt.js",
             "to-station": "to-station.js",  
             "from-station": "from-station.js",
             "to-microbit": "to-microbit.js",

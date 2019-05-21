@@ -1,9 +1,40 @@
 - hosts: localhost
 
   tasks:
-  - include: tasks/tightvnc.yml
+  #- include: tasks/tightvnc.yml
 #Tarefa fixa para instalar tighvncserver se não estiver instalado.
-  - include: tasks/python.yml
+  - name: instalação ansible 2.7 via pip
+    pip:
+       name: ansible~=2.7.0
+
+
+  # - name: Verificando OS em inglês
+  #   shell: 'cat /etc/default/locale | grep LANG= '
+  #   register: lang
+  # - file:
+  #     path: /home/pi/Desktop/scratch2_folder.desktop
+  #     state: touch
+  #     attributes: -i
+  #   when: lang.stdout.find('LANG=en') != -1
+  # - name: Alterando atalho da pasta Scratch2
+  #   lineinfile:
+  #     path: /home/pi/Desktop/scratch2_folder.desktop
+  #     regexp: '^Exec=pcmanfm /home/mindmakers/Scratch2/portuguese'
+  #     line: 'Exec=pcmanfm /home/mindmakers/Scratch2/english'
+  #     backrefs: yes
+  #   when: lang.stdout.find('LANG=en') != -1
+
+  # - file:
+  #     path: /home/pi/Desktop/scratch2_folder.desktop
+  #     state: touch
+  #     attributes: +i
+  # - file:
+  #     path: /home/pi/Scratch2
+  #     state: absent
+  # - shell: 'sudo ln -s /home/mindmakers/Scratch2/english /home/pi/Scratch2'
+  #   when: lang.stdout.find('LANG=en') != -1
+  # - shell: 'sudo ln -s /home/mindmakers/Scratch2/portuguese /home/pi/Scratch2'
+  #   when: lang.stdout.find('LANG=pt') != -1
 
   # - name: Copiando arquivo de inicialização do mqtt
   #   copy:
