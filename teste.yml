@@ -17,7 +17,7 @@
        path: /home/mindmakers/school.info
        state: present
        regexp: '^Pi: "\"d+'
-       register: semregistro2
+    register: semregistro2
   - debug:
        var: semregistro2
   
