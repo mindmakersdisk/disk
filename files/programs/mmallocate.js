@@ -21,6 +21,14 @@ var idescola_informado='';
 var escolainfo=''
 var escolaid='';
 var escolanome='';
+var pi_registrado='';
+var sd_registrado='';
+var sala_registrado = '1';
+var estacao_registrado = '';
+var sphero_registrado='';
+var littlebits_registrado='';
+var mbot_registrado='';
+var microbit_registrado='';
 
 // Recuperados
 var escolanome_recuperado='';
@@ -47,15 +55,32 @@ fs.readFile('/home/mindmakers/school.info', function(err,data)
               sdIni = escolainfo.indexOf('SD:')+3;
               sd_registrado= escolainfo.substring(sdIni,escolainfo.indexOf('||',sdIni)).trim();
               //console.log(sd_registrado);
-              sprkIni = escolainfo.indexOf('Sphero:')+7
-              sprk_registrado= escolainfo.substring(sprkIni,escolainfo.indexOf('||',sprkIni)).trim();
-              //console.log(sprk_registrado);
               salaIni = escolainfo.indexOf('Sala:')+5
               sala_registrado= escolainfo.substring(salaIni,escolainfo.indexOf('||',salaIni)).trim();
               //console.log(sala_registrado);
               estacaoIni = escolainfo.indexOf('Estação:')+8
               estacao_registrado= escolainfo.substring(estacaoIni,escolainfo.indexOf('||',estacaoIni)).trim();
               //console.log(estacao_registrado);
+              spheroIni = escolainfo.indexOf('Sphero:')+7
+              if (spheroIni==6)
+                  spheroIni='';
+              else
+                  sphero_registrado= escolainfo.substring(spheroIni,escolainfo.indexOf('||',spheroIni)).trim();
+              littlebitsIni = escolainfo.indexOf('littlebits:')+11
+              if (littlebitsIni==10)
+                  littlebits_registrado='';
+              else
+                littlebits_registrado= escolainfo.substring(littlebitsIni,escolainfo.indexOf('||',littlebitsIni)).trim();
+              mbotIni = escolainfo.indexOf('mbot:')+5
+              if (mbotIni==4)
+                  mbot_registrado='';
+              else
+                  mbot_registrado= escolainfo.substring(mbotIni,escolainfo.indexOf('||',mbotIni)).trim();
+              microbitIni = escolainfo.indexOf('microbit:')+9
+              if (microbitIni==8)
+                  microbit_registrado='';
+              else
+                  microbit_registrado= escolainfo.substring(microbitIni,escolainfo.indexOf('||',microbitIni)).trim();
 
             console.log('');
             console.log(escolainfo.replace(/\|\|/g,''));
@@ -201,9 +226,12 @@ function atualizaSchoolInfo() {
                          "Nome: "+escolanome+"||\n"+
                          "Pi: Não registrado||\n"+
                          "SD: Não registrado||\n"+
-                         "Sphero: ||\n"+
                          "Sala: ||\n"+
                          "Estação: ||\n"+
+                         "Sphero: ||\n"+
+                         "littlebits: ||\n"+
+                         "mbot: ||\n"+
+                         "microbit: ||\n"+
                          "--------------------------------------------";
 
   fs.writeFile('/home/mindmakers/school.info', escolainfoatualizada, function(err,data)
