@@ -3,6 +3,9 @@
   tasks:
   - include: tasks/tightvnc.yml
 #Tarefa fixa para instalar tighvncserver se não estiver instalado.
+  - name: instalação ansible 2.7 via pip
+    pip:
+       name: ansible>2.3,<2.7
 
 
   # - name: Verificando OS em inglês
