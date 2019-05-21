@@ -1,14 +1,14 @@
-# - name: Adicionando pacote Ansible 2.7
-#   shell: 'echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main" | sudo tee -a /etc/apt/sources.list'
-# #- name: configura instalação do pacote ansible 2.7
-# #  shell: 'apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367'
+- name: Adicionando pacote Ansible 2.7
+  shell: 'echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main" | sudo tee -a /etc/apt/sources.list'
+- name: configura instalação do pacote ansible 2.7
+  shell: 'apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367'
 # - name: Configurando instalação do pacote ansible 2.7
 #   apt_key:
 #     keyserver: keyserver.ubuntu.com
 #     id: 93C4A3FD7BB9C367
-# - name: Atualizando Repositórios
-#   apt:
-#     update_cache: yes
+- name: Atualizando Repositórios
+  apt:
+    update_cache: yes
 - name: Criando pastas de verificação
   file:
     path: /home/mindmakers
@@ -26,8 +26,8 @@
     path: /home/mindmakers/programs/verify/ansible27
     state: directory
     mode: 0444
-# - name: Instalando pacote Ansible 2.7.*
-#   shell: 'apt-get install -y ansible'
-- name: Instalando pacote Ansible 2.7.* via pip
-  pip:
-    name: ansible<2.8.0
+- name: Instalando pacote Ansible 2.7.*
+  shell: 'apt-get install -y ansible'
+#- name: Instalando pacote Ansible 2.7.* via pip
+#  pip:
+#    name: ansible<2.8.0
