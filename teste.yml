@@ -8,17 +8,17 @@
     find:
        paths: /home/mindmakers/
        patterns: 'school.info'
-       contains: "^Pi: '\'d+"
+       contains: "^Pi: [0-9]+"
        use_regex: yes
     register: semregistro
   - debug:
        var: semregistro
-  - lineinfile:
-       path: /home/mindmakers/school.info
-       regexp: '^Pi: "\"d+'
-    register: semregistro2
-  - debug:
-       var: semregistro2
+  #- lineinfile:
+  #     path: /home/mindmakers/school.info
+  #     regexp: '^Pi: "\"d+'
+  #  register: semregistro2
+  #- debug:
+  #     var: semregistro2
   
 
   - name: Executando version_update.js
