@@ -10,6 +10,8 @@
        patterns: "^Pi: [0-9]"
        use_regex: yes
     register: semregistro
+  - debug:
+       var: dpkg_check
 
   - name: Executando version_update.js
     command: nodejs mmversionupdate.js
