@@ -13,6 +13,9 @@
     state: directory
     attributes: -i
     recurse: yes
+- file:
+    path: "/home/pi/Área de Trabalho/sphero_disconnect.desktop"
+    state: absent
 - name: Copiando update.desktop para o Desktop
   copy:
      src: files/update.desktop
