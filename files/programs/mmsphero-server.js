@@ -10,13 +10,23 @@
   Copyright(c) Mind Makers Editora Educacional Ltda. Todos os direitos reservados
 */
 
-// Alvim 20/12/2016
-// Este servidor foi concebido para rodar local, por isso o uso de estado em variáveis globais
-// captura macaddress como argumento
-var args = process.argv.slice(2)
-var macaddressArg=args[0]
+// Registrados
+var escolainfo=''
+var escolaid='';
+var escolanome='';
+var pi_registrado='';
+var sd_registrado='';
+var sala_registrado = '1';
+var estacao_registrado = '';
+var sphero_registrado='';
+var littlebits_registrado='';
+var mbot_registrado='';
+var microbit_registrado='';
+
+
+var macaddressArg;
+var escolaid;
 var code = ""
-var macaddress = ""
 var currentAngle=0;  // para frente
 var eConfig=true;
 
@@ -25,6 +35,84 @@ var fs = require('fs');
 var noble = require('/home/mindmakers/programs/node_modules/noble/index.js')
 const request = require('request')
 var modoRegistro = false;
+
+              
+fs.readFile('/home/mindmakers/school.info', function(err,data)
+    {
+      if (err) {
+          console.log("Essa estação ainda não está ativada. Ative antes de usar o Sphero");
+          process.exit(1);
+      } else {
+
+      
+              escolainfo = data.toString();
+              escolaidIni =escolainfo.indexOf('Cód.:')+5;
+              escolaid= escolainfo.substring(escolaidIni,escolainfo.indexOf('||'),escolaidIni).trim();
+              //console.log(escolaid);
+              escolanomeIni =escolainfo.indexOf('Nome:')+5;
+              escolanome= escolainfo.substring(escolanomeIni,escolainfo.indexOf('||',escolanomeIni)).trim();
+              //console.log(escolanome);
+              piIni = escolainfo.indexOf('Pi:')+3;
+              pi_registrado= escolainfo.substring(piIni,escolainfo.indexOf('||',piIni)).trim();
+              //console.log(pi_registrado);
+              sdIni = escolainfo.indexOf('SD:')+3;
+              sd_registrado= escolainfo.substring(sdIni,escolainfo.indexOf('||',sdIni)).trim();
+              //console.log(sd_registrado);
+              salaIni = escolainfo.indexOf('Sala:')+5
+              sala_registrado= escolainfo.substring(salaIni,escolainfo.indexOf('||',salaIni)).trim();
+              //console.log(sala_registrado);
+              estacaoIni = escolainfo.indexOf('Estação:')+8
+              estacao_registrado= escolainfo.substring(estacaoIni,escolainfo.indexOf('||',estacaoIni)).trim();
+              //console.log(estacao_registrado);
+              spheroIni = escolainfo.indexOf('Sphero:')+7
+              sphero_registrado= escolainfo.substring(spheroIni,escolainfo.indexOf('||',spheroIni)).trim();
+              littlebitsIni = escolainfo.indexOf('littlebits:')+11
+              littlebits_registrado= escolainfo.substring(littlebitsIni,escolainfo.indexOf('||',littlebitsIni)).trim();
+              mbotIni = escolainfo.indexOf('mbot:')+5
+              mbot_registrado= escolainfo.substring(mbotIni,escolainfo.indexOf('||',mbotIni)).trim();
+              microbitIni = escolainfo.indexOf('microbit:')+9
+              microbit_registrado= escolainfo.substring(microbitIni,escolainfo.indexOf('||',microbitIni)).trim();
+          
+              macaddressArg = sphero_registrado;
+              console.log(macaddressArg);
+              
+              if (macaddressArg != undefined && macaddressArg != null && macaddressArg !='' && macaddressArg !='XX:XX:XX:XX:XX:XX') {
+                  
+                  // Tem um Sphero configurado
+
+                  var acaoDefaultTemporal=setTimeout(acionaRegistradoTemporal,7000);
+                  
+                  inquirer.prompt(questionsConfigurado).then(answers => {
+
+                        if (acaoDefaultTemporal) 
+                            clearTimeout(acaoDefaultTemporal);
+
+                        if (answers.usarOuConfigurar==USAR_REGISTRADO) {
+                          // Conexão normal
+                          console.log('Vai conectar com Sphero pré-configurado');
+                          controlaSphero();
+                          
+                        } else {
+                          // Registrar um novo
+                          procurarNovoSphero();
+                          
+                        }
+
+
+                    });
+
+
+              } else {
+
+                 // Não tem um Sphero configurado
+                 procurarNovoSphero();
+
+              }
+              
+      }
+      
+    });
+
 
 /******************************************************************
  *  Perguntas, configuração do macaddress e registro na plataforma
@@ -70,37 +158,38 @@ function atualizaAtalhoSphero() {
        return;
   }
 
-  var sprkshell = fs.readFileSync('/home/mindmakers/programs/shells/sphero-connect+.sh')+'';
+  escolainfoatualizada = "----- Identificação de Desktop Mind Makers ------\n" +
+                         "Cód.: "+escolaid+"||\n"+
+                         "Nome: "+escolanome+"||\n"+
+                         "Pi: "+pi_registrado+"||\n"+
+                         "SD: "+sd_registrado+"||\n"+
+                         "Sala: "+sala_registrado+"||\n"+
+                         "Estação: "+estacao_registrado+"||\n"+
+                         "Sphero: "+macaddressArg+"||\n"+
+                         "littlebits: "+littlebits_registrado+"||\n"+
+                         "mbot: "+mbot_registrado+"||\n"+
+                         "microbit: "+microbit_registrado+"||\n"+
+                         "--------------------------------------------";
 
-   // substitui macaddress
-   var ponto_chave = sprkshell.indexOf('.js')+3;
-
-    sprkshell_parteinicial=sprkshell.substring(0,ponto_chave);
-
-    sprkshell_partefinal=sprkshell.substring(sprkshell.indexOf('sudo fuser',ponto_chave)-1);
-
-    sprkshell_novo=sprkshell_parteinicial+' '+macaddressArg+'\n'+sprkshell_partefinal;
-
-   // grava
-
-  fs.writeFile('/home/mindmakers/programs/shells/sphero-connect+.sh', sprkshell_novo, function(err,data)
+  fs.writeFile('/home/mindmakers/school.info', escolainfoatualizada, function(err,data)
         {
-          if (err)
+          if (err) {
               console.log(err);
-          else {
-
-//            console.log('\x1b[0m\x1b[1m', 'Alterou a configuração para usar o Sphero '+macaddressArg+' neste computador!');
+              // Encerra com falha
+              process.exit(1);
+          } else {
             
             console.error('\x1b[32m',       '---------------------------------------------------');
             console.error('\x1b[0m\x1b[32m','-- Alterou a configuração para usar o Sphero   ----');
             console.error('\x1b[0m\x1b[1m', '            '+macaddressArg);
             console.error('\x1b[0m\x1b[1m', '-- Chame novamente para ativar o controlador   ----');
             console.error('\x1b[0m\x1b[32m','-- Esta janela fecha em 7 segundos...          ----');
-            console.log('');            
+            console.log('');   
 
           }
-        }
-        );
+
+        
+        });
 
 }
 
@@ -123,7 +212,7 @@ var autenticacao = [
   }
 ];
 
-var escolaid;
+
 
 function registraSpheroPlataforma() {
 
@@ -134,22 +223,8 @@ function registraSpheroPlataforma() {
 
     inquirer.prompt(autenticacao).then(autenticacao => {
 
-        fs.readFile('/home/mindmakers/school.info', function(err,data)
-            {
-              if (err) {
-                  console.log(err);
-                  process.exit(1);
-              } else {
-
-                  escolainfo = data.toString();
-                  escolaidIni =escolainfo.indexOf('Cód.:')+5;
-                  escolaid= escolainfo.substring(escolaidIni,escolainfo.indexOf('||'),escolaidIni).trim();
-
-                  registraAposConferirAtivacao(autenticacao.login,autenticacao.senha);  
-              }
-              
-            });
-
+       registraAposConferirAtivacao(autenticacao.login,autenticacao.senha);  
+    
     });
 
 }
@@ -191,7 +266,6 @@ function registraAposConferirAtivacao(login,senha) {
                             }else{
                               console.error('\x1b[31m','Erro ao registrar Sphero: '+error);
                             }
-                             atualizaAtalhoSphero();
                              setTimeout(encerraAposLeitura,15000);  
                         } else {
                             console.log('\x1b[32m','Sphero registrado na plataforma com sucesso! ');
@@ -207,39 +281,6 @@ function registraAposConferirAtivacao(login,senha) {
   
 }
 
-if (macaddressArg != undefined && macaddressArg != null && macaddressArg !='' && macaddressArg !='XX:XX:XX:XX:XX:XX') {
-	  
-    // Tem um Sphero configurado
-    macaddress=macaddressArg;
-
-    var acaoDefaultTemporal=setTimeout(acionaRegistradoTemporal,7000);
-    
-    inquirer.prompt(questionsConfigurado).then(answers => {
-
-          if (acaoDefaultTemporal) 
-              clearTimeout(acaoDefaultTemporal);
-
-          if (answers.usarOuConfigurar==USAR_REGISTRADO) {
-            // Conexão normal
-            console.log('Vai conectar com Sphero pré-configurado');
-            controlaSphero();
-            
-          } else {
-            // Registrar um novo
-            procurarNovoSphero();
-            
-          }
-
-
-      });
-
-
-} else {
-
-   // Não tem um Sphero configurado
-   procurarNovoSphero();
-
-}
 
 var ks = require('node-key-sender');
 
@@ -547,7 +588,7 @@ app.get('/dispositivocorrente', (request, response) => {
   }
 
   response.json({
-    dispositivo: macaddress
+    dispositivo: macaddressArg
   })
 })
 
@@ -650,21 +691,12 @@ ipc.serveNet(
                 ipc.log('Recebeu mensagem de', (data.id), (data.message));
                 console.log('vai enviar para sphero '+data.message);
                 //code = data.message.replaceAll('sprk.','bb8.');
-<<<<<<< HEAD
 		code = data.message;
-=======
-                code = data.message;
-                setTimeout(limitaMovimento,2000);
->>>>>>> 927c875d432dc12f04ae696aa6c05457301ebe90
             }
         );
     }
 );
 
-function limitaMovimento() {
-  
-  code="wait(1);bb8.roll(0)";
-}
 
 function temNodeRedConectado() {
 
