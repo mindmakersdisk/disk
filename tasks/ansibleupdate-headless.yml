@@ -1,5 +1,11 @@
 - name: Adicionando pacote Ansible 2.7
   shell: 'echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main" | sudo tee -a /etc/apt/sources.list'
+# - name: Adicionando pacote Ansible 2.7
+#   lineinfile:
+#       path: /etc/apt/sources.lis
+#       regexp: 'deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main'
+#       line: 'deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main'
+#       insertafter: EOF
 - name: Add an apt key by id from a keyserver
   apt_key:
     keyserver: keyserver.ubuntu.com

@@ -14,6 +14,9 @@
     attributes: -i
     recurse: yes
 - file:
+    path: "/home/pi/Área de Trabalho/sphero_disconnect.desktop"
+    state: absent
+- file:
     path: /home/pi/Desktop/mblock.desktop
     state: absent
 - file:

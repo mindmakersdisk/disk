@@ -13,6 +13,9 @@
     state: directory
     attributes: -i
     recurse: yes
+- file:
+    path: "/home/pi/Área de Trabalho/sphero_disconnect.desktop"
+    state: absent
 - name: Verificando ícone mindmakers.desktop
   stat:
      path: "/home/pi/Área de Trabalho/mindmakers.desktop"
