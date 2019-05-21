@@ -30,4 +30,4 @@
 #   shell: 'apt-get install -y ansible'
 - name: Instalando pacote Ansible 2.7.* via pip
   pip:
-    name: ansible>2.7,<2.8
+    name: ansible>2.3,<2.8
