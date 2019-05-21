@@ -1,7 +1,7 @@
 #!/bin/bash
 
 resposta=$1
-		
+
 if [ -n "$resposta" ]
 then
 	tempo=$resposta

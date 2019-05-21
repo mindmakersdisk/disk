@@ -15,15 +15,15 @@ caminho=/home/pi/Pictures
 ip=$1
 if [ -n "$ip" ]
 then
-   resposta=$ip
+	resposta=$ip
 else
-   pergunta;
+	pergunta;
 fi
 
 if [ -n "$resposta" ]
 then
-   sudo wget -O $caminho/$data.jpg "$resposta/photoaf.jpg"
-   echo $caminho/$data.jpg 2>&1
+	sudo wget -O $caminho/$data.jpg "$resposta/photoaf.jpg"
+	echo $caminho/$data.jpg 2>&1
 else
-   echo "Nenhum caminho informado, tente novamente informando um Ip válido!"
+	echo "Nenhum caminho informado, tente novamente informando um Ip válido!"
 fi

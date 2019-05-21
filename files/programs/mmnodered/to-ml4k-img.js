@@ -14,14 +14,14 @@ module.exports = function(RED) {
     this.acao = config.acao;
     this.label = config.label;
 
-    
+
     let node = this;
 
     const request = require('request');
     var fs = require('fs');
 
     node.on('input', function(msg) {
-      
+
       //TODO, validar que msg.payload começa com / e termina com .jpg ou .png
 
       if (isNaN(msg.payload+'')) {
@@ -33,30 +33,30 @@ module.exports = function(RED) {
            node.locationOfImg = msg.payload;
 
            //console.log('lastMsg exite',msg.payload);
-           
+
         }else if (node.locationOfImg=='') {
-          
+
           node.locationOfImg = msg.payload;
-          
+
           var lastMsg = msg.payload;
           //armazena a ultima mensagem para comparação.
         }
 
       }
-      
+
       var bitmap = fs.readFileSync(node.locationOfImg);
       //console.log('bitmap',bitmap);
       // convert binary data to base64 encoded string
       var img = new Buffer(bitmap).toString('base64');
-      
+
       //TODO, parar se (node.acao == 'treinar' && node.locationOfImg == '')
-      
-      
+
+
       node.acao = node.acao.replace(/[\n\t\r]/g,"");
       //precisa retirar para funcionar.
-              
 
-      
+
+
       if(node.acao == 'T' ){
         var jsonMsg = {"data" : img,
                        "label": node.label };
@@ -85,21 +85,21 @@ module.exports = function(RED) {
           node.send(msg);
         } else {
           //console.log('body ',body);
-          
+
           if(node.acao == 'T' ){
-             var msg = {payload: 'stored: '+body.isstored+' & label: '+body.label, 
-                        stored: body.isstored, 
+             var msg = {payload: 'stored: '+body.isstored+' & label: '+body.label,
+                        stored: body.isstored,
                         label: body.label};
-             
+
            }else{
-             var msg = {payload: 'result: '+body[0].class_name+' & confidence: '+body[0].confidence+'%', 
-                        result: body[0].class_name, 
+             var msg = {payload: 'result: '+body[0].class_name+' & confidence: '+body[0].confidence+'%',
+                        result: body[0].class_name,
                         confidence: body[0].confidence+'%'};
            }
-          
+
           console.log('msg ',msg);
           node.send(msg);
-          
+
 
         }
       }
