@@ -7,7 +7,7 @@
   - name: Ver se máquina já foi ativada para realizar a atualização de versão da plataforma.
     find:
        paths: /home/mindmakers/school.info
-       patterns: '^Pi: [0-9]+'
+       patterns: '^Pi: [0-9]'
        use_regex: yes
     register: semregistro
 
