@@ -173,7 +173,7 @@
   # when: not npmsphero.stat.exists
 - name: Instalando pacote do npm "key-sender"
   npm:
-    name: key-sender
+    name: node-key-sender
     #version: '39.2.0'
     path: /home/mindmakers/programs
   # when: not npmsphero.stat.exists
