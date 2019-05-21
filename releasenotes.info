@@ -2,6 +2,7 @@
 
 Versão 2.3 22/05/2019
 - Novo atalho de serviço Sphero, contendo configuração e controle integrados e reconexão mais resiliente
+- Remoção do atalho para desconectar Sphero, tornado desnecessário
 - Novo atalho de serviço microbit, contendo configuração e controle integrados e reconexão mais resiliente
 - Novo atalho de serviço littleBits BLE, contendo configuração e controle integrados e reconexão mais resiliente
 - Novo atalho de serviço mBot, contendo configuração e controle integrados e reconexão mais resiliente
