@@ -3,7 +3,7 @@
   find:
      paths: /home/mindmakers/
      patterns: 'school.info'
-     contains: 'Pi: \d+'
+     contains: "^Pi: [0-9]+"
      use_regex: yes
   register: semregistro
 
@@ -11,4 +11,4 @@
   command: nodejs mmversionupdate.js
   args:
     chdir: /home/mindmakers/programs
-  when: semregistro.matched == 0
+  when: semregistro.matched > 0
