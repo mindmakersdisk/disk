@@ -20,115 +20,493 @@ var macaddress = ""
 var currentAngle=0;  // para frente
 var eConfig=true;
 
-if (macaddressArg) {
-	macaddress=macaddressArg
+var inquirer = require('inquirer');
+var fs = require('fs');
+var noble = require('/home/mindmakers/programs/node_modules/noble/index.js')
+const request = require('request')
+var modoRegistro = false;
+
+/******************************************************************
+ *  Perguntas, configuração do macaddress e registro na plataforma
+ ******************************************************************/
+ const USAR_REGISTRADO="Usar Registrado";
+ const REGISTRAR_NOVO="Registrar Novo";
+ const REGISTRAR="Registrar";
+ 
+ var questionsConfigurado = [
+  {
+    type: 'list',
+    name: 'usarOuConfigurar',
+    message: "Usar Sphero registrado ou registrar um novo?",
+    default: USAR_REGISTRADO,
+    choices: [USAR_REGISTRADO,REGISTRAR_NOVO]
+  }
+];
+
+ var questionsNaoConfigurado = [
+  {
+    type: 'list',
+    name: 'configurar',
+    message: "Aproxime um Sphero carregado e aperte enter para configurá-lo nesta estação",
+    default: REGISTRAR,
+    choices: [REGISTRAR]
+  }
+];
+
+var questionsInformar = [
+  {
+    type: 'input',
+    name: 'macaddress',
+    message: "Informe o macaddress com 12 digitos sem ':' (ex.: cd09654dbd23) para configurar manualmente."
+    +" Ou aproxime o Sphero e aperte enter para retentar mais uma vez..."
+  }
+];
+
+/* Atualiza atalho do servidor Sphero */
+function atualizaAtalhoSphero() {
+
+  if (macaddressArg==null || macaddressArg=='') {
+     console.log('Não registrou o Sphero porque não recebeu um macaddress válido');
+       return;
+  }
+
+  var sprkshell = fs.readFileSync('/home/mindmakers/programs/shells/sphero-connect+.sh')+'';
+
+   // substitui macaddress
+   var ponto_chave = sprkshell.indexOf('.js')+3;
+
+    sprkshell_parteinicial=sprkshell.substring(0,ponto_chave);
+
+    sprkshell_partefinal=sprkshell.substring(sprkshell.indexOf('sudo fuser',ponto_chave)-1);
+
+    sprkshell_novo=sprkshell_parteinicial+' '+macaddressArg+'\n'+sprkshell_partefinal;
+
+   // grava
+
+  fs.writeFile('/home/mindmakers/programs/shells/sphero-connect+.sh', sprkshell_novo, function(err,data)
+        {
+          if (err)
+              console.log(err);
+          else {
+
+//            console.log('\x1b[0m\x1b[1m', 'Alterou a configuração para usar o Sphero '+macaddressArg+' neste computador!');
+            
+            console.error('\x1b[32m',       '---------------------------------------------------');
+            console.error('\x1b[0m\x1b[32m','-- Alterou a configuração para usar o Sphero   ----');
+            console.error('\x1b[0m\x1b[1m', '            '+macaddressArg);
+            console.error('\x1b[0m\x1b[1m', '-- Chame novamente para ativar o controlador   ----');
+            console.error('\x1b[0m\x1b[32m','-- Esta janela fecha em 7 segundos...          ----');
+            console.log('');            
+
+          }
+        }
+        );
+
 }
 
-var sphero = require("sphero"),
-    bb8 = sphero(args[0]);
+function encerraAposLeitura() {
+  
+  process.exit(1)
+  
+}
+
+var autenticacao = [
+  {
+    type: 'input',
+    name: 'login',
+    message: "Informe seu usuário na plataforma Mind Makers:"
+  },
+  {
+    type: 'password',
+    name: 'senha',
+    message: "Informe sua senha:"
+  }
+];
+
+var escolaid;
+
+function registraSpheroPlataforma() {
+
+    console.log('Entrou para registrar na plataforma...');
+
+    if (macaddressArg==null || macaddressArg=='')
+       return;
+
+    inquirer.prompt(autenticacao).then(autenticacao => {
+
+        fs.readFile('/home/mindmakers/school.info', function(err,data)
+            {
+              if (err) {
+                  console.log(err);
+                  process.exit(1);
+              } else {
+
+                  escolainfo = data.toString();
+                  escolaidIni =escolainfo.indexOf('Cód.:')+5;
+                  escolaid= escolainfo.substring(escolaidIni,escolainfo.indexOf('||'),escolaidIni).trim();
+
+                  registraAposConferirAtivacao(autenticacao.login,autenticacao.senha);  
+              }
+              
+            });
+
+    });
+
+}
+
+function registraAposConferirAtivacao(login,senha) {
+  
+         // Registra SPRK+
+        // console.log('Registrando o Sphero "'+macaddressArg+'" na plataforma.');
+
+         if (escolaid == undefined || escolaid==null || escolaid=='') {
+            console.error('\x1b[31m','----------------------------------------------------------------');
+            console.error('\x1b[31m','Não registrou na plataforma porque esta estação não está ativada');
+            console.error('\x1b[31m','----------------------------------------------------------------');
+            
+         } else {
+
+
+             request({url: 'https://mindmakers.cc/api/Escolas/ativo/publico',
+                    method: 'POST',
+                    json: {
+                      'username':login,
+                      'password':senha,
+                      'tipo':'SPRKPlus',
+                      'alocadoescola':escolaid,
+                      'chaveNatural':macaddressArg,
+                      'acao': 'registrar',
+                      'observacao': 'ativação automática'}
+                    },
+                    function(error, response, body){
+                       // console.log('ERROR ---------------------------');
+                       // console.log(error);
+                     //   console.log('RESPONSE---------------------------');
+                     //   console.log(response);
+                      //  console.log('BODY---------------------------');
+                      //  console.log(body);
+                        if (!body.success || error) {
+                            if (!body.success){
+                              console.error('\x1b[31m','Erro ao registrar Sphero: '+JSON.stringify(body.err));
+                            }else{
+                              console.error('\x1b[31m','Erro ao registrar Sphero: '+error);
+                            }
+                             atualizaAtalhoSphero();
+                             setTimeout(encerraAposLeitura,15000);  
+                        } else {
+                            console.log('\x1b[32m','Sphero registrado na plataforma com sucesso! ');
+                             // Modifica o atalho e variável
+                             atualizaAtalhoSphero();
+                             setTimeout(encerraAposLeitura,10000);  
+                        }
+                    }
+                );
+              
+              }
+  
+  
+}
+
+if (macaddressArg != undefined && macaddressArg != null && macaddressArg !='' && macaddressArg !='XX:XX:XX:XX:XX:XX') {
+	  
+    // Tem um Sphero configurado
+    macaddress=macaddressArg;
+
+    var acaoDefaultTemporal=setTimeout(acionaRegistradoTemporal,7000);
     
+    inquirer.prompt(questionsConfigurado).then(answers => {
+
+          if (acaoDefaultTemporal) 
+              clearTimeout(acaoDefaultTemporal);
+
+          if (answers.usarOuConfigurar==USAR_REGISTRADO) {
+            // Conexão normal
+            console.log('Vai conectar com Sphero pré-configurado');
+            controlaSphero();
+            
+          } else {
+            // Registrar um novo
+            procurarNovoSphero();
+            
+          }
+
+
+      });
+
+
+} else {
+
+   // Não tem um Sphero configurado
+   procurarNovoSphero();
+
+}
+
+var ks = require('node-key-sender');
+
+function acionaRegistradoTemporal() {
+ 
+  ks.sendKey('enter');
+ 
+}
+
+function procurarNovoSphero() {
+  
+  modoRegistro=true;
+  
+  console.log('Procurando por um Sphero próximo para configurar...');  
+  
+  // Procura por bluetooth
+
+  noble.on('stateChange', function(state) {
+    if (state === 'poweredOn') {
+      console.log('Procurando por Sphero SPRK+ a menos de 20cm...');
+      noble.startScanning();
+    } else {
+      console.log('Encerrando procura');
+      noble.stopScanning();
+    }
+  });
+  
+}
+
+function configurarNovoSphero() {
+  
+  // Registra na plataforma (opcional)
+  registraSpheroPlataforma();
+  
+  modoRegistro=false;
+  
+  // Já permite usar
+  //controlaSphero();
+
+}
+
+var global_jsondevicelist=[];
+var numeroScans=0;
+var numeroTentativas=0;
+
+noble.on('discover', function(peripheral) {
+  
+  if (!modoRegistro)
+      return
+
+  numeroScans++;
+
+  console.log('Encontrou dispositivos Bluetooth Low Energy (BLE). Scan no. '+numeroScans);
+
+  if (peripheral.rssi>-65  && (
+            (''+peripheral.advertisement.localName).indexOf('SK') == 0 ||
+            (''+peripheral.advertisement.localName).indexOf('Sphero')==0)) {
+
+      console.log('\x1b[32m','Encontrou Sphero SPRK+:'+peripheral.address + ' [Nome:'+peripheral.advertisement.localName +
+                ', Conectável:' + peripheral.connectable + ', RSSI:' + peripheral.rssi+']');
+      console.log('');
+
+
+      global_jsondevicelist.push({"address":peripheral.address,
+ 				"localname":peripheral.advertisement.localName,
+				"rssi":peripheral.rssi,
+				"manufacter":JSON.stringify(peripheral.advertisement.manufacturerData.toString('hex'))});
+
+      // registro completo se houver alguma diferença
+      macaddressArg = peripheral.address+'';
+      
+      configurarNovoSphero();
+      
+      noble.stopScanning();
+
+  }
+
+  if (numeroScans>= 8 && global_jsondevicelist.length==0) {
+
+       console.log('Não localizei um Sphero próximo. Para registrar, aproxime uma unidade a menos de 20cm do computador.');
+       console.log('');
+       noble.stopScanning();
+        
+       numeroTentativas++; 
+        
+       if (numeroTentativas==1) {
+         
+        // Se não achou por certo tempo, pede para informar o macaddress ou retentar
+         inquirer.prompt(questionsInformar).then(answers => {
+
+                if (answers.macaddress==undefined || answers.macaddress==null || answers.macaddress=='') {
+                   
+                   // Tentar descobrir um novo novamente
+                   numeroScans=0;
+                   noble.startScanning();
+
+                  
+                } else {
+                  
+                  // usa o informado manualmente
+                  console.log('Vai configurar Sphero nesta estação com macaddress informado: '+answers.macaddress);
+                  macaddressArg=ajustaMac(answers.macaddress);
+                  configurarNovoSphero();
+                  
+                }
+
+
+            });
+        
+        } else {
+        
+           console.error('\x1b[31m','Não foi possível encontrar um Sphero para registrar.');
+           console.error('\x1b[31m','Reconfira a carga do Sphero e tente novamente após desligar e ligar o Bluetooth');
+           console.error('\x1b[31m','usando o atalho no canto superior direito.');
+           // Encerra com falha
+           setTimeout(encerraAposLeitura,10000);     
+          
+        }
+
+  }
+
+
+});
+
+function ajustaMac(mac12) {
+  return mac12.substring(0,2)+':'+mac12.substring(2,4)+':'+mac12.substring(4,6)+':'+mac12.substring(6,8)+
+         ':'+mac12.substring(8,10)+':'+mac12.substring(10,12);
+}
+
+
+/*******************************************************************
+ *  controlador Sphero daqui por diante 
+ *******************************************************************/
 var WebSocketServer = require('websocket').server;
 
 var http = require('http');    
 
-// submete comandos dinamicamente, para o SPRK+
-bb8.connect(function() {
 
-  bb8.ping();  // Importante: evita travamentos inesperados
-  
+function controlaSphero() {
 
-    // Notifica NODE-RED
-    if (temNodeRedConectado()) {
-       ipc.server.broadcast(
-          'sphero.conectado',
-          {
-              id:ipc.config.id
-          }
-        );
-     }
+//console.log("Entrou no controlador do Sphero: "+macaddressArg);
 
-      
- 
-  bb8.version(function(err, data) {   
-     if (err) { console.error("err:", err); } 
-     else 
-      { console.log("Versão:" + data.msaVer+ '.'+ data.msaRev); }
-     });
-	 
-  console.log('Conectou com sucesso!! Aguardando comandos em http://localhost?code=')
- 
-  count=0;
+  var sphero = require("sphero"),
+      bb8 = sphero(macaddressArg);
 
-  setInterval(function() {
 
-     if (count % 60 == 0) {     console.log('Verificando comandos ...') }
 
-     count++;
-
-     if (code!='') {
-
-	try {
-         
-	 console.log('Vai executar: '+code)
-	 	 
-	 eval(code)
-	 	 
-	 if (!eConfig) {}		
-	
-  } catch(e) {
-	 
-      console.log('Erro ao tentar executar comando. Erro: '+e)
-
-       if (temNodeRedConectado()) {
-      
-          ipc.server.emit(
-              socket,
-              'error.message',
-              {
-                  id      : ipc.config.id,
-                  message : e
-              }
-          );
-      
-      }
-   
-   
-	}
-	code=''
-  
-   }
- 
-  }, 1000);
-  
-  
-bb8.detectCollisions({device: "bb8"});
-
-bb8.on("collision", function(data) {
-    console.log("Colisão detectada!");
-    //console.log("  data:", data);
+  // submete comandos dinamicamente, para o SPRK+
+  bb8.connect(function() {
     
-     if (temClienteConectado())
-        wsServer.connections[0].send('colisao={x:'+data.x+',y:'+data.y+',xMagnitude:'+data.xMagnitude+
-	                                ',yMagnitude:'+data.xMagnitude+',speed:'+data.speed+'}');
-                                  
-     if (temNodeRedConectado()) {
-           
-         //  console.log('teste colisao');
+    bb8.ping();  // Importante: evita travamentos inesperados
+    
 
-           ipc.server.broadcast(
-              'sphero.hitted',
-              {
-                  id:ipc.config.id,
-                  message:{x:data.x,y:data.y,xMagnitude:data.xMagnitude,
-                         yMagnitude:data.xMagnitude,speed:data.speed} 
-              }
+      // Notifica NODE-RED
+      if (temNodeRedConectado()) {
+         ipc.server.broadcast(
+            'sphero.conectado',
+            {
+                id:ipc.config.id
+            }
+          );
+       }
+
+        
+   
+    bb8.version(function(err, data) {   
+       if (err) { console.error("err:", err); } 
+       else 
+        { console.log("Versão:" + data.msaVer+ '.'+ data.msaRev); }
+       });
+     
+   // console.log('Conectou com sucesso!! Aguardando comandos em http://localhost?code=')
+    
+    console.error('\x1b[32m',       '---------------------------------------------------');
+    console.error('\x1b[0m\x1b[32m','-- Conectou com sucesso!! Aguardando comandos  ----');
+    console.error('\x1b[0m\x1b[32m','---------------------------------------------------');
+    
+   
+    count=0;
+
+    setInterval(function() {
+
+       if (count % 60 == 0) {     console.log('Verificando comandos ...') }
+
+       count++;
+
+       if (code!='') {
+
+    try {
+           
+     console.log('Vai executar: '+code)
+       
+     eval(code)
+       
+     if (!eConfig) {}		
+    
+    } catch(e) {
+     
+        console.log('Erro ao tentar executar comando. Erro: '+e)
+
+         if (temNodeRedConectado()) {
+        
+            ipc.server.emit(
+                socket,
+                'error.message',
+                {
+                    id      : ipc.config.id,
+                    message : e
+                }
             );
         
         }
-                                  
+     
+     
+    }
+    code=''
+    
+     }
+   
+    }, 1000);
+    
+    
+  bb8.detectCollisions({device: "bb8"});
+
+  bb8.on("collision", function(data) {
+      console.log("Colisão detectada!");
+      //console.log("  data:", data);
+      
+       if (temClienteConectado())
+          wsServer.connections[0].send('colisao={x:'+data.x+',y:'+data.y+',xMagnitude:'+data.xMagnitude+
+                                    ',yMagnitude:'+data.xMagnitude+',speed:'+data.speed+'}');
+                                    
+       if (temNodeRedConectado()) {
+             
+           //  console.log('teste colisao');
+
+             ipc.server.broadcast(
+                'sphero.hitted',
+                {
+                    id:ipc.config.id,
+                    message:{x:data.x,y:data.y,xMagnitude:data.xMagnitude,
+                           yMagnitude:data.xMagnitude,speed:data.speed} 
+                }
+              );
+          
+          }
+                                    
+    });
+
+  });
+  
+  process.on('SIGINT',function() {
+    
+    console.log('Obrigado, até a próxima!');
+    
+    /*TODO VER COMO EVITAR O BRANCO AO DESCONECTAR 
+    bb8.disconnect(function() {
+      bb8.color('black');
+    });
+    */
+    
+    process.exit();
+  
   });
 
-});
+  
+}
 
 
 const express = require('express')  
@@ -187,7 +565,11 @@ function wait(seconds) {
 
 app.listen(80) 
 
-/* daqui em diante websocket */
+
+
+/****************************************************************
+ *  daqui em diante websocket para MMBlockly
+ ****************************************************************/
 var notificouClienteConexao=false;
 
 
@@ -205,7 +587,7 @@ var server = http.createServer(function(request, response) {
 });
 server.listen(8081, function() {
    // console.log('---------------------------------------------------------------');
-    console.log('            '+(new Date().toLocaleString()) + ' Websocket ouvindo na porta 8081');
+    //console.log('            '+(new Date().toLocaleString()) + ' Websocket ouvindo na porta 8081');
    // console.log('---------------------------------------------------------------');    
 });
  
@@ -267,7 +649,8 @@ ipc.serveNet(
             function(data,socket){
                 ipc.log('Recebeu mensagem de', (data.id), (data.message));
                 console.log('vai enviar para sphero '+data.message);
-                code = data.message.replaceAll('sprk.','bb8.');
+                //code = data.message.replaceAll('sprk.','bb8.');
+		code = data.message;
             }
         );
     }
