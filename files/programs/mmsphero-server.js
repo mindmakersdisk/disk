@@ -650,12 +650,21 @@ ipc.serveNet(
                 ipc.log('Recebeu mensagem de', (data.id), (data.message));
                 console.log('vai enviar para sphero '+data.message);
                 //code = data.message.replaceAll('sprk.','bb8.');
+<<<<<<< HEAD
 		code = data.message;
+=======
+                code = data.message;
+                setTimeout(limitaMovimento,2000);
+>>>>>>> 927c875d432dc12f04ae696aa6c05457301ebe90
             }
         );
     }
 );
 
+function limitaMovimento() {
+  
+  code="wait(1);bb8.roll(0)";
+}
 
 function temNodeRedConectado() {
 

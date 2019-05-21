@@ -4,6 +4,7 @@ set title " "
 set xlabel "Tempo(ms)"
 set ylabel "Intensidade luminosa"
 set style data lines
+set datafile separator " "
 set nokey
 set grid
 set term png
