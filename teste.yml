@@ -6,6 +6,15 @@
   - name: instalação ansible 2.7 via pip
     pip:
        name: ansible~=2.7.0
+  - name: Verifica Versao npm
+    command: npm --version
+    register: npm_output
+  - name: Atualizando npm se versão <6.9.0
+    npm: name={{item}} global=yes
+    with_items:
+      - npm
+      - npm
+    when: npm_output.stdout is version('6.9.0', '<')
 
 
   # - name: Verificando OS em inglês
