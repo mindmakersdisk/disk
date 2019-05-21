@@ -7,11 +7,20 @@
   - name: Ver se máquina já foi ativada para realizar a atualização de versão da plataforma.
     find:
        paths: /home/mindmakers/school.info
-       patterns: "^Pi: '\'d+"
+       patterns: 'school.info'
+       contains: "^Pi: \d+"
        use_regex: yes
     register: semregistro
   - debug:
        var: semregistro
+  - lineinfile:
+    path: /home/mindmakers/school.info
+    state: present
+    regexp: '^Pi: \d+'
+    register: semregistro2
+  - debug:
+       var: semregistro2
+  
 
   - name: Executando version_update.js
     command: nodejs mmversionupdate.js
