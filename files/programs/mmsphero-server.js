@@ -25,7 +25,6 @@ var microbit_registrado='';
 
 
 var macaddressArg;
-var escolaid;
 var code = ""
 var currentAngle=0;  // para frente
 var eConfig=true;
@@ -146,7 +145,7 @@ var questionsInformar = [
     type: 'input',
     name: 'macaddress',
     message: "Informe o macaddress com 12 digitos sem ':' (ex.: cd09654dbd23) para configurar manualmente."
-    +" Ou aproxime o Sphero e aperte enter para retentar mais uma vez..."
+    +" Ou aproxime o Sphero e aperte enter para tentar mais uma vez..."
   }
 ];
 
@@ -393,8 +392,10 @@ noble.on('discover', function(peripheral) {
         } else {
         
            console.error('\x1b[31m','Não foi possível encontrar um Sphero para registrar.');
-           console.error('\x1b[31m','Reconfira a carga do Sphero e tente novamente após desligar e ligar o Bluetooth');
-           console.error('\x1b[31m','usando o atalho no canto superior direito.');
+           console.error('\x1b[31m','Reconfira a carga do Sphero e tente novamente.');
+           console.error('\x1b[31m','Se tudo estiver ok, tente novamente após desligar e ligar a antena Bluetooth');
+           console.error('\x1b[31m','do computador, usando o atalho no canto superior direito.');
+           console.error('\x1b[0m', '------------------------------------------');
            // Encerra com falha
            setTimeout(encerraAposLeitura,10000);     
           

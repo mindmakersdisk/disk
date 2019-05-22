@@ -342,8 +342,10 @@ function procurarNovoBLEBit() {
       if (numeroScans>=8) {
         
            console.error('\x1b[31m','Não foi possível encontrar um BLE Bit ligado para registrar.');
-           console.error('\x1b[31m','Confira se ele está ligado e com luz branca piscando. Tente novamente após desligar e ligar o Bluetooth');
-           console.error('\x1b[31m','usando o atalho no canto superior direito.');
+           console.error('\x1b[31m','Confira se ele está ligado e com luz branca piscando.');
+           console.error('\x1b[31m','Se tudo estiver ok, tente novamente após desligar e ligar a antena Bluetooth');
+           console.error('\x1b[31m','do computador, usando o atalho no canto superior direito.');
+           console.error('\x1b[0m', '------------------------------------------');
            // Encerra com falha
            setTimeout(encerraAposLeitura,10000);   
         
@@ -510,7 +512,7 @@ function controlaBLEBit() {
                          notificaClienteDesconexao(error);
                       else {
                         console.log('\x1b[0m\x1b[32m','Comunicação com circuito digital via bluetooth ativada: '+blebit.address);
-                        console.log('\x1b[0m',        '--------------------------------------------------------------------');
+                        console.log('\x1b[0m',        '-------------------------------------------------');
                         monitoriaTask = setInterval(monitoraDispositivoConectado,3000);
 
                       }
