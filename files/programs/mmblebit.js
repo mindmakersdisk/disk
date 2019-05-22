@@ -21,7 +21,6 @@ var microbit_registrado='';
 var macaddressArg;
 
 const request = require('request')  
-//const si = require('systeminformation')
 var noble = require('/home/mindmakers/programs/node_modules/noble/index.js')
 var inquirer = require('inquirer');
 var fs = require('fs');
@@ -35,7 +34,7 @@ var modoRegistro = false;
 fs.readFile('/home/mindmakers/school.info', function(err,data)
     {
       if (err) {
-          console.log("Essa estação ainda não está ativada. Ative antes de usar o Sphero");
+          console.log("Essa estação ainda não está ativada. Ative antes de usar o BLE Bit");
           process.exit(1);
       } else {
 
@@ -100,7 +99,7 @@ fs.readFile('/home/mindmakers/school.info', function(err,data)
 
               } else {
 
-                 // Não tem um Sphero configurado
+                 // Não tem um BLE Bit configurado
                  procurarNovoBLEBit();
 
               }
@@ -109,10 +108,6 @@ fs.readFile('/home/mindmakers/school.info', function(err,data)
       
     });
 
-
-/******************************************************************
- *  Perguntas, configuração do macaddress e registro na plataforma
- ******************************************************************/
  const USAR_REGISTRADO="Usar Registrado";
  const REGISTRAR_NOVO="Registrar Novo";
  const REGISTRAR="Registrar";
@@ -227,7 +222,7 @@ function registraBLEBitPlataforma() {
 
 function registraAposConferirAtivacao(login,senha) {
   
-         // Registra SPRK+
+         // Registra BLE Bit
         // console.log('Registrando o Sphero "'+macaddressArg+'" na plataforma.');
 
          if (escolaid == undefined || escolaid==null || escolaid=='') {
@@ -404,7 +399,7 @@ function controlaBLEBit() {
         console.log('                    Serviço Bluetooth Ativo                    ');
         console.log('---------------------------------------------------------------');  
 
-        console.log('Procurando por um BLE Bit '+macaddressArg);
+        console.log('Procurando pelo BLE Bit '+macaddressArg);
         noble.startScanning();
       } else {
        console.log('Encerrando procura por dispositivos Bluetooth');
@@ -412,10 +407,9 @@ function controlaBLEBit() {
      }
     });
     
-    blebit
     noble.on('discover', function(peripheral) {
       
-      console.log('Entrou para descobrir '+ macaddressArg+' '+peripheral.address);
+      console.log('Encontrou '+peripheral.address);
       
       if (peripheral.address==macaddressArg) {
                 
@@ -431,7 +425,7 @@ function controlaBLEBit() {
                      return;
                   }
                   
-                  console.log('    Conectado ao BLE Bit com macaddress:' + peripheral.uuid);
+                  console.log('Conectando ao BLE Bit com macaddress: ' + peripheral.uuid);
              //console.log(peripheral); 
              
                    macaddressConectado = peripheral.uuid;
@@ -515,8 +509,8 @@ function controlaBLEBit() {
                       if (error)
                          notificaClienteDesconexao(error);
                       else {
-                        console.log('\x1b[0m\x1b[32m','Leitura de circuito digital via bluetooth ativada');
-                        console.log('\x1b[0m','-------------------------------------------------');
+                        console.log('\x1b[0m\x1b[32m','Comunicação com circuito digital via bluetooth ativada: '+blebit.address);
+                        console.log('\x1b[0m',        '--------------------------------------------------------------------');
                         monitoriaTask = setInterval(monitoraDispositivoConectado,3000);
 
                       }
