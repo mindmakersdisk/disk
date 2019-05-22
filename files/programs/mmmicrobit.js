@@ -344,8 +344,9 @@ function procurarNovoMicrobit() {
       if (numeroScans>=8) {
         
            console.error('\x1b[31m','Não foi possível encontrar um microbit ligado para registrar.');
-           console.error('\x1b[31m','Confira se ele está ligado e com luz amarela acessa. Tente novamente após desligar e ligar o Bluetooth');
-           console.error('\x1b[31m','usando o atalho no canto superior direito.');
+           console.error('\x1b[31m','Confira se ele está ligado e com luz amarela acessa.');
+           console.error('\x1b[31m','Se tudo estiver ok, tente novamente após desligar e ligar a antena Bluetooth');
+           console.error('\x1b[31m','do computador, usando o atalho no canto superior direito.');
            console.error('\x1b[0m', '------------------------------------------');
            // Encerra com falha
            setTimeout(encerraAposLeitura,10000);   

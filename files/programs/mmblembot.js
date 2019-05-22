@@ -4,9 +4,371 @@
  Paulo Alvim 04/2019
  Copyright(c) Mind Makers Editora Educacional Ltda. Todos os direitos reservados
 */
+// Registrados
+var escolainfo=''
+var escolaid='';
+var escolanome='';
+var pi_registrado='';
+var sd_registrado='';
+var sala_registrado = '1';
+var estacao_registrado = '';
+var sphero_registrado='';
+var littlebits_registrado='';
+var mbot_registrado='';
+var microbit_registrado='';
 
-const noble   = require('noble');
+var macaddressArg;
 
+const request = require('request')  
+var noble = require('/home/mindmakers/programs/node_modules/noble/index.js')
+var inquirer = require('inquirer');
+var fs = require('fs');
+/******************************************************************
+ *  Perguntas, configuração do macaddress e registro na plataforma
+ ******************************************************************/
+ var modoRegistro = true;
+
+              
+fs.readFile('/home/mindmakers/school.info', function(err,data)
+    {
+      if (err) {
+          console.log("Essa estação ainda não está ativada. Ative antes de usar o mBot");
+          process.exit(1);
+      } else {
+
+      
+              escolainfo = data.toString();
+              escolaidIni =escolainfo.indexOf('Cód.:')+5;
+              escolaid= escolainfo.substring(escolaidIni,escolainfo.indexOf('||'),escolaidIni).trim();
+              //console.log(escolaid);
+              escolanomeIni =escolainfo.indexOf('Nome:')+5;
+              escolanome= escolainfo.substring(escolanomeIni,escolainfo.indexOf('||',escolanomeIni)).trim();
+              //console.log(escolanome);
+              piIni = escolainfo.indexOf('Pi:')+3;
+              pi_registrado= escolainfo.substring(piIni,escolainfo.indexOf('||',piIni)).trim();
+              //console.log(pi_registrado);
+              sdIni = escolainfo.indexOf('SD:')+3;
+              sd_registrado= escolainfo.substring(sdIni,escolainfo.indexOf('||',sdIni)).trim();
+              //console.log(sd_registrado);
+              salaIni = escolainfo.indexOf('Sala:')+5
+              sala_registrado= escolainfo.substring(salaIni,escolainfo.indexOf('||',salaIni)).trim();
+              //console.log(sala_registrado);
+              estacaoIni = escolainfo.indexOf('Estação:')+8
+              estacao_registrado= escolainfo.substring(estacaoIni,escolainfo.indexOf('||',estacaoIni)).trim();
+              //console.log(estacao_registrado);
+              spheroIni = escolainfo.indexOf('Sphero:')+7
+              sphero_registrado= escolainfo.substring(spheroIni,escolainfo.indexOf('||',spheroIni)).trim();
+              littlebitsIni = escolainfo.indexOf('littlebits:')+11
+              littlebits_registrado= escolainfo.substring(littlebitsIni,escolainfo.indexOf('||',littlebitsIni)).trim();
+              mbotIni = escolainfo.indexOf('mbot:')+5
+              mbot_registrado= escolainfo.substring(mbotIni,escolainfo.indexOf('||',mbotIni)).trim();
+              microbitIni = escolainfo.indexOf('microbit:')+9
+              microbit_registrado= escolainfo.substring(microbitIni,escolainfo.indexOf('||',microbitIni)).trim();
+          
+              macaddressArg = mbot_registrado;
+              console.log('Identificou mBot configurado: '+macaddressArg);
+              
+              if (macaddressArg != undefined && macaddressArg != null && macaddressArg !='' && macaddressArg !='XX:XX:XX:XX:XX:XX') {
+                  
+                  // Tem um mBot configurado
+
+                  var acaoDefaultTemporal=setTimeout(acionaRegistradoTemporal,7000);
+                  
+                  inquirer.prompt(questionsConfigurado).then(answers => {
+
+                        if (acaoDefaultTemporal) 
+                            clearTimeout(acaoDefaultTemporal);
+
+                        if (answers.usarOuConfigurar==USAR_REGISTRADO) {
+                          // Conexão normal
+                          console.log('Vai conectar com mBot pré-configurado');
+                          controlaMbot();
+                          
+                        } else {
+                          // Registrar um novo
+                          console.log('Vai configurar um novo mBot');
+                          procurarNovoMbot();
+                          
+                        }
+
+
+                    });
+
+
+              } else {
+
+                 // Não tem um mBot configurado
+                 procurarNovoMbot();
+
+              }
+              
+      }
+      
+    });
+
+ const USAR_REGISTRADO="Usar Registrado";
+ const REGISTRAR_NOVO="Registrar Novo";
+ const REGISTRAR="Registrar";
+ 
+ var questionsConfigurado = [
+  {
+    type: 'list',
+    name: 'usarOuConfigurar',
+    message: "Usar mBot registrado ou registrar um novo?",
+    default: USAR_REGISTRADO,
+    choices: [USAR_REGISTRADO,REGISTRAR_NOVO]
+  }
+];
+
+ var questionsNaoConfigurado = [
+  {
+    type: 'list',
+    name: 'configurar',
+    message: "Aproxime um mBot energizado e com placa BLE, então aperte enter para configurá-lo nesta estação",
+    default: REGISTRAR,
+    choices: [REGISTRAR]
+  }
+];
+
+var questionsInformar = [
+  {
+    type: 'input',
+    name: 'macaddress',
+    message: "Informe o macaddress com 12 digitos sem ':' (ex.: cd09654dbd23) para configurar manualmente."
+    +" Ou aproxime o mBot e aperte enter para tentar mais uma vez..."
+  }
+];
+
+/* Atualiza atalho do servidor Sphero */
+function atualizaAtalhoMbot() {
+
+  if (macaddressArg==null || macaddressArg=='') {
+     console.log('Não registrou o mBot porque não recebeu um macaddress válido');
+     return;
+  }
+
+  escolainfoatualizada = "----- Identificação de Desktop Mind Makers ------\n" +
+                         "Cód.: "+escolaid+"||\n"+
+                         "Nome: "+escolanome+"||\n"+
+                         "Pi: "+pi_registrado+"||\n"+
+                         "SD: "+sd_registrado+"||\n"+
+                         "Sala: "+sala_registrado+"||\n"+
+                         "Estação: "+estacao_registrado+"||\n"+
+                         "Sphero: "+sphero_registrado+"||\n"+
+                         "littlebits: "+littlebits_registrado+"||\n"+
+                         "mbot: "+macaddressArg+"||\n"+
+                         "microbit: "+microbit_registrado+"||\n"+
+                         "--------------------------------------------";
+
+  fs.writeFile('/home/mindmakers/school.info', escolainfoatualizada, function(err,data)
+        {
+          if (err) {
+              console.log(err);
+              // Encerra com falha
+              process.exit(1);
+          } else {
+            
+            console.error('\x1b[32m',       '---------------------------------------------------');
+            console.error('\x1b[0m\x1b[32m','-- Alterou a configuração para usar o mBot  ----');
+            console.error('\x1b[0m\x1b[1m', '            '+macaddressArg);
+            console.error('\x1b[0m\x1b[1m', '-- Chame novamente para começar a usar         ----');
+            console.error('\x1b[0m\x1b[32m','-- Esta janela fecha em 7 segundos...          ----');
+            console.log('');   
+
+          }
+
+        
+        });
+
+}
+
+function encerraAposLeitura() {
+  
+  process.exit(1)
+  
+}
+
+var autenticacao = [
+  {
+    type: 'input',
+    name: 'login',
+    message: "Informe seu usuário na plataforma Mind Makers:"
+  },
+  {
+    type: 'password',
+    name: 'senha',
+    message: "Informe sua senha:"
+  }
+];
+
+
+
+function registraMbotPlataforma() {
+
+    console.log('Entrou para registrar na plataforma...');
+
+    if (macaddressArg==null || macaddressArg=='')
+       return;
+
+    inquirer.prompt(autenticacao).then(autenticacao => {
+
+       registraAposConferirAtivacao(autenticacao.login,autenticacao.senha);  
+    
+    });
+
+}
+
+function registraAposConferirAtivacao(login,senha) {
+  
+         // Registra mBot
+        // console.log('Registrando o Sphero "'+macaddressArg+'" na plataforma.');
+
+         if (escolaid == undefined || escolaid==null || escolaid=='') {
+            console.error('\x1b[31m','----------------------------------------------------------------');
+            console.error('\x1b[31m','Não registrou na plataforma porque esta estação não está ativada');
+            console.error('\x1b[31m','----------------------------------------------------------------');
+            
+         } else {
+
+
+             request({url: 'https://mindmakers.cc/api/Escolas/ativo/publico',
+                    method: 'POST',
+                    json: {
+                      'username':login,
+                      'password':senha,
+                      'tipo':'mBot',
+                      'alocadoescola':escolaid,
+                      'chaveNatural':macaddressArg,
+                      'acao': 'registrar',
+                      'observacao': 'ativação automática'}
+                    },
+                    function(error, response, body){
+                       // console.log('ERROR ---------------------------');
+                       // console.log(error);
+                     //   console.log('RESPONSE---------------------------');
+                     //   console.log(response);
+                      //  console.log('BODY---------------------------');
+                      //  console.log(body);
+                        if (!body.success || error) {
+                            if (!body.success){
+                              console.error('\x1b[31m','Erro ao registrar mBot: '+JSON.stringify(body.err));
+                            }else{
+                              console.error('\x1b[31m','Erro ao registrar mBot: '+error);
+                            }
+                             setTimeout(encerraAposLeitura,15000);  
+                        } else {
+                            console.log('\x1b[32m','mBot registrado na plataforma com sucesso! ');
+                             // Modifica o atalho e variável
+                             atualizaAtalhoMbot();
+                             setTimeout(encerraAposLeitura,10000);  
+                        }
+                    }
+                );
+              
+              }
+  
+  
+}
+
+
+var ks = require('node-key-sender');
+
+function acionaRegistradoTemporal() {
+ 
+  ks.sendKey('enter');
+ 
+}
+
+var numeroScans=0;
+var numeroTentativas=0;
+
+function procurarNovoMbot() {
+  
+  //console.log('Procurando por um mBot próximo para configurar...');  
+  
+  // Procura por bluetooth
+
+    noble.on('stateChange', function(state) {
+
+      //console.log('Estado = '+state);
+      if (state === 'poweredOff') {
+        console.log('');
+        console.error('\x1b[31m','O Bluetooth não está ativado! Ative no ícone superior direito em seu computador e tente novamente.');
+        console.error('\x1b[0m','');
+        process.exit(1);
+      } else if (state === 'poweredOn') {
+        console.log('---------------------------------------------------------------');
+        console.log('                    Serviço Bluetooth Ativo                    ');
+        console.log('---------------------------------------------------------------');  
+
+        console.log('Procurando por um mBot a menos de 2m para configurar...');
+        noble.startScanning();
+      } else {
+       console.log('Encerrando procura por dispositivos Bluetooth');
+       noble.stopScanning();
+     }
+    });
+    
+    
+    noble.on('discover', function(peripheral) {
+      
+      console.log('Investigando dispositivos Bluetooth Low Energy (BLE)...');
+
+      numeroScans++;
+      
+      //console.log(peripheral.advertisement);
+      
+      if ((''+peripheral.advertisement.localName) == devName &&
+              peripheral.rssi>-60) {
+         
+          console.log('\x1b[32m','Encontrou mBot:'+peripheral.address + ' [Nome:'+peripheral.advertisement.localName +
+                ', Conectável:' + peripheral.connectable + ', RSSI:' + peripheral.rssi+']');
+          console.log('');
+         
+         noble.stopScanning();
+          
+         macaddressArg=peripheral.address;   
+         
+         configurarNovoMbot();  
+
+       //console.log(peripheral);    
+       // console.log(peripheral);
+       // console.log(peripheral.advertisement.serviceData); 
+
+      }
+      
+      if (numeroScans>=8) {
+        
+           console.error('\x1b[31m','Não foi possível encontrar um mBot ligado para registrar.');
+           console.error('\x1b[31m','Confira se ele está ligado com a placa BLE e luz branca piscando.');
+           console.error('\x1b[31m','Se tudo estiver ok, tente novamente após desligar e ligar a antena Bluetooth');
+           console.error('\x1b[31m','do computador, usando o atalho no canto superior direito.');
+           console.error('\x1b[0m', '------------------------------------------');
+           // Encerra com falha
+           setTimeout(encerraAposLeitura,10000);   
+        
+      }
+      
+
+    });
+  
+}
+
+function configurarNovoMbot() {
+
+  
+  // Registra na plataforma (opcional)
+  registraMbotPlataforma();
+
+
+}
+ 
+
+ /*************************************************************
+ * Serviços BLE para mbot daqui por diante
+ ************************************************************/
+
+//const noble   = require('noble');
 const readline = require('readline');
 
 const devName               = "Makeblock_LE";
@@ -197,56 +559,208 @@ var buzz =      new Buffer( [0xff, 0x55, 0x07, 0x00, 0x02, 0x22, 0x06, 0x01, 0xf
 
 // For cycling demo
 var loop = 1;
-
-noble.on('stateChange', function(state) {
-
-     if (state === 'poweredOff') {
-        console.log('');
-        console.error('\x1b[31m','O Bluetooth não está ativado! Ative no ícone superior direito em seu computador e tente novamente.');
-        console.error('\x1b[0m','');
-        process.exit(1);
-    } else if (state === 'poweredOn') {
-        console.log('---------------------------------------------------------------');
-        console.log('                    Serviço Bluetooth Ativo                    ');
-        console.log('---------------------------------------------------------------');  
-
-        console.log('Procurando por um mBot com módulo BLE a menos de 2m...');
-        noble.startScanning();
-    } else {
-        console.log('Encerrando procura por dispositivos Bluetooth');
-        noble.stopScanning();
-    }
-});
-
 var contadorIntervalo = 0;
 var macaddressConectado = null;
 var notificouClienteConexao=false;
 var monitoriaTask=null;
 
-noble.on('discover', function(peripheral) {
- 
-    var advertisement = peripheral.advertisement;
-    var localName = advertisement.localName;
-   
-    if (localName == devName  && peripheral.rssi>-60) {
-     
-   //     console.log('! Found device with local name: ' + localName );
-   //     console.log('- Connecting to ' + localName + ' ['+ peripheral.id + ']');
-        connectTombot( peripheral );
+function controlaMbot() {
+    
+        modoRegistro = false;  
 
-    }
-});
+        noble.on('stateChange', function(state) {
 
-noble.on('disconnect', function(data) {
+             if (state === 'poweredOff') {
+                console.log('');
+                console.error('\x1b[31m','O Bluetooth não está ativado! Ative no ícone superior direito em seu computador e tente novamente.');
+                console.error('\x1b[0m','');
+                process.exit(1);
+            } else if (state === 'poweredOn') {
+                console.log('---------------------------------------------------------------');
+                console.log('                    Serviço Bluetooth Ativo                    ');
+                console.log('---------------------------------------------------------------');  
 
-   console.log('mBot desconectado'+data);
-   
-   notificaClienteDesconexao('');
-   
-   notificouClienteConexao=false;
-   macaddressConectado=null;
+                console.log('Procurando pelo mBot com módulo BLE para conectar: '+macaddressArg);
+                noble.startScanning();
+            } else {
+                console.log('Encerrando procura por dispositivos Bluetooth');
+                noble.stopScanning();
+            }
+        });
 
-});
+
+
+        noble.on('discover', function(peripheral) {
+         
+            var advertisement = peripheral.advertisement;
+            var localName = advertisement.localName;
+            
+            console.log('Encontrou '+peripheral.address);
+            numeroScans++;
+           
+            if (peripheral.address==macaddressArg) {
+             
+           //     console.log('! Found device with local name: ' + localName );
+           //     console.log('- Connecting to ' + localName + ' ['+ peripheral.id + ']');
+                connectTombot( peripheral );
+
+            }
+            
+             if (numeroScans>=8) {
+        
+                   console.error('\x1b[31m','Não foi possível encontrar o mBot registrado para conectar.');
+                   console.error('\x1b[31m','Confira se ele está ligado com a placa BLE e luz branca piscando.');
+                   console.error('\x1b[31m','Se tudo estiver ok, tente novamente após desligar e ligar a antena Bluetooth');
+                   console.error('\x1b[31m','do computador, usando o atalho no canto superior direito.');
+                   console.error('\x1b[0m', '------------------------------------------');
+                   // Encerra com falha
+                   setTimeout(encerraAposLeitura,10000);   
+        
+            }
+            
+            
+            
+        });
+
+        noble.on('disconnect', function(data) {
+
+           console.log('mBot desconectado'+data);
+           
+           notificaClienteDesconexao('');
+           
+           notificouClienteConexao=false;
+           macaddressConectado=null;
+
+        });
+
+
+        readline.emitKeypressEvents(process.stdin);
+        process.stdin.setRawMode(true);
+        process.stdin.resume();
+        process.stdin.seEncoding('utf8');
+        
+}
+
+     process.stdin.on('keypress', (str, key) => {
+               
+           //console.log(modoRegistro);    
+               
+          if (key.ctrl && key.name === 'c') {
+                   
+            process.exit();
+          
+          } else if (!modoRegistro) {
+          //  console.log(`You pressed the "${str}" key`);
+
+
+
+            if (key.name=='space') {
+                  mbotWComms.write( motor_stop , true, function(error) {
+                        //console.log("motores param");
+                    });
+            }
+
+            if (key.name=='up') {
+                  mbotWComms.write( motor_run100 , true, function(error) {
+                        //console.log("ambos motores para frente");
+                    });
+            }
+            if (key.name=='w') {
+                  mbotWComms.write( motor_run100 , true, function(error) {
+                        //console.log("ambos motores para frente");
+                    });
+            }
+
+            if (key.name=='down') {
+                  mbotWComms.write( motor_reverse100 , true, function(error) {
+                        //console.log("ambos motores para trás");
+                    });
+            }
+            if (key.name=='s') {
+                  mbotWComms.write( motor_reverse100 , true, function(error) {
+                        //console.log("ambos motores para trás");
+                    });
+            }
+
+            if (key.name=='right') {
+                  mbotWComms.write( motor_turnright100 , true, function(error) {
+                        //console.log("ambos motores viram para direita");
+                    });
+            }
+            if (key.name=='d') {
+                  mbotWComms.write( motor_turnright100 , true, function(error) {
+                        //console.log("ambos motores viram para direita");
+                    });
+            }
+
+            if (key.name=='left') {
+                 mbotWComms.write( motor_turnleft100 , true, function(error) {
+                        //console.log("ambos motores viram para esquerda");
+                    });
+            }
+            if (key.name=='a') {
+                 mbotWComms.write( motor_turnleft100 , true, function(error) {
+                        //console.log("ambos motores viram para esquerda");
+                    });
+            }
+
+            if (key.name=='0') {
+                  mbotWComms.write( ledColor0 , true, function(error) {
+                        //console.log("Write Led Color1 OK");
+                    });
+            }
+
+            if (key.name=='1') {
+                  mbotWComms.write( ledColor1 , true, function(error) {
+                        //console.log("Write Led Color1 OK");
+                    });
+            }
+             if (key.name=='2') {
+                 mbotWComms.write( ledColor2 , true, function(error) {
+                        //console.log("Write Led Color2 OK");
+                    });
+            }
+            if (key.name=='3') {
+                 mbotWComms.write( buzz , true, function(error) {
+                        //console.log("Barulho");
+                    });
+            }
+            if (key.name=='4') {
+                 mbotWComms.write( servo_0 , true, function(error) {
+                        //console.log("servo a 0 graus");
+                    });
+            }
+            if (key.name=='5') {
+                 mbotWComms.write( servo_1 , true, function(error) {
+                        //console.log("servo a 45 graus");
+                    });
+            }
+            if (key.name=='6') {
+                 mbotWComms.write( servo_2 , true, function(error) {
+                        //console.log("servo a 90 graus");
+                    });
+            }
+            if (key.name=='7') {
+                 mbotWComms.write( servo_3 , true, function(error) {
+                      //  console.log("servo a 135 graus");
+                    });
+            }
+          //  if (key.name=='8') {
+          //       mbotWComms.write( servo_4 , true, function(error) {
+          //              console.log("servo a 180 graus");
+          //          });
+          //  }
+            if (key.name=='9') {
+                 mbotWComms.write( read_onboard_button_pressed , true, function(error) {
+                        console.log("Botão na placa pressionado?");
+                    });
+            }
+
+         //   console.log();
+         //   console.log(key);
+         //   console.log();
+          }
+        });
 
 
 function notificaClienteDesconexao(error) {
@@ -300,7 +814,8 @@ function connectTombot(peripheral) {
                return;
             }
 
-         console.log('    Conectado ao mBot com macaddress:' + peripheral.uuid);
+            console.log('\x1b[0m\x1b[32m','Comunicação com robô mBot via bluetooth ativada: '+peripheral.address);
+           // console.log('\x1b[0m',        '-------------------------------------------------');
      
          macaddressConectado = peripheral.uuid;
          
@@ -459,7 +974,7 @@ function mbotReadDataDriver(error, services, characteristics) {
             notificaClienteDesconexao(error);
         } else {
               console.log('\x1b[0m\x1b[32m','Leitura de componentes digitais do mBot via bluetooth ativada');
-              console.log('\x1b[0m','---------------------------------------------------------------------');
+              console.log('\x1b[0m',        '-------------------------------------------------------------');
               monitoriaTask = setInterval(monitoraDispositivoConectado,3000);
         }
     });
@@ -519,122 +1034,7 @@ function mbotWriteDataDriver(error, services, characteristics) {
 }
 
 
-readline.emitKeypressEvents(process.stdin);
-process.stdin.setRawMode(true);
 
-process.stdin.on('keypress', (str, key) => {
-  if (key.ctrl && key.name === 'c') {
-    process.exit();
-  } else {
-  //  console.log(`You pressed the "${str}" key`);
-
-    if (key.name=='space') {
-          mbotWComms.write( motor_stop , true, function(error) {
-                //console.log("motores param");
-            });
-    }
-
-    if (key.name=='up') {
-          mbotWComms.write( motor_run100 , true, function(error) {
-                //console.log("ambos motores para frente");
-            });
-    }
-    if (key.name=='w') {
-          mbotWComms.write( motor_run100 , true, function(error) {
-                //console.log("ambos motores para frente");
-            });
-    }
-
-    if (key.name=='down') {
-          mbotWComms.write( motor_reverse100 , true, function(error) {
-                //console.log("ambos motores para trás");
-            });
-    }
-    if (key.name=='s') {
-          mbotWComms.write( motor_reverse100 , true, function(error) {
-                //console.log("ambos motores para trás");
-            });
-    }
-
-    if (key.name=='right') {
-          mbotWComms.write( motor_turnright100 , true, function(error) {
-                //console.log("ambos motores viram para direita");
-            });
-    }
-    if (key.name=='d') {
-          mbotWComms.write( motor_turnright100 , true, function(error) {
-                //console.log("ambos motores viram para direita");
-            });
-    }
-
-    if (key.name=='left') {
-         mbotWComms.write( motor_turnleft100 , true, function(error) {
-                //console.log("ambos motores viram para esquerda");
-            });
-    }
-    if (key.name=='a') {
-         mbotWComms.write( motor_turnleft100 , true, function(error) {
-                //console.log("ambos motores viram para esquerda");
-            });
-    }
-
-    if (key.name=='0') {
-          mbotWComms.write( ledColor0 , true, function(error) {
-                //console.log("Write Led Color1 OK");
-            });
-    }
-
-    if (key.name=='1') {
-          mbotWComms.write( ledColor1 , true, function(error) {
-                //console.log("Write Led Color1 OK");
-            });
-    }
-     if (key.name=='2') {
-         mbotWComms.write( ledColor2 , true, function(error) {
-                //console.log("Write Led Color2 OK");
-            });
-    }
-    if (key.name=='3') {
-         mbotWComms.write( buzz , true, function(error) {
-                //console.log("Barulho");
-            });
-    }
-    if (key.name=='4') {
-         mbotWComms.write( servo_0 , true, function(error) {
-                //console.log("servo a 0 graus");
-            });
-    }
-    if (key.name=='5') {
-         mbotWComms.write( servo_1 , true, function(error) {
-                //console.log("servo a 45 graus");
-            });
-    }
-    if (key.name=='6') {
-         mbotWComms.write( servo_2 , true, function(error) {
-                //console.log("servo a 90 graus");
-            });
-    }
-    if (key.name=='7') {
-         mbotWComms.write( servo_3 , true, function(error) {
-              //  console.log("servo a 135 graus");
-            });
-    }
-  //  if (key.name=='8') {
-  //       mbotWComms.write( servo_4 , true, function(error) {
-  //              console.log("servo a 180 graus");
-  //          });
-  //  }
-    if (key.name=='9') {
-         mbotWComms.write( read_onboard_button_pressed , true, function(error) {
-                console.log("Botão na placa pressionado?");
-            });
-    }
-
- //   console.log();
- //   console.log(key);
- //   console.log();
-  }
-});
 
 const BUZZER='buzzer';
 
