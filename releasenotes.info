@@ -1,15 +1,15 @@
 ########### IMAGEM DE DISCO MIND MAKERS ###########
 
 Versão 2.3 22/05/2019
-- Novo atalho de serviço Sphero, contendo configuração e controle integrados e reconexão mais resiliente
-- Remoção do atalho para desconectar Sphero, tornado desnecessário
-- Novo atalho de serviço microbit, contendo configuração e controle integrados e reconexão mais resiliente
-- Novo atalho de serviço littleBits BLE, contendo configuração e controle integrados e reconexão mais resiliente
-- Novo atalho de serviço mBot, contendo configuração e controle integrados e reconexão mais resiliente
+- Novo atalho de serviço Sphero, contendo configuração e controle integrados e reconexão mais resiliente.
+- Remoção do atalho para desconectar Sphero, tornado desnecessário.
+- Novo atalho de serviço microbit, contendo configuração e controle integrados e reconexão mais resiliente.
+- Novo atalho de serviço littleBits BLE, contendo configuração e controle integrados e reconexão mais resiliente.
+- Novo atalho de serviço mBot, contendo configuração e controle integrados e reconexão mais resiliente.
 
 Versão 2.2 13/05/2019
 - Novo serviço e atalho de conexão bluetooth 4 (BLE) com microbit, como solução para integração no node-RED.
-- Melhoras de conexão e reconexão de todos servições bluetooth 4 (BLE).
+- Melhoras de conexão e reconexão de todos serviços bluetooth 4 (BLE).
 - Novo serviço de cliente para suportar melhor a automação e integração IoT da sala de aula.
 
 Versão 2.1 06/05/2019
@@ -32,5 +32,5 @@ Versão 2.0 17/04/2019
 - Evolução de versão do Chromium Browser.
 - Instalação local do Scratch 2.0.
 - Novo atalho para atualização automatizada da versão da imagem de disco (exige senha especial de atualização).
-- Novo atalho para ativação automatizada de estação, configuração de atalhos do Sphero e de Login Simplificado (exige login/senha do instrutor)
+- Novo atalho para ativação automatizada de estação, configuração de atalhos do Sphero e de Login Simplificado (exige login/senha do instrutor).
 - Novo atalho para teste automatizado de sala de aula, configurando a máquina e abrindo monitoria para execução de baterias de teste.
