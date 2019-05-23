@@ -4,11 +4,10 @@
   - include: tasks/tightvnc.yml
 #Tarefa fixa para instalar tighvncserver se não estiver instalado.
   - name: Atualizando npm se versão <6.9.0
-    npm: name={{item}}  global= yes
+    npm: npm
+    global: yes
     state: latest
-    with_items:
-      - npm
-      - npm
+
 
 
 
