@@ -3,11 +3,31 @@
   tasks:
   - include: tasks/tightvnc.yml
 #Tarefa fixa para instalar tighvncserver se não estiver instalado.
+  - name: Verifica Versao npm
+    command: npm --version
+    register: npm_output
+  - debug:
+       var: semregistro
   - name: Atualizando npm se versão <6.9.0
     npm: 
        name: npm
        global: yes
        state: latest
+    when: npm_output.stdout is version('6.9.0', '<')
+    
+  - name: Verificando se NPM está instalado
+    command: dpkg-query -l npm
+    register: deb_check_npm
+    ignore_errors: yes
+  - debug:
+       var: deb_check_npm
+  
+  - name: Atualizando npm se versão <6.9.0
+    npm: 
+       name: npm
+       global: yes
+       state: latest
+    when: deb_check_npm is version('6.9.0', '<')
 
 
 
