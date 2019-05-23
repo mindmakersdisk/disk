@@ -637,7 +637,7 @@ function controlaMbot() {
         readline.emitKeypressEvents(process.stdin);
         process.stdin.setRawMode(true);
         process.stdin.resume();
-        process.stdin.seEncoding('utf8');
+        process.stdin.setEncoding('utf8');
         
 }
 
@@ -872,7 +872,8 @@ function connectTombot(peripheral) {
 
     peripheral.on('disconnect', () => { 
         
-        console.log('mBot foi desconectado, tentando reconexão... Se não reconectar, feche este serviço com "control+C" e reinicie novamente.')
+        console.error('\x1b[31m','mBot foi desconectado, tentando reconexão... Se não reconectar, feche este serviço com "control+C" e reinicie novamente.')
+        console.error('\x1b[0m','');
         noble.startScanning();
         });
 }
