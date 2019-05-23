@@ -505,29 +505,93 @@ function controlaSphero() {
     
     
   bb8.detectCollisions({device: "bb8"});
+  
+  bb8.detectFreefall();
+  
+   bb8.on("freefall", function(data) {
+        //console.log("freefall detected");
+        //console.log("  data:", data);
+         console.log("Queda livre detectada!");
+                 
+         if (temClienteConectado())
+            wsServer.connections[0].send('quedaLivre={"valor":'+data.value+'}');
+                                      
+         if (temNodeRedConectado()) {
+               
+             //  console.log('teste colisao');
+
+               ipc.server.broadcast(
+                  'sphero.freeFall',
+                  {
+                      id:ipc.config.id,
+                      message:{value:data.value} 
+                  }
+                );
+            
+            }
+        
+        
+  });
+
+  bb8.on("landed", function(data) {
+      //console.log("landing detected");
+      //console.log("  data:", data);
+      console.log("Aterrisagem detectada!");
+      
+                   
+         if (temClienteConectado())
+            wsServer.connections[0].send('aterrisou={"valor":'+data.value+'}');
+                                      
+         if (temNodeRedConectado()) {
+               
+             //  console.log('teste colisao');
+
+               ipc.server.broadcast(
+                  'sphero.landing',
+                  {
+                      id:ipc.config.id,
+                      message:{value:data.value} 
+                  }
+                );
+            
+            }
+      
+  });
+
+  var ultimaColisao=new Date();
 
   bb8.on("collision", function(data) {
-      console.log("Colisão detectada!");
+
       //console.log("  data:", data);
       
-       if (temClienteConectado())
-          wsServer.connections[0].send('colisao={x:'+data.x+',y:'+data.y+',xMagnitude:'+data.xMagnitude+
-                                    ',yMagnitude:'+data.xMagnitude+',speed:'+data.speed+'}');
-                                    
-       if (temNodeRedConectado()) {
-             
-           //  console.log('teste colisao');
+      var colisaoAtual= new Date();
+      
+      if ((colisaoAtual - ultimaColisao) >= 1000) {
+      
+          console.log("Colisão detectada!");
+              
+         if (temClienteConectado())
+            wsServer.connections[0].send('colisao={"x":'+data.x+',"y":'+data.y+',"xMagnitude":'+data.xMagnitude+
+                                      ',"yMagnitude":'+data.xMagnitude+',"speed":'+data.speed+'}');
+                                      
+         if (temNodeRedConectado()) {
+               
+             //  console.log('teste colisao');
 
-             ipc.server.broadcast(
-                'sphero.hitted',
-                {
-                    id:ipc.config.id,
-                    message:{x:data.x,y:data.y,xMagnitude:data.xMagnitude,
-                           yMagnitude:data.xMagnitude,speed:data.speed} 
-                }
-              );
-          
-          }
+               ipc.server.broadcast(
+                  'sphero.hitted',
+                  {
+                      id:ipc.config.id,
+                      message:{x:data.x,y:data.y,xMagnitude:data.xMagnitude,
+                             yMagnitude:data.xMagnitude,speed:data.speed} 
+                  }
+                );
+            
+            }
+        
+        ultimaColisao=colisaoAtual;
+        
+      }
                                     
     });
 
@@ -627,9 +691,9 @@ var server = http.createServer(function(request, response) {
     response.writeHead(404);
     response.end();
 });
-server.listen(8081, function() {
+server.listen(8083, function() {
    // console.log('---------------------------------------------------------------');
-    //console.log('            '+(new Date().toLocaleString()) + ' Websocket ouvindo na porta 8081');
+    //console.log('            '+(new Date().toLocaleString()) + ' Websocket ouvindo na porta 8083');
    // console.log('---------------------------------------------------------------');    
 });
  
@@ -692,7 +756,7 @@ ipc.serveNet(
                 ipc.log('Recebeu mensagem de', (data.id), (data.message));
                 console.log('vai enviar para sphero '+data.message);
                 //code = data.message.replaceAll('sprk.','bb8.');
-		code = data.message;
+                code = data.message;
             }
         );
     }
