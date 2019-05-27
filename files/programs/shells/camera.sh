@@ -1,7 +1,8 @@
 #!/bin/bash
 
 pergunta(){
-  echo -n "Qual o ip do smartphone? (ex.: 192.168.100.44) "
+  echo -n "Qual o ip do smartphone? (ex.: 192.168.100.40:8080) "
+  echo ""
   local SURE
   read SURE
   resposta=$SURE
@@ -26,6 +27,7 @@ else
   then
     #se existir adb conectado pega o ip dele.
     resposta=$(adb shell ip addr show wlan0 | grep "inet\s" | awk '{print $2}' | awk -F'/' '{print $1}')
+    resposta="$resposta:8080"
   else
     #caso não tenha adb conectado, pede pro usuário.
     # pega primeiro argumento (se existir e passa como resposta)
@@ -42,7 +44,7 @@ else
 
   if [ -n "$resposta" ]
   then
-    sudo wget -O $caminho/$data.jpg "$resposta:8080/photoaf.jpg"
+    sudo wget -O $caminho/$data.jpg "$resposta/photoaf.jpg"
     echo $caminho/$data.jpg 2>&1
   else
     echo "Nenhum caminho informado, tente novamente informando um Ip válido!"
