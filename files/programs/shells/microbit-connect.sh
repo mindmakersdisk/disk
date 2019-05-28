@@ -24,6 +24,7 @@ then
 		echo "Copiando."
 		sudo cp /home/mindmakers/programs/node_modules/bbc-microbit/firmware/node-bbc-microbit-v0.1.0.hex /media/pi/MICROBIT
 		sleep 10;
+		echo "Desenhe um círculo com o ponto que está aparecendo na tela do microbit antes de continuar."
 		echo "Tentando conectar ao microbit..."
 
 		pergunta;
