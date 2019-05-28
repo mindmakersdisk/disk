@@ -37,6 +37,9 @@
 - name: Instalando fbi
   apt:
      name: fbi
+- name: Instalando imagemagick
+  apt:
+     name: imagemagick      
 - name: Atualizando a versão do Chromium-browser
   apt:
      name: chromium-browser=72*
