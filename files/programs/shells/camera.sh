@@ -37,14 +37,21 @@ else
     then
       resposta=$ip
     else
-      pergunta;
+       if [ -e /tmp/ipwebcam.txt ] && [ $(cat /tmp/ipwebcam.txt | wc -m ) -gt 1 ]
+       then
+         export resposta=`cat /tmp/ipwebcam.txt`
+       else
+         pergunta;
+       fi 
     fi
   fi
-
-
+  
+  echo $resposta > /tmp/ipwebcam.txt
+  
   if [ -n "$resposta" ]
   then
-    sudo wget -O $caminho/$data.jpg "$resposta/photoaf.jpg"
+    sudo wget -O /tmp/$data.jpg "$resposta/photoaf.jpg"
+    convert "/tmp/$data.jpg" -resize 720x480 "$caminho/$data.jpg"
     echo $caminho/$data.jpg 2>&1
   else
     echo "Nenhum caminho informado, tente novamente informando um Ip válido!"
