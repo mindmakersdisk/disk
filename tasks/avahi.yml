@@ -40,5 +40,5 @@
   lineinfile:
     path: /etc/avahi/hosts
     regexp: '^localhost:'
-    line: 'localhost:3000 raspberry-s{{sala.stdout}}e{{estacao.stdout}}'
+    line: 'localhost:3000 raspberry-s{{sala.stdout}}e{{estacao.stdout}}.local'
     insertafter: EOF
