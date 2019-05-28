@@ -1,10 +1,10 @@
 - name: Verificando numero da sala
-  shell: sudo grep -w "Sala:" /home/mindmakers/school.info | sed 's/.*: //' | sed 's/||//'
+  shell: "sudo grep -w 'Sala:' /home/mindmakers/school.info | sed 's/.*: //' | sed 's/||//'"
   register: sala
 - debug:
      var: sala
 - name: Verificando numero da sala
-  shell: sudo grep -w "Estação:" /home/mindmakers/school.info | sed 's/.*: //' | sed 's/||//'
+  shell: "sudo grep -w 'Estação:' /home/mindmakers/school.info | sed 's/.*: //' | sed 's/||//'"
   register: estacao
 - debug:
      var: estacao
