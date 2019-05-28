@@ -1,20 +1,21 @@
 - hosts: localhost
 
   tasks:
-  - include: tasks/tightvnc.yml
+  #- include: tasks/tightvnc.yml
 #Tarefa fixa para instalar tighvncserver se não estiver instalado.
+  - include: tasks/avahi.yml
 #  - name: Verifica Versao npm
 #    command: npm --version
 #    register: npm_output
 #  - debug:
 #       var: npm_output
 #  - name: Atualizando npm se versão <6.9.0
-#    npm: 
+#    npm:
 #       name: npm
 #       global: yes
 #       state: latest
 #    when: npm_output.stdout is version('6.9.0', '<')
-    
+
 
 
 
@@ -34,7 +35,7 @@
   #  register: semregistro2
   #- debug:
   #     var: semregistro2
-  
+
 
   #- name: Executando version_update.js
   #  command: nodejs mmversionupdate.js
