@@ -1,0 +1,24 @@
+- name: Verificando numero da sala
+  shell: 'cat /home/mindmakers/school.info | grep Sala: '
+  register: sala
+- debug:
+     var: sala
+- name: Verificando numero da sala
+  shell: 'cat /home/mindmakers/school.info | grep Estação: '
+  register: estacao
+- debug:
+     var: estacao
+- debug:
+     msg: "s{{sala.stdout}}e{{estacao.stdout}}"
+# - name: Alterando nome do host avahi
+#   lineinfile:
+#     path: /etc/avahi/avahi-daemon.conf
+#     regexp: '^#host-name='
+#     line: 'host-name=raspberry-s{{sala.stdout}}e{{estacao.stdout}}'
+#     backrefs: yes
+# - name: Alterando nome do host avahi
+#   lineinfile:
+#     path: /etc/avahi/hosts
+#     regexp: '^localhost:'
+#     line: 'localhost:3000 raspberry-s{{sala.stdout}}e{{estacao.stdout}}'
+#     insertafter: EOF
