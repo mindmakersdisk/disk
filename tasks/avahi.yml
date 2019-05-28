@@ -1,24 +1,44 @@
 - name: Verificando numero da sala
   shell: "sudo grep -w 'Sala:' /home/mindmakers/school.info | sed 's/.*: //' | sed 's/||//'"
   register: sala
-- debug:
-     var: sala
+#- debug:
+#     var: sala
 - name: Verificando numero da sala
   shell: "sudo grep -w 'Estação:' /home/mindmakers/school.info | sed 's/.*: //' | sed 's/||//'"
   register: estacao
-- debug:
-     var: estacao
-- debug:
-     msg: "s{{sala.stdout}}e{{estacao.stdout}}"
-# - name: Alterando nome do host avahi
-#   lineinfile:
-#     path: /etc/avahi/avahi-daemon.conf
-#     regexp: '^#host-name='
-#     line: 'host-name=raspberry-s{{sala.stdout}}e{{estacao.stdout}}'
-#     backrefs: yes
-# - name: Alterando nome do host avahi
-#   lineinfile:
-#     path: /etc/avahi/hosts
-#     regexp: '^localhost:'
-#     line: 'localhost:3000 raspberry-s{{sala.stdout}}e{{estacao.stdout}}'
-#     insertafter: EOF
+#- debug:
+#     var: estacao
+#- debug:
+#     msg: "s{{sala.stdout}}e{{estacao.stdout}}"
+ - name: Alterando nome do host avahi
+   lineinfile:
+     path: /etc/avahi/avahi-daemon.conf
+     regexp: '^#host-name='
+     line: 'host-name=raspberry-s{{sala.stdout}}e{{estacao.stdout}}'
+     backrefs: yes
+ - lineinfile:
+     path: /etc/avahi/avahi-daemon.conf
+     regexp: '^#publish-addresses=yes'
+     line: 'publish-addresses=yes'
+     backrefs: yes
+ - lineinfile:
+     path: /etc/avahi/avahi-daemon.conf
+     regexp: '^#publish-domain=yes'
+     line: 'publish-domain=yes'
+     backrefs: yes
+ - lineinfile:
+     path: /etc/avahi/avahi-daemon.conf
+     regexp: '^publish-hinfo=no'
+     line: 'publish-hinfo=yes'
+     backrefs: yes
+ - lineinfile:
+     path: /etc/avahi/avahi-daemon.conf
+     regexp: '^publish-workstation=no'
+     line: 'publish-workstation=yes'
+     backrefs: yes
+ - name: Alterando nome do host avahi
+   lineinfile:
+     path: /etc/avahi/hosts
+     regexp: '^localhost:'
+     line: 'localhost:3000 raspberry-s{{sala.stdout}}e{{estacao.stdout}}'
+     insertafter: EOF
