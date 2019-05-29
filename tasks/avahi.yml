@@ -13,13 +13,13 @@
   shell: "sudo grep -w 'Estação:' /home/mindmakers/school.info | sed 's/.*: //' | sed 's/||//'"
   register: estacao
   when: semregistro.matched > 0
-- name: Alterando nome do host avahi
-  lineinfile:
-    path: /etc/avahi/avahi-daemon.conf
-    regexp: '^host-name='
-    line: 'host-name=raspberry-s{{sala.stdout}}e{{estacao.stdout}}'
-    backrefs: yes
-  when: semregistro.matched > 0
+# - name: Alterando nome do host avahi
+#   lineinfile:
+#     path: /etc/avahi/avahi-daemon.conf
+#     regexp: '^host-name='
+#     line: 'host-name=raspberry-s{{sala.stdout}}e{{estacao.stdout}}'
+#     backrefs: yes
+#   when: semregistro.matched > 0
 - name: Alterando nome do host avahi
   lineinfile:
     path: /etc/avahi/avahi-daemon.conf
