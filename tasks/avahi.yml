@@ -8,25 +8,25 @@
 - name: Verificando numero da sala
   shell: "sudo grep -w 'Sala:' /home/mindmakers/school.info | sed 's/.*: //' | sed 's/||//'"
   register: sala
-  #when: semregistro.matched > 0
+  when: semregistro.matched > 0
 - name: Verificando numero da sala
   shell: "sudo grep -w 'Estação:' /home/mindmakers/school.info | sed 's/.*: //' | sed 's/||//'"
   register: estacao
-  #when: semregistro.matched > 0
+  when: semregistro.matched > 0
 - name: Alterando nome do host avahi
   lineinfile:
     path: /etc/avahi/avahi-daemon.conf
     regexp: '^#host-name='
     line: 'host-name=raspberry-s{{sala.stdout}}e{{estacao.stdout}}'
     backrefs: yes
-  #when: semregistro.matched > 0
+  when: semregistro.matched > 0
 - name: Alterando nome do host avahi
   lineinfile:
     path: /etc/avahi/hosts
     regexp: '^localhost:'
     line: 'localhost:3000 raspberry-s{{sala.stdout}}e{{estacao.stdout}}.local'
     insertafter: EOF
-  #when: semregistro.matched > 0
+  when: semregistro.matched > 0
 #- debug:
 #     var: sala
 #- debug:
