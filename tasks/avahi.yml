@@ -16,6 +16,13 @@
 - name: Alterando nome do host avahi
   lineinfile:
     path: /etc/avahi/avahi-daemon.conf
+    regexp: '^host-name='
+    line: 'host-name=raspberry-s{{sala.stdout}}e{{estacao.stdout}}'
+    backrefs: yes
+  when: semregistro.matched > 0
+- name: Alterando nome do host avahi
+  lineinfile:
+    path: /etc/avahi/avahi-daemon.conf
     regexp: '^#host-name='
     line: 'host-name=raspberry-s{{sala.stdout}}e{{estacao.stdout}}'
     backrefs: yes
@@ -34,24 +41,23 @@
 #- debug:
 #     msg: "s{{sala.stdout}}e{{estacao.stdout}}"
 ##################
-# - lineinfile:
-#     path: /etc/avahi/avahi-daemon.conf
-#     regexp: '^#publish-addresses=yes'
-#     line: 'publish-addresses=yes'
-#     backrefs: yes
-# - lineinfile:
-#     path: /etc/avahi/avahi-daemon.conf
-#     regexp: '^#publish-domain=yes'
-#     line: 'publish-domain=yes'
-#     backrefs: yes
-# - lineinfile:
-#     path: /etc/avahi/avahi-daemon.conf
-#     regexp: '^publish-hinfo=no'
-#     line: 'publish-hinfo=yes'
-#     backrefs: yes
-# - lineinfile:
-#     path: /etc/avahi/avahi-daemon.conf
-#     regexp: '^publish-workstation=no'
-#     line: 'publish-workstation=yes'
-#     backrefs: yes
-#
+- lineinfile:
+    path: /etc/avahi/avahi-daemon.conf
+    regexp: '^#publish-addresses=yes'
+    line: 'publish-addresses=yes'
+    backrefs: yes
+- lineinfile:
+    path: /etc/avahi/avahi-daemon.conf
+    regexp: '^#publish-domain=yes'
+    line: 'publish-domain=yes'
+    backrefs: yes
+- lineinfile:
+    path: /etc/avahi/avahi-daemon.conf
+    regexp: '^publish-hinfo=no'
+    line: 'publish-hinfo=yes'
+    backrefs: yes
+- lineinfile:
+    path: /etc/avahi/avahi-daemon.conf
+    regexp: '^publish-workstation=no'
+    line: 'publish-workstation=yes'
+    backrefs: yes

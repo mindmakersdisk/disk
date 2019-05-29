@@ -26,6 +26,7 @@
     - include: tasks/headless-en.yml
       when: p.stat.exists
     - include: tasks/tightvnc.yml
+    - include: tasks/avahi.yml
 
 - import_playbook: student.yml
 
