@@ -510,24 +510,24 @@ var motor_stop =  new Buffer( [0xFF, 0X55, 0x07, 0x00, 0x02, 0x05, 0x00, 0x00, 0
 //ambos motores avançam a 255
 var motor_run255 =  new Buffer( [0xFF, 0X55, 0x07, 0x00, 0x02, 0x05, 0x01, 0xFF, 0xFF, 0x00]);
 
-var motor_run100 =  new Buffer( [0xFF, 0X55, 0x07, 0x00, 0x02, 0x05, 0x9C, 0xFF, 0x64, 0x00]);
+var motor_run100 =  new Buffer( [0xFF, 0X55, 0x07, 0x00, 0x02, 0x05, 0xaa, 0xFF, 0x55, 0x00]);
 
 //ambos motores dão ré a 255
 var motor_reverse255 =  new Buffer( [0xFF, 0X55, 0x07, 0x00, 0x02, 0x05, 0xFF, 0x00, 0x01, 0xFF]);
 
-var motor_reverse100 =  new Buffer( [0xFF, 0X55, 0x07, 0x00, 0x02, 0x05, 0x64, 0x00, 0x9C, 0xFF]);
+var motor_reverse100 =  new Buffer( [0xFF, 0X55, 0x07, 0x00, 0x02, 0x05, 0x55, 0x00, 0xaa, 0xFF]);
 
 //ambos motores viram a direita a 255
 var motor_turnright255 =  new Buffer( [0xFF, 0X55, 0x07, 0x00, 0x02, 0x05, 0x01, 0xFF, 0x01, 0xFF]);
 
 //ambos motores viram a direita a 100
-var motor_turnright100 =  new Buffer( [0xFF, 0X55, 0x07, 0x00, 0x02, 0x05, 0x9C, 0xFF, 0x9C, 0xFF]);
+var motor_turnright100 =  new Buffer( [0xFF, 0X55, 0x07, 0x00, 0x02, 0x05, 0xaa, 0xFF, 0xaa, 0xFF]);
 
 //ambos motores viram a esquerda a 255
 var motor_turnleft255 =  new Buffer( [0xFF, 0X55, 0x07, 0x00, 0x02, 0x05, 0xFF, 0x00, 0xFF, 0x00]);
 
 //ambos motores viram a esquerda a 100
-var motor_turnleft100 =  new Buffer( [0xFF, 0X55, 0x07, 0x00, 0x02, 0x05, 0x64, 0x00, 0x64, 0x00]);
+var motor_turnleft100 =  new Buffer( [0xFF, 0X55, 0x07, 0x00, 0x02, 0x05, 0x55, 0x00, 0x55, 0x00]);
 
 //servo na porta 1, slot 1, 0 graus
 var servo_0 =  new Buffer( [0xFF, 0X55, 0x06, 0x00, 0x02, 0x0B, 0x01, 0x01, 0x00]);
@@ -976,6 +976,15 @@ function mbotReadDataDriver(error, services, characteristics) {
         } else {
               console.log('\x1b[0m\x1b[32m','Leitura de componentes digitais do mBot via bluetooth ativada');
               console.log('\x1b[0m',        '-------------------------------------------------------------');
+              console.log('\x1b[0m',        '------------------ CONTROLE POR TECLADO ---------------------');
+              console.log('\x1b[0m',        '------------                                 ----------------');
+              console.log('\x1b[0m',        '------------      SETAS > MOTORES            ----------------');
+              console.log('\x1b[0m',        '------------      BARRA DE ESPAÇO > PARE     ----------------');
+              console.log('\x1b[0m',        '------------      1 > LUZ AMARELA            ----------------');
+              console.log('\x1b[0m',        '------------      2 > LUZ AZUL               ----------------');
+              console.log('\x1b[0m',        '------------      3 > BUZINA                 ----------------');
+              console.log('\x1b[0m',        '------------                                 ----------------');
+              console.log('\x1b[0m',        '-------------------------------------------------------------');
               monitoriaTask = setInterval(monitoraDispositivoConectado,3000);
         }
     });
@@ -1109,13 +1118,17 @@ function escreveParaMBot(comando,valor) {
         var sentido = sentidoPotencia[0];
         var potencia = sentidoPotencia[1];        
  
-        if (sentido = DCMOTOR_FORWARD) {
+       // console.log('entrou 1  com sentido '+sentido+' e potencia='+potencia);
+ 
+        if (sentido == DCMOTOR_FORWARD) {
             var velm1 = 255 - parseInt(potencia);
             if (velm1==0) velm1=1;
             dcMotorM1BaseBufferMax.writeUInt8(velm1,7);
         } else {
-            dcMotorM1BaseBufferMax.writeUInt8(Oxff,7);
-            dcMotorM1BaseBufferMax.writeUInt8(parseInt(potencia),8);              
+            var vel =parseInt(potencia);
+            if (vel>240) vel=240;
+            dcMotorM1BaseBufferMax.writeUInt8(vel,7);              
+            dcMotorM1BaseBufferMax.writeUInt8(0,8);
         }
 
         mbotWComms.write( dcMotorM1BaseBufferMax , true, function(error) {
@@ -1130,14 +1143,16 @@ function escreveParaMBot(comando,valor) {
        var sentidoPotencia = valor.split(',');
        var sentido = sentidoPotencia[0];
        var potencia = sentidoPotencia[1];   
-        
-       if (sentido = DCMOTOR_FORWARD) {
+
+      // console.log('entrou 2 com sentido '+sentido+' e potencia='+potencia);
+       
+       if (sentido == DCMOTOR_FORWARD) {
              dcMotorM2BaseBufferMax.writeUInt8(parseInt(potencia),7);
         } else {
             var velm1 = 255 - parseInt(potencia);
-            if (velm1==0) velm1=1;
-            dcMotorM1BaseBufferMax.writeUInt8(velm1,7);              
-            dcMotorM1BaseBufferMax.writeUInt8(Oxff,8);
+            if (velm1<=15) velm1=15;
+            dcMotorM2BaseBufferMax.writeUInt8(velm1,7);              
+            dcMotorM2BaseBufferMax.writeUInt8(255,8);
         }
       
         mbotWComms.write( dcMotorM2BaseBufferMax , true, function(error) {
@@ -1167,27 +1182,48 @@ function escreveParaMBot(comando,valor) {
                 velm1 = velm1-potenciaAdicionalEsquerda;  
                 if (velm1<=0) velm1=1;
                 veldir = parseInt(valor)+potenciaAdicionalDireita;
-                if (veldir>255) veldir=255;    
+                if (veldir>240) veldir=240;    
                 //console.log(velm1+', '+veldir);            
                 dcMotorsBaseBufferMax.writeUInt8(velm1,6);
                 dcMotorsBaseBufferMax.writeUInt8(255,7);
                 dcMotorsBaseBufferMax.writeUInt8(veldir,8);
                 dcMotorsBaseBufferMax.writeUInt8(0,9);
             } else if (comando==DCMOTORS_BACK) {
-                dcMotorsBaseBufferMax.writeUInt8(255,6);  
-                dcMotorsBaseBufferMax.writeUInt8(velm1,7);
-                dcMotorsBaseBufferMax.writeUInt8(0,8);              
-                dcMotorsBaseBufferMax.writeUInt8(parseInt(valor),9);
+                console.log('Entrou para voltar');                
+                //referencia: var motor_reverse100 =  new Buffer( [0xFF, 0X55, 0x07, 0x00, 0x02, 0x05, 0x55, 0x00, 0xaa, 0xFF]);
+                velm1 = velm1-potenciaAdicionalEsquerda;  
+                if (velm1<=0) velm1=1;
+                veldir = parseInt(valor)+potenciaAdicionalDireita;
+                if (veldir>240) veldir=240;    
+                
+                dcMotorsBaseBufferMax.writeUInt8(veldir,6);
+                dcMotorsBaseBufferMax.writeUInt8(0,7);
+                dcMotorsBaseBufferMax.writeUInt8(velm1,8);
+                dcMotorsBaseBufferMax.writeUInt8(255,9);
+                
             } else if (comando==DCMOTORS_RIGHT) {
-                dcMotorsBaseBufferMax.writeUInt8(255,6);  
-                dcMotorsBaseBufferMax.writeUInt8(velm1,7);
-                dcMotorsBaseBufferMax.writeUInt8(255,8);              
-                dcMotorsBaseBufferMax.writeUInt8(velm1,9);
+                if (velm1<15) velm1=15;
+                
+                // referencia direita a 100 var motor_turnright100 =  new Buffer( [0xFF, 0X55, 0x07, 0x00, 0x02, 0x05, 0xaa, 0xFF, 0xaa, 0xFF]);
+                dcMotorsBaseBufferMax.writeUInt8(velm1,6);
+                dcMotorsBaseBufferMax.writeUInt8(255,7);
+                dcMotorsBaseBufferMax.writeUInt8(velm1,8);
+                dcMotorsBaseBufferMax.writeUInt8(255,9);           
+
+                
             } else if (comando==DCMOTORS_LEFT) {
-                dcMotorsBaseBufferMax.writeUInt8(0,6);  
-                dcMotorsBaseBufferMax.writeUInt8(parseInt(valor),7);
-                dcMotorsBaseBufferMax.writeUInt8(0,8);              
-                dcMotorsBaseBufferMax.writeUInt8(parseInt(valor),9);
+
+                veldir = parseInt(valor);
+                if (veldir>240) veldir=240;    
+                console.log('vel left = '+veldir);
+                //ambos motores viram a esquerda a 100
+                // referencia esquerda a 100  var motor_turnleft100 =  new Buffer( [0xFF, 0X55, 0x07, 0x00, 0x02, 0x05, 0x55, 0x00, 0x55, 0x00]);
+
+                dcMotorsBaseBufferMax.writeUInt8(veldir,6);             
+                dcMotorsBaseBufferMax.writeUInt8(0,7);  
+                dcMotorsBaseBufferMax.writeUInt8(veldir,8);
+                dcMotorsBaseBufferMax.writeUInt8(0,9);              
+
             }
                         
             mbotWComms.write( dcMotorsBaseBufferMax , true, function(error) {
@@ -1464,11 +1500,11 @@ wsServer.on('request', function(request) {
    
     connection.on('message', function(comandoValorStr) {
 
-     // console.log('RECEBEU MENSAGEM ',comandoValorStr.utf8Data);
+    // console.log('RECEBEU MENSAGEM ',comandoValorStr.utf8Data);
       
       var comandoValor = JSON.parse(comandoValorStr.utf8Data);
       
-     // console.log('RECEBEU MENSAGEM ',comandoValor.valor);
+    //  console.log('RECEBEU MENSAGEM ',comandoValor.valor);
                   
       escreveParaMBot(comandoValor.comando,comandoValor.valor);
       
