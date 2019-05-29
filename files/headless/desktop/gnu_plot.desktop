@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=GNU plot graph
+Name[pt_BR]=GNU plota gráfico
+Comment=
+Icon= /usr/share/icons/gnuplot.png
+Exec=bash /home/mindmakers/programs/shells/gnu_plot-mt5.sh
+Type=Application
+Encoding=UTF-8
+Terminal=true
+Categories=None;

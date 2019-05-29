@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Pictures
+Name[pt_BR]=Fotos
+Icon=folder
+Exec=pcmanfm /home/pi/Pictures
+Type=Application
+Encoding=UTF-8
+Terminal=False
+Categories=None;
