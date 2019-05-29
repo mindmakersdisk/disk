@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=aiStarter
+Comment=
+Icon=/usr/share/icons/appinventor.png
+Exec=bash /home/mindmakers/programs/shells/aiStarter.sh
+Type=Application
+Encoding=UTF-8
+Terminal=true
+Categories=None;

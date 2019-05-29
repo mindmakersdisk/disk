@@ -1,9 +1,3 @@
-- name: Verificando numero da sala
-  shell: "sudo grep -w 'Sala:' /home/mindmakers/school.info | sed 's/.*: //' | sed 's/||//'"
-  register: sala
-- name: Verificando numero da sala
-  shell: "sudo grep -w 'Estação:' /home/mindmakers/school.info | sed 's/.*: //' | sed 's/||//'"
-  register: estacao
 - name: Validando ativação
   find:
      paths: /home/mindmakers/
@@ -11,6 +5,14 @@
      contains: "^Sala: [0-9]+"
      use_regex: yes
   register: semregistro
+- name: Verificando numero da sala
+  shell: "sudo grep -w 'Sala:' /home/mindmakers/school.info | sed 's/.*: //' | sed 's/||//'"
+  register: sala
+  #when: semregistro.matched > 0
+- name: Verificando numero da sala
+  shell: "sudo grep -w 'Estação:' /home/mindmakers/school.info | sed 's/.*: //' | sed 's/||//'"
+  register: estacao
+  #when: semregistro.matched > 0
 - name: Alterando nome do host avahi
   lineinfile:
     path: /etc/avahi/avahi-daemon.conf
