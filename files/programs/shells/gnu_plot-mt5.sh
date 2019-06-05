@@ -1,10 +1,5 @@
 #!/bin/bash
 
-if [ "$(sudo cat screenlog.0 | grep -c ',')" -gt 0 ]
-then
-	sudo sed -i -e 's/set datafile separator " "/set datafile separator ","/g' /home/mindmakers/programs/shells/script-grafico.dat
-else
-	sudo sed -i -e 's/set datafile separator ","/set datafile separator " "/g' /home/mindmakers/programs/shells/script-grafico.dat
-fi
+sed -i -r -e 's/([0-9]+)\s+?,?\s+?([0-9]+)\s+?/\1,\2/' /home/pi/Desktop/screenlog.0
 
 sudo gnuplot -e "cd '/home/mindmakers/programs/shells/';load 'script-grafico.dat';exit"
