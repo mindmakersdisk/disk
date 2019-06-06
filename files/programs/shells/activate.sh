@@ -12,4 +12,4 @@ sudo nodejs mmactivate.js
 
 sudo fuser -k 80/tcp
 
-$SHELL
+sleep 5

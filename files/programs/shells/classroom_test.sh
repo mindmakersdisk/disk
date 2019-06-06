@@ -61,4 +61,4 @@ else
 
 fi
 
-$SHELL
+sleep 5
