@@ -26,4 +26,4 @@ cd ~/Desktop
 screen -L screenlog.0 /dev/ttyACM0 115200
 
 
-$SHELL
+sleep 5
