@@ -953,7 +953,9 @@ function mbotReadDataDriver(error, services, characteristics) {
                             notificaCliente(LINESENSOR,v.getFloat32(0)) 
                         poolSensor=1;   
                     } else if (poolSensor==1) {   
-                        notificaCliente(LIGHTSENSOR,v.getFloat32(0))  
+                        // Despreza zeros porque ocorre eventualmente por algum motivo
+                        if (v.getFloat32(0)>0)
+                          notificaCliente(LIGHTSENSOR,v.getFloat32(0))  
                         poolSensor=2;     
                     } else if (poolSensor==2) {  
                          if (v.getFloat32(0)>=0 && v.getFloat32(0)<=400) 
