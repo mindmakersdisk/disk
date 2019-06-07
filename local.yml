@@ -31,7 +31,7 @@
     - include: tasks/apt-get.yml
     - include: tasks/copies-student.yml
     - include: tasks/mt6.yml
-    - include: tasks/avahi.yml
+    #- include: tasks/avahi.yml
     #- include: tasks/python.yml
  # Copia as notas de liberação e o atalho com nome da versão atualizados
     - include: tasks/final-version-copies-pt.yml
