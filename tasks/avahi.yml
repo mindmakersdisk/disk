@@ -24,16 +24,23 @@
   lineinfile:
     path: /etc/avahi/avahi-daemon.conf
     regexp: '^#host-name='
-    line: 'host-name=raspberry-s{{sala.stdout}}e{{estacao.stdout}}'
+    line: 'host-name=s{{sala.stdout}}e0{{estacao.stdout}}'
     backrefs: yes
-  when: semregistro.matched > 0
+    when: semregistro.matched > 0 and estacao.stdout <= 9
 - name: Alterando nome do host avahi
   lineinfile:
-    path: /etc/avahi/hosts
-    regexp: '^localhost:'
-    line: 'localhost:3000 raspberry-s{{sala.stdout}}e{{estacao.stdout}}.local'
-    insertafter: EOF
-  when: semregistro.matched > 0
+    path: /etc/avahi/avahi-daemon.conf
+    regexp: '^#host-name='
+    line: 'host-name=s{{sala.stdout}}e{{estacao.stdout}}'
+    backrefs: yes
+  when: semregistro.matched > 0 and estacao.stdout >= 10
+# - name: Alterando nome do host avahi
+#   lineinfile:
+#     path: /etc/avahi/hosts
+#     regexp: '^localhost:'
+#     line: 'localhost:3000 raspberry-s{{sala.stdout}}e{{estacao.stdout}}.local'
+#     insertafter: EOF
+#   when: semregistro.matched > 0
 #- debug:
 #     var: sala
 #- debug:
@@ -41,27 +48,27 @@
 #- debug:
 #     msg: "s{{sala.stdout}}e{{estacao.stdout}}"
 ##################
-- lineinfile:
-    path: /etc/avahi/avahi-daemon.conf
-    regexp: '^#publish-addresses=yes'
-    line: 'publish-addresses=yes'
-    backrefs: yes
-  when: semregistro.matched > 0
-- lineinfile:
-    path: /etc/avahi/avahi-daemon.conf
-    regexp: '^#publish-domain=yes'
-    line: 'publish-domain=yes'
-    backrefs: yes
-  when: semregistro.matched > 0
-- lineinfile:
-    path: /etc/avahi/avahi-daemon.conf
-    regexp: '^publish-hinfo=no'
-    line: 'publish-hinfo=yes'
-    backrefs: yes
-  when: semregistro.matched > 0
-- lineinfile:
-    path: /etc/avahi/avahi-daemon.conf
-    regexp: '^publish-workstation=no'
-    line: 'publish-workstation=yes'
-    backrefs: yes
-  when: semregistro.matched > 0
+# - lineinfile:
+#     path: /etc/avahi/avahi-daemon.conf
+#     regexp: '^#publish-addresses=yes'
+#     line: 'publish-addresses=yes'
+#     backrefs: yes
+#   when: semregistro.matched > 0
+# - lineinfile:
+#     path: /etc/avahi/avahi-daemon.conf
+#     regexp: '^#publish-domain=yes'
+#     line: 'publish-domain=yes'
+#     backrefs: yes
+#   when: semregistro.matched > 0
+# - lineinfile:
+#     path: /etc/avahi/avahi-daemon.conf
+#     regexp: '^publish-hinfo=no'
+#     line: 'publish-hinfo=yes'
+#     backrefs: yes
+#   when: semregistro.matched > 0
+# - lineinfile:
+#     path: /etc/avahi/avahi-daemon.conf
+#     regexp: '^publish-workstation=no'
+#     line: 'publish-workstation=yes'
+#     backrefs: yes
+#   when: semregistro.matched > 0
