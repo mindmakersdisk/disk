@@ -33,6 +33,9 @@ var idescola_informado='';
 var sala_informado='';
 var estacao_informado='';
 
+// Calculados
+var urlEstacao='';
+
 // Recuperados
 var escolanome_recuperado='';
 
@@ -179,8 +182,76 @@ var questions = [
       return answers.opcao;
     },
     validate: function (valor) {
-      return Number.isInteger(valor) && parseInt(valor)>=1 && parseInt(valor)<=20;
+      return Number.isInteger(valor) && parseInt(valor)>=1 && parseInt(valor)<=22;
     },
+  }
+
+];
+
+var questionsTeacher = [
+  {
+    type: 'confirm',
+    name: 'opcao',
+    message: "Estação de INSTRUTOR: Deseja ativar essa estação"
+  },
+  {
+    type: 'input',
+    name: 'login',
+    message: "Informe seu usuário na plataforma Mind Makers:",
+    when: function (answers) {
+      return answers.opcao;
+    }
+  },
+  {
+    type: 'password',
+    name: 'senha',
+    message: "Informe sua senha:",
+    when: function (answers) {
+      return answers.opcao;
+    }
+  },
+  {
+    type: 'list',
+    name: 'loginSimplificado',
+    message: "Selecione a opção de uso de login no atalho Mind Makers.",
+    choices: ['0. Não modificar','1. Configurar Login Simplificado (permite ao aluno selecionar sua senha)',
+                    '2. Configurar Login Padrão (exige do aluno informar sua senha)'],
+    when: function (answers) {
+      return answers.opcao;
+    }
+  },
+  {
+    type: 'input',
+    name: 'numeroSalas',
+    message: "Quantas turmas simultâneas de Mind Makers pode ter a escola?",
+    default: 1,
+    when: function (answers) {
+      return (answers.opcao && answers.loginSimplificado.toString().indexOf('Login Simplificado')>-1);
+    }
+  },
+  {
+    type: 'number',
+    name: 'sala',
+    message: "Se possuir mais de uma sala, atribua um código numérico inteiro para esta (atual:"+sala_registrado+")",
+    default: 1,
+    when: function (answers) {
+      return answers.opcao;
+    },
+    validate: function (valor) {
+      return Number.isInteger(valor) && parseInt(valor)>=1 && parseInt(valor)<=10;
+    }
+  },
+  {
+    type: 'number',
+    name: 'codigo',
+    message: "O código da estação de instrutores é sempre zero. Sua estação será ativada com este código",
+    default: 0,
+    when: function (answers) {
+      return answers.opcao;
+    },
+    validate: function (valor) {
+      return Number.isInteger(valor) && parseInt(valor)==0;
+    }
   }
 
 ];
@@ -239,14 +310,57 @@ var questionsLoginSimplificado = [
   {
     type: 'number',
     name: 'codigo',
-    message: "Atribua um código numérico inteiro para identificar essa estação, de 1 a 21 (atual:"+estacao_registrado+")",
+    message: "Atribua um código numérico inteiro para identificar essa estação, de 1 a 20 (atual:"+estacao_registrado+")",
     default: 1,
     validate: function (valor) {
-      return Number.isInteger(valor) && parseInt(valor)>=1 && parseInt(valor)<=21;
+      return Number.isInteger(valor) && parseInt(valor)>=1 && parseInt(valor)<=22;
     },
   }
 
 ];
+
+
+var questionsLoginSimplificadoTeachers = [
+  {
+    type: 'list',
+    name: 'loginSimplificado',
+    message: "Estação de INSTRUTOR: Deseja modificar a opção de uso de login no atalho Mind Makers.",
+    choices: ['0. Não modificar','1. Configurar Login Simplificado (permite ao aluno selecionar sua senha)',
+                    '2. Configurar Login Padrão (exige do aluno informar sua senha)']
+  },
+  {
+    type: 'input',
+    name: 'numeroSalas',
+    default: 1,
+    message: "Quantas turmas simultâneas de Pensamento Computacional pode ter a escola?",
+    when: function (answers) {
+      return (answers.loginSimplificado.toString().indexOf('Login Simplificado')>-1);
+    }
+  },
+  {
+    type: 'number',
+    name: 'sala',
+    message: "Se possuir mais de uma sala, atribua um código numérico inteiro para esta (atual:"+sala_registrado+")",
+    default: 1,
+    validate: function (valor) {
+      return Number.isInteger(valor) && parseInt(valor)>=1 && parseInt(valor)<=10;
+    }
+  },
+  {
+    type: 'number',
+    name: 'codigo',
+    message: "O código da estação de instrutores é sempre zero. Sua estação será ativada com este código",
+    default: 0,
+    when: function (answers) {
+      return answers.opcao;
+    },
+    validate: function (valor) {
+      return Number.isInteger(valor) && parseInt(valor)==0;
+    },
+  }
+
+];
+
 
 
 
@@ -296,8 +410,15 @@ function executaRegistros() {
           // Então é headless
           return;
       }
+      
+      // Faz registro simplificado
+      var perguntasCurtas = questionsLoginSimplificado;
 
-      inquirer.prompt(questionsLoginSimplificado).then(answers => {
+      if (verificaInstrutor()) {
+          perguntasCurtas = questionsLoginSimplificadoTeachers;
+      }
+
+      inquirer.prompt(perguntasCurtas).then(answers => {
 
             if (answers.loginSimplificado!=null && answers.loginSimplificado.toString().indexOf('Não')==-1) {
 
@@ -308,6 +429,9 @@ function executaRegistros() {
             sala_informado=answers.sala;
 
             estacao_informado=answers.codigo;
+
+            if (verificaInstrutor())
+                estacao_informado='0';
 
             salaInt = parseInt(sala_informado);
             estacaoInt = parseInt(estacao_informado);
@@ -330,6 +454,8 @@ function executaRegistros() {
       if (!existeAtalhoMindMakers()) {
           // Então é headless
           perguntas=questionsHeadless;
+      } else if (verificaInstrutor()) {
+          perguntas = questionsTeacher;
       }
 
       modoregistro=true;
@@ -342,7 +468,11 @@ function executaRegistros() {
 
             sala_informado=answers.sala;
             //console.log('sala = '+sala_informado);
+            
             estacao_informado=answers.codigo;
+
+            if (verificaInstrutor())
+                estacao_informado='0';
 
             registraAtivosEscolaPlataforma(answers);
 
@@ -594,10 +724,16 @@ function monitoraAcessosAssincronosPlataforma() {
 
  // console.log('entrou na monitoria')
 
-  // Somente depois de todos os serviços de registro ocorrem ok, alterar o arquivo local.
+  // Somente depois de todos os serviços de registro ocorrem ok, altera o nome na rede e o arquivo local.
   if (totalAcessosPlataformaPendentes<=0) {
+    
+    // URL da Estação
+    if (parseInt(estacao_informado)<10)
+        urlEstacao='s'+sala_informado+'e0'+estacao_informado;
+    else
+        urlEstacao='s'+sala_informado+'e'+estacao_informado;    
 
-    atualizaSchoolInfo();
+    atualizaNomeRede(urlEstacao);
 
     clearInterval(servicoRecorrente);
 
@@ -661,11 +797,12 @@ function atualizaSchoolInfo() {
               process.exit(1);
           } else {
 
-            console.log('------------- Ativação OK! ------------------');
-            console.log('---------------------------------------------');
+            console.log('--------------- Ativação OK! --------------------');
+            console.log('-------------------------------------------------');
             console.log(escolainfoatualizada.replace(/\|\|/g,''));
+            console.log(' URL Estação: '+urlEstacao);
             console.log('');
-
+            
             var fd =
             console.error('\x1b[32m','-------------- Confira a Data/Hora do Sistema Abaixo ---------------');
             console.error('\x1b[0m\x1b[1m','            '+(new Date()).toString("yyyyMMddHHmmss").replace(/T/,' ').replace(/\..+/,'').substring(4));
@@ -768,5 +905,57 @@ function existeAtalhoMindMakersIngles() {
 function existeAtalhoMindMakers() {
 
     return existeAtalhoMindMakersPortugues() || existeAtalhoMindMakersIngles();
+
+}
+
+
+function atualizaNomeRede(urlEstacao) {
+
+   if (!urlEstacao) {
+     console.error('\x1b[31m','Não registrou URL da estação porque sua identificação chegou inválida. '+
+      'Ative novamente informando corretamente a sala e estação para '+
+      'que as funções de rede funcionem apropriadamente.');
+     console.log('\x1b[32m','');
+     return
+   }
+
+   var conteudo = fs.readFileSync('/etc/avahi/avahi-daemon.conf')+'';
+
+   // Se estiver comentado, remove
+   conteudo = conteudo.replace('#host-name=','host-name=');
+
+   // Substitui URL
+   var ponto_inicial_url = conteudo.indexOf('host-name=')+10;
+
+   var conteudo_parteinicial=conteudo.substring(0,ponto_inicial_url);
+
+  // retira o token 'raspberry' (default) ou algu registro anterior
+   var ponto_inicial_fim_conteudo=ponto_inicial_url;
+   var conteudo_partefinal=conteudo.substring(ponto_inicial_fim_conteudo);
+
+   if (conteudo_partefinal.toLowerCase().indexOf('raspberry')>-1 && conteudo_partefinal.indexOf('raspberry')<3) {
+     // retira raspberry
+     ponto_inicial_fim_conteudo=conteudo_partefinal.toLowerCase().indexOf('raspberry')+9;
+   }
+   
+   if (conteudo_partefinal.toLowerCase().indexOf('s')>-1 && conteudo_partefinal.toLowerCase().indexOf('s')<=1) {
+     // retira sala anterior, considerando várias possibilidades de token
+     ponto_inicial_fim_conteudo=conteudo_partefinal.indexOf('s')+5;
+   }
+   
+   conteudo_partefinal=conteudo_partefinal.substring(ponto_inicial_fim_conteudo);
+
+   var conteudo_novo=conteudo_parteinicial+urlEstacao+conteudo_partefinal;
+   
+    fs.writeFile('/etc/avahi/avahi-daemon.conf', conteudo_novo, function(err,data)
+        {
+          if (err)
+              console.log(err);
+          else {
+            //console.log('Atualizou URL da estação para '+urlEstacao);
+            atualizaSchoolInfo();
+          }
+        }
+    );
 
 }
