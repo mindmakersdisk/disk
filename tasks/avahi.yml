@@ -27,10 +27,22 @@
     line: 'host-name=s{{sala.stdout}}e0{{estacao.stdout}}'
     backrefs: yes
   when: semregistro.matched > 0 and estacao.stdout <= "9"
+- lineinfile:
+    path: /etc/avahi/avahi-daemon.conf
+    regexp: '^host-name='
+    line: 'host-name=s{{sala.stdout}}e0{{estacao.stdout}}'
+    backrefs: yes
+  when: semregistro.matched > 0 and estacao.stdout <= "9"
 - name: Alterando nome do host avahi>=10
   lineinfile:
     path: /etc/avahi/avahi-daemon.conf
     regexp: '^#host-name='
+    line: 'host-name=s{{sala.stdout}}e{{estacao.stdout}}'
+    backrefs: yes
+  when: semregistro.matched > 0 and estacao.stdout >= "10"
+- lineinfile:
+    path: /etc/avahi/avahi-daemon.conf
+    regexp: '^host-name='
     line: 'host-name=s{{sala.stdout}}e{{estacao.stdout}}'
     backrefs: yes
   when: semregistro.matched > 0 and estacao.stdout >= "10"
@@ -46,7 +58,7 @@
 #- debug:
 #     var: estacao
 - debug:
-    msg: "s{{sala.stdout}}e{{estacao.stdout}}"
+    msg: "s{{sala.stdout}}e0{{estacao.stdout}}"
 ##################
 # - lineinfile:
 #     path: /etc/avahi/avahi-daemon.conf
