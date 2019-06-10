@@ -933,9 +933,9 @@ function atualizaNomeRede(urlEstacao) {
    var ponto_inicial_fim_conteudo=ponto_inicial_url;
    var conteudo_partefinal=conteudo.substring(ponto_inicial_fim_conteudo);
 
-   if (conteudo_partefinal.toLowerCase().indexOf('raspberry')>-1 && conteudo_partefinal.indexOf('raspberry')<3) {
+   if (conteudo_partefinal.toLowerCase().indexOf('foo')>-1 && conteudo_partefinal.indexOf('foo')<3) {
      // retira raspberry
-     ponto_inicial_fim_conteudo=conteudo_partefinal.toLowerCase().indexOf('raspberry')+9;
+     ponto_inicial_fim_conteudo=conteudo_partefinal.toLowerCase().indexOf('foo')+3;
    }
    
    if (conteudo_partefinal.toLowerCase().indexOf('s')>-1 && conteudo_partefinal.toLowerCase().indexOf('s')<=1) {
