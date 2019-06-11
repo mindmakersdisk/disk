@@ -57,8 +57,8 @@
 #     var: sala
 #- debug:
 #     var: estacao
-- debug:
-    msg: "s{{sala.stdout}}e0{{estacao.stdout}}"
+#- debug:
+#    msg: "s{{sala.stdout}}e0{{estacao.stdout}}"
 ##################
 # - lineinfile:
 #     path: /etc/avahi/avahi-daemon.conf
