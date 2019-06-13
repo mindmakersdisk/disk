@@ -13,6 +13,7 @@
   shell: "sudo grep -w 'Estação:' /home/mindmakers/school.info | sed 's/.*: //' | sed 's/||//'"
   register: estacao
   when: semregistro.matched > 0
+# só alterar se a linha estiver comentada
 # - name: Alterando nome do host avahi
 #   lineinfile:
 #     path: /etc/avahi/avahi-daemon.conf
@@ -27,12 +28,12 @@
     line: 'host-name=s{{sala.stdout}}e0{{estacao.stdout}}'
     backrefs: yes
   when: semregistro.matched > 0 and estacao.stdout <= "9"
-- lineinfile:
-    path: /etc/avahi/avahi-daemon.conf
-    regexp: '^host-name='
-    line: 'host-name=s{{sala.stdout}}e0{{estacao.stdout}}'
-    backrefs: yes
-  when: semregistro.matched > 0 and estacao.stdout <= "9"
+# - lineinfile:
+#     path: /etc/avahi/avahi-daemon.conf
+#     regexp: '^host-name='
+#     line: 'host-name=s{{sala.stdout}}e0{{estacao.stdout}}'
+#     backrefs: yes
+#   when: semregistro.matched > 0 and estacao.stdout <= "9"
 - name: Alterando nome do host avahi>=10
   lineinfile:
     path: /etc/avahi/avahi-daemon.conf
@@ -40,12 +41,12 @@
     line: 'host-name=s{{sala.stdout}}e{{estacao.stdout}}'
     backrefs: yes
   when: semregistro.matched > 0 and estacao.stdout >= "10"
-- lineinfile:
-    path: /etc/avahi/avahi-daemon.conf
-    regexp: '^host-name='
-    line: 'host-name=s{{sala.stdout}}e{{estacao.stdout}}'
-    backrefs: yes
-  when: semregistro.matched > 0 and estacao.stdout >= "10"
+# - lineinfile:
+#     path: /etc/avahi/avahi-daemon.conf
+#     regexp: '^host-name='
+#     line: 'host-name=s{{sala.stdout}}e{{estacao.stdout}}'
+#     backrefs: yes
+#   when: semregistro.matched > 0 and estacao.stdout >= "10"
 # - name: Alterando nome do host avahi
 #   lineinfile:
 #     path: /etc/avahi/hosts
