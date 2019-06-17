@@ -608,6 +608,99 @@ function compassPoint(bearing) {
       name_inx = 0;
   }
   return COMPASS_POINTS[name_inx];
+  
+}
+
+function escreveParaMicrobit(mensagem) {
+  console.log(mensagem);
+}
+
+/* WEB SOCKET DAQUI EM DIANTE */
+
+var WebSocketServer = require('websocket').server;
+
+var http = require('http');
+ 
+var server = http.createServer(function(request, response) {
+   // console.log((new Date()) + ' Received request for ' + request.url);
+    response.writeHead(403);
+    response.end();
+});
+server.listen(8082, function() {
+  //  console.log('---------------------------------------------------------------');
+  //  console.log('            '+(new Date().toLocaleString()) + ' Websocket ouvindo na porta 8082');
+  //  console.log('---------------------------------------------------------------');    
+});
+ 
+wsServer = new WebSocketServer({
+    httpServer: server,
+    // You should not use autoAcceptConnections for production
+    // applications, as it defeats all standard cross-origin protection
+    // facilities built into the protocol and the browser.  You should
+    // *always* verify the connection's origin and decide whether or not
+    // to accept it.
+    autoAcceptConnections: false
+});
+ 
+function originIsAllowed(origin) {
+   // console.log('entrou para permitir origin');
+  // put logic here to detect whether the specified origin is allowed.
+  return true;
+}
+ 
+wsServer.on('request', function(request) {
+  
+    //console.log('UM CLIENTE ENTROU EM REQUEST');
+  
+    if (!originIsAllowed(request.origin)) {
+      // Make sure we only accept requests from an allowed origin
+      request.reject();
+      console.log((new Date().toLocaleString()) + ' Conexão com origem ' + request.origin + ' rejeitada.');
+      return;
+    }
+    
+    var connection = request.accept('echo-protocol', request.origin);
+    console.log((new Date().toLocaleString()) + ' Conexão aceita.');
+   
+    if (temClienteConectado()) {
+             enviaMsgParaTodosClientes('conectado:'+macaddressArg+',sala:'+sala_registrado+',estacao:'+estacao_registrado);
+             notificouClienteConexao=true;
+             contadorIntervalo=0;
+      }
+   
+   
+    connection.on('message', function(message) {
+
+      //console.log('RECEBEU MENSAGEM '+message);
+            
+      escreveParaMicrobit(message);
+      
+      /*
+        if (message.type === 'utf8') {
+            console.log('Received Message: ' + message.utf8Data);
+            connection.sendUTF(message.utf8Data);
+        }
+        else if (message.type === 'binary') {
+            console.log('Received Binary Message of ' + message.binaryData.length + ' bytes');
+            connection.sendBytes(message.binaryData);
+        }
+        */
+    });
+    
+    connection.on('close', function(reasonCode, description) {
+        console.log((new Date().toLocaleString()) + ' Conexão ' + connection.remoteAddress + ' finalizada.');
+    });
+});
+
+function enviaMsgParaTodosClientes(evento) {
+  
+    var i;
+    for (i = 0; i < wsServer.connections.length; i++) { 
+	
+        wsServer.connections[i].send(evento);
+      
+    }
+  
 }
 
 /******************** COMUNICAÇÃO INTER NODE.JS PARA USO COM NODE-RED ****************************/
