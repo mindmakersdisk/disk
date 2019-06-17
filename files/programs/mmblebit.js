@@ -436,7 +436,7 @@ function controlaBLEBit() {
                      
                      // Envia macaddress para indicar conexão ok
                      
-                      wsServer.connections[0].send('conectado:'+peripheral.uuid);
+                      enviaMsgParaTodosClientes('conectado:'+peripheral.uuid);
                       notificouClienteConexao=true;
                      
                    }
@@ -471,7 +471,7 @@ function controlaBLEBit() {
                         // Se não notificou cliente da conexão notifica agora
                         if (temClienteConectado() &&  (contadorIntervalo==300 || !notificouClienteConexao)) {
                                console.log('Entrou para notificar conexao');
-                               wsServer.connections[0].send('conectado:'+peripheral.uuid);
+                               enviaMsgParaTodosClientes('conectado:'+peripheral.uuid);
                                notificouClienteConexao=true;
                                contadorIntervalo=0;
                         }
@@ -486,7 +486,7 @@ function controlaBLEBit() {
                             
                             // Envia para MMBlockly se ativo
                             if (temClienteConectado())
-                               wsServer.connections[0].send(data[2]+'');
+                               enviaMsgParaTodosClientes(data[2]+'');
                                 
                             // Envia para Node-Red se ativo
                             if (temNodeRedConectado()) {
@@ -653,7 +653,7 @@ function notificaClienteDesconexao(error) {
   console.error('\x1b[0m','');
  
   if (temClienteConectado()) {
-      wsServer.connections[0].send('desconectado:'+error);
+      enviaMsgParaTodosClientes('desconectado:'+error);
   }
   
    if (temNodeRedConectado()) {
@@ -688,19 +688,21 @@ function decimalParaHexa(numeroDecimal) {
   
 }
 
+/* WEB SOCKET DAQUI EM DIANTE */
+
 var WebSocketServer = require('websocket').server;
 
 var http = require('http');
  
 var server = http.createServer(function(request, response) {
    // console.log((new Date()) + ' Received request for ' + request.url);
-    response.writeHead(404);
+    response.writeHead(403);
     response.end();
 });
 server.listen(8080, function() {
-    console.log('---------------------------------------------------------------');
-    console.log('            '+(new Date().toLocaleString()) + ' Servidor ouvindo na porta 8080');
-    console.log('---------------------------------------------------------------');    
+  //  console.log('---------------------------------------------------------------');
+  //  console.log('            '+(new Date().toLocaleString()) + ' Servidor ouvindo na porta 8080');
+  //  console.log('---------------------------------------------------------------');    
 });
  
 wsServer = new WebSocketServer({
@@ -733,6 +735,13 @@ wsServer.on('request', function(request) {
     var connection = request.accept('echo-protocol', request.origin);
     console.log((new Date().toLocaleString()) + ' Conexão aceita.');
    
+    if (temClienteConectado()) {
+             enviaMsgParaTodosClientes('conectado:'+macaddressConectado+',sala:'+sala_registrado+',estacao:'+estacao_registrado);
+             notificouClienteConexao=true;
+             contadorIntervalo=0;
+      }
+   
+   
     connection.on('message', function(message) {
 
       //console.log('RECEBEU MENSAGEM '+message);
@@ -755,6 +764,18 @@ wsServer.on('request', function(request) {
         console.log((new Date().toLocaleString()) + ' Conexão ' + connection.remoteAddress + ' finalizada.');
     });
 });
+
+
+function enviaMsgParaTodosClientes(evento) {
+  
+    var i;
+    for (i = 0; i < wsServer.connections.length; i++) { 
+	
+        wsServer.connections[i].send(evento);
+      
+    }
+  
+}
 
 /******************** COMUNICAÇÃO INTER NODE.JS PARA USO COM NODE-RED ****************************/
 

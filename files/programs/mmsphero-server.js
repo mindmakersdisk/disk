@@ -514,7 +514,7 @@ function controlaSphero() {
          console.log("Queda livre detectada!");
                  
          if (temClienteConectado())
-            wsServer.connections[0].send('quedaLivre={"valor":'+data.value+'}');
+             enviaMsgParaTodosClientes('quedaLivre={"valor":'+data.value+'}');
                                       
          if (temNodeRedConectado()) {
                
@@ -540,7 +540,7 @@ function controlaSphero() {
       
                    
          if (temClienteConectado())
-            wsServer.connections[0].send('aterrisou={"valor":'+data.value+'}');
+            enviaMsgParaTodosClientes('aterrisou={"valor":'+data.value+'}');
                                       
          if (temNodeRedConectado()) {
                
@@ -571,7 +571,7 @@ function controlaSphero() {
           console.log("Colisão detectada!");
               
          if (temClienteConectado())
-            wsServer.connections[0].send('colisao={"x":'+data.x+',"y":'+data.y+',"xMagnitude":'+data.xMagnitude+
+            enviaMsgParaTodosClientes('colisao={"x":'+data.x+',"y":'+data.y+',"xMagnitude":'+data.xMagnitude+
                                       ',"yMagnitude":'+data.xMagnitude+',"speed":'+data.speed+'}');
                                       
          if (temNodeRedConectado()) {
@@ -692,9 +692,9 @@ var server = http.createServer(function(request, response) {
     response.end();
 });
 server.listen(8083, function() {
-   // console.log('---------------------------------------------------------------');
-    //console.log('            '+(new Date().toLocaleString()) + ' Websocket ouvindo na porta 8083');
-   // console.log('---------------------------------------------------------------');    
+    console.log('---------------------------------------------------------------');
+    console.log('            '+(new Date().toLocaleString()) + ' Websocket ouvindo na porta 8083');
+    console.log('---------------------------------------------------------------');    
 });
  
 wsServer = new WebSocketServer({
@@ -726,6 +726,12 @@ wsServer.on('request', function(request) {
     
     var connection = request.accept('echo-protocol', request.origin);
     console.log((new Date().toLocaleString()) + ' Conexão aceita.');
+    
+      if (temClienteConectado()) {
+                enviaMsgParaTodosClientes('conectado:'+macaddressArg+',sala:'+sala_registrado+',estacao:'+estacao_registrado);
+                 notificouClienteConexao=true;
+                 contadorIntervalo=0;
+          }
    
     connection.on('message', function(message) {
 
@@ -738,6 +744,17 @@ wsServer.on('request', function(request) {
         console.log((new Date().toLocaleString()) + ' Conexão ' + connection.remoteAddress + ' finalizada.');
     });
 });
+
+function enviaMsgParaTodosClientes(evento) {
+  
+    var i;
+    for (i = 0; i < wsServer.connections.length; i++) { 
+	
+        wsServer.connections[i].send(evento);
+      
+    }
+  
+}
 
 /******************** COMUNICAÇÃO INTER NODE.JS PARA USO COM NODE-RED ****************************/
 
