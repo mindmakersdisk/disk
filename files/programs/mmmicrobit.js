@@ -471,6 +471,7 @@ function controlaMicrobit() {
       
       console.log('\x1b[31m','\tmicrobit desconectou!');
       console.error('\x1b[0m','');
+      notificaClienteDesconexao();
       ipc.server.broadcast(
               'microbit.desconectado',
               {
@@ -611,11 +612,53 @@ function compassPoint(bearing) {
   
 }
 
+// Recebe mensagem no padrão "acao:CODIGO,
 function escreveParaMicrobit(mensagem) {
+  
   console.log(mensagem);
+    
+  var comandoValor = [];
+  comandoValor = mensagem.utf8Data.split(',');
+  var comando = comandoValor[0].split(':')[1];
+  
+  console.log('comando='+comando);
+  
+  if (comando==ACAO_PIN) {
+    
+      var pinoValor = [];
+      pinoValor = comandoValor[1].split(':');
+    
+      console.log('Definindo pino %d como saída (output)', pinoValor[0]);
+      
+      microbitGlobal.pinOutput(parseInt(pinoValor[0]), function() {
+        console.log('\tPino definido como saída');
+
+        console.log('definindo pino %d como digital', pinoValor[0]);
+        microbitGlobal.pinDigital(parseInt(pinoValor[0]), function() {
+          console.log('\tPino definido como digital');
+
+             togglePin(parseInt(pinoValor[0]),parseInt(pinoValor[1]));
+        });
+      });
+
+    } else  if (comando==ACAO_FIGURA) {
+      
+        console.log('padrao='+comandoValor[1]);
+      
+        enviaPadraoLED(PATTERNS[parseInt(comandoValor[1])]); 
+      
+    } else  if (comando==ACAO_TEXTO) {
+      
+        enviaTexto(comandoValor[1]);
+    } 
+
+
 }
 
-/* WEB SOCKET DAQUI EM DIANTE */
+      
+/**************************************************************
+ *     WEB-SOCKET             
+ **************************************************************/
 
 var WebSocketServer = require('websocket').server;
 
@@ -666,6 +709,9 @@ wsServer.on('request', function(request) {
              enviaMsgParaTodosClientes('conectado:'+macaddressArg+',sala:'+sala_registrado+',estacao:'+estacao_registrado);
              notificouClienteConexao=true;
              contadorIntervalo=0;
+             
+             monitoraSensoresMicrobitParaWebSocket();
+             
       }
    
    
@@ -674,23 +720,143 @@ wsServer.on('request', function(request) {
       //console.log('RECEBEU MENSAGEM '+message);
             
       escreveParaMicrobit(message);
-      
-      /*
-        if (message.type === 'utf8') {
-            console.log('Received Message: ' + message.utf8Data);
-            connection.sendUTF(message.utf8Data);
-        }
-        else if (message.type === 'binary') {
-            console.log('Received Binary Message of ' + message.binaryData.length + ' bytes');
-            connection.sendBytes(message.binaryData);
-        }
-        */
+    
     });
     
     connection.on('close', function(reasonCode, description) {
         console.log((new Date().toLocaleString()) + ' Conexão ' + connection.remoteAddress + ' finalizada.');
     });
 });
+
+var last_compass_point_name = "";
+var last_temperature;
+var last_x=0;
+var last_y=0;
+var last_z=0;
+
+// Redunda observação provisoriamente, com relação ao Node-RED. Refatorar oportunamente.
+function monitoraSensoresMicrobitParaWebSocket(pinId) {
+
+        /* BUTTON */
+         microbitGlobal.on('buttonAChange', function(value) {
+            
+            console.log('\tBotão A mudou: ', BUTTON_VALUE_MAPPER[value]);
+                    
+            // Envia para Websocket se houverem conexões
+            if (temClienteConectado()) {
+              
+              notificaCliente(ACAO_BOTAOA,BUTTON_VALUE_MAPPER[value]);
+              
+            }
+            
+          });
+          
+
+
+        /* BUTTON */
+         microbitGlobal.on('buttonBChange', function(value) {
+            console.log('\tBotão B mudou:: ', BUTTON_VALUE_MAPPER[value]);
+                    
+            // Envia para Websocket se houverem conexões
+            if (temClienteConectado()) {
+              
+              notificaCliente(ACAO_BOTAOB,BUTTON_VALUE_MAPPER[value]);
+              
+            }
+            
+          });  
+
+
+        
+          microbitGlobal.on('accelerometerChange', function(x, y, z) {
+            //console.log('\ton -> accelerometer change: accelerometer = %d %d %d G', x.toFixed(1), y.toFixed(1), z.toFixed(1));
+                   
+            if (x.toFixed(1) != last_x || y.toFixed(1) != last_y || z.toFixed(1) != last_z) {       
+                     
+                     
+                  // Envia para Websocket se houverem conexões
+                  if (temClienteConectado()) {
+                    
+                    notificaCliente(ACAO_ACELER,'x:'+x.toFixed(1)+' y:'+y.toFixed(1)+' z:'+z.toFixed(1));
+                    
+                  }    
+                
+                last_x=x.toFixed(1);
+                last_y=y.toFixed(1);
+                last_z=z.toFixed(1);
+              
+            }
+            
+            
+          });
+
+
+        
+          microbitGlobal.on('magnetometerChange', function(x, y, z) {
+           
+             // TODO
+
+            
+          });
+         
+
+        
+          microbitGlobal.on('magnetometerBearingChange', function(bearing) {
+            //console.log('\ton -> magnetometer bearing change: magnetometer bearing = %d', bearing);
+            
+              // TODO
+           
+            
+          });
+        
+
+        
+         microbitGlobal.on('temperatureChange', function(temperature) {
+
+      
+            if (temperature != last_temperature) {
+              
+              console.log('\tMudou a temperatura para %d °C', temperature);
+            
+                            // Envia para Websocket se houverem conexões
+                  if (temClienteConectado()) {
+                    
+                    notificaCliente(ACAO_TEMP,temperature+'');
+                    
+                  }    
+                
+              
+                last_temperature = temperature;
+              
+            }
+        });
+
+         
+        if (pinId) {
+        
+           microbitGlobal.pinInput(pinId, function() {
+
+            console.log('\tConfigurou pino %d como de entrada ',pinId);
+
+         
+          
+           });
+        }
+        
+         microbitGlobal.on('pinDataChange', function(pin, value) {
+         // console.log('\ton -> pin data change: pin = %d, value = %d', pin, value);
+          
+          
+                if (temClienteConectado()) {
+                    
+                    notificaCliente(ACAO_PIN,value+'');
+                    
+                  }    
+          
+        });
+
+  
+}
 
 function enviaMsgParaTodosClientes(evento) {
   
@@ -702,6 +868,44 @@ function enviaMsgParaTodosClientes(evento) {
     }
   
 }
+
+function notificaClienteDesconexao(error) {
+  
+  if (error=null) error='';
+  
+      console.log('');
+      console.error('\x1b[31m','Perdeu a conexão com o microbit...');
+      console.error('\x1b[0m','');
+ 
+      if (temClienteConectado()) {
+          enviaMsgParaTodosClientes('desconectado:'+error);
+      }
+      
+      // inicializa para devolver o valor após reconexão
+      last_compass_point_name = "";
+      last_temperature;
+      last_x=0;
+      last_y=0;
+      last_z=0;
+  
+}
+
+
+function notificaCliente(componente,valor) {
+  
+      if (temClienteConectado()) {
+          enviaMsgParaTodosClientes(componente+","+valor);
+      }
+  
+}
+
+
+function temClienteConectado() {
+  
+  return wsServer!= null && wsServer.connections != null && wsServer.connections[0] != null
+  
+}
+
 
 /******************** COMUNICAÇÃO INTER NODE.JS PARA USO COM NODE-RED ****************************/
 
@@ -722,7 +926,8 @@ const ACAO_TEXTO="TEXTO";
 const ACAO_FIGURA="FIGURA"; 
 const ACAO_PIN="PIN";
 const ACAO_BOTAOA="A";
-const ACAO_BOTAOB="B";    
+const ACAO_BOTAOB="B"; 
+const ACAO_BOTAOAB="AB";    
 const ACAO_ACELER="ACELER";   
 const ACAO_MAG="MAG";   
 const ACAO_MAGBEAR="MAGBEAR";   
@@ -771,11 +976,7 @@ ipc.serveNet(
         /**************************************************************
          *     A PARTIR DAQUI, MONITORA SENSORES E ENVIA PARA NODE-RED              
          **************************************************************/
-        var last_compass_point_name = "";
-        var last_temperature;
-        var last_x=0;
-        var last_y=0;
-        var last_z=0;
+
            
         ipc.server.on(
             'from.microbit.message.connection',

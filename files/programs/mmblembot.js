@@ -772,7 +772,7 @@ function notificaClienteDesconexao(error) {
       console.error('\x1b[0m','');
  
       if (temClienteConectado()) {
-          wsServer.connections[0].send('desconectado:'+error);
+          enviaMsgParaTodosClientes('desconectado:'+error);
       }
   
 }
@@ -781,7 +781,7 @@ function notificaClienteDesconexao(error) {
 function notificaCliente(componente,valor) {
   
       if (temClienteConectado()) {
-          wsServer.connections[0].send(componente+","+valor);
+          enviaMsgParaTodosClientes(componente+","+valor);
       }
   
 }
@@ -820,7 +820,7 @@ function connectTombot(peripheral) {
          macaddressConectado = peripheral.uuid;
          
            if (temClienteConectado()) {
-                 wsServer.connections[0].send('conectado:'+macaddressConectado);
+                 enviaMsgParaTodosClientes('conectado:'+macaddressConectado);
                  notificouClienteConexao=true;
           }
          
@@ -845,7 +845,7 @@ function connectTombot(peripheral) {
               // Se não notificou cliente da conexão notifica agora
               if (temClienteConectado() &&  (contadorIntervalo==300 || !notificouClienteConexao)) {
                 console.log('Entrou para notificar conexao');
-                     wsServer.connections[0].send('conectado:'+peripheral.uuid);
+                     enviaMsgParaTodosClientes('conectado:'+peripheral.uuid);
                      notificouClienteConexao=true;
                      contadorIntervalo=0;
               }
@@ -919,7 +919,7 @@ function mbotReadDataDriver(error, services, characteristics) {
           // Se não notificou cliente da conexão notifica agora
           if (temClienteConectado() &&  (contadorIntervalo==300 || !notificouClienteConexao)) {
                  //console.log('Entrou para notificar conexao');
-                 wsServer.connections[0].send('conectado:'+macaddressConectado);
+                 enviaMsgParaTodosClientes('conectado:'+macaddressConectado);
                  notificouClienteConexao=true;
                  contadorIntervalo=0;
           }
@@ -1459,9 +1459,9 @@ var server = http.createServer(function(request, response) {
     response.end();
 });
 server.listen(8081, function() {
-    console.log('---------------------------------------------------------------');
-    console.log('            '+(new Date().toLocaleString()) + ' Servidor ouvindo na porta 8081');
-    console.log('---------------------------------------------------------------');    
+  //  console.log('---------------------------------------------------------------');
+  //  console.log('            '+(new Date().toLocaleString()) + ' Servidor ouvindo na porta 8081');
+  //  console.log('---------------------------------------------------------------');    
 });
  
 wsServer = new WebSocketServer({
@@ -1495,7 +1495,7 @@ wsServer.on('request', function(request) {
     console.log((new Date().toLocaleString()) + ' Conexão aceita.');
     
      if (temClienteConectado()) {
-                 wsServer.connections[0].send('conectado:'+macaddressConectado);
+                enviaMsgParaTodosClientes('conectado:'+macaddressConectado+',sala:'+sala_registrado+',estacao:'+estacao_registrado);
                  notificouClienteConexao=true;
                  contadorIntervalo=0;
           }
@@ -1517,5 +1517,14 @@ wsServer.on('request', function(request) {
     });
 });
 
-
+function enviaMsgParaTodosClientes(evento) {
+  
+    var i;
+    for (i = 0; i < wsServer.connections.length; i++) { 
+	
+        wsServer.connections[i].send(evento);
+      
+    }
+  
+}
 
