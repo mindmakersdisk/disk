@@ -434,8 +434,7 @@ function controlaSphero() {
     
     bb8.ping();  // Importante: evita travamentos inesperados
     
-
-      // Notifica NODE-RED
+       // Notifica NODE-RED
       if (temNodeRedConectado()) {
          ipc.server.broadcast(
             'sphero.conectado',
@@ -450,7 +449,7 @@ function controlaSphero() {
     bb8.version(function(err, data) {   
        if (err) { console.error("err:", err); } 
        else 
-        { console.log("Versão:" + data.msaVer+ '.'+ data.msaRev); }
+        { console.log((new Date().toLocaleString())+" Versão:" + data.msaVer+ '.'+ data.msaRev); }
        });
      
    // console.log('Conectou com sucesso!! Aguardando comandos em http://localhost?code=')
@@ -464,23 +463,26 @@ function controlaSphero() {
 
     setInterval(function() {
 
-       if (count % 60 == 0) {     console.log('Verificando comandos ...') }
+       if (count % 60 == 0) {console.log((new Date().toLocaleString())+' Verificando comandos ...') }
 
        count++;
+
+       if (count==1)
+          code='bb8.setInactivityTimeout(1500);';
 
        if (code!='') {
 
     try {
            
-     console.log('Vai executar: '+code)
+     console.log((new Date().toLocaleString())+' Vai executar: '+code)
        
-     eval(code)
+        eval(code);
        
      if (!eConfig) {}		
     
     } catch(e) {
      
-        console.log('Erro ao tentar executar comando. Erro: '+e)
+        console.log((new Date().toLocaleString())+' Erro ao tentar executar comando. Erro: '+e)
 
          if (temNodeRedConectado()) {
         
@@ -511,7 +513,7 @@ function controlaSphero() {
    bb8.on("freefall", function(data) {
         //console.log("freefall detected");
         //console.log("  data:", data);
-         console.log("Queda livre detectada!");
+         console.log((new Date().toLocaleString())+" Queda livre detectada!");
                  
          if (temClienteConectado())
              enviaMsgParaTodosClientes('quedaLivre={"valor":'+data.value+'}');
@@ -536,7 +538,7 @@ function controlaSphero() {
   bb8.on("landed", function(data) {
       //console.log("landing detected");
       //console.log("  data:", data);
-      console.log("Aterrisagem detectada!");
+      console.log((new Date().toLocaleString())+" Aterrisagem detectada!");
       
                    
          if (temClienteConectado())
@@ -568,7 +570,7 @@ function controlaSphero() {
       
       if ((colisaoAtual - ultimaColisao) >= 1000) {
       
-          console.log("Colisão detectada!");
+          console.log((new Date().toLocaleString())+" Colisão detectada!");
               
          if (temClienteConectado())
             enviaMsgParaTodosClientes('colisao={"x":'+data.x+',"y":'+data.y+',"xMagnitude":'+data.xMagnitude+
@@ -785,7 +787,5 @@ function temNodeRedConectado() {
   return ipc!= null && ipc.server != null 
   
 }
-
-
 
 ipc.server.start();
