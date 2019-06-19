@@ -17,6 +17,7 @@ var sphero_registrado='';
 var littlebits_registrado='';
 var mbot_registrado='';
 var microbit_registrado='';
+var microbitBLEConectado=false;
 
 var macaddressArg;
 
@@ -320,6 +321,8 @@ function procurarNovoMicrobit() {
 
       numeroScans++;
       
+      microbitBLEConectado=false;
+      
       //console.log(peripheral.advertisement);
       
       if ((''+peripheral.advertisement.localName).indexOf('BBC') == 0 &&
@@ -479,6 +482,8 @@ function controlaMicrobit() {
               }
             );
         
+      microbitBLEConectado=false  
+        
       controlaMicrobit();     
       
     });
@@ -556,6 +561,8 @@ function controlaMicrobit() {
 
 function finalizaInicializacao() {
   
+  
+    microbitBLEConectado=true;
     console.log('\x1b[0m\x1b[32m','microbit inicializado com sucesso');
     console.log('\x1b[0m',        '---------------------------------');
 
@@ -621,7 +628,10 @@ function escreveParaMicrobit(mensagem) {
   comandoValor = mensagem.utf8Data.split(',');
   var comando = comandoValor[0].split(':')[1];
   
-  console.log('comando='+comando);
+  //console.log('comando='+comando);
+  
+  if (!microbitBLEConectado)
+      return
   
   if (comando==ACAO_PIN) {
     
@@ -737,6 +747,9 @@ var last_z=0;
 // Redunda observação provisoriamente, com relação ao Node-RED. Refatorar oportunamente.
 function monitoraSensoresMicrobitParaWebSocket(pinId) {
 
+         if (!microbitBLEConectado)
+            return;
+            
         /* BUTTON */
          microbitGlobal.on('buttonAChange', function(value) {
             
