@@ -717,7 +717,7 @@ function originIsAllowed(origin) {
  
 wsServer.on('request', function(request) {
   
-    console.log('Cliente conectado');
+    console.log(new Date().toLocaleString()) +'Cliente conectado');
   
     if (!originIsAllowed(request.origin)) {
       // Make sure we only accept requests from an allowed origin
