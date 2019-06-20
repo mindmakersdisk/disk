@@ -1,9 +1,9 @@
 - hosts: localhost
 
   tasks:
-  # - include: tasks/tightvnc.yml
+   - include: tasks/xvnc.yml
 #Tarefa fixa para instalar tighvncserver se não estiver instalado.
-  - include: tasks/avahi.yml
+  #- include: tasks/avahi.yml
 #  - name: Verifica Versao npm
 #    command: npm --version
 #    register: npm_output

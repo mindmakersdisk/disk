@@ -1,9 +1,9 @@
 /*
   Serviço Node para controle do robô Sphero  - usar somente para o Sphero Cinza SPRK, bluetooth 2.x
   Paulo Alvim 20/12/2016
- 
+
   1. Certificar-se que o bluetooth do PI está ligado
-  2. Rodar com "sudo node app.js [macaddress]", onde macaddress é de um sphero visível pelo bluetooth. Ex.: sudo node mmsphero-server.js E8:8A:B4:69:69:99 
+  2. Rodar com "sudo node app.js [macaddress]", onde macaddress é de um sphero visível pelo bluetooth. Ex.: sudo node mmsphero-server.js E8:8A:B4:69:69:99
   3. Testar abrindo o navegador e chamando http://localhost?code=[codigo-sphero.js]
   4. Para desconectar, fechar o serviço do Node
 
@@ -35,7 +35,7 @@ var noble = require('/home/mindmakers/programs/node_modules/noble/index.js')
 const request = require('request')
 var modoRegistro = false;
 
-              
+
 fs.readFile('/home/mindmakers/school.info', function(err,data)
     {
       if (err) {
@@ -43,7 +43,7 @@ fs.readFile('/home/mindmakers/school.info', function(err,data)
           process.exit(1);
       } else {
 
-      
+
               escolainfo = data.toString();
               escolaidIni =escolainfo.indexOf('Cód.:')+5;
               escolaid= escolainfo.substring(escolaidIni,escolainfo.indexOf('||'),escolaidIni).trim();
@@ -71,30 +71,30 @@ fs.readFile('/home/mindmakers/school.info', function(err,data)
               mbot_registrado= escolainfo.substring(mbotIni,escolainfo.indexOf('||',mbotIni)).trim();
               microbitIni = escolainfo.indexOf('microbit:')+9
               microbit_registrado= escolainfo.substring(microbitIni,escolainfo.indexOf('||',microbitIni)).trim();
-          
+
               macaddressArg = sphero_registrado;
               console.log(macaddressArg);
-              
+
               if (macaddressArg != undefined && macaddressArg != null && macaddressArg !='' && macaddressArg !='XX:XX:XX:XX:XX:XX') {
-                  
+
                   // Tem um Sphero configurado
 
                   var acaoDefaultTemporal=setTimeout(acionaRegistradoTemporal,7000);
-                  
+
                   inquirer.prompt(questionsConfigurado).then(answers => {
 
-                        if (acaoDefaultTemporal) 
+                        if (acaoDefaultTemporal)
                             clearTimeout(acaoDefaultTemporal);
 
                         if (answers.usarOuConfigurar==USAR_REGISTRADO) {
                           // Conexão normal
                           console.log('Vai conectar com Sphero pré-configurado');
                           controlaSphero();
-                          
+
                         } else {
                           // Registrar um novo
                           procurarNovoSphero();
-                          
+
                         }
 
 
@@ -107,9 +107,9 @@ fs.readFile('/home/mindmakers/school.info', function(err,data)
                  procurarNovoSphero();
 
               }
-              
+
       }
-      
+
     });
 
 
@@ -119,7 +119,7 @@ fs.readFile('/home/mindmakers/school.info', function(err,data)
  const USAR_REGISTRADO="Usar Registrado";
  const REGISTRAR_NOVO="Registrar Novo";
  const REGISTRAR="Registrar";
- 
+
  var questionsConfigurado = [
   {
     type: 'list',
@@ -177,25 +177,25 @@ function atualizaAtalhoSphero() {
               // Encerra com falha
               process.exit(1);
           } else {
-            
+
             console.error('\x1b[32m',       '---------------------------------------------------');
             console.error('\x1b[0m\x1b[32m','-- Alterou a configuração para usar o Sphero   ----');
             console.error('\x1b[0m\x1b[1m', '            '+macaddressArg);
             console.error('\x1b[0m\x1b[1m', '-- Chame novamente para ativar o controlador   ----');
             console.error('\x1b[0m\x1b[32m','-- Esta janela fecha em 7 segundos...          ----');
-            console.log('');   
+            console.log('');
 
           }
 
-        
+
         });
 
 }
 
 function encerraAposLeitura() {
-  
+
   process.exit(1)
-  
+
 }
 
 var autenticacao = [
@@ -222,14 +222,14 @@ function registraSpheroPlataforma() {
 
     inquirer.prompt(autenticacao).then(autenticacao => {
 
-       registraAposConferirAtivacao(autenticacao.login,autenticacao.senha);  
-    
+       registraAposConferirAtivacao(autenticacao.login,autenticacao.senha);
+
     });
 
 }
 
 function registraAposConferirAtivacao(login,senha) {
-  
+
          // Registra SPRK+
         // console.log('Registrando o Sphero "'+macaddressArg+'" na plataforma.');
 
@@ -237,7 +237,7 @@ function registraAposConferirAtivacao(login,senha) {
             console.error('\x1b[31m','----------------------------------------------------------------');
             console.error('\x1b[31m','Não registrou na plataforma porque esta estação não está ativada');
             console.error('\x1b[31m','----------------------------------------------------------------');
-            
+
          } else {
 
 
@@ -265,36 +265,36 @@ function registraAposConferirAtivacao(login,senha) {
                             }else{
                               console.error('\x1b[31m','Erro ao registrar Sphero: '+error);
                             }
-                             setTimeout(encerraAposLeitura,15000);  
+                             setTimeout(encerraAposLeitura,15000);
                         } else {
                             console.log('\x1b[32m','Sphero registrado na plataforma com sucesso! ');
                              // Modifica o atalho e variável
                              atualizaAtalhoSphero();
-                             setTimeout(encerraAposLeitura,10000);  
+                             setTimeout(encerraAposLeitura,10000);
                         }
                     }
                 );
-              
+
               }
-  
-  
+
+
 }
 
 
 var ks = require('node-key-sender');
 
 function acionaRegistradoTemporal() {
- 
+
   ks.sendKey('enter');
- 
+
 }
 
 function procurarNovoSphero() {
-  
+
   modoRegistro=true;
-  
-  console.log('Procurando por um Sphero próximo para configurar...');  
-  
+
+  console.log('Procurando por um Sphero próximo para configurar...');
+
   // Procura por bluetooth
 
   noble.on('stateChange', function(state) {
@@ -306,16 +306,16 @@ function procurarNovoSphero() {
       noble.stopScanning();
     }
   });
-  
+
 }
 
 function configurarNovoSphero() {
-  
+
   // Registra na plataforma (opcional)
   registraSpheroPlataforma();
-  
+
   modoRegistro=false;
-  
+
   // Já permite usar
   //controlaSphero();
 
@@ -326,7 +326,7 @@ var numeroScans=0;
 var numeroTentativas=0;
 
 noble.on('discover', function(peripheral) {
-  
+
   if (!modoRegistro)
       return
 
@@ -350,9 +350,9 @@ noble.on('discover', function(peripheral) {
 
       // registro completo se houver alguma diferença
       macaddressArg = peripheral.address+'';
-      
+
       configurarNovoSphero();
-      
+
       noble.stopScanning();
 
   }
@@ -362,43 +362,43 @@ noble.on('discover', function(peripheral) {
        console.log('Não localizei um Sphero próximo. Para registrar, aproxime uma unidade a menos de 20cm do computador.');
        console.log('');
        noble.stopScanning();
-        
-       numeroTentativas++; 
-        
+
+       numeroTentativas++;
+
        if (numeroTentativas==1) {
-         
+
         // Se não achou por certo tempo, pede para informar o macaddress ou retentar
          inquirer.prompt(questionsInformar).then(answers => {
 
                 if (answers.macaddress==undefined || answers.macaddress==null || answers.macaddress=='') {
-                   
+
                    // Tentar descobrir um novo novamente
                    numeroScans=0;
                    noble.startScanning();
 
-                  
+
                 } else {
-                  
+
                   // usa o informado manualmente
                   console.log('Vai configurar Sphero nesta estação com macaddress informado: '+answers.macaddress);
                   macaddressArg=ajustaMac(answers.macaddress);
                   configurarNovoSphero();
-                  
+
                 }
 
 
             });
-        
+
         } else {
-        
+
            console.error('\x1b[31m','Não foi possível encontrar um Sphero para registrar.');
            console.error('\x1b[31m','Reconfira a carga do Sphero e tente novamente.');
            console.error('\x1b[31m','Se tudo estiver ok, tente novamente após desligar e ligar a antena Bluetooth');
            console.error('\x1b[31m','do computador, usando o atalho no canto superior direito.');
            console.error('\x1b[0m', '------------------------------------------');
            // Encerra com falha
-           setTimeout(encerraAposLeitura,10000);     
-          
+           setTimeout(encerraAposLeitura,10000);
+
         }
 
   }
@@ -413,11 +413,11 @@ function ajustaMac(mac12) {
 
 
 /*******************************************************************
- *  controlador Sphero daqui por diante 
+ *  controlador Sphero daqui por diante
  *******************************************************************/
 var WebSocketServer = require('websocket').server;
 
-var http = require('http');    
+var http = require('http');
 
 
 function controlaSphero() {
@@ -431,9 +431,9 @@ function controlaSphero() {
 
   // submete comandos dinamicamente, para o SPRK+
   bb8.connect(function() {
-    
+
     bb8.ping();  // Importante: evita travamentos inesperados
-    
+
        // Notifica NODE-RED
       if (temNodeRedConectado()) {
          ipc.server.broadcast(
@@ -444,21 +444,21 @@ function controlaSphero() {
           );
        }
 
-        
-   
-    bb8.version(function(err, data) {   
-       if (err) { console.error("err:", err); } 
-       else 
+
+
+    bb8.version(function(err, data) {
+       if (err) { console.error("err:", err); }
+       else
         { console.log((new Date().toLocaleString())+" Versão:" + data.msaVer+ '.'+ data.msaRev); }
        });
-     
+
    // console.log('Conectou com sucesso!! Aguardando comandos em http://localhost?code=')
-    
+
     console.error('\x1b[32m',       '---------------------------------------------------');
     console.error('\x1b[0m\x1b[32m','-- Conectou com sucesso!! Aguardando comandos  ----');
     console.error('\x1b[0m\x1b[32m','---------------------------------------------------');
-    
-   
+
+
     count=0;
 
     setInterval(function() {
@@ -473,19 +473,19 @@ function controlaSphero() {
        if (code!='') {
 
     try {
-           
+
      console.log((new Date().toLocaleString())+' Vai executar: '+code)
-       
+
         eval(code);
-       
-     if (!eConfig) {}		
-    
+
+     if (!eConfig) {}
+
     } catch(e) {
-     
+
         console.log((new Date().toLocaleString())+' Erro ao tentar executar comando. Erro: '+e)
 
          if (temNodeRedConectado()) {
-        
+
             ipc.server.emit(
                 socket,
                 'error.message',
@@ -494,103 +494,103 @@ function controlaSphero() {
                     message : e
                 }
             );
-        
+
         }
-     
-     
+
+
     }
     code=''
-    
+
      }
-   
+
     }, 1000);
-    
-    
+
+
   bb8.detectCollisions({device: "bb8"});
-  
+
   bb8.detectFreefall();
-  
+
    bb8.on("freefall", function(data) {
         //console.log("freefall detected");
         //console.log("  data:", data);
          console.log((new Date().toLocaleString())+" Queda livre detectada!");
-                 
+
          if (temClienteConectado())
              enviaMsgParaTodosClientes('quedaLivre={"valor":'+data.value+'}');
-                                      
+
          if (temNodeRedConectado()) {
-               
+
              //  console.log('teste colisao');
 
                ipc.server.broadcast(
                   'sphero.freeFall',
                   {
                       id:ipc.config.id,
-                      message:{value:data.value} 
+                      message:{value:data.value}
                   }
                 );
-            
+
             }
-        
-        
+
+
   });
-  
-  
+
+
    bb8.on("freefall", function(data) {
         //console.log("freefall detected");
         //console.log("  data:", data);
          console.log((new Date().toLocaleString())+" Queda livre detectada!");
-                 
+
          if (temClienteConectado())
              enviaMsgParaTodosClientes('quedaLivre={"valor":'+data.value+'}');
-                                      
+
          if (temNodeRedConectado()) {
-               
+
              //  console.log('teste colisao');
 
                ipc.server.broadcast(
                   'sphero.freeFall',
                   {
                       id:ipc.config.id,
-                      message:{value:data.value} 
+                      message:{value:data.value}
                   }
                 );
-            
+
             }
-        
-        
+
+
   });
 
   bb8.on("landed", function(data) {
       //console.log("landing detected");
       //console.log("  data:", data);
       console.log((new Date().toLocaleString())+" Aterrisagem detectada!");
-      
-                   
+
+
          if (temClienteConectado())
             enviaMsgParaTodosClientes('aterrisou={"valor":'+data.value+'}');
-                                      
+
          if (temNodeRedConectado()) {
-               
+
              //  console.log('teste colisao');
 
                ipc.server.broadcast(
                   'sphero.landing',
                   {
                       id:ipc.config.id,
-                      message:{value:data.value} 
+                      message:{value:data.value}
                   }
                 );
-            
+
             }
-      
+
   });
-  
+
   bb8.once('disconnect',function() {
-     
-      console.log("desonectou");
-     
-      
+
+      console.log((new Date().toLocaleString())+"desonectou");
+
+
   });
 
   var ultimaColisao=new Date();
@@ -598,19 +598,19 @@ function controlaSphero() {
   bb8.on("collision", function(data) {
 
       //console.log("  data:", data);
-      
+
       var colisaoAtual= new Date();
-      
+
       if ((colisaoAtual - ultimaColisao) >= 1000) {
-      
+
           console.log((new Date().toLocaleString())+" Colisão detectada!");
-              
+
          if (temClienteConectado())
             enviaMsgParaTodosClientes('colisao={"x":'+data.x+',"y":'+data.y+',"xMagnitude":'+data.xMagnitude+
                                       ',"yMagnitude":'+data.xMagnitude+',"speed":'+data.speed+'}');
-                                      
+
          if (temNodeRedConectado()) {
-               
+
              //  console.log('teste colisao');
 
                ipc.server.broadcast(
@@ -618,41 +618,41 @@ function controlaSphero() {
                   {
                       id:ipc.config.id,
                       message:{x:data.x,y:data.y,xMagnitude:data.xMagnitude,
-                             yMagnitude:data.xMagnitude,speed:data.speed} 
+                             yMagnitude:data.xMagnitude,speed:data.speed}
                   }
                 );
-            
+
             }
-        
+
         ultimaColisao=colisaoAtual;
-        
+
       }
-                                    
+
     });
 
   });
-  
+
   process.on('SIGINT',function() {
-    
-    console.log('Obrigado, até a próxima!');
-    
-    /*TODO VER COMO EVITAR O BRANCO AO DESCONECTAR 
+
+    console.log((new Date().toLocaleString())+'Obrigado, até a próxima!');
+
+    /*TODO VER COMO EVITAR O BRANCO AO DESCONECTAR
     bb8.disconnect(function() {
       bb8.color('black');
     });
     */
-    
+
     process.exit();
-  
+
   });
 
-  
+
 }
 
 
-const express = require('express')  
+const express = require('express')
 const app = express()
- 
+
 // Permite que página da aplicação Mind Makers acesse este servidor local
 app.use(function (req, res, next) {
 
@@ -662,14 +662,14 @@ app.use(function (req, res, next) {
     next();
 });
 
-app.get('/', (request, response) => {  
- 
+app.get('/', (request, response) => {
+
 
 //  response.setHeader('Access-Control-Allow-Origin', '*');
 
   if (request.query.code!=null) {
     eConfig=request.query.config!=null;
-     currentAngle=0; 
+     currentAngle=0;
      code=request.query.code
 
   }
@@ -679,8 +679,8 @@ app.get('/', (request, response) => {
   })
 })
 
-app.get('/dispositivocorrente', (request, response) => {  
-  
+app.get('/dispositivocorrente', (request, response) => {
+
  // response.setHeader('Access-Control-Allow-Origin', '*');
 
   if (request.query.code!=null) {
@@ -704,7 +704,7 @@ function wait(seconds) {
     }
 }
 
-app.listen(80) 
+app.listen(80)
 
 
 
@@ -715,12 +715,12 @@ var notificouClienteConexao=false;
 
 
 function temClienteConectado() {
-  
+
   return wsServer!= null && wsServer.connections != null && wsServer.connections[0] != null
-  
+
 }
 
- 
+
 var server = http.createServer(function(request, response) {
    // console.log((new Date()) + ' Received request for ' + request.url);
     response.writeHead(404);
@@ -729,9 +729,9 @@ var server = http.createServer(function(request, response) {
 server.listen(8083, function() {
     console.log('---------------------------------------------------------------');
     console.log('            '+(new Date().toLocaleString()) + ' Websocket ouvindo na porta 8083');
-    console.log('---------------------------------------------------------------');    
+    console.log('---------------------------------------------------------------');
 });
- 
+
 wsServer = new WebSocketServer({
     httpServer: server,
     // You should not use autoAcceptConnections for production
@@ -741,54 +741,54 @@ wsServer = new WebSocketServer({
     // to accept it.
     autoAcceptConnections: false
 });
- 
+
 function originIsAllowed(origin) {
    // console.log('entrou para permitir origin');
   // put logic here to detect whether the specified origin is allowed.
   return true;
 }
- 
+
 wsServer.on('request', function(request) {
-  
-    console.log('Cliente conectado');
-  
+
+    console.log((new Date().toLocaleString())+' Cliente conectado');
+
     if (!originIsAllowed(request.origin)) {
       // Make sure we only accept requests from an allowed origin
       request.reject();
       console.log((new Date().toLocaleString()) + ' Conexão com origem ' + request.origin + ' rejeitada.');
       return;
     }
-    
+
     var connection = request.accept('echo-protocol', request.origin);
     console.log((new Date().toLocaleString()) + ' Conexão aceita.');
-    
+
       if (temClienteConectado()) {
                 enviaMsgParaTodosClientes('conectado:'+macaddressArg+',sala:'+sala_registrado+',estacao:'+estacao_registrado+',escola:'+escolaid);
                  notificouClienteConexao=true;
                  contadorIntervalo=0;
           }
-   
+
     connection.on('message', function(message) {
 
       // Implementa envios para Sphero por aqui.
-      
-     
+
+
     });
-    
+
     connection.on('close', function(reasonCode, description) {
         console.log((new Date().toLocaleString()) + ' Conexão ' + connection.remoteAddress + ' finalizada.');
     });
 });
 
 function enviaMsgParaTodosClientes(evento) {
-  
+
     var i;
-    for (i = 0; i < wsServer.connections.length; i++) { 
-	
+    for (i = 0; i < wsServer.connections.length; i++) {
+
         wsServer.connections[i].send(evento);
-      
+
     }
-  
+
 }
 
 /******************** COMUNICAÇÃO INTER NODE.JS PARA USO COM NODE-RED ****************************/
@@ -806,7 +806,7 @@ ipc.serveNet(
             'program.sphero.message',
             function(data,socket){
                 ipc.log('Recebeu mensagem de', (data.id), (data.message));
-                console.log('vai enviar para sphero '+data.message);
+                console.log((new Date().toLocaleString())+' vai enviar para sphero '+data.message);
                 //code = data.message.replaceAll('sprk.','bb8.');
                 code = data.message;
             }
@@ -817,8 +817,8 @@ ipc.serveNet(
 
 function temNodeRedConectado() {
 
-  return ipc!= null && ipc.server != null 
-  
+  return ipc!= null && ipc.server != null
+
 }
 
 ipc.server.start();
