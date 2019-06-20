@@ -552,6 +552,125 @@ function controlaMicrobit() {
         });
       });
       
+       /* BUTTON */
+         microbitGlobal.on('buttonAChange', function(value) {
+            
+            console.log('\tBotão A mudou: ', BUTTON_VALUE_MAPPER[value]);
+                    
+            // Envia para Websocket se houverem conexões
+            if (temClienteConectado()) {
+              
+              notificaCliente(ACAO_BOTAOA,BUTTON_VALUE_MAPPER[value]);
+              
+            }
+            
+          });
+          
+
+
+        /* BUTTON */
+         microbitGlobal.on('buttonBChange', function(value) {
+            console.log('\tBotão B mudou:: ', BUTTON_VALUE_MAPPER[value]);
+                    
+            // Envia para Websocket se houverem conexões
+            if (temClienteConectado()) {
+              
+              notificaCliente(ACAO_BOTAOB,BUTTON_VALUE_MAPPER[value]);
+              
+            }
+            
+          });  
+
+
+        
+          microbitGlobal.on('accelerometerChange', function(x, y, z) {
+            //console.log('\ton -> accelerometer change: accelerometer = %d %d %d G', x.toFixed(1), y.toFixed(1), z.toFixed(1));
+                   
+            if (x.toFixed(1) != last_x || y.toFixed(1) != last_y || z.toFixed(1) != last_z) {       
+                     
+                     
+                  // Envia para Websocket se houverem conexões
+                  if (temClienteConectado()) {
+                    
+                    notificaCliente(ACAO_ACELER,'x:'+x.toFixed(1)+' y:'+y.toFixed(1)+' z:'+z.toFixed(1));
+                    
+                  }    
+                
+                last_x=x.toFixed(1);
+                last_y=y.toFixed(1);
+                last_z=z.toFixed(1);
+              
+            }
+            
+            
+          });
+
+
+        
+          microbitGlobal.on('magnetometerChange', function(x, y, z) {
+           
+             // TODO
+
+            
+          });
+         
+
+        
+          microbitGlobal.on('magnetometerBearingChange', function(bearing) {
+            //console.log('\ton -> magnetometer bearing change: magnetometer bearing = %d', bearing);
+            
+              // TODO
+           
+            
+          });
+        
+
+        
+         microbitGlobal.on('temperatureChange', function(temperature) {
+
+      
+            if (temperature != last_temperature) {
+              
+              console.log('\tMudou a temperatura para %d °C', temperature);
+            
+                            // Envia para Websocket se houverem conexões
+                  if (temClienteConectado()) {
+                    
+                    notificaCliente(ACAO_TEMP,temperature+'');
+                    
+                  }    
+                
+              
+                last_temperature = temperature;
+              
+            }
+        });
+
+/*
+         
+        if (pinId) {
+        
+           microbitGlobal.pinInput(pinId, function() {
+
+            console.log('\tConfigurou pino %d como de entrada ',pinId);
+
+         
+          
+           });
+        }
+        
+         microbitGlobal.on('pinDataChange', function(pin, value) {
+         // console.log('\ton -> pin data change: pin = %d, value = %d', pin, value);
+          
+          
+                if (temClienteConectado()) {
+                    
+                    notificaCliente(ACAO_PIN,value+'');
+                    
+                  }    
+          
+        });
+  */    
       setTimeout(finalizaInicializacao,2000);
       
     });
@@ -716,7 +835,7 @@ wsServer.on('request', function(request) {
     console.log((new Date().toLocaleString()) + ' Conexão aceita.');
    
     if (temClienteConectado()) {
-             enviaMsgParaTodosClientes('conectado:'+macaddressArg+',sala:'+sala_registrado+',estacao:'+estacao_registrado);
+             enviaMsgParaTodosClientes('conectado:'+macaddressArg+',sala:'+sala_registrado+',estacao:'+estacao_registrado+',escola:'+escolaid);
              notificouClienteConexao=true;
              contadorIntervalo=0;
              
@@ -750,123 +869,7 @@ function monitoraSensoresMicrobitParaWebSocket(pinId) {
          if (!microbitBLEConectado)
             return;
             
-        /* BUTTON */
-         microbitGlobal.on('buttonAChange', function(value) {
-            
-            console.log('\tBotão A mudou: ', BUTTON_VALUE_MAPPER[value]);
-                    
-            // Envia para Websocket se houverem conexões
-            if (temClienteConectado()) {
-              
-              notificaCliente(ACAO_BOTAOA,BUTTON_VALUE_MAPPER[value]);
-              
-            }
-            
-          });
-          
-
-
-        /* BUTTON */
-         microbitGlobal.on('buttonBChange', function(value) {
-            console.log('\tBotão B mudou:: ', BUTTON_VALUE_MAPPER[value]);
-                    
-            // Envia para Websocket se houverem conexões
-            if (temClienteConectado()) {
-              
-              notificaCliente(ACAO_BOTAOB,BUTTON_VALUE_MAPPER[value]);
-              
-            }
-            
-          });  
-
-
-        
-          microbitGlobal.on('accelerometerChange', function(x, y, z) {
-            //console.log('\ton -> accelerometer change: accelerometer = %d %d %d G', x.toFixed(1), y.toFixed(1), z.toFixed(1));
-                   
-            if (x.toFixed(1) != last_x || y.toFixed(1) != last_y || z.toFixed(1) != last_z) {       
-                     
-                     
-                  // Envia para Websocket se houverem conexões
-                  if (temClienteConectado()) {
-                    
-                    notificaCliente(ACAO_ACELER,'x:'+x.toFixed(1)+' y:'+y.toFixed(1)+' z:'+z.toFixed(1));
-                    
-                  }    
-                
-                last_x=x.toFixed(1);
-                last_y=y.toFixed(1);
-                last_z=z.toFixed(1);
-              
-            }
-            
-            
-          });
-
-
-        
-          microbitGlobal.on('magnetometerChange', function(x, y, z) {
-           
-             // TODO
-
-            
-          });
-         
-
-        
-          microbitGlobal.on('magnetometerBearingChange', function(bearing) {
-            //console.log('\ton -> magnetometer bearing change: magnetometer bearing = %d', bearing);
-            
-              // TODO
-           
-            
-          });
-        
-
-        
-         microbitGlobal.on('temperatureChange', function(temperature) {
-
-      
-            if (temperature != last_temperature) {
-              
-              console.log('\tMudou a temperatura para %d °C', temperature);
-            
-                            // Envia para Websocket se houverem conexões
-                  if (temClienteConectado()) {
-                    
-                    notificaCliente(ACAO_TEMP,temperature+'');
-                    
-                  }    
-                
-              
-                last_temperature = temperature;
-              
-            }
-        });
-
-         
-        if (pinId) {
-        
-           microbitGlobal.pinInput(pinId, function() {
-
-            console.log('\tConfigurou pino %d como de entrada ',pinId);
-
-         
-          
-           });
-        }
-        
-         microbitGlobal.on('pinDataChange', function(pin, value) {
-         // console.log('\ton -> pin data change: pin = %d, value = %d', pin, value);
-          
-          
-                if (temClienteConectado()) {
-                    
-                    notificaCliente(ACAO_PIN,value+'');
-                    
-                  }    
-          
-        });
+       
 
   
 }

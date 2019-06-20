@@ -534,6 +534,32 @@ function controlaSphero() {
         
         
   });
+  
+  
+   bb8.on("freefall", function(data) {
+        //console.log("freefall detected");
+        //console.log("  data:", data);
+         console.log((new Date().toLocaleString())+" Queda livre detectada!");
+                 
+         if (temClienteConectado())
+             enviaMsgParaTodosClientes('quedaLivre={"valor":'+data.value+'}');
+                                      
+         if (temNodeRedConectado()) {
+               
+             //  console.log('teste colisao');
+
+               ipc.server.broadcast(
+                  'sphero.freeFall',
+                  {
+                      id:ipc.config.id,
+                      message:{value:data.value} 
+                  }
+                );
+            
+            }
+        
+        
+  });
 
   bb8.on("landed", function(data) {
       //console.log("landing detected");
@@ -557,6 +583,13 @@ function controlaSphero() {
                 );
             
             }
+      
+  });
+  
+  bb8.once('disconnect',function() {
+     
+      console.log("desonectou");
+     
       
   });
 
@@ -717,7 +750,7 @@ function originIsAllowed(origin) {
  
 wsServer.on('request', function(request) {
   
-    console.log((new Date().toLocaleString()) +'Cliente conectado');
+    console.log('Cliente conectado');
   
     if (!originIsAllowed(request.origin)) {
       // Make sure we only accept requests from an allowed origin
@@ -730,7 +763,7 @@ wsServer.on('request', function(request) {
     console.log((new Date().toLocaleString()) + ' Conexão aceita.');
     
       if (temClienteConectado()) {
-                enviaMsgParaTodosClientes('conectado:'+macaddressArg+',sala:'+sala_registrado+',estacao:'+estacao_registrado);
+                enviaMsgParaTodosClientes('conectado:'+macaddressArg+',sala:'+sala_registrado+',estacao:'+estacao_registrado+',escola:'+escolaid);
                  notificouClienteConexao=true;
                  contadorIntervalo=0;
           }
