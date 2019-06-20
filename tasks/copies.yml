@@ -64,6 +64,13 @@
      mode: 0755
 - name: Configurando mqttbot
   shell: 'sudo update-rc.d mqttbot defaults'
+- name: Copiando arquivo de inicialização do mmiotjs
+  copy:
+     src: files/mqtt/mmiotjs
+     dest: /etc/init.d
+     mode: 0755
+- name: Configurando mmiotjs
+  shell: 'sudo update-rc.d mmiotjs defaults'
 - stat:
      path: /home/mindmakers/imgs/z.png
   register: imgs

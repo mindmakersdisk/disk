@@ -1,41 +1,43 @@
 #!/bin/sh
 ### BEGIN INIT INFO
-# Provides:          mqttbot
+# Provides:          mmiotjs
 # Required-Start:    networking $local_fs $remote_fs $network
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
 ### END INIT INFO
 #acima adptado vncserver e outros
 
-NAME=mqttbot
-LOGFILE=/var/log/mqttbot.log
+NAME=mmiotjs
+LOGFILE=/var/log/mmiotjs.log
+
+. /lib/lsb/init-functions
 
 start() {
-  sudo bash /home/mindmakers/programs/shells/mqttbot.sh &>/var/log/mqttbot.log
   sleep 15
+  sudo bash /home/mindmakers/programs/shells/mmiotjs.sh &>/var/log/mmiotjs.log
   echo 'Starting service…' >&2
-  sudo python /home/mindmakers/programs/mmiotcli.py &>/var/log/mqttbot.log & echo \$!
+  sudo nodejs /home/mindmakers/programs/mmiotcli.js &>/var/log/mmiotjs.log & echo \$!
 
   sleep 15
-    if pgrep -f mmiotcli.py > /dev/null
+    if pgrep -f mmiotcli.js > /dev/null
     then
       echo "$NAME is now running"
     else
       echo ''
       echo "Error! Could not start $NAME!"
       echo "trying again"
-      sudo python /home/mindmakers/programs/mmiotcli.py &>/var/log/mqttbot.log & echo \$!
+      sudo nodejs /home/mindmakers/programs/mmiotcli.js &>/var/log/mmiotjs.log & echo \$!
     fi
 }
 
 stop() {
   echo 'Stopping service…' >&2
-  sudo pkill python
+  sudo pkill node
   echo 'Service stopped' >&2
 }
 
 uninstall() {
-  echo -n "Are you really sure you want to uninstall this service? That cannot be undone. [yes|No] "
+  echo -n "Are you really sure you want to uninstall this service? That cannot be undone. [yes|no] "
   local SURE
   read SURE
   if [ "$SURE" = "yes" ]; then
@@ -49,10 +51,10 @@ uninstall() {
 }
 
 status() {
-            if [ -z "$(ps axf | grep python | grep -v grep)" ]; then
-                printf "%s\n" "The process appears to be dead"
+            if [ -z "$(ps axf | grep node | grep -v grep)" ]; then
+                printf "%s\n" "The process appears to be dead" >&2
             else
-                echo "mmiotcli.py appears to be running"
+                echo "mmiotcli.js appears to be running"
             fi
 }
 
