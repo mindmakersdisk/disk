@@ -1,0 +1,12 @@
+- file:
+     path: /home/pi/.config/autostart
+     state: directory
+     mode: 0755
+- name: Instalando x11vnc
+  apt:
+     name: x11vnc
+- name: Copiando autostart
+  copy:
+     src: ongoing/autostart
+     dest: /home/pi/.config/
+     mode: 0777
