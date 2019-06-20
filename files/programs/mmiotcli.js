@@ -356,6 +356,7 @@ function verificaInstrutor() {
 
 function exibeImagem(request,response,imagemComPath) {
 
+/*
   if (shell.exec("sudo fbi -T 10 --noverbose -t 10 --once -a "+imagemComPath).code !== 0) {
     shell.echo('Erro ao tentar exibir imagem');
     shell.exit(1);
@@ -366,5 +367,17 @@ function exibeImagem(request,response,imagemComPath) {
     
     
   }
+  */
+  shell.exec("sudo fbi -T 10 --noverbose -t 10 --once -a "+imagemComPath, function(code, output) {
+    if(code!=0) {
+      response.json({
+        error: "Erro ao tentar exibir imagem "+imagemComPath
+     })
+   } else {
+     response.json({
+       msg:""
+     })
+   }
+    });
 
 }

@@ -1495,7 +1495,7 @@ wsServer.on('request', function(request) {
     console.log((new Date().toLocaleString()) + ' Conexão aceita.');
     
      if (temClienteConectado()) {
-                enviaMsgParaTodosClientes('conectado:'+macaddressConectado+',sala:'+sala_registrado+',estacao:'+estacao_registrado);
+                enviaMsgParaTodosClientes('conectado:'+macaddressConectado+',sala:'+sala_registrado+',estacao:'+estacao_registrado+',escola:'+escolaid);
                  notificouClienteConexao=true;
                  contadorIntervalo=0;
           }
