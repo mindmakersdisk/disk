@@ -16,8 +16,8 @@
 #     var: node_output
 - name: Instalando Nodejs 8.15*
   apt:
-     name: nodejs
-     state: latest
+     name: nodejs=8*
+#     state: latest
   #when: node_output.stdout is version('8.12.0', '<')
   # when: not nodejs.stat.exists
 - name: Criando pasta de verificação de instalação do node 8.15.*
