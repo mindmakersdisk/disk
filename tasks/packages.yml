@@ -42,7 +42,9 @@
      name: imagemagick
 - name: Atualizando a versão do Chromium-browser
   apt:
-     name: chromium-browser=72*
+     name: chromium-browser
+#     name: chromium-browser=72*
+     state: latest
 - name: Atualizando o Scratch2
   apt:
      name: scratch2
