@@ -1,8 +1,17 @@
 - hosts: localhost
 
   tasks:
-   - include: tasks/xvnc.yml
+   #- include: tasks/xvnc.yml
 #Tarefa fixa para instalar tighvncserver se não estiver instalado.
+   - name: Instalando Nodejs 8.15*
+     apt:
+        name: nodejs=8*
+        allow_downgrades: yes
+        
+
+
+
+
   #- include: tasks/avahi.yml
 #  - name: Verifica Versao npm
 #    command: npm --version
