@@ -18,25 +18,23 @@
      dest: /home/mindmakers/programs/shells/
      mode: 0755
   when: not sphero.stat.exists
-# - name: Personalizando barra superior
-#   copy:
-#      src: files/panel
-#      dest: /home/pi/.config/lxpanel/LXDE-pi/panels
-#      attributes: +i
-#      mode: 0755
-# - name: Personalizando configurações Desktop
-#   copy:
-#      src: files/config/libfm
-#      dest: /home/pi/.config/
-#      attributes: +i
-#      mode: 0755
-
-##teste alterar arquivo linha por linha ao inves de forçar o arquivo inteiro.
-# - name: Alterando resolução da tela
-#   copy:
-#      src: files/config.txt
-#      dest: /boot
-##no lugar de forçar o arquivo inteiro de config.txt
+- file:
+    path: /home/pi/.config/
+    state: directory
+    attributes: -i
+    recurse: yes
+- name: Personalizando barra superior
+  copy:
+     src: files/panel
+     dest: /home/pi/.config/lxpanel/LXDE-pi/panels
+     # attributes: +i
+     mode: 0755
+- name: Personalizando configurações Desktop
+  copy:
+     src: files/config/libfm
+     dest: /home/pi/.config/
+     # attributes: +i
+     mode: 0755
 - name: Alterando resolução da tela
   lineinfile:
     path: /boot/config.txt
@@ -49,7 +47,7 @@
     line: 'hdmi_mode=81'
     backrefs: yes
 - lineinfile:
-      path: /usr/share/raspi-ui-overrides/applications/minecraft-pi.desktop
+      path: /boot/config.txt
       regexp: 'disable_splash=1'
       line: 'disable_splash=1'
       insertafter: EOF
