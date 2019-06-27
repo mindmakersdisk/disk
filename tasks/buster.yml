@@ -1,0 +1,105 @@
+# # Verifica se school.info ainda tem Pi não registrado para. true se não tiver e false se tiver.
+# - name: Ver se máquina já foi ativada para realizar a atualização de versão da plataforma.
+#   find:
+#      paths: /home/mindmakers/
+#      patterns: 'school.info'
+#      contains: "^Pi: [0-9]+"
+#      use_regex: yes
+#   register: semregistro
+#
+# - name: Executando version_update.js
+#   command: nodejs mmversionupdate.js
+#   args:
+#     chdir: /home/mindmakers/programs
+#   when: semregistro.matched > 0
+
+# Fazer alguma validação ? versão do OS como validação?
+
+#######################
+
+- name: Alterando configurações para instalar raspbian buster
+  lineinfile:
+    path: /etc/apt/sources.list
+    regexp: '^deb http://raspbian.raspberrypi.org/raspbian/ stretch main contrib non-free rpi'
+    line: 'deb http://raspbian.raspberrypi.org/raspbian/ buster main contrib non-free rpi'
+    backrefs: yes
+
+- lineinfile:
+    path: /etc/apt/sources.list
+    regexp: '^#deb-src http://raspbian.raspberrypi.org/raspbian/ stretch main contrib non-free rpi'
+    line: '#deb-src http://raspbian.raspberrypi.org/raspbian/ buster main contrib non-free rpi'
+    backrefs: yes
+
+- lineinfile:
+    path: /etc/apt/sources.list.d/raspi.list
+    regexp: '^deb http://archive.raspberrypi.org/debian/ stretch main ui'
+    line: 'deb http://archive.raspberrypi.org/debian/ buster main ui'
+    backrefs: yes
+
+- lineinfile:
+    path: /etc/apt/sources.list.d/raspi.list
+    regexp: '^#deb-src http://archive.raspberrypi.org/debian/ stretch main ui'
+    line: '#deb-src http://archive.raspberrypi.org/debian/ buster main ui'
+    backrefs: yes
+
+- name: Atualizando Repositórios
+  apt:
+    update_cache: yes
+
+- name: Atualizando a distribuição do sistema.
+  apt:
+    upgrade: dist
+
+
+#Atualização
+#########
+
+- name: Verificando se o Node.js já foi instalado
+  stat:
+     path: /home/mindmakers/programs/verify/nodeBuster
+  register: nodejs
+- name: Configurando arquivos para instalar Nodejs 8.15*
+  shell: 'curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -'
+  when: not nodejs.stat.exists
+- name: Atualizando Repositórios
+  apt:
+     update_cache: yes
+  when: not nodejs.stat.exists
+- name: Verifica Versao npm
+  command: nodejs --version
+  register: node_output
+- debug:
+     var: node_output
+- name: Instalando Nodejs 8.15*
+  apt:
+     name: nodejs=8*
+     force: yes
+  when: node_output.stdout is version('9', '>')
+- name: Criando pasta de verificação de instalação do node 8.*
+  file:
+    path: /home/mindmakers/programs/verify/nodeBuster
+    state: directory
+    mode: 0444
+- name: Verificando se NPM está instalado
+  command: dpkg-query -l npm
+  register: deb_check_npm
+  ignore_errors: yes
+- name: Instalando npm 1.4* se o pacote não estiver instalado
+  apt:
+     name: npm
+  when: deb_check_npm is failed
+- name: Verifica Versao npm
+  command: npm --version
+  register: npm_output
+- name: Atualizando npm se versão <6.9.0
+  npm:
+     name: npm
+     global: yes
+     state: latest
+  when: npm_output.stdout is version('6.9.0', '<')
+
+- name: Desinstalando aplicações não utilizadas
+  apt:
+     name: [timidity, lxmusic, gnome-disk-utility, deluge-gtk, evince, wicd, wicd-gtk, blipit, usermode, gucharmap, gnome-system-tools, pavucontrol]
+     state: absent
+     purge: yes

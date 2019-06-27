@@ -92,6 +92,8 @@
     state: absent
 - name: Verificando OS em inglês
   shell: 'cat /etc/default/locale | grep LANG= '
+  args:
+    warn: no
   register: lang
 - file:
     path: "/home/pi/Área de Trabalho/scratch2_folder.desktop"
@@ -113,8 +115,12 @@
     path: /home/pi/Scratch2
     state: absent
 - shell: 'sudo ln -s /home/mindmakers/Scratch2/english /home/pi/Scratch2'
+  args:
+    warn: no
   when: lang.stdout.find('LANG=en') != -1
 - shell: 'sudo ln -s /home/mindmakers/Scratch2/portuguese /home/pi/Scratch2'
+  args:
+    warn: no
   when: lang.stdout.find('LANG=pt') != -1
 - file:
     path: /home/pi/Fotos
@@ -126,4 +132,6 @@
     path: /home/pi/Pictures/Fotos
     state: absent
 - shell: 'sudo ln -s /home/pi/Pictures /home/pi/Fotos'
+  args:
+    warn: no
   when: lang.stdout.find('LANG=pt') != -1

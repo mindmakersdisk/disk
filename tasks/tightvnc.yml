@@ -16,6 +16,8 @@
   when: deb_check.stdout.find('<nenhuma>') != -1 or deb_check.stdout.find('<none>') != -1
 - name: Configurando VncServer
   shell: 'sudo update-rc.d vncserver defaults'
+  args:
+    warn: no
   when: deb_check.stdout.find('<nenhuma>') != -1 or deb_check.stdout.find('<none>') != -1
 
 #- name: Chama o server para configurar uma senha de acesso

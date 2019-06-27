@@ -5,6 +5,8 @@
      mode: 0755
 - name: Ativando 50-microbit.rules
   shell: 'sudo udevadm control --reload-rules'
+  args:
+    warn: no
 - command: dpkg-query -l
   register: dpkg_check
 - name: Instalando gnuplot

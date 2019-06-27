@@ -18,16 +18,41 @@
      dest: /home/mindmakers/programs/shells/
      mode: 0755
   when: not sphero.stat.exists
-- name: Personalizando barra superior
-  copy:
-     src: files/panel
-     dest: /home/pi/.config/lxpanel/LXDE-pi/panels
-     attributes: +i
-     mode: 0755
+# - name: Personalizando barra superior
+#   copy:
+#      src: files/panel
+#      dest: /home/pi/.config/lxpanel/LXDE-pi/panels
+#      attributes: +i
+#      mode: 0755
+# - name: Personalizando configurações Desktop
+#   copy:
+#      src: files/config/libfm
+#      dest: /home/pi/.config/
+#      attributes: +i
+#      mode: 0755
+
+##teste alterar arquivo linha por linha ao inves de forçar o arquivo inteiro.
+# - name: Alterando resolução da tela
+#   copy:
+#      src: files/config.txt
+#      dest: /boot
+##no lugar de forçar o arquivo inteiro de config.txt
 - name: Alterando resolução da tela
-  copy:
-     src: files/config.txt
-     dest: /boot
+  lineinfile:
+    path: /boot/config.txt
+    regexp: '^#hdmi_group=1'
+    line: 'hdmi_group=2'
+    backrefs: yes
+- lineinfile:
+    path: /boot/config.txt
+    regexp: '^#hdmi_mode=1'
+    line: 'hdmi_mode=81'
+    backrefs: yes
+- lineinfile:
+      path: /usr/share/raspi-ui-overrides/applications/minecraft-pi.desktop
+      regexp: 'disable_splash=1'
+      line: 'disable_splash=1'
+      insertafter: EOF
 - name: Verificando se existe arquivo school.info
   stat:
      path: /home/mindmakers/school.info
@@ -48,22 +73,13 @@
      mode: 0755
 - name: Copiando arquivo de inicialização do mqtt
   copy:
-     src: files/mqtt/rc.local
-     dest: /etc
-     mode: 0755
-- name: systemctl daemon-reload
-  command: sudo systemctl daemon-reload
-# - name: systemctl start rc-local.service
-#   command: sudo systemctl start rc-local.service
-- name: systemctl stop rc-local.service
-  command: sudo systemctl stop rc-local.service
-- name: Copiando arquivo de inicialização do mqtt
-  copy:
      src: files/mqtt/mqttbot
      dest: /etc/init.d
      mode: 0755
 - name: Configurando mqttbot
   shell: 'sudo update-rc.d mqttbot defaults'
+  args:
+    warn: no
 - name: Copiando arquivo de inicialização do mmiotjs
   copy:
      src: files/mqtt/mmiotjs
@@ -71,6 +87,8 @@
      mode: 0755
 - name: Configurando mmiotjs
   shell: 'sudo update-rc.d mmiotjs defaults'
+  args:
+    warn: no
 - stat:
      path: /home/mindmakers/imgs/z.png
   register: imgs

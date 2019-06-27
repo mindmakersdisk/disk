@@ -10,9 +10,13 @@
   when: not slash.stat.exists
 - name: Extraindo 3DSlash
   shell: 'cd /home/mindmakers/programs/verify/3DSlash/ && tar -xvzpf 3dslash_raspberry_3_0_0.tgz -C /usr/local'
+  args:
+    warn: no
   when: not slash.stat.exists
 - name: Instalando 3DSlash
   shell: 'cd /home/mindmakers/programs/verify/3DSlash/ && chown -R root:staff /usr/local/3DSlash'
+  args:
+    warn: no
   when: not slash.stat.exists
 - name: Instalando libgles2-mesa e libsdl2-dev
   apt:
@@ -28,4 +32,6 @@
     - 'sudo ln -fs /opt/vc/lib/libEGL.so /usr/lib/arm-linux-gnueabihf/libEGL.so'
     - 'sudo ln -fs /opt/vc/lib/libGLESv2.so /usr/lib/arm-linux-gnueabihf/libGLESv2.so'
     - 'sudo ldconfig'
+  args:
+    warn: no
   when: not slash.stat.exists

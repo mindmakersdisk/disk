@@ -4,6 +4,8 @@
   register: nodejs
 - name: Configurando arquivos para instalar Nodejs 8.15*
   shell: 'curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -'
+  args:
+    warn: no
   when: not nodejs.stat.exists
 - name: Atualizando Repositórios
   apt:
@@ -12,14 +14,15 @@
 - name: Verifica Versao npm
   command: nodejs --version
   register: node_output
-# - debug:
-#     var: node_output
-- name: Instalando Nodejs 8.15*
+- name: Instalando Nodejs 8.* se versão < 8.12
   apt:
      name: nodejs=8*
-#     state: latest
-  #when: node_output.stdout is version('8.12.0', '<')
-  # when: not nodejs.stat.exists
+  when: node_output.stdout|int is version('8.12', operator='gt')
+- name: Instalando Nodejs 8.* se versão > 10.0
+  apt:
+     name: nodejs=8*
+     force: yes
+  when: node_output.stdout|int is version('10.0', operator='lt')
 - name: Criando pasta de verificação de instalação do node 8.15.*
   file:
     path: /home/mindmakers/programs/verify/node815
@@ -43,7 +46,6 @@
 - name: Atualizando a versão do Chromium-browser
   apt:
      name: chromium-browser
-#     name: chromium-browser=72*
      state: latest
 - name: Atualizando o Scratch2
   apt:
@@ -60,18 +62,18 @@
 - name: Verifica Versao npm
   command: npm --version
   register: npm_output
-- name: Atualizando npm se versão <6.9.0
+- name: Atualizando npm se versão <6.5.0
   npm:
      name: npm
      global: yes
      state: latest
-  when: npm_output.stdout is version('6.9.0', '<')
-- name: Atualizando npm
+  when: npm_output.stdout|int is version('6.5.0', operator='lt')
+- name: Verificando npm se versão <6.5.0
   npm:
      name: npm
      global: yes
      state: latest
-  when: npm_output.stdout is version('6.9.0', '<')
+  when: npm_output.stdout|int is version('6.5.0', 'gt')
 - name: Verificando se as dependências npm do Sphero já foram instaladas
   stat:
      path: /home/mindmakers/programs/verify/npmsphero
@@ -199,17 +201,22 @@
     path: /home/mindmakers/programs/verify/npmsphero
     state: directory
     mode: 0444
-- command: pip list
-  register: pip_check
+#- command: pip list
+#  register: pip_check
 - name: Instalando paho-mqtt
   pip:
     name: paho-mqtt
-  when: not pip_check.stdout.find('paho-mqtt') != -1
+  #when: not pip_check.stdout.find('paho-mqtt') != -1
 - name: Instalando pip keyboard
   pip:
     name: keyboard
-  when: not pip_check.stdout.find('keyboard') != -1
-- name: Instalando pip logging
-  pip:
-    name: logging
-  when: not pip_check.stdout.find('logging') != -1
+  #when: not pip_check.stdout.find('keyboard') != -1
+#- name: Instalando pip logging
+#  pip:
+#    name: logging
+  #when: not pip_check.stdout.find('logging') != -1
+#refeito em forma de shell, gera erro quando faz via modulo pip
+- name: Instalando pip keyboard
+  shell: 'sudo pip install logging'
+  args:
+    warn: no

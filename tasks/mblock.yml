@@ -22,7 +22,7 @@
   shell: 'unzip mBlock_RaspberryPI.zip'
   args:
      chdir: /home/mindmakers/mbot
-     warn: false
+     warn: no
   when: not mbotext.stat.exists
 - name: Instando pacotes npm baseados no package.json.
   npm:
