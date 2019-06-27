@@ -18,11 +18,11 @@
      dest: /home/mindmakers/programs/shells/
      mode: 0755
   when: not sphero.stat.exists
-- file:
-    path: /home/pi/.config/
-    state: directory
-    attributes: -i
-    recurse: yes
+#- file:
+#    path: /home/pi/.config/
+#    state: directory
+#    attributes: -i
+#    recurse: yes
 - name: Personalizando barra superior
   copy:
      src: files/panel
