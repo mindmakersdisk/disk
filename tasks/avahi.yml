@@ -64,28 +64,3 @@
 #     var: estacao
 #- debug:
 #    msg: "s{{sala.stdout}}e0{{estacao.stdout}}"
-##################
-# - lineinfile:
-#     path: /etc/avahi/avahi-daemon.conf
-#     regexp: '^#publish-addresses=yes'
-#     line: 'publish-addresses=yes'
-#     backrefs: yes
-#   when: semregistro.matched > 0
-# - lineinfile:
-#     path: /etc/avahi/avahi-daemon.conf
-#     regexp: '^#publish-domain=yes'
-#     line: 'publish-domain=yes'
-#     backrefs: yes
-#   when: semregistro.matched > 0
-# - lineinfile:
-#     path: /etc/avahi/avahi-daemon.conf
-#     regexp: '^publish-hinfo=no'
-#     line: 'publish-hinfo=yes'
-#     backrefs: yes
-#   when: semregistro.matched > 0
-# - lineinfile:
-#     path: /etc/avahi/avahi-daemon.conf
-#     regexp: '^publish-workstation=no'
-#     line: 'publish-workstation=yes'
-#     backrefs: yes
-#   when: semregistro.matched > 0
