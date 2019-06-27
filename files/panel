@@ -101,14 +101,21 @@ Plugin {
   }
 }
 Plugin {
-  type=cputemp
+  type=thermal
   Config {
-    Foreground=#a9a9a9a9a9a9
-    Background=#ffffffffffff
-    Throttle1=#ffffa5a50000
-    Throttle2=#ffff00000000
-    HighTemp=80
-    LowTemp=65
+    NormalColor=#00ff00
+    Warning1Color=#fff000
+    Warning2Color=#ff0000
+    AutomaticLevels=1
+    Warning1Temp=140
+    Warning2Temp=145
+    AutomaticSensor=1
+  }
+}
+Plugin {
+  type=space
+  Config {
+    Size=2
   }
 }
 Plugin {
