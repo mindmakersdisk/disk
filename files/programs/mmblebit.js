@@ -321,7 +321,7 @@ function procurarNovoBLEBit() {
       numeroScans++;
       
       if ((''+peripheral.advertisement.localName).indexOf('w30') == 0 &&
-              peripheral.rssi>-60) {
+              peripheral.rssi>-90) {
          
           console.log('\x1b[32m','Encontrou BLE Bit:'+peripheral.address + ' [Nome:'+peripheral.advertisement.localName +
                 ', Conectável:' + peripheral.connectable + ', RSSI:' + peripheral.rssi+']');
