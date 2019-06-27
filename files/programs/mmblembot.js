@@ -541,8 +541,8 @@ var servo_2 =  new Buffer( [0xFF, 0X55, 0x06, 0x00, 0x02, 0x0B, 0x01, 0x01, 0x5A
 //servo na porta 1, slot 1, 135 graus
 var servo_3 =  new Buffer( [0xFF, 0X55, 0x06, 0x00, 0x02, 0x0B, 0x01, 0x01, 0x87]);
 
-//servo na porta 1, slot 1, 180 graus
-var servo_4 =  new Buffer( [0xFF, 0X55, 0x06, 0x00, 0x02, 0x0B, 0x01, 0x01, 0xB4]);
+//servo na porta 1, slot 1, 180 graus - exagerado
+//var servo_4 =  new Buffer( [0xFF, 0X55, 0x06, 0x00, 0x02, 0x0B, 0x01, 0x01, 0xB4]);
 
 // Buzzer
 var buzz =      new Buffer( [0xff, 0x55, 0x07, 0x00, 0x02, 0x22, 0x06, 0x01, 0xf4, 0x01]);
@@ -712,12 +712,12 @@ function controlaMbot() {
 
             if (key.name=='1') {
                   mbotWComms.write( ledColor1 , true, function(error) {
-                        //console.log("Write Led Color1 OK");
+                      //   console.log("Write Led Color1 OK");
                     });
             }
              if (key.name=='2') {
                  mbotWComms.write( ledColor2 , true, function(error) {
-                        //console.log("Write Led Color2 OK");
+                       // console.log("Write Led Color2 OK");
                     });
             }
             if (key.name=='3') {
@@ -745,16 +745,7 @@ function controlaMbot() {
                       //  console.log("servo a 135 graus");
                     });
             }
-          //  if (key.name=='8') {
-          //       mbotWComms.write( servo_4 , true, function(error) {
-          //              console.log("servo a 180 graus");
-          //          });
-          //  }
-            if (key.name=='9') {
-                 mbotWComms.write( read_onboard_button_pressed , true, function(error) {
-                        console.log("Botão na placa pressionado?");
-                    });
-            }
+           
 
          //   console.log();
          //   console.log(key);
@@ -978,14 +969,20 @@ function mbotReadDataDriver(error, services, characteristics) {
         } else {
               console.log('\x1b[0m\x1b[32m','Leitura de componentes digitais do mBot via bluetooth ativada');
               console.log('\x1b[0m',        '-------------------------------------------------------------');
-              console.log('\x1b[0m',        '------------------ CONTROLE POR TECLADO ---------------------');
+              console.log('\x1b[0m',        '------------  TESTE E CONTROLE POR TECLADO   ----------------');
               console.log('\x1b[0m',        '------------                                 ----------------');
               console.log('\x1b[0m',        '------------      SETAS > MOTORES            ----------------');
               console.log('\x1b[0m',        '------------      BARRA DE ESPAÇO > PARE     ----------------');
               console.log('\x1b[0m',        '------------      1 > LUZ AMARELA            ----------------');
               console.log('\x1b[0m',        '------------      2 > LUZ AZUL               ----------------');
               console.log('\x1b[0m',        '------------      3 > BUZINA                 ----------------');
+              console.log('\x1b[0m',        '------------      4 > SERVO 0º               ----------------');
+              console.log('\x1b[0m',        '------------      5 > SERVO 45º              ----------------');
+              console.log('\x1b[0m',        '------------      6 > SERVO 90º              ----------------');
+              console.log('\x1b[0m',        '------------      7 > SERVO 135º             ----------------');
               console.log('\x1b[0m',        '------------                                 ----------------');
+              console.log('\x1b[0m',        '-------------------------------------------------------------');
+              console.log('\x1b[0m',        '--- Se for o primeiro uso, teste todos os comandos acima! ---');
               console.log('\x1b[0m',        '-------------------------------------------------------------');
               monitoriaTask = setInterval(monitoraDispositivoConectado,3000);
         }
@@ -1244,7 +1241,7 @@ function escreveParaMBot(comando,valor) {
       var slot = parseInt(anguloPortaSlot[1]);
       var angulo = parseInt(anguloPortaSlot[2]);
             
-      if (angulo > 120) angulo = 120;
+      if (angulo > 140) angulo = 140;
 
       servoMotorsBaseBuffer180Max.writeUInt8(porta,6);          
       servoMotorsBaseBuffer180Max.writeUInt8(slot,7);    
