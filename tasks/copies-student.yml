@@ -7,11 +7,11 @@
     path: /home/pi/.config/pcmanfm/LXDE-pi
     state: directory
     mode: 0755
-- file:
-    path: /home/pi/.config/
-    state: directory
-    attributes: -i
-    recurse: yes
+#- file:
+#    path: /home/pi/.config/
+#    state: directory
+#    attributes: -i
+#    recurse: yes
 - name: Trocando imagem de fundo e posicionando ícones padrões do Desktop
   copy:
      src: files/pcmanfm/LXDE-pi/desktop-items-0.conf
