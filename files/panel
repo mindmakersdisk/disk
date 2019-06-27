@@ -1,4 +1,3 @@
-# Imagem padrão MM
 # lxpanel <profile> config file. Manually editing is not recommended.
 # Use preference dialog in lxpanel to adjust config when you can.
 
@@ -10,7 +9,7 @@ Global {
   width=100
   height=36
   transparent=1
-  tintcolor=#f5811a
+  tintcolor=#000000
   alpha=0
   autohide=0
   heightwhenhidden=2
@@ -18,7 +17,7 @@ Global {
   setpartialstrut=1
   usefontcolor=0
   fontsize=12
-  fontcolor=#ff0000
+  fontcolor=#ffffff
   usefontsize=0
   background=0
   backgroundfile=/usr/share/lxpanel/images/background.png
@@ -102,6 +101,37 @@ Plugin {
   }
 }
 Plugin {
+  type=cputemp
+  Config {
+    Foreground=#a9a9a9a9a9a9
+    Background=#ffffffffffff
+    Throttle1=#ffffa5a50000
+    Throttle2=#ffff00000000
+    HighTemp=80
+    LowTemp=65
+  }
+}
+Plugin {
+  type=cpu
+  Config {
+    ShowPercent=1
+    Foreground=#a9a9a9a9a9a9
+    Background=#ffffffffffff
+  }
+}
+Plugin {
+  type=ejecter
+  Config {
+    AutoHide=1
+  }
+}
+Plugin {
+  type=space
+  Config {
+    Size=2
+  }
+}
+Plugin {
   type=bluetooth
   Config {
   }
@@ -115,18 +145,6 @@ Plugin {
 Plugin {
   type=dhcpcdui
   Config {
-  }
-}
-Plugin {
-  type=thermal
-  Config {
-    NormalColor=#00ff00
-    Warning1Color=#fff000
-    Warning2Color=#ff0000
-    AutomaticLevels=1
-    Warning1Temp=140
-    Warning2Temp=145
-    AutomaticSensor=1
   }
 }
 Plugin {
@@ -147,14 +165,6 @@ Plugin {
   }
 }
 Plugin {
-  type=cpu
-  Config {
-    ShowPercent=1
-    Foreground=#a9a9a9a9a9a9
-    Background=#d3d3d3d3d3d3
-  }
-}
-Plugin {
   type=dclock
   Config {
     ClockFmt=%R
@@ -171,7 +181,13 @@ Plugin {
   }
 }
 Plugin {
-  type=ejecter
+  type=ptbatt
   Config {
+  }
+}
+Plugin {
+  type=space
+  Config {
+    Size=4
   }
 }
