@@ -2,5 +2,8 @@
   apt:
      name: [scratch, bluej, greenfoot, claws-mail, claws-mail-i18n, libreoffice-draw, libreoffice-impress, libreoffice-math, libreoffice-writer, piclone, realvnc-vnc-viewer, realvnc-vnc-server]
      state: absent
+     purge: yes
 - name: Removendo ícones libreoffice Draw e Math
   shell: 'cd /usr/share/raspi-ui-overrides/applications/ && rm -f libreoffice-draw.desktop libreoffice-math.desktop'
+  args:
+    warn: no

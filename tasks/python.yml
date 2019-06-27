@@ -10,4 +10,6 @@
   when: not req.stat.exists
 - name: Instalando requests
   shell: 'cd /home/mindmakers/programs/requests && sudo pip install .'
+  args:
+    warn: no
   when: not req.stat.exists

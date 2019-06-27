@@ -5,5 +5,9 @@
 #1 is failed / no / not selected */
 - name: Configurando acesso da Câmera
   shell: 'sudo raspi-config nonint do_camera 0'
+  args:
+    warn: no
 - name: Configurando saída de audio padrão para Analógico
   shell: 'amixer cset numid=3 1'
+  args:
+    warn: no

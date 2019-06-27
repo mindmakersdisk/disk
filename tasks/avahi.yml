@@ -7,10 +7,14 @@
   register: semregistro
 - name: Verificando numero da sala
   shell: "sudo grep -w 'Sala:' /home/mindmakers/school.info | sed 's/.*: //' | sed 's/||//'"
+  args:
+    warn: no
   register: sala
   when: semregistro.matched > 0
 - name: Verificando numero da sala
   shell: "sudo grep -w 'Estação:' /home/mindmakers/school.info | sed 's/.*: //' | sed 's/||//'"
+  args:
+    warn: no
   register: estacao
   when: semregistro.matched > 0
 # só alterar se a linha estiver comentada
