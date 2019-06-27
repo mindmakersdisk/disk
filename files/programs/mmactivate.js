@@ -734,6 +734,8 @@ function monitoraAcessosAssincronosPlataforma() {
         urlEstacao='s'+sala_informado+'e'+estacao_informado;    
 
     atualizaNomeRede(urlEstacao);
+    
+    atualizaIconeAtalhos();
 
     clearInterval(servicoRecorrente);
 
@@ -959,3 +961,92 @@ function atualizaNomeRede(urlEstacao) {
     );
 
 }
+function atualizaIconeAtalhos() {
+
+  var existeEmPortugues = statPath('/home/pi/Área de Trabalho/classroom_test.desktop');
+
+  var atalho_mm_sala ='';
+  var atalho_mm_estacao ='';
+  
+  if (existeEmPortugues) {
+
+    atalho_mm_sala= '/home/pi/Área de Trabalho/classroom_test.desktop';
+    atalho_mm_estacao= '/home/pi/Área de Trabalho/activate.desktop';
+
+  } else {
+
+    // versão em ingles
+    atalho_mm_sala= '/home/pi/Desktop/classroom_test.desktop';
+    atalho_mm_estacao= '/home/pi/Área de Trabalho/activate.desktop';
+
+  }
+  
+    atalho_mm_sala_conteudo= fs.readFileSync(atalho_mm_sala)+'';
+    atalho_mm_estacao_conteudo= fs.readFileSync(atalho_mm_estacao)+'';
+
+
+   // obtém versão
+   var inicial_sala = atalho_mm_sala_conteudo.indexOf('Icon=')+5;
+   var inicial_estacao = atalho_mm_estacao_conteudo.indexOf('Icon=')+5;
+   
+   var final_sala = atalho_mm_sala_conteudo.indexOf('Exec=')-1;
+   var final_estacao = atalho_mm_estacao_conteudo.indexOf('Exec=')-1;
+
+   if (inicial_sala == -1 || final_sala == -1) {
+       console.err('Não foi possível encontrar o atalho de teste de sala de aula para configurar o icone com o número da sala');
+       console.err('Para alocar uma imagem de disco a uma escola, ela precisa estar corretamente configurada.');
+       console.err('Reexecute a configuração automatizada ou contate suporte@mindmakers.cc para obter apoio.');
+       // Encerra com falha
+       process.exit(1);
+   }
+    if (inicial_sala == -1 || final_sala == -1) {
+       console.err('Não foi possível encontrar o atalho de ativação de estação para configurar o icone com o número da estação');
+       console.err('Para ativar uma estação, ela precisa estar corretamente configurada.');
+       console.err('Reexecute a configuração automatizada ou contate suporte@mindmakers.cc para obter apoio.');
+       // Encerra com falha
+       process.exit(1);
+   }
+
+
+   var novoatalho_sala = "usr/share/icons/"+sala_informado+".png";
+       
+   var novoatalho_estacao = "usr/share/icons/"+estacao_informado+".png";
+  // é estação do instrutor
+   if (parseInt(sala_informado+'')==0)
+       novoatalho_sala = "usr/share/icons/i.png";
+
+   var novo_conteudo_sala=atalho_mm_sala_conteudo.substring(0,inicial_sala)+novoatalho_sala+atalho_mm_sala_conteudo.substring(final_sala);
+   
+   // grava novo conteúdo sala
+   
+   
+  fs.writeFile(atalho_mm_sala, novo_conteudo_sala, function(err,data)
+        {
+          if (err) {
+              console.log('Erro ao gravar arquivo de atalho de ativação de sala: '+err);
+              // Encerra com falha
+              process.exit(1);
+          }
+
+        }
+        );
+   
+   
+   var novo_conteudo_estacao=atalho_mm_estacao.substring(0,inicial_estacao)+novoatalho_sala+atalho_mm_estacao.substring(final_estacao);
+   
+   // grava novo conteúdo estação
+     fs.writeFile(atalho_mm_estacao, novo_conteudo_estacao, function(err,data)
+        {
+          if (err) {
+              console.log('Erro ao gravar arquivo de atalho de ativação de estação: '+err);
+              // Encerra com falha
+              process.exit(1);
+          }
+
+        }
+        );
+   
+
+}
+
+
