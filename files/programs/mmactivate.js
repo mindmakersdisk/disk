@@ -9,6 +9,7 @@ const request = require('request')
 var inquirer = require('inquirer');
 var fs = require('fs');
 var gcloudRegistry = require('./mmallocatecloud');
+var shell = require('shelljs');
 
 // Registrados
 var escolainfo=''
@@ -970,14 +971,14 @@ function atualizaIconeAtalhos() {
   
   if (existeEmPortugues) {
 
-    atalho_mm_sala= '/home/pi/Área de Trabalho/classroom_test.desktop';
-    atalho_mm_estacao= '/home/pi/Área de Trabalho/activate.desktop';
+    atalho_mm_sala= "/home/pi/Área de Trabalho/classroom_test.desktop";
+    atalho_mm_estacao= "/home/pi/Área de Trabalho/activate.desktop";
 
   } else {
 
     // versão em ingles
     atalho_mm_sala= '/home/pi/Desktop/classroom_test.desktop';
-    atalho_mm_estacao= '/home/pi/Área de Trabalho/activate.desktop';
+    atalho_mm_estacao= '/home/pi/Desktop/activate.desktop';
 
   }
   
@@ -1008,37 +1009,66 @@ function atualizaIconeAtalhos() {
    }
 
 
-   var novoatalho_sala = "usr/share/icons/"+sala_informado+".png";
+   var novoatalho_sala = "/usr/share/icons/"+sala_informado+".png";
        
-   var novoatalho_estacao = "usr/share/icons/"+estacao_informado+".png";
+   var novoatalho_estacao = "/usr/share/icons/"+estacao_informado+".png";
   // é estação do instrutor
    if (parseInt(sala_informado+'')==0)
        novoatalho_sala = "usr/share/icons/i.png";
-
-   var novo_conteudo_sala=atalho_mm_sala_conteudo.substring(0,inicial_sala)+novoatalho_sala+atalho_mm_sala_conteudo.substring(final_sala);
    
    // grava novo conteúdo sala
    
-   
+  shell.exec("sudo bash /home/mindmakers/programs/shells/change-shortcut.sh", function(code, output) {
+    if(code!=0) {
+     console.error('\x1b[31m', "Erro ao tentar desproteger arquivos de atalho ");
+   } else {
+
+     var novo_conteudo_sala=atalho_mm_sala_conteudo.substring(0,inicial_sala)+novoatalho_sala+atalho_mm_sala_conteudo.substring(final_sala);
+   //  console.log(novo_conteudo_sala);
+     
+     gravaAtalhoSala(atalho_mm_sala,novo_conteudo_sala);
+     
+     var novo_conteudo_estacao=atalho_mm_estacao_conteudo.substring(0,inicial_estacao)+novoatalho_estacao+atalho_mm_estacao_conteudo.substring(final_estacao);
+     //console.log(novo_conteudo_estacao);     
+     gravaAtalhoEstacao(atalho_mm_estacao,novo_conteudo_estacao);
+          
+   }
+    });
+
+}
+
+function gravaAtalhoSala(atalho_mm_sala,novo_conteudo_sala) {
+  
+  
   fs.writeFile(atalho_mm_sala, novo_conteudo_sala, function(err,data)
         {
+          
           if (err) {
-              console.log('Erro ao gravar arquivo de atalho de ativação de sala: '+err);
+              console.log('\x1b[31m','Erro ao gravar arquivo de atalho de ativação de sala: '+err);
               // Encerra com falha
+               
               process.exit(1);
-          }
+          } 
 
         }
         );
    
-   
-   var novo_conteudo_estacao=atalho_mm_estacao.substring(0,inicial_estacao)+novoatalho_sala+atalho_mm_estacao.substring(final_estacao);
-   
+}
+
+function gravaAtalhoEstacao(atalho_mm_estacao,novo_conteudo_estacao) {
+  
+  
    // grava novo conteúdo estação
      fs.writeFile(atalho_mm_estacao, novo_conteudo_estacao, function(err,data)
         {
+            shell.exec("sudo bash /home/mindmakers/programs/shells/change-shortcut2.sh", function(code, output) {
+            if(code!=0) {
+             console.error('\x1b[31m',"Erro ao tentar proteger arquivos de atalho ");
+           } 
+            });
+          
           if (err) {
-              console.log('Erro ao gravar arquivo de atalho de ativação de estação: '+err);
+              console.log('\x1b[31m','Erro ao gravar arquivo de atalho de ativação de estação: '+err);
               // Encerra com falha
               process.exit(1);
           }
@@ -1046,7 +1076,7 @@ function atualizaIconeAtalhos() {
         }
         );
    
-
+   
 }
 
 
