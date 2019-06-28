@@ -115,7 +115,7 @@ Plugin {
 Plugin {
   type=space
   Config {
-    Size=2
+    Size=10
   }
 }
 Plugin {

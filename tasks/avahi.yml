@@ -22,7 +22,7 @@
 #   lineinfile:
 #     path: /etc/avahi/avahi-daemon.conf
 #     regexp: '^host-name='
-#     line: 'host-name=raspberry-s{{sala.stdout}}e{{estacao.stdout}}'
+#     line: 'host-name=s{{sala.stdout}}e{{estacao.stdout}}'
 #     backrefs: yes
 #   when: semregistro.matched > 0
 - name: Alterando nome do host avahi <9
@@ -55,7 +55,7 @@
 #   lineinfile:
 #     path: /etc/avahi/hosts
 #     regexp: '^localhost:'
-#     line: 'localhost:3000 raspberry-s{{sala.stdout}}e{{estacao.stdout}}.local'
+#     line: 'localhost:3000 s{{sala.stdout}}e{{estacao.stdout}}.local'
 #     insertafter: EOF
 #   when: semregistro.matched > 0
 #- debug:
