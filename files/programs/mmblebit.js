@@ -471,7 +471,7 @@ function controlaBLEBit() {
                         // Se não notificou cliente da conexão notifica agora
                         if (temClienteConectado() &&  (contadorIntervalo==300 || !notificouClienteConexao)) {
                                console.log('Entrou para notificar conexao');
-                               enviaMsgParaTodosClientes('conectado:'+peripheral.uuid);
+                               enviaMsgParaTodosClientes('conectado:'+peripheral.uuid+',sala:'+sala_registrado+',estacao:'+estacao_registrado+',escola:'+escolaid);
                                notificouClienteConexao=true;
                                contadorIntervalo=0;
                         }
