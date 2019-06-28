@@ -5,7 +5,14 @@ executa(){
 }
 
 pergunta(){
-	echo -n "Deseja continuar? [sim|não] "
+	echo -n "Informe 'sim' para copiar o firmware que permite acessar o microbit por bluetooth. Ou enter para continuar sem copiar."
+	local SURE
+	read SURE
+	resposta=$SURE
+}
+
+pergunta2(){
+	echo -n "Se você viu uma 'carinha sorrindo' no mostrador, a calibragem foi efetuada com sucesso. Deseja utilizar o microbit? Recomece a rotina se houve problema."
 	local SURE
 	read SURE
 	resposta=$SURE
@@ -18,17 +25,16 @@ sair(){
 
 if [ -d /media/pi/MICROBIT ]
 then
-	echo "Há microbit conectado... copiando arquivo necessário para conexão para o microbit..."
+	echo "Foi detectado que o microbit está conectado via cabo. Entrando em opção de cópia de firmware..."
 	pergunta;
-	if [ "$resposta" = "sim" ] || [ "$resposta" = "s" ] || [ "$resposta" = "yes" ] || [ "$resposta" = "y" ] || [ "$resposta" = "" ]; then
-		echo "Copiando."
+	if [ "$resposta" = "sim" ] || [ "$resposta" = "s" ] || [ "$resposta" = "yes" ] || [ "$resposta" = "y" ] || ["$resposta" = "SIM" ] || [ "$resposta" = "S" ]; then
+		echo "Copiando..."
 		sudo cp /home/mindmakers/programs/node_modules/bbc-microbit/firmware/node-bbc-microbit-v0.1.0.hex /media/pi/MICROBIT
 		sleep 10;
-		echo "Desenhe um círculo com o ponto que está aparecendo na tela do microbit antes de continuar."
-		echo "Tentando conectar ao microbit..."
-
-		pergunta;
-		if [ "$resposta" = "sim" ] || [ "$resposta" = "s" ] || [ "$resposta" = "yes" ] || [ "$resposta" = "y" ] || [ "$resposta" = "" ]; then
+		echo "Movimente o microbit para calibrá-lo, até desenhar um círculo em seu mostrador."
+		
+		pergunta2;
+		if [ "$resposta" = "sim" ] || [ "$resposta" = "s" ] || [ "$resposta" = "yes" ] || [ "$resposta" = "y" ] || ["$resposta" = "SIM" ] || [ "$resposta" = "S" ]; then
 			executa;
 		else
 			sair;
