@@ -17,6 +17,8 @@ var gcloudRegistry = require('./mmallocatecloud');
 // Informado
 var idescola_informado='';
 
+var lista_escolas=[];
+
 // Registrado em disco
 var escolainfo=''
 var escolaid='';
@@ -99,6 +101,7 @@ var questions = [
     name: 'opcao',
     message: "Deseja alocar este disco para uma Escola?"
   },
+  /*
   {
     type: 'input',
     name: 'idescola',
@@ -106,7 +109,7 @@ var questions = [
     when: function (answers) {
       return answers.opcao;
     }
-  },
+  },*/
   {
     type: 'input',
     name: 'login',
@@ -120,7 +123,19 @@ var questions = [
     name: 'senha',
     message: "Informe sua senha:",
     when: function (answers) {
-      return answers.opcao;
+        return answers.opcao;
+    }
+  }
+
+];
+
+var questions2 = [
+ {
+    type: 'list',
+    name: 'escola',
+    message: "Selecione a escola",
+    choices: function (answers) {
+      return lista_escolas;  
     }
   }
 
@@ -138,7 +153,9 @@ function rotinaAlocacao() {
 
           idescola_informado=answers.idescola;
 
-          recuperaNomeEscola(answers);
+         // recuperaNomeEscola(answers);
+         
+         recuperaCodigoNomeEscola(answers);
 
         }
 
@@ -148,7 +165,7 @@ function rotinaAlocacao() {
 
 
 
-/* FUNÇÕES QUE CONSULTAM INFORMAÇṌES NA PLATAFORMA*/
+/* FUNÇÕES QUE CONSULTAM INFORMAÇṌES NA PLATAFORMA
 
 function recuperaNomeEscola(resposta) {
  // console.log('vai recuperar escola:'+resposta.idescola);
@@ -171,6 +188,90 @@ function recuperaNomeEscola(resposta) {
         );
 
 }
+*/
+
+
+/* FUNÇÕES QUE CONSULTAM INFORMAÇṌES NA PLATAFORMA*/
+
+function recuperaCodigoNomeEscola(resposta) {
+ // console.log('vai recuperar escola:'+resposta.idescola);
+       request({url:'https://mindmakers.cc/api/Escolas/listaEscolas/publico',method:'POST',
+            form:{'username':resposta.login,'password':resposta.senha}},
+            function(error, response, body) {
+                bodyJ=JSON.parse(body);
+                if (!bodyJ.success) {
+                  console.log('Erro ao recuperar escola: '+bodyJ.error);
+                  console.log('Reconfira o código e sua conexão ou contate o suporte da Mind Makers em suporte@mindmakers.cc para obter apoio');
+                  process.exit(1);
+                } else {
+                  
+                    adaptaListaEscolas(bodyJ.listaEscolas);
+
+                    inquirer.prompt(questions2).then(answers => {
+
+                            configuraEscola(answers.escola);
+                            
+                            atualizaSchoolInfo();
+                      });
+
+                    
+        
+                }
+            }
+        );
+
+}
+
+function adaptaListaEscolas(listaEscolasRecuperada) {
+  
+   lista_escolas=[];
+  
+   for(i = 0; i < listaEscolasRecuperada.length; i++) {
+
+       lista_escolas.push({'name':listaEscolasRecuperada[i].nome,'value':listaEscolasRecuperada[i].id,'short':listaEscolasRecuperada[i].nome});  
+        
+    }
+    
+    
+    lista_escolas.sort(compare);        
+  
+}
+
+function configuraEscola(idEscola) {
+  
+  console.log(idEscola)
+  idescola_informado=idEscola;
+  
+  escolanome_recuperado=''
+  
+  for(i = 0; i < lista_escolas.length; i++) {
+
+       if (lista_escolas[i].value==idEscola) {
+          escolanome_recuperado=lista_escolas[i].name;
+          console.log(escolanome_recuperado);
+          return
+       }  
+        
+    }        
+  
+  
+}
+
+function compare(a, b) {
+  // Use toUpperCase() to ignore character casing
+  const nameA = a.name.toUpperCase();
+  const nameB = b.name.toUpperCase();
+
+  let comparison = 0;
+  if (nameA > nameB) {
+    comparison = 1;
+  } else if (nameA < nameB) {
+    comparison = -1;
+  }
+  return comparison;
+}
+
+
 
 // Recupera imagem da escola - pendente de implementações futuras.
 function recuperaImagemEscola(resposta) {
@@ -241,8 +342,9 @@ function atualizaSchoolInfo() {
               // Encerra com falha
               process.exit(1);
           } else {
-            console.log('------------- Alocação OK! ------------------');
-            console.log('---------------------------------------------');
+            console.log('');
+            console.log('------------------ Alocação OK! ------------------');
+            console.log('--------------------------------------------------');
             console.log(escolainfoatualizada.replace(/\|\|/g,''));
             // Encerra com sucesso
 
