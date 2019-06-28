@@ -220,7 +220,7 @@
   shell: 'sudo pip install paho-mqtt'
   args:
     warn: no
-    - name: Instalando pip keyboard
+- name: Instalando pip keyboard
   shell: 'sudo pip install keyboard'
   args:
     warn: no
