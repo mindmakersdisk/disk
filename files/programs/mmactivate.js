@@ -1014,7 +1014,7 @@ function atualizaIconeAtalhos() {
    var novoatalho_estacao = "/usr/share/icons/"+estacao_informado+".png";
   // é estação do instrutor
    if (parseInt(estacao_informado+'')==0)
-       novoatalho_estacao = "/usr/share/icons/i.png";
+       novoatalho_estacao = "/usr/share/icons/f.png";
    
    // grava novo conteúdo sala
    
