@@ -13,6 +13,7 @@ const request = require('request');
 var inquirer = require('inquirer');
 var fs = require('fs');
 var gcloudRegistry = require('./mmallocatecloud');
+var shell = require('shelljs');
 
 // Informado
 var idescola_informado='';
@@ -135,7 +136,7 @@ var questions2 = [
     name: 'escola',
     message: "Selecione a escola",
     choices: function (answers) {
-      return lista_escolas;  
+      return lista_escolas;
     }
   }
 
@@ -154,7 +155,7 @@ function rotinaAlocacao() {
           idescola_informado=answers.idescola;
 
          // recuperaNomeEscola(answers);
-         
+
          recuperaCodigoNomeEscola(answers);
 
         }
@@ -204,18 +205,21 @@ function recuperaCodigoNomeEscola(resposta) {
                   console.log('Reconfira o código e sua conexão ou contate o suporte da Mind Makers em suporte@mindmakers.cc para obter apoio');
                   process.exit(1);
                 } else {
-                  
+
                     adaptaListaEscolas(bodyJ.listaEscolas);
 
                     inquirer.prompt(questions2).then(answers => {
 
                             configuraEscola(answers.escola);
-                            
+
                             atualizaSchoolInfo();
+                            atualizaIconeAtalhos();
+
+
                       });
 
-                    
-        
+
+
                 }
             }
         );
@@ -223,38 +227,38 @@ function recuperaCodigoNomeEscola(resposta) {
 }
 
 function adaptaListaEscolas(listaEscolasRecuperada) {
-  
+
    lista_escolas=[];
-  
+
    for(i = 0; i < listaEscolasRecuperada.length; i++) {
 
-       lista_escolas.push({'name':listaEscolasRecuperada[i].nome,'value':listaEscolasRecuperada[i].id,'short':listaEscolasRecuperada[i].nome});  
-        
+       lista_escolas.push({'name':listaEscolasRecuperada[i].nome,'value':listaEscolasRecuperada[i].id,'short':listaEscolasRecuperada[i].nome});
+
     }
-    
-    
-    lista_escolas.sort(compare);        
-  
+
+
+    lista_escolas.sort(compare);
+
 }
 
 function configuraEscola(idEscola) {
-  
+
   console.log(idEscola)
   idescola_informado=idEscola;
-  
+
   escolanome_recuperado=''
-  
+
   for(i = 0; i < lista_escolas.length; i++) {
 
        if (lista_escolas[i].value==idEscola) {
           escolanome_recuperado=lista_escolas[i].name;
           console.log(escolanome_recuperado);
           return
-       }  
-        
-    }        
-  
-  
+       }
+
+    }
+
+
 }
 
 function compare(a, b) {
@@ -390,5 +394,119 @@ function obtemVersaoImagemDisco() {
    console.log('Identificada a versão da imagem de disco como '+versaoImagemDisco);
 
    return versaoImagemDisco;
+
+}
+
+function atualizaIconeAtalhos() {
+
+  var existeEmPortugues = statPath('/home/pi/Área de Trabalho/classroom_test.desktop');
+
+  var atalho_mm_sala ='';
+  var atalho_mm_estacao ='';
+
+  if (existeEmPortugues) {
+
+    atalho_mm_sala= "/home/pi/Área de Trabalho/classroom_test.desktop";
+    atalho_mm_estacao= "/home/pi/Área de Trabalho/activate.desktop";
+
+  } else {
+
+    // versão em ingles
+    atalho_mm_sala= '/home/pi/Desktop/classroom_test.desktop';
+    atalho_mm_estacao= '/home/pi/Desktop/activate.desktop';
+
+  }
+
+    atalho_mm_sala_conteudo= fs.readFileSync(atalho_mm_sala)+'';
+    atalho_mm_estacao_conteudo= fs.readFileSync(atalho_mm_estacao)+'';
+
+
+   // obtém versão
+   var inicial_sala = atalho_mm_sala_conteudo.indexOf('Icon=')+5;
+   var inicial_estacao = atalho_mm_estacao_conteudo.indexOf('Icon=')+5;
+
+   var final_sala = atalho_mm_sala_conteudo.indexOf('Exec=')-1;
+   var final_estacao = atalho_mm_estacao_conteudo.indexOf('Exec=')-1;
+
+   if (inicial_sala == -1 || final_sala == -1) {
+       console.err('Não foi possível encontrar o atalho de teste de sala de aula para configurar o icone com o número da sala');
+       console.err('Para alocar uma imagem de disco a uma escola, ela precisa estar corretamente configurada.');
+       console.err('Reexecute a configuração automatizada ou contate suporte@mindmakers.cc para obter apoio.');
+       // Encerra com falha
+       process.exit(1);
+   }
+    if (inicial_sala == -1 || final_sala == -1) {
+       console.err('Não foi possível encontrar o atalho de ativação de estação para configurar o icone com o número da estação');
+       console.err('Para ativar uma estação, ela precisa estar corretamente configurada.');
+       console.err('Reexecute a configuração automatizada ou contate suporte@mindmakers.cc para obter apoio.');
+       // Encerra com falha
+       process.exit(1);
+   }
+
+
+   var novoatalho_sala = "/usr/share/icons/classroom_test.jpg";
+
+   var novoatalho_estacao = "/usr/share/icons/activate.png";
+
+   // grava novo conteúdo sala
+
+  shell.exec("sudo bash /home/mindmakers/programs/shells/change-shortcut.sh", function(code, output) {
+    if(code!=0) {
+     console.error('\x1b[31m', "Erro ao tentar desproteger arquivos de atalho ");
+   } else {
+
+     var novo_conteudo_sala=atalho_mm_sala_conteudo.substring(0,inicial_sala)+novoatalho_sala+atalho_mm_sala_conteudo.substring(final_sala);
+   //  console.log(novo_conteudo_sala);
+
+     gravaAtalhoSala(atalho_mm_sala,novo_conteudo_sala);
+
+     var novo_conteudo_estacao=atalho_mm_estacao_conteudo.substring(0,inicial_estacao)+novoatalho_estacao+atalho_mm_estacao_conteudo.substring(final_estacao);
+     //console.log(novo_conteudo_estacao);
+     gravaAtalhoEstacao(atalho_mm_estacao,novo_conteudo_estacao);
+
+   }
+    });
+
+}
+
+function gravaAtalhoSala(atalho_mm_sala,novo_conteudo_sala) {
+
+
+  fs.writeFile(atalho_mm_sala, novo_conteudo_sala, function(err,data)
+        {
+
+          if (err) {
+              console.log('\x1b[31m','Erro ao gravar arquivo de atalho de ativação de sala: '+err);
+              // Encerra com falha
+
+              process.exit(1);
+          }
+
+        }
+        );
+
+}
+
+function gravaAtalhoEstacao(atalho_mm_estacao,novo_conteudo_estacao) {
+
+
+   // grava novo conteúdo estação
+     fs.writeFile(atalho_mm_estacao, novo_conteudo_estacao, function(err,data)
+        {
+            shell.exec("sudo bash /home/mindmakers/programs/shells/change-shortcut2.sh", function(code, output) {
+            if(code!=0) {
+             console.error('\x1b[31m',"Erro ao tentar proteger arquivos de atalho ");
+           }
+            });
+
+          if (err) {
+              console.log('\x1b[31m','Erro ao gravar arquivo de atalho de ativação de estação: '+err);
+              // Encerra com falha
+              process.exit(1);
+          }
+
+        }
+        );
+
 
 }

@@ -190,7 +190,7 @@
     #version: '39.2.0'
     path: /home/mindmakers/programs
   # when: not npmsphero.stat.exists
-- name: Instalando pacote do npm "key-sender"
+- name: Instalando pacote do npm "shelljs"
   npm:
     name: shelljs
     #version: '39.2.0'
