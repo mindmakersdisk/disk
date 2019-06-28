@@ -1,7 +1,7 @@
 - hosts: localhost
 
   tasks:
-   #- include: tasks/xvnc.yml
+   - include: tasks/xvnc.yml
 #Tarefa fixa para instalar tighvncserver se não estiver instalado.
    #- include: tasks/buster.yml
    #- include: tasks/avahi.yml
@@ -11,11 +11,11 @@
    #      src: files/pcmanfm/LXDE-pi/desktop-items-0.conf
    #      dest: /home/pi/.config/pcmanfm/LXDE-pi
    #      mode: 0755
-   - name: Personalizando barra superior
-     copy:
-        src: files/panel
-        dest: /home/pi/.config/lxpanel/LXDE-pi/panels
-        mode: 0755
+   #- name: Personalizando barra superior
+   #  copy:
+   #     src: files/panel
+   #     dest: /home/pi/.config/lxpanel/LXDE-pi/panels
+   #     mode: 0755
 
 
 
