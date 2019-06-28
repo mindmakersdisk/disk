@@ -67,14 +67,37 @@
   stat:
      path: "/home/pi/Área de Trabalho/sphero.desktop"
   register: spherodesk
-- name: Copiando atalho sphero.desktop
-  copy:
+- copy:
      src: files/sphero.desktop
      dest: "/home/pi/Área de Trabalho/sphero.desktop"
      owner: pi
      group: pi
      mode: 0755
   when: not spherodesk.stat.exists
+- name: Verificando ícone activate.desktop
+  stat:
+     path: "/home/pi/Área de Trabalho/activate.desktop"
+  register: activatedesk
+- copy:
+     src: files/activate.desktop
+     dest: "/home/pi/Área de Trabalho/activate.desktop"
+     owner: pi
+     group: pi
+     attributes: +i
+     mode: 0755
+  when: not activatedesk.stat.exists
+- name: Verificando ícone classroom_test.desktop
+  stat:
+     path: "/home/pi/Área de Trabalho/classroom_test.desktop"
+  register: classroom_testdesk
+- copy:
+     src: files/classroom_test.desktop
+     dest: "/home/pi/Área de Trabalho/classroom_test.desktop"
+     owner: pi
+     group: pi
+     attributes: +i
+     mode: 0755
+  when: not classroom_testdesk.stat.exists
 - name: Verificando OS em inglês
   shell: 'cat /etc/default/locale | grep LANG= '
   args:
