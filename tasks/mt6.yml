@@ -45,6 +45,8 @@
     path: /usr/google/appinventor/commands-for-Appinventor/adb
     state: absent
 - shell: 'sudo ln -v -s /usr/bin/adb /usr/google/appinventor/commands-for-Appinventor/adb'
+  args:
+    warn: no
 - name: Instalando pacote do npm "node-ipc"
   npm:
     name: node-ipc
@@ -56,6 +58,8 @@
     path: /home/mindmakers/programs
 - name: Instalando pacote do npm "node-red-mindmakers"
   shell: 'sudo npm -g install /home/mindmakers/programs/mmnodered'
+  args:
+    warn: no
 - name: Instalando pacote do npm "node-bbc-microbit"
   npm:
     name: bbc-microbit

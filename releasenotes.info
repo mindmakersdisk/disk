@@ -5,7 +5,7 @@ Versão 3.0 28/06/2019
 - Evolução de versão do Chromium Browser.
 
 Versão 2.4 22/06/2019
-- Novo serviço de conexão em rede de estações da sala, para programação de envio de imagens e textos para estações via MMBlockly
+- Novo serviço de conexão em rede de estações da sala, para programação de envio de imagens e textos para estações via MMBlockly.
 - Melhoria da definição de timeout mais longo do Sphero, agora definido para 25min logo que serviço inicia, e não no primeiro comando.
 
 Versão 2.3 22/05/2019
