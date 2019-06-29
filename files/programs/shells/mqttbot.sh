@@ -8,6 +8,9 @@ then
 
   if [ -e /tmp/restart-mqtt.txt ] && [ $(cat /tmp/restart-mqtt.txt | wc -m ) -gt 1 ]
   then
+    echo 'já foi reiniciado'
+  else
+    echo 'mqtt vai reiniciar na primeira execução para garantir funcionamento'
     echo 'mqtt vai reiniciar na primeira execução para garantir funcionamento' > /tmp/restart-mqtt.txt
     sudo service mqttbot restart >/var/log/mqttbot.log
   fi
