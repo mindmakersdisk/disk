@@ -65,6 +65,12 @@
      path: /usr/local/bin
      state: directory
      mode: 0755
+- file:
+    path: /usr/local/bin/alocar-para-escola.sh
+    state: absent
+- file:
+    path: /usr/local/bin/alocar-para-instrutor.sh
+    state: absent
 - copy:
      src: files/bin
      dest: /usr/local/
