@@ -47,8 +47,9 @@
      dest: "/home/pi/Área de Trabalho/sphero.desktop"
      owner: pi
      group: pi
+     attributes: +i
      mode: 0755
-  when: not spherodesk.stat.exists
+#  when: not spherodesk.stat.exists
 - name: Verificando ícone activate.desktop
   stat:
      path: "/home/pi/Área de Trabalho/activate.desktop"
