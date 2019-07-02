@@ -45,6 +45,9 @@
     state: directory
     attributes: +i
     recurse: yes
+- shell: 'sudo bash /home/mindmakers/programs/shells/change-shortcut2.sh'
+  args:
+    warn: no
 #- file:
 #    path: /home/pi/.config/pcmanfm/LXDE-pi/desktop-items-0.conf
 #    state: touch
