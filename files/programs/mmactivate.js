@@ -156,7 +156,7 @@ var questions = [
   {
     type: 'input',
     name: 'numeroSalas',
-    message: "Quantas turmas simultâneas de Mind Makers pode ter a escola?",
+    message: "Quantas salas virtuais simultâneas de Pensamento Computacional pode ter a escola?",
     default: 1,
     when: function (answers) {
       return (answers.opcao && answers.loginSimplificado.toString().indexOf('Login Simplificado')>-1);
@@ -165,7 +165,7 @@ var questions = [
   {
     type: 'number',
     name: 'sala',
-    message: "Se possuir mais de uma sala, atribua um código numérico inteiro para esta (atual:"+sala_registrado+")",
+    message: "Se possuir mais de uma sala virtual, atribua um código numérico inteiro para esta (atual:"+sala_registrado+")",
     default: 1,
     when: function (answers) {
       return answers.opcao;
@@ -224,7 +224,7 @@ var questionsTeacher = [
   {
     type: 'input',
     name: 'numeroSalas',
-    message: "Quantas turmas simultâneas de Mind Makers pode ter a escola?",
+    message: "Quantas salas virtuais simultâneas de Pensamento Computacional pode ter a escola?",
     default: 1,
     when: function (answers) {
       return (answers.opcao && answers.loginSimplificado.toString().indexOf('Login Simplificado')>-1);
@@ -233,7 +233,7 @@ var questionsTeacher = [
   {
     type: 'number',
     name: 'sala',
-    message: "Se possuir mais de uma sala, atribua um código numérico inteiro para esta (atual:"+sala_registrado+")",
+    message: "Se possuir mais de uma sala virtual, atribua um código numérico inteiro para esta (atual:"+sala_registrado+")",
     default: 1,
     when: function (answers) {
       return answers.opcao;
@@ -245,7 +245,7 @@ var questionsTeacher = [
   {
     type: 'number',
     name: 'codigo',
-    message: "O código da estação de instrutores é sempre zero. Sua estação será ativada com este código",
+    message: "O código da estação de facilitadores é sempre zero. Sua estação será ativada com este código",
     default: 0,
     when: function (answers) {
       return answers.opcao;
@@ -294,7 +294,7 @@ var questionsLoginSimplificado = [
     type: 'input',
     name: 'numeroSalas',
     default: 1,
-    message: "Quantas turmas simultâneas de Pensamento Computacional pode ter a escola?",
+    message: "Quantas salas virtuais simultâneas de Pensamento Computacional pode ter a escola?",
     when: function (answers) {
       return (answers.loginSimplificado.toString().indexOf('Login Simplificado')>-1);
     }
@@ -302,7 +302,7 @@ var questionsLoginSimplificado = [
   {
     type: 'number',
     name: 'sala',
-    message: "Se possuir mais de uma sala, atribua um código numérico inteiro para esta (atual:"+sala_registrado+")",
+    message: "Se possuir mais de uma sala virtual, atribua um código numérico inteiro para esta (atual:"+sala_registrado+")",
     default: 1,
     validate: function (valor) {
       return Number.isInteger(valor) && parseInt(valor)>=1 && parseInt(valor)<=10;
