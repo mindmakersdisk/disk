@@ -13,7 +13,10 @@ pergunta(){
 
 echo "O programa irá coletar dados do micro:bit."
 echo ""
-echo "Que devem estar em formato [tempo, luminosidade] "
+echo "Que devem estar em formato:"
+echo " tempo1,luminosidade1"
+echo " tempo2,luminosidade2"
+echo " ..."
 echo ""
 echo "O arquivo screenlog.0 será gravado no ~/Desktop com os valores coletados."
 echo ""
