@@ -18,7 +18,7 @@
        msg: "the command failed"
      when: ansb.stat.exists
    #- include: tasks/buster.yml
-   #- include: tasks/avahi.yml
+   - include: tasks/avahi.yml
 
    # - name: Trocando imagem de fundo e posicionando ícones padrões do Desktop
    #   copy:
@@ -45,9 +45,9 @@
 ############
 
 
-#  - debug:
-#       var: ansible_facts
-#  - debug:
-#       var: ansible_facts['os_family']
-#  - debug:
-#       var: ansible_facts.lsb
+   - debug:
+       var: ansible_facts
+   - debug:
+       var: ansible_facts['os_family']
+   - debug:
+       var: ansible_facts.lsb
