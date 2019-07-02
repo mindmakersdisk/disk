@@ -45,7 +45,7 @@
   register: ansib
 
 - debug:
-    msg: asib
+    var: asib
 #- name: Instalando pip ansible
 #  shell: 'sudo pip install ansible~=2.7.0'
 #  args:
