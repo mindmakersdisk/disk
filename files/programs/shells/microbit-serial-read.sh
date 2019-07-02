@@ -1,12 +1,11 @@
 #!/bin/bash
 
-
 sair(){
   echo "Finalizando programa"
   return 0
 }
 pergunta(){
-  echo -n "Por quantos segundos os dados devem ser capturados? (Padrão: 60) "
+  echo -n "Por quantos segundos os dados devem ser capturados? (Padrão: 30) "
   local SURE
   read SURE
   resposta=$SURE
@@ -23,7 +22,6 @@ pergunta;
 sudo bash /home/mindmakers/programs/shells/microbit-serial-kill.sh $resposta &
 rm -f ~/Desktop/screenlog.0
 cd ~/Desktop
-screen -L screenlog.0 /dev/ttyACM0 115200
-
+screen -L -Logfile screenlog.0 /dev/ttyACM0 115200
 
 sleep 5
