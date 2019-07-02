@@ -62,6 +62,7 @@
 - name: Verifica Versao npm
   command: npm --version
   register: npm_output
+  ignore_errors: yes
 - name: Atualizando npm se versão <6.5.0
   npm:
      name: npm
