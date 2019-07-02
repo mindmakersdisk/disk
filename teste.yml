@@ -13,6 +13,10 @@
 
    - debug:
        var: ansib
+   - name: fail the play if the previous command did not succeed
+     fail:
+       msg: "the command failed"
+     when: ansb.stat.exists
    #- include: tasks/buster.yml
    #- include: tasks/avahi.yml
 
