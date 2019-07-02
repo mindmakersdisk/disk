@@ -6,7 +6,7 @@ if [ -n "$resposta" ]
 then
 	tempo=$resposta
 else
-	tempo=60
+	tempo=30
 fi
 
 sleep $tempo
