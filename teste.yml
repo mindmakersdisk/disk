@@ -6,9 +6,10 @@
 
    - name: Instalando pip ansible
      shell: 'sudo pip install ansible'
+     register: ansib
      args:
        warn: no
-     register: ansib
+
 
    - debug:
        var: asib
