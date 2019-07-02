@@ -12,9 +12,9 @@ _**Como verificar sucesso dessa etapa?**_
 
 ### 2. Instalar o Sistema Operacional Raspbian (Padrão para o Raspberry Pi, derivado do Debian)
 
-2.1. Baixar o arquivo do Sistema Operacional "Raspbian Stretch with desktop and recommended software", de https://www.raspberrypi.org/downloads/raspbian/ para um computador central de controle (estação Windows, por exemplo). O link direto para download do arquivo ZIP com esta versão é: http://downloads.raspberrypi.org/raspbian_full/images/raspbian_full-2019-04-09/2019-04-08-raspbian-stretch-full.zip
+2.1. Baixar o arquivo do Sistema Operacional "Raspbian Stretch with desktop and recommended software", de https://www.raspberrypi.org/downloads/raspbian/ para um computador central de controle (estação Windows, por exemplo). O link direto para download do arquivo ZIP com esta versão é: https://downloads.raspberrypi.org/raspbian_full_latest
 
-Obs.: O último empacotamento de arquivo do Raspbian homologado pela Mind Makers em março/2019 tem versão 4.14 de 2018-11-13. Versões posteriores devem funcionar, mas caso o pacote seja superior, recomenda-se confirmar essa informação através do suporte@mindmakers.cc.
+Obs.: O último empacotamento de arquivo do Raspbian homologado pela Mind Makers em junho/2019 tem versão 4.19 de 2019-06-20. Versões posteriores devem funcionar, mas caso o pacote seja superior, recomenda-se confirmar essa informação através do suporte@mindmakers.cc.
 
 2.2. Copiar a imagem do SO baixada para o cartão SD formatado, utilizando um utilitário de cópia de imagens de disco como o "Win32 Disk Imager".
 
@@ -44,7 +44,7 @@ _**Como verificar sucesso dessa etapa?**_
 - _Conferir se o Timezone está correto, abrindo o terminal e digitando "date", confirmando que a hora está correta para o Brasil_
 - _Conferir se o mouse e teclado estão configurados ok. Para testar o teclado, digite um "ç" e um "ã" em uma janela de terminal com o teclado, confirmando que são corretamente exibidos.
 - _Conferir se o monitor está corretamente configurado. Importante: não é relevante que o monitor siga a resolução padrão neste momento, pois ela será configurada automaticamente em passos posteriores. Confira apenas que a imagem é apresentada_
-- _Conferir a versão corrente do SO digitando o comando "lsb_release -a" em uma janela de terminal, conferindo se Release é 9.8. Obs.: essa versão será atualizada em passos posteriores via Ansible_
+- _Conferir a versão corrente do SO digitando o comando "lsb_release -a" em uma janela de terminal, conferindo se Release é 10.0. Obs.: essa versão será atualizada em passos posteriores via Ansible_
 - _Abrir o navegador Chromium e confirmar que a internet está sendo acessada corretamente_
 
 ### 3. Instalar o gerenciador automático de configuração Ansible
@@ -54,7 +54,7 @@ _**Como verificar sucesso dessa etapa?**_
 3.2. Caso este a execução encerre com erro, executar a linha de comando 'sudo apt-get update' e após sua execução, repetir a execução do passo anterior.
 
 _**Como verificar sucesso dessa etapa?**_
-- _Digitar no terminal "ansible --version" de qualquer diretório e conferir se a resposta traz ansible 2.2.1.0 ou superior na primeira linha_
+- _Digitar no terminal "ansible --version" de qualquer diretório e conferir se a resposta traz ansible 2.7.7 ou superior na primeira linha_
 
 ### 4. Disparar o restante da configuração automatizada via Ansible.
 
@@ -64,7 +64,7 @@ _**Como verificar sucesso dessa etapa?**_
 
 Na primeira vez, a atualização de versão do próprio Ansible irá gerar uma exceção no restante da rotina, pelo fato de uma versão do Ansible ter sido alterada em meio à execução. Isso é indicado pelo linha "failed=1" ao final e esperado.
 
-Confirme a atualização de versão do Ansible digitando no terminal "ansible --version" e confirmando que a versão agora é "2.7.9 ou superior".
+Confirme a atualização de versão do Ansible digitando no terminal "ansible --version" e confirmando que a versão agora é "2.8.1 ou superior".
 
 4.3. Executar novamente a rotina de atualização automática, agora usando a versão atualizada do Ansible, repetindo o mesmo comando do item 4.2.
 
@@ -93,9 +93,7 @@ _**Como verificar sucesso do novo disco 'disco-padrão-base'?**_
 
 1.1. Obter o código da escola com a Mind Makers através do suporte@mindmakers.cc ou SAC.
 
-1.2. Abrir o terminal e alterar o diretório corrente com o comando "cd /home/mindmakers/programs"
-
-1.3. Executar a linha de comando "sudo nodejs mmallocate.js", informar seu usuário e senha na plataforma da Mind Makers e aguardar pela mensagem de sucesso, conferindo se o nome correto da escola é exibido.
+1.2. Abrir o terminal e executar a linha de comando "alocar.sh", informar seu usuário e senha na plataforma da Mind Makers e selecionar a escola para qual o disco será alocado, conferindo ao final se o nome correto da escola é exibido.
 
 _**Como verificar sucesso dessa etapa?**_
 - _Para dupla-conferência, clicar no atalho da Área de Trabalho com rótulo "Ativar" e confirmar que o código e nome da escola são exibidos no registro de "Ativação de Desktop Mind Makers" que aparece no início da rotina (cancelar o restante da ativação por hora, com control+C)_
