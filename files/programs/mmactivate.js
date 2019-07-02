@@ -691,34 +691,54 @@ function atualizaAtalhoLoginSimplificadoEscola(resposta) {
 
    if (existeEmPortugues) {
 
-      fs.writeFile('/home/pi/Área de Trabalho/mindmakers.desktop', conteudo_novo, function(err,data)
-        {
-          if (err)
-              console.log(err);
-          else {
-            console.log(msg_final);
-            console.log('');
-          }
+      shell.exec("sudo bash /home/mindmakers/programs/shells/change-shortcut.sh", function(code, output) {
+        if(code!=0) {
+          console.error('\x1b[31m', "Erro ao tentar desproteger arquivos de atalho ");
+        } else { 
+            fs.writeFile('/home/pi/Área de Trabalho/mindmakers.desktop', conteudo_novo, function(err,data) {
+              if (err)
+                console.log(err);
+              else {
+                shell.exec("sudo bash /home/mindmakers/programs/shells/change-shortcut2.sh", function(code, output) {
+                if(code!=0) {
+                console.error('\x1b[31m',"Erro ao tentar proteger arquivos de atalho ");
+                }
+                else {
+                console.log(msg_final);
+                console.log('');
+                } 
+                });
+            
+              }   
+            });
         }
-        );
-
+      });
   } else {
-
-      fs.writeFile('/home/pi/Desktop/mindmakers.desktop', conteudo_novo, function(err,data)
-        {
-          if (err)
-              console.log(err);
-          else {
-
-            console.log(msg_final);
-            console.log('');
-
-          }
+    
+      shell.exec("sudo bash /home/mindmakers/programs/shells/change-shortcut.sh", function(code, output) {
+        if(code!=0) 
+          console.error('\x1b[31m', "Erro ao tentar desproteger arquivos de atalho ");
+        else {
+  
+          fs.writeFile('/home/pi/Desktop/mindmakers.desktop', conteudo_novo, function(err,data) {
+            if (err)
+                console.log(err);
+            else {
+              shell.exec("sudo bash /home/mindmakers/programs/shells/change-shortcut2.sh", function(code, output) {
+              if(code!=0) {
+                  console.error('\x1b[31m',"Erro ao tentar proteger arquivos de atalho ");
+               }else {
+                  console.log(msg_final);
+                  console.log('');
+               }
+              });
+  
+            }
+          });
+            
         }
-        );
-
+      });
   }
-
 }
 
 function monitoraAcessosAssincronosPlataforma() {
