@@ -61,6 +61,7 @@
      dest: "/home/pi/Área de Trabalho"
      owner: pi
      group: pi
+     attributes: +i
      mode: 0755
   when: not mmdesk.stat.exists
 - name: Verificando ícone sphero.desktop

@@ -38,6 +38,7 @@
      dest: /home/pi/Desktop/sphero.desktop
      owner: pi
      group: pi
+     attributes: +i
      mode: 0755
   when: not spherodesk.stat.exists
 - name: Verificando ícone activate.desktop

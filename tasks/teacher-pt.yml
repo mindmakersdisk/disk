@@ -26,6 +26,7 @@
      dest: "/home/pi/Área de Trabalho/mindmakers.desktop"
      owner: pi
      group: pi
+     attributes: +i
      mode: 0755
   when: not mmdesk.stat.exists
 - name: Copiando versão de professor do update.desktop
