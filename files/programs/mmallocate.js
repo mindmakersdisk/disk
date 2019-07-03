@@ -201,8 +201,9 @@ function recuperaCodigoNomeEscola(resposta) {
             function(error, response, body) {
                 bodyJ=JSON.parse(body);
                 if (!bodyJ.success) {
-                  console.log('Erro ao recuperar escola: '+bodyJ.error);
-                  console.log('Reconfira o código e sua conexão ou contate o suporte da Mind Makers em suporte@mindmakers.cc para obter apoio');
+                  console.log('Erro ao recuperar escola: '+bodyJ.err);
+                  console.log('');
+                  console.log('Reconfira seu usuário/senha e sua conexão. Caso o problema persista contate o suporte da Mind Makers em suporte@mindmakers.cc para obter apoio');
                   process.exit(1);
                 } else {
 
