@@ -468,14 +468,14 @@ function controlaBLEBit() {
                     
                         contadorIntervalo++;
                         
-                        // Se não notificou cliente da conexão notifica agora
+                        /* Se não notificou cliente da conexão notifica agora
                         if (temClienteConectado() &&  (contadorIntervalo==300 || !notificouClienteConexao)) {
                                console.log('Entrou para notificar conexao');
-                               enviaMsgParaTodosClientes('conectado:'+peripheral.uuid+',sala:'+sala_registrado+',estacao:'+estacao_registrado+',escola:'+escolaid);
+                               enviaMsgParaTodosClientes('conectado:'+peripheral.uuid);
                                notificouClienteConexao=true;
                                contadorIntervalo=0;
                         }
-                    
+                    */
                       
                       
                         if (data[2] != null) {
@@ -655,7 +655,7 @@ function notificaClienteDesconexao(error) {
   if (temClienteConectado()) {
       enviaMsgParaTodosClientes('desconectado:'+error);
   }
-  
+  notificouClienteConexao=false;
    if (temNodeRedConectado()) {
                      
        ipc.server.broadcast(
