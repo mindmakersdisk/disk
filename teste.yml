@@ -15,7 +15,7 @@
    - name: Ansible foi atualizado
      fail:
        msg: "Reiniciar reiniciar ansible para continuar instalação"
-     when: 'already satisfied' in ansib.stdout
+     when: "'already satisfied' in ansib.stdout"
    #- include: tasks/buster.yml
    - include: tasks/avahi.yml
 
