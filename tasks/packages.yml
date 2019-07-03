@@ -43,10 +43,10 @@
 - name: Instalando imagemagick
   apt:
      name: imagemagick
-- name: Atualizando a versão do Chromium-browser
-  apt:
-     name: chromium-browser
-     state: latest
+#- name: Atualizando a versão do Chromium-browser
+#  apt:
+#     name: chromium-browser
+#     state: latest
 - name: Atualizando o Scratch2
   apt:
      name: scratch2
