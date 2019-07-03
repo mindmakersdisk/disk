@@ -10,13 +10,12 @@
      args:
        warn: no
 
-
    - debug:
        var: ansib
-   - name: fail the play if the previous command did not succeed
+   - name: Ansible foi atualizado
      fail:
-       msg: "the command failed"
-     when: ansb.stat.exists
+       msg: "Reiniciar reiniciar ansible para continuar instalação"
+     when: ansb  is succeeded
    #- include: tasks/buster.yml
    - include: tasks/avahi.yml
 
