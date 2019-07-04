@@ -39,7 +39,7 @@
 #  pip:
 #     name: ansible~=2.7.0
 - name: Instalando pip ansible
-  shell: 'sudo pip install ansible'
+  shell: 'sudo pip install -U ansible'
   register: ansib
   args:
     warn: no
