@@ -48,7 +48,7 @@
 - name: Ansible foi atualizado
   fail:
     msg: "Reiniciar reiniciar ansible para continuar instalação"
-  when: "not 'already satisfied' in ansib.stdout"
+  when: "'Successfully installed' in ansib.stdout"
 #- name: Instalando pip ansible
 #  shell: 'sudo pip install ansible~=2.7.0'
 #  args:
