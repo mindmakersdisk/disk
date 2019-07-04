@@ -47,7 +47,7 @@
 #     var: ansib
 - name: Ansible foi atualizado
   fail:
-    msg: "Reiniciar reiniciar ansible para continuar instalação"
+    msg: "Reinicie a instalação via ansible para continuar a configuração da estação"
   when: "'Successfully installed' in ansib.stdout"
 #- name: Instalando pip ansible
 #  shell: 'sudo pip install ansible~=2.7.0'
