@@ -43,8 +43,8 @@
   register: ansib
   args:
     warn: no
-- debug:
-     var: ansib
+#- debug:
+#     var: ansib
 - name: Ansible foi atualizado
   fail:
     msg: "Reiniciar reiniciar ansible para continuar instalação"
