@@ -99,20 +99,20 @@
 # - file:
 #     path: /home/mindmakers/Scratch2/english/Answer-Sheet
 #     state: absent
-- name: Copiando pasta Scratch2 - Gabaritos
-  copy:
-     src: files/teacher/Gabaritos
-     dest: /home/mindmakers/Scratch2/portuguese
-     owner: pi
-     group: pi
-     mode: 0755
-- name: Copiando pasta Scratch2 - Answer-Sheet
-  copy:
-     src: files/teacher/Answer-Sheet
-     dest: /home/mindmakers/Scratch2/english
-     owner: pi
-     group: pi
-     mode: 0755
+# - name: Copiando pasta Scratch2 - Gabaritos
+#   copy:
+#      src: files/teacher/Gabaritos
+#      dest: /home/mindmakers/Scratch2/portuguese
+#      owner: pi
+#      group: pi
+#      mode: 0755
+# - name: Copiando pasta Scratch2 - Answer-Sheet
+#   copy:
+#      src: files/teacher/Answer-Sheet
+#      dest: /home/mindmakers/Scratch2/english
+#      owner: pi
+#      group: pi
+#      mode: 0755
 - name: Tornando ícones dentro da pasta Scratch2 imutáveis
   file:
     path: /home/mindmakers/Scratch2
