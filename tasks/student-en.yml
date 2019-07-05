@@ -92,6 +92,18 @@
      attributes: +i
      mode: 0755
   when: not classroom_testdesk.stat.exists
+- name: Verificando ícone scratch2_folder.desktop
+  stat:
+     path: /home/pi/Desktop/scratch2_folder.desktop
+  register: scratch2_folder
+- copy:
+     src: files/scratch2_folder.desktop
+     dest: /home/pi/Desktop/scratch2_folder.desktop
+     owner: pi
+     group: pi
+     attributes: +i
+     mode: 0755
+  when: not scratch2_folder.stat.exists
 - name: Verificando OS em inglês
   shell: 'cat /etc/default/locale | grep LANG= '
   args:

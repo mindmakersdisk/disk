@@ -66,6 +66,18 @@
      attributes: +i
      mode: 0755
   when: not classroom_testdesk.stat.exists
+- name: Verificando ícone scratch2_folder.desktop
+  stat:
+     path: /home/pi/Desktop/scratch2_folder.desktop
+  register: scratch2_folder
+- copy:
+     src: files/scratch2_folder.desktop
+     dest: /home/pi/Desktop/scratch2_folder.desktop
+     owner: pi
+     group: pi
+     attributes: +i
+     mode: 0755
+  when: not scratch2_folder.stat.exists
 ##################
 - name: Copiando demais atalhos para o Desktop
   copy:
@@ -123,10 +135,10 @@
     line: 'Exec=pcmanfm /home/mindmakers/Scratch2/english'
     backrefs: yes
   when: lang.stdout.find('LANG=en') != -1
-# - file:
-#     path: /home/pi/Desktop/scratch2_folder.desktop
-#     state: touch
-#     attributes: +i
+- file:
+    path: /home/pi/Desktop/scratch2_folder.desktop
+    state: touch
+    attributes: +i
 - file:
     path: /home/pi/Scratch2
     state: absent
