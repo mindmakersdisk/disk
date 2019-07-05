@@ -1,5 +1,0 @@
-- name: Install python-psutil package
-  apt: name=python-psutil
-
-- name: Set GNOME Wallpaper
-  dconf: key="/org/gnome/desktop/background/picture-uri" value="'file:///home/mindmakers/images/fundo_v1.png'"
