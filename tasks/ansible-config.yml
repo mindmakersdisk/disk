@@ -1,0 +1,18 @@
+- name: Configurando hosts
+  blockinfile:
+    path: /etc/ansible/hosts
+    block: |
+      [local]
+      localhost ansible_connection=local
+
+# - name: Configurando hosts
+#   lineinfile:
+#     path: /etc/ansible/hosts
+#     regexp: '^[local]'
+#     line: '[local]'
+#     backrefs: yes
+# - lineinfile:
+#     path: /etc/ansible/hosts
+#     regexp: '^localhost ansible_connection=local'
+#     line: 'localhost ansible_connection=local'
+#     backrefs: yes

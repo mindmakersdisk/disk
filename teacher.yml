@@ -1,5 +1,6 @@
 # Arquivo playbook complementar - imagem para do professor
 - hosts: localhost
+  remote_user: root
   pre_tasks:
     - name: Atualizando Repositórios
       apt:
@@ -19,6 +20,7 @@
 - import_playbook: student.yml
 
 - hosts: localhost
+  remote_user: root
   tasks:
     - include: tasks/copies-student.yml
     - shell: 'amixer cset numid=3 2'

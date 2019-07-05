@@ -1,22 +1,23 @@
 - hosts: localhost
+  remote_user: root
 
   tasks:
    #- include: tasks/xvnc.yml
 #Tarefa fixa para instalar tighvncserver se não estiver instalado.
 
-   - name: Instalando pip ansible
-     shell: 'sudo pip install ansible'
-     register: ansib
-     args:
-       warn: no
-   - debug:
-       var: ansib ansib.stdout
-   - name: Ansible foi atualizado
-     fail:
-       msg: "Reiniciar reiniciar ansible para continuar instalação"
-     when: "not 'already satisfied' in ansib.stdout"
+   # - name: Instalando pip ansible
+   #   shell: 'sudo pip install ansible'
+   #   register: ansib
+   #   args:
+   #     warn: no
+   # - debug:
+   #     var: ansib ansib.stdout
+   # - name: Ansible foi atualizado
+   #   fail:
+   #     msg: "Reiniciar reiniciar ansible para continuar instalação"
+   #   when: "not 'already satisfied' in ansib.stdout"
    #- include: tasks/buster.yml
-   - include: tasks/avahi.yml
+   - include: tasks/ansible-config.yml
 
    # - name: Trocando imagem de fundo e posicionando ícones padrões do Desktop
    #   copy:
@@ -43,9 +44,9 @@
 ############
 
 
-   - debug:
-       var: ansible_facts
-   - debug:
-       var: ansible_facts['os_family']
-   - debug:
-       var: ansible_facts.lsb
+   # - debug:
+   #     var: ansible_facts
+   # - debug:
+   #     var: ansible_facts['os_family']
+   # - debug:
+   #     var: ansible_facts.lsb
