@@ -5,7 +5,7 @@
       apt:
          update_cache: yes
       changed_when: False
-      
+
   tasks:
     - name: Verificando versão do Ansible.
       stat:
@@ -13,6 +13,7 @@
       register: ansb
     - include: tasks/ansibleupdate.yml
       when: not ansb.stat.exists
+    - include: ansible-config.yml
     - name: Verificando se diretório Desktop existe.
       stat:
         path: /home/pi/Desktop
