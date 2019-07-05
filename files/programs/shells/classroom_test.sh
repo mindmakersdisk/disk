@@ -4,7 +4,6 @@ pi="$(sudo grep -w "Pi:" /home/mindmakers/school.info | sed 's/.*: //' | sed 's/
 sd="$(sudo grep -w "SD:" /home/mindmakers/school.info | sed 's/.*: //' | sed 's/||//')"
 #lê arquivo school.info e identifica padrão passado (Pi:), substitui qualquer ciosa antes do : por '', retira || do final da linha e aloca na variável.
 
-
 echo pi=$pi \& sd=$sd
 
 #condição de saída, termina a execução mas o terminal continua aberto
