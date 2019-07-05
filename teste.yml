@@ -18,7 +18,14 @@
    #   when: "not 'already satisfied' in ansib.stdout"
    #- include: tasks/buster.yml
    - include: tasks/ansible-config.yml
+   - file:
+       path: /home/mindmakers/Scratch2/portuguese/Gabaritos
+       state: absent
+   - file:
+       path: /home/mindmakers/Scratch2/english/Answer-Sheet
+       state: absent
    - include: tasks/teacher-en.yml
+
 
    # - name: Trocando imagem de fundo e posicionando ícones padrões do Desktop
    #   copy:
