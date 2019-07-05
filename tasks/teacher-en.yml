@@ -124,10 +124,14 @@
   args:
     warn: no
   register: lang
-- file:
-    path: /home/pi/Desktop/scratch2_folder.desktop
-    state: touch
-    attributes: -i
+# - file:
+#     path: /home/pi/Desktop/scratch2_folder.desktop
+#     state: touch
+#     attributes: -i
+- name:
+  shell: 'sudo chattr -i /home/pi/Desktop/scratch2_folder.desktop'
+  args:
+    warn: no
 - name: Alterando atalho da pasta Scratch2
   lineinfile:
     path: /home/pi/Desktop/scratch2_folder.desktop
@@ -135,10 +139,10 @@
     line: 'Exec=pcmanfm /home/mindmakers/Scratch2/english'
     backrefs: yes
   when: lang.stdout.find('LANG=en') != -1
-- file:
-    path: /home/pi/Desktop/scratch2_folder.desktop
-    state: touch
-    attributes: +i
+- name:
+  shell: 'sudo chattr +i /home/pi/Desktop/scratch2_folder.desktop'
+  args:
+    warn: no
 - file:
     path: /home/pi/Scratch2
     state: absent
