@@ -334,7 +334,7 @@ noble.on('discover', function(peripheral) {
 
   console.log('Encontrou dispositivos Bluetooth Low Energy (BLE). Scan no. '+numeroScans);
 
-  if (peripheral.rssi>-65  && (
+  if (peripheral.rssi>-75  && (
             (''+peripheral.advertisement.localName).indexOf('SK') == 0 ||
             (''+peripheral.advertisement.localName).indexOf('Sphero')==0)) {
 
