@@ -75,19 +75,24 @@
      group: pi
      attributes: +i
      mode: 0755
-# - name: Tornando ícones dentro da pasta Scratch2 mutáveis
-#   file:
-#     path: /home/mindmakers/Scratch2
-#     state: directory
-#     attributes: -i
-#     recurse: yes
+- name: Tornando ícones dentro da pasta Scratch2 mutáveis
+  file:
+    path: /home/mindmakers/Scratch2
+    state: directory
+    attributes: -i
+    recurse: yes
+- file:
+    path: /home/mindmakers/Scratch2/portuguese/Gabaritos
+    state: absent
+- file:
+    path: /home/mindmakers/Scratch2/english/Answer-Sheet
+    state: absent
 - name: Copiando pasta Scratch2 - Gabaritos
   copy:
      src: files/teacher/Gabaritos
      dest: /home/mindmakers/Scratch2/portuguese
      owner: pi
      group: pi
-     attributes: +i
      mode: 0755
 - name: Copiando pasta Scratch2 - Answer-Sheet
   copy:
@@ -95,7 +100,6 @@
      dest: /home/mindmakers/Scratch2/english
      owner: pi
      group: pi
-     attributes: +i
      mode: 0755
 - name: Tornando ícones dentro da pasta Scratch2 imutáveis
   file:
