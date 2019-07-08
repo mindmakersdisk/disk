@@ -17,56 +17,60 @@
    #     msg: "Reiniciar reiniciar ansible para continuar instalação"
    #   when: "not 'already satisfied' in ansib.stdout"
    #- include: tasks/buster.yml
-  
+
    #- include: tasks/teacher-en.yml
-   - name: Verificando OS em inglês
-     shell: 'cat /etc/default/locale | grep LANG= '
-     register: lang
+   - name: Validando ativação
+     find:
+        paths:  /etc/default/
+        patterns: 'locale'
+        contains: "^LANG="
+        use_regex: yes
+     register: language
    - debug:
-       var: lang
+       var: language
 # - file:
 #     path: /home/pi/Desktop/scratch2_folder.desktop
 #     state: touch
 #     attributes: -i
-   - name:
-     shell: 'sudo chattr -i /home/pi/Desktop/scratch2_folder.desktop'
-     args:
-       warn: no
-   - name: Alterando atalho da pasta Scratch2
-     lineinfile:
-       path: /home/pi/Desktop/scratch2_folder.desktop
-       regexp: '^Exec=pcmanfm /home/mindmakers/Scratch2/portuguese'
-       line: 'Exec=pcmanfm /home/mindmakers/Scratch2/english'
-       backrefs: yes
-     when: lang.stdout.find('LANG=en') != -1
-   - name:
-     shell: 'sudo chattr +i /home/pi/Desktop/scratch2_folder.desktop'
-     args:
-       warn: no
-   - file:
-       path: /home/pi/Scratch2
-       state: absent
-   - shell: 'sudo ln -s /home/mindmakers/Scratch2/english /home/pi/Scratch2'
-     args:
-       warn: no
-     when: lang.stdout.find('LANG=en') != -1
-   - shell: 'sudo ln -s /home/mindmakers/Scratch2/portuguese /home/pi/Scratch2'
-     args:
-       warn: no
-     when: lang.stdout.find('LANG=pt') != -1
-   - file:
-       path: /home/pi/Fotos
-       state: absent
-   - file:
-       path: /home/pi/Pictures/Pictures
-       state: absent
-   - file:
-       path: /home/pi/Pictures/Fotos
-       state: absent
-   - shell: 'sudo ln -s /home/pi/Pictures /home/pi/Fotos'
-     args:
-       warn: no
-     when: lang.stdout.find('LANG=pt') != -1
+   # - name:
+   #   shell: 'sudo chattr -i /home/pi/Desktop/scratch2_folder.desktop'
+   #   args:
+   #     warn: no
+   # - name: Alterando atalho da pasta Scratch2
+   #   lineinfile:
+   #     path: /home/pi/Desktop/scratch2_folder.desktop
+   #     regexp: '^Exec=pcmanfm /home/mindmakers/Scratch2/portuguese'
+   #     line: 'Exec=pcmanfm /home/mindmakers/Scratch2/english'
+   #     backrefs: yes
+   #   when: lang.stdout.find('LANG=en') != -1
+   # - name:
+   #   shell: 'sudo chattr +i /home/pi/Desktop/scratch2_folder.desktop'
+   #   args:
+   #     warn: no
+   # - file:
+   #     path: /home/pi/Scratch2
+   #     state: absent
+   # - shell: 'sudo ln -s /home/mindmakers/Scratch2/english /home/pi/Scratch2'
+   #   args:
+   #     warn: no
+   #   when: lang.stdout.find('LANG=en') != -1
+   # - shell: 'sudo ln -s /home/mindmakers/Scratch2/portuguese /home/pi/Scratch2'
+   #   args:
+   #     warn: no
+   #   when: lang.stdout.find('LANG=pt') != -1
+   # - file:
+   #     path: /home/pi/Fotos
+   #     state: absent
+   # - file:
+   #     path: /home/pi/Pictures/Pictures
+   #     state: absent
+   # - file:
+   #     path: /home/pi/Pictures/Fotos
+   #     state: absent
+   # - shell: 'sudo ln -s /home/pi/Pictures /home/pi/Fotos'
+   #   args:
+   #     warn: no
+   #   when: lang.stdout.find('LANG=pt') != -1
 
 
    # - name: Trocando imagem de fundo e posicionando ícones padrões do Desktop
