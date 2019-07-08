@@ -22,6 +22,8 @@
    - name: Verificando OS em inglês
      shell: 'cat /etc/default/locale | grep LANG= '
      register: lang
+   - debug:
+       var: lang
 # - file:
 #     path: /home/pi/Desktop/scratch2_folder.desktop
 #     state: touch
