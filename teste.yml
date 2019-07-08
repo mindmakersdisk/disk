@@ -18,7 +18,7 @@
    #   when: "not 'already satisfied' in ansib.stdout"
    #- include: tasks/buster.yml
   
-   - include: tasks/teacher-en.yml
+   #- include: tasks/teacher-en.yml
    - name: Verificando OS em inglês
      shell: 'cat /etc/default/locale | grep LANG= '
      register: lang
