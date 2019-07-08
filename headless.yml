@@ -1,11 +1,15 @@
 # Arquivo playbook - imagem para Raspberry Pi Headless
 - hosts: localhost
   pre_tasks:
+    # - name: Atualizando Repositórios
+    #   apt:
+    #      update_cache: yes
+    #      cache_valid_time: 3600
+    #   changed_when: False
     - name: Atualizando Repositórios
-      apt:
-         update_cache: yes
-         cache_valid_time: 3600
-      changed_when: False
+      shell: 'sudo apt-get update --allow-releaseinfo-change'
+      args:
+        warn: no
 
   tasks:
     - name: Verificando versão do Ansible.

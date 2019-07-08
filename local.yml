@@ -2,9 +2,12 @@
   remote_user: root
   pre_tasks:
     - name: Atualizando Repositórios
-      apt:
-         update_cache: yes
-      changed_when: False
+      shell: 'sudo apt-get update --allow-releaseinfo-change'
+      args:
+        warn: no
+      # apt:
+      #    update_cache: yes
+      # changed_when: False
 
   tasks:
     - name: Verificando versão do Ansible.
