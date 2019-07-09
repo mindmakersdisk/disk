@@ -2,6 +2,11 @@
   remote_user: root
 
   tasks:
+   - debug:
+       var: ansible_facts.env.lang
+   - debug:
+       var: pt_BR in ansible_facts.env.lang
+
    #- include: tasks/xvnc.yml
 #Tarefa fixa para instalar tighvncserver se não estiver instalado.
 
@@ -19,15 +24,15 @@
    #- include: tasks/buster.yml
 
    #- include: tasks/teacher-en.yml
-   - name: Validando ativação
-     find:
-        paths:  /etc/default/
-        patterns: 'locale'
-        contains: "^LANG="
-        use_regex: yes
-     register: language
-   - debug:
-       var: language
+  # - name: Validando ativação
+  #   find:
+  #      paths:  /etc/default/
+  #      patterns: 'locale'
+  #      contains: "^LANG="
+  #      use_regex: yes
+  #   register: language
+  # - debug:
+  #     var: language
 # - file:
 #     path: /home/pi/Desktop/scratch2_folder.desktop
 #     state: touch
