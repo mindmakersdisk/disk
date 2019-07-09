@@ -3,9 +3,11 @@
 
   tasks:
    - debug:
-       var: ansible_facts.env.LANGUAGE
+       var: ansible_facts.env
    - debug:
        var: "'pt_BR' in ansible_facts.env.LANGUAGE"
+   - debug:
+       var: "'en_' in ansible_facts.env.LANGUAGE"
 
    #- include: tasks/xvnc.yml
 #Tarefa fixa para instalar tighvncserver se não estiver instalado.
