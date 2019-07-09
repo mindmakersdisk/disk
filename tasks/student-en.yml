@@ -104,23 +104,32 @@
      attributes: +i
      mode: 0755
   when: not scratch2_folder.stat.exists
-- name: Verificando OS em inglês
-  shell: 'cat /etc/default/locale | grep LANG= '
+- name:
+  shell: 'sudo chattr -i /home/pi/Desktop/scratch2_folder.desktop'
   args:
     warn: no
-  register: lang
-- file:
-    path: /home/pi/Desktop/scratch2_folder.desktop
-    state: touch
-    attributes: -i
-  when: lang.stdout.find('LANG=en') != -1
+# - file:
+#     path: /home/pi/Desktop/scratch2_folder.desktop
+#     state: touch
+#     attributes: -i
+#   when: "'en_' in ansible_facts.env.LANGUAGE"
 - name: Alterando atalho da pasta Scratch2
   lineinfile:
     path: /home/pi/Desktop/scratch2_folder.desktop
     regexp: '^Exec=pcmanfm /home/mindmakers/Scratch2/portuguese'
     line: 'Exec=pcmanfm /home/mindmakers/Scratch2/english'
     backrefs: yes
-  when: lang.stdout.find('LANG=en') != -1
+  when: "'en_' in ansible_facts.env.LANGUAGE"
+- lineinfile:
+    path: /home/pi/Desktop/scratch2_folder.desktop
+    regexp: '^Exec=pcmanfm /home/mindmakers/Scratch2/portuguese'
+    line: 'Exec=pcmanfm /home/mindmakers/Scratch2/english'
+    backrefs: yes
+  when: "'pt_BR' in ansible_facts.env.LANGUAGE"
+- name:
+  shell: 'sudo chattr +i /home/pi/Desktop/scratch2_folder.desktop'
+  args:
+    warn: no
 # - file:
 #     path: /home/pi/Desktop/scratch2_folder.desktop
 #     state: touch
@@ -131,11 +140,11 @@
 - shell: 'sudo ln -s /home/mindmakers/Scratch2/english /home/pi/Scratch2'
   args:
     warn: no
-  when: lang.stdout.find('LANG=en') != -1
+  when: "'en_' in ansible_facts.env.LANGUAGE"
 - shell: 'sudo ln -s /home/mindmakers/Scratch2/portuguese /home/pi/Scratch2'
   args:
     warn: no
-  when: lang.stdout.find('LANG=pt') != -1
+  when: "'pt_BR' in ansible_facts.env.LANGUAGE"
 - file:
     path: /home/pi/Fotos
     state: absent
@@ -148,4 +157,4 @@
 - shell: 'sudo ln -s /home/pi/Pictures /home/pi/Fotos'
   args:
     warn: no
-  when: lang.stdout.find('LANG=pt') != -1
+  when: "'pt_BR' in ansible_facts.env.LANGUAGE"

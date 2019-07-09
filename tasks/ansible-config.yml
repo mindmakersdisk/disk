@@ -1,3 +1,16 @@
+- name: Criando pastas de verificação
+  file:
+    path: /etc/ansible
+    state: directory
+    mode: 0755
+- name: Verificando arquivo hosts existe
+  stat:
+     path: /home/mindmakers/school.info
+  register: school
+- copy:
+     src: hosts
+     dest: /etc/ansible/
+     mode: 0644
 - name: Configurando hosts
   blockinfile:
     path: /etc/ansible/hosts
