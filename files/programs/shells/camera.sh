@@ -54,7 +54,7 @@ else
     convert "/tmp/$data.jpg" -resize 720x480 "$caminho/$data.jpg"
     echo $caminho/$data.jpg 2>&1
   else
-    echo "Nenhum caminho informado, tente novamente informando um Ip válido!"
+    echo "Nenhum caminho informado, tente novamente informando um IP válido!"
     run;
   fi
 
