@@ -35,12 +35,15 @@
     path: /home/mindmakers/programs/verify/ansible27
     state: directory
     mode: 0444
-- name: Fazendo upgrade do Ansible
-  apt:
-     name: ansible
+# - name: Fazendo upgrade do Ansible
+#   apt:
+#      name: ansible
+#   register: ansib
+- name: Instalando pacote Ansible 2.7.*
+  shell: 'apt-get install -y ansible'
+  args:
+     warn: no
   register: ansib
-# - name: Instalando pacote Ansible 2.7.*
-#   shell: 'apt-get install -y ansible'
 #- name: instalação ansible 2.7 via pip
 #  pip:
 #     name: ansible~=2.7.0
