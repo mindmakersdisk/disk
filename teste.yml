@@ -8,6 +8,12 @@
        var: "'pt_BR' in ansible_facts.env.LANGUAGE"
    - debug:
        var: "'en_' in ansible_facts.env.LANGUAGE"
+   - debug:
+       msg: "Buster"
+     when: not ansible_facts.lsb.codename == "buster"
+   - debug:
+       msg: "Scretch"
+     when: not ansible_facts.lsb.codename == "scretch"
 
    #- include: tasks/xvnc.yml
 #Tarefa fixa para instalar tighvncserver se não estiver instalado.
