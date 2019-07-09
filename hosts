@@ -1,2 +1,4 @@
+# BEGIN ANSIBLE MANAGED BLOCK
 [local]
 localhost ansible_connection=local
+# END ANSIBLE MANAGED BLOCK
