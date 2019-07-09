@@ -94,7 +94,7 @@ fs.readFile('/home/mindmakers/school.info', function(err,data)
                   microbit_registrado='';
               else
                   microbit_registrado= escolainfo.substring(microbitIni,escolainfo.indexOf('||',microbitIni)).trim();
-              
+
             console.log('');
             console.log(escolainfo.replace(/\|\|/g,''));
             console.log('');
@@ -193,7 +193,7 @@ var questionsTeacher = [
   {
     type: 'confirm',
     name: 'opcao',
-    message: "Estação de INSTRUTOR: Deseja ativar essa estação"
+    message: "Estação de FACILITADOR: Deseja ativar essa estação"
   },
   {
     type: 'input',
@@ -325,7 +325,7 @@ var questionsLoginSimplificadoTeachers = [
   {
     type: 'list',
     name: 'loginSimplificado',
-    message: "Estação de INSTRUTOR: Deseja modificar a opção de uso de login no atalho Mind Makers.",
+    message: "Estação de FACILITADOR: Deseja modificar a opção de uso de login no atalho Mind Makers.",
     choices: ['0. Não modificar','1. Configurar Login Simplificado (permite ao aluno selecionar sua senha)',
                     '2. Configurar Login Padrão (exige do aluno informar sua senha)']
   },
@@ -350,7 +350,7 @@ var questionsLoginSimplificadoTeachers = [
   {
     type: 'number',
     name: 'codigo',
-    message: "O código da estação de instrutores é sempre zero. Sua estação será ativada com este código",
+    message: "O código da estação de facilitadores é sempre zero. Sua estação será ativada com este código",
     default: 0,
     when: function (answers) {
       return answers.opcao;
@@ -411,7 +411,7 @@ function executaRegistros() {
           // Então é headless
           return;
       }
-      
+
       // Faz registro simplificado
       var perguntasCurtas = questionsLoginSimplificado;
 
@@ -469,7 +469,7 @@ function executaRegistros() {
 
             sala_informado=answers.sala;
             //console.log('sala = '+sala_informado);
-            
+
             estacao_informado=answers.codigo;
 
             if (verificaInstrutor())
@@ -694,7 +694,7 @@ function atualizaAtalhoLoginSimplificadoEscola(resposta) {
       shell.exec("sudo bash /home/mindmakers/programs/shells/change-shortcut.sh", function(code, output) {
         if(code!=0) {
           console.error('\x1b[31m', "Erro ao tentar desproteger arquivos de atalho ");
-        } else { 
+        } else {
             fs.writeFile('/home/pi/Área de Trabalho/mindmakers.desktop', conteudo_novo, function(err,data) {
               if (err)
                 console.log(err);
@@ -706,20 +706,20 @@ function atualizaAtalhoLoginSimplificadoEscola(resposta) {
                 else {
                 console.log(msg_final);
                 console.log('');
-                } 
+                }
                 });
-            
-              }   
+
+              }
             });
         }
       });
   } else {
-    
+
       shell.exec("sudo bash /home/mindmakers/programs/shells/change-shortcut.sh", function(code, output) {
-        if(code!=0) 
+        if(code!=0)
           console.error('\x1b[31m', "Erro ao tentar desproteger arquivos de atalho ");
         else {
-  
+
           fs.writeFile('/home/pi/Desktop/mindmakers.desktop', conteudo_novo, function(err,data) {
             if (err)
                 console.log(err);
@@ -732,10 +732,10 @@ function atualizaAtalhoLoginSimplificadoEscola(resposta) {
                   console.log('');
                }
               });
-  
+
             }
           });
-            
+
         }
       });
   }
@@ -747,15 +747,15 @@ function monitoraAcessosAssincronosPlataforma() {
 
   // Somente depois de todos os serviços de registro ocorrem ok, altera o nome na rede e o arquivo local.
   if (totalAcessosPlataformaPendentes<=0) {
-    
+
     // URL da Estação
     if (parseInt(estacao_informado)<10)
         urlEstacao='s'+sala_informado+'e0'+estacao_informado;
     else
-        urlEstacao='s'+sala_informado+'e'+estacao_informado;    
+        urlEstacao='s'+sala_informado+'e'+estacao_informado;
 
     atualizaNomeRede(urlEstacao);
-    
+
     atualizaIconeAtalhos();
 
     clearInterval(servicoRecorrente);
@@ -825,7 +825,7 @@ function atualizaSchoolInfo() {
             console.log(escolainfoatualizada.replace(/\|\|/g,''));
             console.log(' URL Estação: '+urlEstacao);
             console.log('');
-            
+
             var fd =
             console.error('\x1b[32m','-------------- Confira a Data/Hora do Sistema Abaixo ---------------');
             console.error('\x1b[0m\x1b[1m','            '+(new Date()).toString("yyyyMMddHHmmss").replace(/T/,' ').replace(/\..+/,'').substring(4));
@@ -960,16 +960,16 @@ function atualizaNomeRede(urlEstacao) {
      // retira raspberry
      ponto_inicial_fim_conteudo=conteudo_partefinal.toLowerCase().indexOf('foo')+3;
    }
-   
+
    if (conteudo_partefinal.toLowerCase().indexOf('s')>-1 && conteudo_partefinal.toLowerCase().indexOf('s')<=1) {
      // retira sala anterior, considerando várias possibilidades de token
      ponto_inicial_fim_conteudo=conteudo_partefinal.indexOf('s')+5;
    }
-   
+
    conteudo_partefinal=conteudo_partefinal.substring(ponto_inicial_fim_conteudo);
 
    var conteudo_novo=conteudo_parteinicial+urlEstacao+conteudo_partefinal;
-   
+
     fs.writeFile('/etc/avahi/avahi-daemon.conf', conteudo_novo, function(err,data)
         {
           if (err)
@@ -988,7 +988,7 @@ function atualizaIconeAtalhos() {
 
   var atalho_mm_sala ='';
   var atalho_mm_estacao ='';
-  
+
   if (existeEmPortugues) {
 
     atalho_mm_sala= "/home/pi/Área de Trabalho/classroom_test.desktop";
@@ -1001,7 +1001,7 @@ function atualizaIconeAtalhos() {
     atalho_mm_estacao= '/home/pi/Desktop/activate.desktop';
 
   }
-  
+
     atalho_mm_sala_conteudo= fs.readFileSync(atalho_mm_sala)+'';
     atalho_mm_estacao_conteudo= fs.readFileSync(atalho_mm_estacao)+'';
 
@@ -1009,7 +1009,7 @@ function atualizaIconeAtalhos() {
    // obtém versão
    var inicial_sala = atalho_mm_sala_conteudo.indexOf('Icon=')+5;
    var inicial_estacao = atalho_mm_estacao_conteudo.indexOf('Icon=')+5;
-   
+
    var final_sala = atalho_mm_sala_conteudo.indexOf('Exec=')-1;
    var final_estacao = atalho_mm_estacao_conteudo.indexOf('Exec=')-1;
 
@@ -1030,14 +1030,14 @@ function atualizaIconeAtalhos() {
 
 
    var novoatalho_sala = "/usr/share/icons/"+sala_informado+".png";
-       
+
    var novoatalho_estacao = "/usr/share/icons/"+estacao_informado+".png";
   // é estação do instrutor
    if (parseInt(estacao_informado+'')==0)
        novoatalho_estacao = "/usr/share/icons/f.png";
-   
+
    // grava novo conteúdo sala
-   
+
   shell.exec("sudo bash /home/mindmakers/programs/shells/change-shortcut.sh", function(code, output) {
     if(code!=0) {
      console.error('\x1b[31m', "Erro ao tentar desproteger arquivos de atalho ");
@@ -1045,48 +1045,48 @@ function atualizaIconeAtalhos() {
 
      var novo_conteudo_sala=atalho_mm_sala_conteudo.substring(0,inicial_sala)+novoatalho_sala+atalho_mm_sala_conteudo.substring(final_sala);
    //  console.log(novo_conteudo_sala);
-     
+
      gravaAtalhoSala(atalho_mm_sala,novo_conteudo_sala);
-     
+
      var novo_conteudo_estacao=atalho_mm_estacao_conteudo.substring(0,inicial_estacao)+novoatalho_estacao+atalho_mm_estacao_conteudo.substring(final_estacao);
-     //console.log(novo_conteudo_estacao);     
+     //console.log(novo_conteudo_estacao);
      gravaAtalhoEstacao(atalho_mm_estacao,novo_conteudo_estacao);
-          
+
    }
     });
 
 }
 
 function gravaAtalhoSala(atalho_mm_sala,novo_conteudo_sala) {
-  
-  
+
+
   fs.writeFile(atalho_mm_sala, novo_conteudo_sala, function(err,data)
         {
-          
+
           if (err) {
               console.log('\x1b[31m','Erro ao gravar arquivo de atalho de ativação de sala: '+err);
               // Encerra com falha
-               
+
               process.exit(1);
-          } 
+          }
 
         }
         );
-   
+
 }
 
 function gravaAtalhoEstacao(atalho_mm_estacao,novo_conteudo_estacao) {
-  
-  
+
+
    // grava novo conteúdo estação
      fs.writeFile(atalho_mm_estacao, novo_conteudo_estacao, function(err,data)
         {
             shell.exec("sudo bash /home/mindmakers/programs/shells/change-shortcut2.sh", function(code, output) {
             if(code!=0) {
              console.error('\x1b[31m',"Erro ao tentar proteger arquivos de atalho ");
-           } 
+           }
             });
-          
+
           if (err) {
               console.log('\x1b[31m','Erro ao gravar arquivo de atalho de ativação de estação: '+err);
               // Encerra com falha
@@ -1095,8 +1095,6 @@ function gravaAtalhoEstacao(atalho_mm_estacao,novo_conteudo_estacao) {
 
         }
         );
-   
-   
+
+
 }
-
-
