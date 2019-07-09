@@ -93,12 +93,12 @@
     state: directory
     attributes: -i
     recurse: yes
-- file:
-    path: /home/mindmakers/Scratch2/portuguese/Gabaritos
-    state: absent
-- file:
-    path: /home/mindmakers/Scratch2/english/Answer-Sheet
-    state: absent
+# - file:
+#     path: /home/mindmakers/Scratch2/portuguese/Gabaritos
+#     state: absent
+# - file:
+#     path: /home/mindmakers/Scratch2/english/Answer-Sheet
+#     state: absent
 - name: Copiando pasta Scratch2 - Gabaritos
   copy:
      src: files/teacher/Gabaritos
