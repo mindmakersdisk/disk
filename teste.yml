@@ -3,7 +3,7 @@
 
   tasks:
    - debug:
-       var: ansible_facts.ansible_env
+       var: ansible_facts
    - debug:
        var: pt_BR in ansible_env.LANG
 
