@@ -67,8 +67,6 @@ fs.readFile('/home/mindmakers/school.info', function(err,data)
         });
 
 
-
-
 /* FUNÇÕES QUE CONSULTAM E ATUALIZAM INFORMAÇṌES NA PLATAFORMA*/
 
 
