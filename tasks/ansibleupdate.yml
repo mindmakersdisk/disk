@@ -47,11 +47,11 @@
 #- name: instalação ansible 2.7 via pip
 #  pip:
 #     name: ansible~=2.7.0
- - name: Instalando pip ansible
-   shell: 'sudo pip install -U ansible'
-   register: ansib
-   args:
-     warn: no
+- name: Instalando pip ansible
+  shell: 'sudo pip install -U ansible'
+  register: ansib
+  args:
+    warn: no
 # - debug:
 #     var: ansib
 - name: Ansible foi atualizado
