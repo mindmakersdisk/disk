@@ -7,6 +7,7 @@ pergunta(){
   read SURE
   resposta=$SURE
 }
+
 run(){
   echo "Finalizando programa"
   return 1
