@@ -10,16 +10,6 @@ echo "*               Se fechar a janela, o Sphero poderá apresentar           
 echo "*               comportamento indesejado na próxima conexão.                   *" 
 echo "*                                                                              *" 
 echo "********************************************************************************" 
-echo "********************************************************************************" 
-echo "*                                                                              *" 
-echo "*                    Utilize o Desconecta Sphero                               *" 
-echo "*                                                                              *" 
-echo "*            para encerrar a conexão ao terminar as atividades ou              *"
-echo "*                                                                              *"  
-echo "*            em caso de mensagens de erro durante a utilização.                *" 
-echo "*                                                                              *" 
-echo "*                                                                              *" 
-echo "********************************************************************************" 
 
 sleep 5
 
