@@ -6,10 +6,11 @@
       shell: 'sudo apt-get update --allow-releaseinfo-change'
       args:
         warn: no
-    # - name: Atualizando Repositórios
-    #   apt:
-    #      update_cache: yes
-    #   changed_when: False
+      when: ansible_facts.lsb.codename == "buster"
+    - apt:
+         update_cache: yes
+      changed_when: False
+      when: not ansible_facts.lsb.codename == "buster"
 
   tasks:
    - name: Verificando se diretório Desktop existe.
