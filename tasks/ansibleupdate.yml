@@ -52,12 +52,12 @@
 #   register: ansib
 #   args:
 #     warn: no
-- debug:
-    var: ansib
+# - debug:
+#     var: ansib
 - name: Ansible foi atualizado
   fail:
     msg: "Reinicie a instalação via ansible para continuar a configuração da estação"
-  when: "'Successfully installed' in ansib.stdout"
+  when: "not 'already the newest' in ansib.stdout"
 #- name: Instalando pip ansible
 #  shell: 'sudo pip install ansible~=2.7.0'
 #  args:
