@@ -12,7 +12,7 @@ _**Como verificar sucesso dessa etapa?**_
 
 ### 2. Instalar o Sistema Operacional Raspbian (Padrão para o Raspberry Pi, derivado do Debian)
 
-2.1. Baixar o arquivo do Sistema Operacional "Raspbian Stretch with desktop and recommended software", de https://www.raspberrypi.org/downloads/raspbian/ para um computador central de controle (estação Windows, por exemplo). O link direto para download do arquivo ZIP com esta versão é: https://downloads.raspberrypi.org/raspbian_full_latest
+2.1. Baixar o arquivo do Sistema Operacional "Raspbian Buster with desktop and recommended software", de https://www.raspberrypi.org/downloads/raspbian/ para um computador central de controle (estação Windows, por exemplo). O link direto para download do arquivo ZIP com esta versão é: https://downloads.raspberrypi.org/raspbian_full_latest
 
 Obs.: O último empacotamento de arquivo do Raspbian homologado pela Mind Makers em junho/2019 tem versão 4.19 de 2019-06-20. Versões posteriores devem funcionar, mas caso o pacote seja superior, recomenda-se confirmar essa informação através do suporte@mindmakers.cc.
 
@@ -28,7 +28,7 @@ Obs.: O último empacotamento de arquivo do Raspbian homologado pela Mind Makers
 
 > 2.3.1. Montar o cartão em um Raspberry PI com monitor, teclado e mouse e cabo de rede conectados e ligar.
 
-> 2.3.2. Seguir o tutorial de configuração, selecionando o país "Brazil", o Timezone apropriado e o idioma "Brazilian Portuguese". Para escolas que desejarem manter o Desktop em inglês (ex.: escolas bilíngues), selecionar um país de língua inglesa, porém preservando o Timezone do Brasil.
+> 2.3.2. Seguir o tutorial de configuração, selecionando o país "Brazil", o Timezone apropriado e o idioma "Brazilian Portuguese". Para escolas que desejarem manter o Desktop em inglês (ex.: escolas bilíngues), marcar na caixa de seleção "Use in English".
 
 > 2.3.3. Informar uma nova senha para o usuário "pi", lembrando de anotá-la para não correr o risco de esquecer. Obs.: Este usuário e senha não serão utilizado no dia a dia, mas alterar a senha padrão pode evitar modificações indevidas de algumas configurações por parte de alunos, por exemplo.
 
@@ -81,7 +81,7 @@ _**Como verificar sucesso do novo disco 'disco-padrão-base'?**_
 
 5.1. Reiniciar o computador acessando o menu e opção "Shutdown" ou usando o comando no terminal "reboot".
 
-5.2. Consultar as notas de liberação, para conhecer as principais modificações na versão da imagem padrão, clicando no atalho da Área de Trabalho instalado com nome "Ambiente vX.X" ((ou Desktop vX.X, para versão em ingês).
+5.2. Consultar as notas de liberação, para conhecer as principais modificações na versão da imagem padrão, clicando no atalho da Área de Trabalho instalado com nome "Ambiente vX.X" ((ou Desktop vX.X, para versão em inglês).
 
 5.3. Acessar alguns atalhos para confirmar a correta abertura das aplicações
 
