@@ -10,11 +10,16 @@
      register: desk
    - debug:
        var: desk
-   # - name: Copiando arquivo usando caminho de variável
-   #   copy:
-   #      src: files/fundo-en.png
-   #      dest: "{{ desk }}"
-   #      mode: 0755
+   - name: Copiando arquivo usando caminho de variável
+     copy:
+        src: files/fundo-en.png
+        dest: "{{ desk }}"
+        mode: 0755
+   - name: Copiando arquivo usando caminho de variável 2
+     copy:
+        src: files/fundo-en.png
+        dest: {{ desk }}
+        mode: 0755
    - name: Verificando se diretório Desktop existe.
      stat:
         path: "/home/pi/Área de Trabalho"
