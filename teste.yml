@@ -13,7 +13,7 @@
    - name: Copiando arquivo usando caminho de variável
      copy:
         src: files/fundo-en.png
-        dest: "{{ desk }}"
+        dest: "{{ desk.path }}"
         mode: 0755
 #   - name: Copiando arquivo usando caminho de variável 2
 #     copy:
