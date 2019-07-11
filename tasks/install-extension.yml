@@ -1,5 +1,5 @@
-  - name: Copiando arquivo que instala as extensões do chromium-browser
+  - name: Copiando políticas do chromium-browser
     copy:
-       src: files/extension-forceinstall.json
+       src: files/chromium-browser/policies/managed
        dest: /etc/chromium-browser/policies/managed
        mode: 0644
