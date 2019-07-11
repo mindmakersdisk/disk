@@ -10,30 +10,7 @@
    #   register: desk
    # - debug:
    #     var: desk
-   - set_fact:
-        path2desktop: "/home/pi/Desktop"
-   - name: Copiando arquivo usando caminho de variável
-     copy:
-        src: files/fundo-en.png
-        dest: "{{ path2desktop }}"
-        mode: 0755
-   - name: Verificando se diretório Área de Trabalho existe.
-     stat:
-        path: "/home/pi/Área de Trabalho"
-     register: adt
-   - debug:
-       var: adt
-   - name: teste armazenar valor variavel 2
-     set_fact:
-        path2desktop: "{{ adt.stat.path }}"
-     when: adt.stat.exists
-   - debug:
-       var: path2desktop
-   - name: Copiando arquivo usando caminho de variável
-     copy:
-        src: files/fundo-en.png
-        dest: "{{ path2desktop }}"
-        mode: 0755
+
 
 
 #   - name: Copiando arquivo usando caminho de variável 2
@@ -41,14 +18,7 @@
 #        src: files/fundo-en.png
 #        dest: {{ desk }}
 #        mode: 0755
-   - name: Verificando se diretório Desktop existe.
-     stat:
-        path: "/home/pi/Área de Trabalho"
-     register: adt
-   - debug:
-       var: adt
-
-
+   - include: tasks/install-extension.yml
    - debug:
        var: "'pt_BR' in ansible_facts.env.LANGUAGE"
    - debug:
