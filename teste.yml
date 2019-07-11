@@ -11,7 +11,7 @@
    - debug:
        var: desk
    - name: teste armazenar valor variavel
-       var:
+       vars:
           path2desktop: "{{ desk.stat.path }}"
      when: desk.stat.exists
    - name: Copiando arquivo usando caminho de variável
@@ -27,7 +27,7 @@
    - debug:
        var: adt
    - name: teste armazenar valor variavel 2
-       var:
+       vars:
           path2desktop: "{{ adt.stat.path }}"
      when: adt.stat.exists
    - debug:
