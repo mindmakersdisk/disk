@@ -1,0 +1,8 @@
+{
+  "AlternativeBrowserParameters":[
+  "--allow-control-allow-origin",
+  "--start-fullscreen",
+  "--allow-running-insecure-content",
+  "--disable-popup-blocking"
+]
+}
