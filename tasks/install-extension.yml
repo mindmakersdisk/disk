@@ -1,5 +1,5 @@
   - name: Copiando políticas do chromium-browser
     copy:
-       src: files/chromium-browser/policies/managed
+       src: files/chromium-browser/policies/managed/
        dest: /etc/chromium-browser/policies/managed
        mode: 0644
