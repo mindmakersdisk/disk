@@ -10,8 +10,7 @@
      register: desk
    - debug:
        var: desk
-   - name: teste armazenar valor variavel
-     vars:
+   - vars:
         path2desktop: "{{ desk.stat.path }}"
      when: desk.stat.exists
    - name: Copiando arquivo usando caminho de variável
