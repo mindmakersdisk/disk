@@ -10,7 +10,7 @@
      register: desk
    - debug:
        var: desk
-   - name: Verificando se diretório Desktop existe.
+   - name: Verificando se diretório Área de Trabalho existe.
      stat:
         path: "/home/pi/Área de Trabalho"
      register: desk
