@@ -4,22 +4,20 @@
   tasks:
    # - debug:
    #     var: ansible_facts.env
-   - name: Verificando se diretório Desktop existe.
-     stat:
-        path: "/home/pi/Desktop"
-     register: desk
-   - debug:
-       var: desk
-   - name: teste caminho desktop
-     set_fact:
-        path2desktop: "{{ desk.stat.path }}"
+   # - name: Verificando se diretório Desktop existe.
+   #   stat:
+   #      path: "/home/pi/Desktop"
+   #   register: desk
+   # - debug:
+   #     var: desk
+   - set_fact:
+        path2desktop: "/home/pi/Desktop"
      when: desk.stat.exists
    - name: Copiando arquivo usando caminho de variável
      copy:
         src: files/fundo-en.png
         dest: "{{ path2desktop }}"
         mode: 0755
-     
    - name: Verificando se diretório Área de Trabalho existe.
      stat:
         path: "/home/pi/Área de Trabalho"
@@ -37,8 +35,8 @@
         src: files/fundo-en.png
         dest: "{{ path2desktop }}"
         mode: 0755
-   
-   
+
+
 #   - name: Copiando arquivo usando caminho de variável 2
 #     copy:
 #        src: files/fundo-en.png
