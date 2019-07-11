@@ -1,7 +1,7 @@
 #!/bin/bash
 
 pergunta(){
-  echo -n "Qual o IP do smartphone, mostrado no aplicativo IP Webcam? (ex.: 192.168.100.40:8080) "
+  echo -n "Qual o IP do smartphone, mostrado no aplicativo IP Webcam? (Ex.: 192.168.100.40:8080) "
   echo ""
   local SURE
   read SURE
