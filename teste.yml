@@ -10,7 +10,8 @@
      register: desk
    - debug:
        var: desk
-   - vars:
+   - name: teste caminho desktop
+     set_fact:
         path2desktop: "{{ desk.stat.path }}"
      when: desk.stat.exists
    - name: Copiando arquivo usando caminho de variável
@@ -26,7 +27,7 @@
    - debug:
        var: adt
    - name: teste armazenar valor variavel 2
-     vars:
+     set_fact:
         path2desktop: "{{ adt.stat.path }}"
      when: adt.stat.exists
    - debug:
