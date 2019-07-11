@@ -10,20 +10,35 @@
      register: desk
    - debug:
        var: desk
-   - name: Verificando se diretório Área de Trabalho existe.
-     stat:
-        path: "/home/pi/Área de Trabalho"
-     register: desk
-     when: not desk.stat.exists
-   - debug:
-       var: desk
-   - debug:
-       var: desk.stat.path
+   - name: teste armazenar valor variavel
+       var:
+          path2desktop: "{{ desk.stat.path }}"
+     when: desk.stat.exists
    - name: Copiando arquivo usando caminho de variável
      copy:
         src: files/fundo-en.png
-        dest: "{{ desk.stat.path }}"
+        dest: "{{ path2desktop }}"
         mode: 0755
+     
+   - name: Verificando se diretório Área de Trabalho existe.
+     stat:
+        path: "/home/pi/Área de Trabalho"
+     register: adt
+   - debug:
+       var: adt
+   - name: teste armazenar valor variavel 2
+       var:
+          path2desktop: "{{ adt.stat.path }}"
+     when: adt.stat.exists
+   - debug:
+       var: path2desktop
+   - name: Copiando arquivo usando caminho de variável
+     copy:
+        src: files/fundo-en.png
+        dest: "{{ path2desktop }}"
+        mode: 0755
+   
+   
 #   - name: Copiando arquivo usando caminho de variável 2
 #     copy:
 #        src: files/fundo-en.png
