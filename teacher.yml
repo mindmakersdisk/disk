@@ -13,14 +13,24 @@
       when: not ansible_facts.lsb.codename == "buster"
 
   tasks:
-   - name: Verificando se diretório Desktop existe.
+   - set_fact:
+        path2desktop: "/home/pi/Desktop"
+   - name: Verificando se diretório Área de Trabalho existe.
      stat:
-        path: /home/pi/Desktop
-     register: p
-   - include: tasks/teacher-pt.yml
-     when: not p.stat.exists
+        path: "/home/pi/Área de Trabalho"
+     register: adt
+   - name: teste armazenar valor variavel 2
+     set_fact:
+        path2desktop: "{{ adt.stat.path }}"
+     when: adt.stat.exists
+   # - name: Verificando se diretório Desktop existe.
+   #   stat:
+   #      path: /home/pi/Desktop
+   #   register: p
+   # - include: tasks/teacher-pt.yml
+   #   when: not p.stat.exists
    - include: tasks/teacher-en.yml
-     when: p.stat.exists
+     # when: p.stat.exists
 
 - import_playbook: student.yml
 
@@ -29,15 +39,15 @@
   tasks:
     - include: tasks/copies-student.yml
     - shell: 'amixer cset numid=3 2'
-    - name: Verificando se diretório Desktop existe.
-      stat:
-        path: /home/pi/Desktop
-      register: p
+    # - name: Verificando se diretório Desktop existe.
+    #   stat:
+    #     path: /home/pi/Desktop
+    #   register: p
  # Copia as notas de liberação e o atalho com nome da versão atualizados
-    - include: tasks/final-version-copies-pt.yml
-      when: not p.stat.exists
+    # - include: tasks/final-version-copies-pt.yml
+    #   when: not p.stat.exists
     - include: tasks/final-version-copies-en.yml
-      when: p.stat.exists
+      # when: p.stat.exists
     - include: tasks/version_update.yml
     - include: tasks/reboot.yml
 # Não acrescentar tarefas após estas últimas.
