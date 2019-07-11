@@ -12,7 +12,6 @@
    #     var: desk
    - set_fact:
         path2desktop: "/home/pi/Desktop"
-     when: desk.stat.exists
    - name: Copiando arquivo usando caminho de variável
      copy:
         src: files/fundo-en.png

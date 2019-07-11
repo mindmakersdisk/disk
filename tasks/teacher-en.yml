@@ -9,14 +9,14 @@
      dest: /home/mindmakers
      mode: 0755
 - file:
-    path: /home/pi/Desktop
+    path: "{{ path2desktop }}"
     state: directory
     attributes: -i
     recurse: yes
 - name: Copiando atalho mindmakers.desktop versão de professor
   copy:
      src: files/teacher/mindmakers.desktop
-     dest: /home/pi/Desktop/mindmakers.desktop
+     dest: "{{ path2desktop }}/mindmakers.desktop"
      owner: pi
      group: pi
      attributes: +i
@@ -24,19 +24,19 @@
 - name: Copiando versão de professor do update.desktop
   copy:
      src: files/teacher/update.desktop
-     dest: /home/pi/Desktop
+     dest: "{{ path2desktop }}"
      owner: pi
      group: pi
      attributes: +i
      mode: 0755
 - name: Verificando ícone sphero.desktop
   stat:
-     path: /home/pi/Desktop/sphero.desktop
+     path: "{{ path2desktop }}/sphero.desktop"
   register: spherodesk
 - name: Copiando atalho sphero.desktop
   copy:
      src: files/sphero.desktop
-     dest: /home/pi/Desktop/sphero.desktop
+     dest: "{{ path2desktop }}/sphero.desktop"
      owner: pi
      group: pi
      attributes: +i
@@ -44,11 +44,11 @@
   #when: not spherodesk.stat.exists
 - name: Verificando ícone activate.desktop
   stat:
-     path: /home/pi/Desktop/activate.desktop
+     path: "{{ path2desktop }}/activate.desktop"
   register: activatedesk
 - copy:
      src: files/activate.desktop
-     dest: /home/pi/Desktop/activate.desktop
+     dest: "{{ path2desktop }}/activate.desktop"
      owner: pi
      group: pi
      attributes: +i
@@ -56,11 +56,11 @@
   when: not activatedesk.stat.exists
 - name: Verificando ícone classroom_test.desktop
   stat:
-     path: /home/pi/Desktop/classroom_test.desktop
+     path: "{{ path2desktop }}/classroom_test.desktop"
   register: classroom_testdesk
 - copy:
      src: files/classroom_test.desktop
-     dest: /home/pi/Desktop/classroom_test.desktop
+     dest: "{{ path2desktop }}/classroom_test.desktop"
      owner: pi
      group: pi
      attributes: +i
@@ -68,11 +68,11 @@
   when: not classroom_testdesk.stat.exists
 - name: Verificando ícone scratch2_folder.desktop
   stat:
-     path: /home/pi/Desktop/scratch2_folder.desktop
+     path: "{{ path2desktop }}/scratch2_folder.desktop"
   register: scratch2_folder
 - copy:
      src: files/scratch2_folder.desktop
-     dest: /home/pi/Desktop/scratch2_folder.desktop
+     dest: "{{ path2desktop }}/scratch2_folder.desktop"
      owner: pi
      group: pi
      attributes: +i
@@ -82,7 +82,7 @@
 - name: Copiando demais atalhos para o Desktop
   copy:
      src: files/desktop/
-     dest: /home/pi/Desktop
+     dest: "{{ path2desktop }}"
      owner: pi
      group: pi
      attributes: +i
@@ -129,13 +129,13 @@
     warn: no
 - name: Alterando atalho da pasta Scratch2
   lineinfile:
-    path: /home/pi/Desktop/scratch2_folder.desktop
+    path: "{{ path2desktop }}/scratch2_folder.desktop"
     regexp: '^Exec=pcmanfm /home/mindmakers/Scratch2/portuguese'
     line: 'Exec=pcmanfm /home/mindmakers/Scratch2/english'
     backrefs: yes
   when: "'en_' in ansible_facts.env.LANGUAGE"
 - lineinfile:
-    path: /home/pi/Desktop/scratch2_folder.desktop
+    path: "{{ path2desktop }}/scratch2_folder.desktop"
     regexp: '^Exec=pcmanfm /home/mindmakers/Scratch2/english'
     line: 'Exec=pcmanfm /home/mindmakers/Scratch2/portuguese'
     backrefs: yes
