@@ -15,12 +15,11 @@
   tasks:
    - set_fact:
         path2desktop: "/home/pi/Desktop"
-   - name: Verificando se diretório Área de Trabalho existe.
+   - name: Verificando se diretório Área de Trabalho existe
      stat:
         path: "/home/pi/Área de Trabalho"
      register: adt
-   - name: teste armazenar valor variavel 2
-     set_fact:
+   - set_fact:
         path2desktop: "{{ adt.stat.path }}"
      when: adt.stat.exists
    # - name: Verificando se diretório Desktop existe.
