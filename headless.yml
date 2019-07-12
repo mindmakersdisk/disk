@@ -1,5 +1,6 @@
 # Arquivo playbook - imagem para Raspberry Pi Headless
 - hosts: localhost
+  remote_user: root
   pre_tasks:
     - name: Atualizando Repositórios
       shell: 'sudo apt-get update --allow-releaseinfo-change'
@@ -21,6 +22,15 @@
     - fail:
          msg: "Comando errado, se estiver tentando atualizar Chromebook, utilize o termo chomebook.yml ao final do comando"
       when: not ansible_facts.lsb.id == "Raspbian"
+    - set_fact:
+         path2desktop: "/home/pi/Desktop"
+    - name: Verificando se diretório Área de Trabalho existe
+      stat:
+         path: "/home/pi/Área de Trabalho"
+      register: adt
+    - set_fact:
+         path2desktop: "{{ adt.stat.path }}"
+      when: adt.stat.exists
     - name: Verificando se diretório Desktop existe.
       stat:
         path: /home/pi/Desktop
@@ -30,18 +40,16 @@
     - include: tasks/headless-en.yml
       when: p.stat.exists
     - include: tasks/tightvnc.yml
-    #- include: tasks/avahi.yml
+    - include: tasks/avahi.yml
 
 - import_playbook: student.yml
 
 - hosts: localhost
+  remote_user: root
   tasks:
     - include: tasks/copies-headless.yml
  # Copia as notas de liberação e o atalho com nome da versão atualizados
-    - include: tasks/final-version-copies-pt.yml
-      when: not p.stat.exists
     - include: tasks/final-version-copies-en.yml
-      when: p.stat.exists
     - include: tasks/version_update.yml
     - include: tasks/reboot.yml
  # Não acrescentar tarefas após estas últimas.

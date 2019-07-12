@@ -51,7 +51,7 @@ _**Como verificar sucesso dessa etapa?**_
 
 3.1. Abrir o terminal em qualquer diretório e executar a linha de comando "sudo apt-get install -y ansible".
 
-3.2. Caso este a execução encerre com erro, executar a linha de comando 'sudo apt-get update' e após sua execução, repetir a execução do passo anterior.
+3.2. Caso este a execução encerre com erro, executar a linha de comando 'sudo apt-get update -y' e após sua execução, repetir a execução do passo anterior.
 
 _**Como verificar sucesso dessa etapa?**_
 - _Digitar no terminal "ansible --version" de qualquer diretório e conferir se a resposta traz ansible 2.7.7 ou superior na primeira linha_

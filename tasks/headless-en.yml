@@ -4,26 +4,26 @@
      dest: /home/mindmakers
      mode: 0755
 - file:
-    path: /home/pi/Desktop
+    path: "{{ path2desktop }}"
     state: directory
     attributes: -i
     recurse: yes
 - name: Copiando demais atalhos para o Desktop
   copy:
      src: files/headless/desktop/
-     dest: /home/pi/Desktop
+     dest: "{{ path2desktop }}"
      owner: pi
      group: pi
      attributes: +i
      mode: 0755
 - name: Verificando ícone sphero.desktop
   stat:
-     path: /home/pi/Desktop/sphero.desktop
+     path: "{{ path2desktop }}/sphero.desktop"
   register: spherodesk
 - name: Copiando atalho sphero.desktop
   copy:
      src: files/sphero.desktop
-     dest: /home/pi/Desktop/sphero.desktop
+     dest: "{{ path2desktop }}/sphero.desktop"
      owner: pi
      group: pi
      mode: 0755
