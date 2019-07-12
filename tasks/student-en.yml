@@ -3,8 +3,7 @@
      src: files/fundo.png
      dest: /home/mindmakers
      mode: 0755
-- name: Copiando a imagem tema de fundo
-  copy:
+- copy:
      src: files/fundo-en.png
      dest: /home/mindmakers
      mode: 0755
@@ -104,15 +103,10 @@
      attributes: +i
      mode: 0755
   when: not scratch2_folder.stat.exists
-- name:
+- name: Alterando atributos do atalho da pasta scratch2
   shell: 'sudo chattr -i /home/pi/Desktop/scratch2_folder.desktop'
   args:
     warn: no
-# - file:
-#     path: /home/pi/Desktop/scratch2_folder.desktop
-#     state: touch
-#     attributes: -i
-#   when: "'en_' in ansible_facts.env.LANGUAGE"
 - name: Alterando atalho da pasta Scratch2
   lineinfile:
     path: "{{ path2desktop }}/scratch2_folder.desktop"
@@ -126,14 +120,10 @@
     line: 'Exec=pcmanfm /home/mindmakers/Scratch2/english'
     backrefs: yes
   when: "'pt_BR' in ansible_facts.env.LANGUAGE"
-- name:
+- name: Alterando atributos do atalho da pasta scratch2
   shell: 'sudo chattr +i /home/pi/Desktop/scratch2_folder.desktop'
   args:
     warn: no
-# - file:
-#     path: /home/pi/Desktop/scratch2_folder.desktop
-#     state: touch
-#     attributes: +i
 - file:
     path: /home/pi/Scratch2
     state: absent

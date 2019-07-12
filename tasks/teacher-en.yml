@@ -3,8 +3,7 @@
      src: files/teacher/fundo.png
      dest: /home/mindmakers
      mode: 0755
-- name: Copiando a imagem tema de fundo
-  copy:
+- copy:
      src: files/teacher/fundo-en.png
      dest: /home/mindmakers
      mode: 0755
@@ -119,11 +118,7 @@
     state: directory
     attributes: +i
     recurse: yes
-# - file:
-#     path: /home/pi/Desktop/scratch2_folder.desktop
-#     state: touch
-#     attributes: -i
-- name:
+- name: Alterando atributos do atalho da pasta scratch2
   shell: 'sudo chattr -i /home/pi/Desktop/scratch2_folder.desktop'
   args:
     warn: no
@@ -140,7 +135,7 @@
     line: 'Exec=pcmanfm /home/mindmakers/Scratch2/portuguese'
     backrefs: yes
   when: "'pt_BR' in ansible_facts.env.LANGUAGE"
-- name:
+- name: Alterando atributos do atalho da pasta scratch2
   shell: 'sudo chattr +i /home/pi/Desktop/scratch2_folder.desktop'
   args:
     warn: no
