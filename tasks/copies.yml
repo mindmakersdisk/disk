@@ -12,8 +12,7 @@
   stat:
      path: /home/mindmakers/programs/shells/sphero-connect.sh
   register: sphero
-- name: Copiando Shell Sphero
-  copy:
+- copy:
      src: files/sphero-connect.sh
      dest: /home/mindmakers/programs/shells/
      mode: 0755
@@ -55,8 +54,7 @@
   stat:
      path: /home/mindmakers/school.info
   register: school
-- name: Copiando se existe arquivo school.info
-  copy:
+- copy:
      src: school.info
      dest: /home/mindmakers/school.info
      mode: 0755
@@ -80,8 +78,7 @@
      src: files/mqtt/mqttbot
      dest: /etc/init.d
      mode: 0755
-- name: Configurando mqttbot
-  shell: 'sudo update-rc.d mqttbot defaults'
+- shell: 'sudo update-rc.d mqttbot defaults'
   args:
     warn: no
 - name: Copiando arquivo de inicialização do mmiotjs
@@ -89,8 +86,7 @@
      src: files/mqtt/mmiotjs
      dest: /etc/init.d
      mode: 0755
-- name: Configurando mmiotjs
-  shell: 'sudo update-rc.d mmiotjs defaults'
+- shell: 'sudo update-rc.d mmiotjs defaults'
   args:
     warn: no
 - stat:
