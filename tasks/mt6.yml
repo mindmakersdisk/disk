@@ -35,7 +35,6 @@
 - name: Instalando aiStarted do pacote .deb
   apt:
     deb: /home/mindmakers/programs/verify/aiStarter/appinventor2-setup_2.3_all.deb
-  #when: not aiStarter.stat.exists
 - name: Copiando programas executáveis aiStarter
   copy:
      src: files/appinventor/usr
@@ -64,9 +63,3 @@
   npm:
     name: bbc-microbit
     path: /home/mindmakers/programs
-#- name: Alterando atalho da pasta Scratch2
-#  lineinfile:
-#    path: /usr/local/bin/mqttbot.sh
-#    regexp: '^sleep 30'
-#    line: 'sudo service mqttbot restart'
-#    backrefs: yes

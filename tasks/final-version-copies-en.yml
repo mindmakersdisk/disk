@@ -1,7 +1,7 @@
 - name: Copiando o atalho de notas de liberacão para o Desktop
   copy:
      src: releasenotes.desktop
-     dest: /home/pi/Desktop
+     dest: "{{ path2desktop }}"
      owner: pi
      group: pi
      attributes: +i

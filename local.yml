@@ -28,28 +28,20 @@
     - set_fact:
          path2desktop: "{{ adt.stat.path }}"
       when: adt.stat.exists
-    # - include: tasks/student-pt.yml
-    #   when: not p.stat.exists
     - include: tasks/student-en.yml
-      # when: p.stat.exists
     - include: tasks/copies.yml
     - include: tasks/packages.yml
     - include: tasks/packages-uninstall.yml
     - include: tasks/3dslash.yml
     - include: tasks/hide-games.yml
     - include: tasks/install-extension.yml
-    # - include: tasks/mblock.yml
     - include: tasks/raspi-config.yml
     - include: tasks/apt-get.yml
     - include: tasks/copies-student.yml
     - include: tasks/mt6.yml
     - include: tasks/avahi.yml
-    #- include: tasks/python.yml
  # Copia as notas de liberação e o atalho com nome da versão atualizados
-    # - include: tasks/final-version-copies-pt.yml
-    #   when: not p.stat.exists
     - include: tasks/final-version-copies-en.yml
-      # when: p.stat.exists
     - include: tasks/version_update.yml
     - include: tasks/reboot.yml
 # Não acrescentar tarefas após estas últimas.

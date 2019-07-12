@@ -51,16 +51,3 @@
 #     line: 'host-name=s{{sala.stdout}}e{{estacao.stdout}}'
 #     backrefs: yes
 #   when: semregistro.matched > 0 and estacao.stdout >= "10"
-# - name: Alterando nome do host avahi
-#   lineinfile:
-#     path: /etc/avahi/hosts
-#     regexp: '^localhost:'
-#     line: 'localhost:3000 s{{sala.stdout}}e{{estacao.stdout}}.local'
-#     insertafter: EOF
-#   when: semregistro.matched > 0
-#- debug:
-#     var: sala
-#- debug:
-#     var: estacao
-#- debug:
-#    msg: "s{{sala.stdout}}e0{{estacao.stdout}}"

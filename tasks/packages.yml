@@ -2,7 +2,7 @@
   stat:
      path: /home/mindmakers/programs/verify/node815
   register: nodejs
-- name: Configurando arquivos para instalar Nodejs 8.15*
+- name: Configurando arquivos para instalar Nodejs 8.16*
   shell: 'curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -'
   args:
     warn: no
