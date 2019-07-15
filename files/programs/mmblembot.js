@@ -255,11 +255,13 @@ function registraAposConferirAtivacao(login,senha) {
                             }else{
                               console.error('\x1b[31m','Erro ao registrar mBot: '+error);
                             }
+                             noble.stopScanning();
                              setTimeout(encerraAposLeitura,15000);  
                         } else {
-                            console.log('\x1b[32m','mBot registrado na plataforma com sucesso! ');
+                             console.log('\x1b[32m','mBot registrado na plataforma com sucesso! ');
                              // Modifica o atalho e variável
                              atualizaAtalhoMbot();
+                             noble.stopScanning();
                              setTimeout(encerraAposLeitura,10000);  
                         }
                     }
@@ -345,6 +347,7 @@ function procurarNovoMbot() {
            console.error('\x1b[31m','do computador, usando o atalho no canto superior direito.');
            console.error('\x1b[0m', '------------------------------------------');
            // Encerra com falha
+           noble.stopScanning();
            setTimeout(encerraAposLeitura,10000);   
         
       }
@@ -614,6 +617,7 @@ function controlaMbot() {
                    console.error('\x1b[31m','do computador, usando o atalho no canto superior direito.');
                    console.error('\x1b[0m', '------------------------------------------');
                    // Encerra com falha
+                   noble.stopScanning();
                    setTimeout(encerraAposLeitura,10000);   
         
             }
