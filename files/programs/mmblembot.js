@@ -318,8 +318,8 @@ function procurarNovoMbot() {
       
       //console.log(peripheral.advertisement);
       
-      if ((''+peripheral.advertisement.localName) == devName &&
-              peripheral.rssi>-60) {
+      if (peripheral.advertisement.localName && peripheral.advertisement.localName.includes(devName) &&
+              peripheral.rssi>-75) {
          
           console.log('\x1b[32m','Encontrou mBot:'+peripheral.address + ' [Nome:'+peripheral.advertisement.localName +
                 ', Conectável:' + peripheral.connectable + ', RSSI:' + peripheral.rssi+']');
