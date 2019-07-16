@@ -31,7 +31,7 @@ OPTIONS="-name ${NAME} -depth ${DEPTH} -geometry ${GEOMETRY} :${DISPLAY}"
 
 case "$1" in
 start)
-log_action_begin_msg "Starting vncserver for user '${USER}' on   localhost:${DISPLAY}"
+log_action_begin_msg "Starting vncserver for user '${USER}' on localhost:${DISPLAY}"
 su ${USER} -c "/usr/bin/vncserver ${OPTIONS}"
 ;;
 

@@ -5,18 +5,23 @@
 - name: Instalando x11vnc
   apt:
      name: x11vnc
-# - name: Copiando autostart
-#   copy:
-#      src: ongoing/autostart
-#      dest: /home/pi/.config/
-#      mode: 0777
-- name: Copiando arquivo vncserver
+- name: Copiando autostart
   copy:
-     src: files/tightvncserver
-     dest: /etc/init.d
-     mode: 0755
-#  when: deb_check.stdout.find('<nenhuma>') != -1 or deb_check.stdout.find('<none>') != -1
-- name: Configurando VncServer
-  shell: 'sudo update-rc.d tightvncserver defaults'
-  args:
-    warn: no
+     src: ongoing/autostart
+     dest: /home/pi/.config/
+     mode: 0777
+- name: Alterando configuração para forçar inicialização da interface visual
+  lineinfile:
+    path: /boot/config.txt
+    regexp: '^#hdmi_force_hotplug=1'
+    line: 'hdmi_force_hotplug=1'
+    backrefs: yes
+# - name: Copiando arquivo vncserver
+#   copy:
+#      src: files/tightvncserver
+#      dest: /etc/init.d
+#      mode: 0755
+# - name: Configurando VncServer
+#   shell: 'sudo update-rc.d tightvncserver defaults'
+#   args:
+#     warn: no
