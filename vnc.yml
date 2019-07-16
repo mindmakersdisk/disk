@@ -2,4 +2,4 @@
   remote_user: root
 
   tasks:
-   - include: tasks/tightvnc.yml
+   - include: tasks/xvnc.yml
