@@ -2,7 +2,7 @@
   remote_user: root
 
   tasks:
- - include: tasks/xvnc.yml
+   - include: tasks/xvnc.yml
    - set_fact:
         path2desktop: "/home/pi/Desktop"
    - name: Verificando se diretório Área de Trabalho existe
