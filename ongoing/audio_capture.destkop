@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Audio Capture
+Name[pt_BR]=Captura de áudio
+Comment=Captures audio from IpWebcam server on android
+Icon=/usr/share/icons/HighContrast/256x256/devices/audio-input-microphone.png
+Exec=bash /home/mindmakers/programs/shells/audio.sh
+Type=Application
+Encoding=UTF-8
+Terminal=true
+Categories=None;
