@@ -203,14 +203,14 @@
     state: directory
     mode: 0444
 - name: Instalando paho-mqtt
- pip:
-   name: paho-mqtt
+  pip:
+    name: paho-mqtt
 - name: Instalando pip keyboard
- pip:
-   name: keyboard
+  pip:
+    name: keyboard
 - name: Instalando pip logging
- pip:
-   name: logging
+  pip:
+    name: logging
 #refeito em forma de shell, gera erro quando faz via modulo pip
 # - name: Instalando pip paho-mqtt
 #   shell: 'sudo pip install paho-mqtt'
