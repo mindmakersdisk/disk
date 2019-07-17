@@ -1,6 +1,6 @@
 - name: Desinstalando aplicações não utilizadas
   apt:
-     name: [scratch, bluej, greenfoot, claws-mail, claws-mail-i18n, libreoffice-draw, libreoffice-impress, libreoffice-math, libreoffice-writer, piclone, realvnc-vnc-viewer, realvnc-vnc-server]
+     name: [scratch, bluej, greenfoot, greenfoot-unbundled, claws-mail, claws-mail-i18n, libreoffice-draw, libreoffice-impress, libreoffice-math, libreoffice-writer, piclone, realvnc-vnc-viewer, realvnc-vnc-server]
      state: absent
      purge: yes
 - name: Removendo ícones libreoffice Draw e Math
