@@ -952,23 +952,17 @@ function atualizaNomeRede(urlEstacao) {
 
    var conteudo_parteinicial=conteudo.substring(0,ponto_inicial_url);
 
-  // retira o token 'raspberry' (default) ou algu registro anterior
+
    var ponto_inicial_fim_conteudo=ponto_inicial_url;
    var conteudo_partefinal=conteudo.substring(ponto_inicial_fim_conteudo);
+   
+   var ponto_inicial_fim_conteudo2 = conteudo_partefinal.indexOf('#domain-name=')-1;
 
-   if (conteudo_partefinal.toLowerCase().indexOf('foo')>-1 && conteudo_partefinal.indexOf('foo')<3) {
-     // retira raspberry
-     ponto_inicial_fim_conteudo=conteudo_partefinal.toLowerCase().indexOf('foo')+3;
-   }
-
-   if (conteudo_partefinal.toLowerCase().indexOf('s')>-1 && conteudo_partefinal.toLowerCase().indexOf('s')<=1) {
-     // retira sala anterior, considerando várias possibilidades de token
-     ponto_inicial_fim_conteudo=conteudo_partefinal.indexOf('s')+5;
-   }
-
-   conteudo_partefinal=conteudo_partefinal.substring(ponto_inicial_fim_conteudo);
+   conteudo_partefinal=conteudo_partefinal.substring(ponto_inicial_fim_conteudo2);
+   //console.log("conteudo partefinal: "+conteudo_partefinal);
 
    var conteudo_novo=conteudo_parteinicial+urlEstacao+conteudo_partefinal;
+   //console.log("conteudo novo: "+conteudo_novo);
 
     fs.writeFile('/etc/avahi/avahi-daemon.conf', conteudo_novo, function(err,data)
         {
