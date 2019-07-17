@@ -202,30 +202,25 @@
     path: /home/mindmakers/programs/verify/npmsphero
     state: directory
     mode: 0444
-#- command: pip list
-#  register: pip_check
-#- name: Instalando paho-mqtt
-#  pip:
-#    name: paho-mqtt
-  #when: not pip_check.stdout.find('paho-mqtt') != -1
-#- name: Instalando pip keyboard
-#  pip:
-#    name: keyboard
-  #when: not pip_check.stdout.find('keyboard') != -1
-#- name: Instalando pip logging
-#  pip:
-#    name: logging
-  #when: not pip_check.stdout.find('logging') != -1
-#refeito em forma de shell, gera erro quando faz via modulo pip
-- name: Instalando pip paho-mqtt
-  shell: 'sudo pip install paho-mqtt'
-  args:
-    warn: no
+- name: Instalando paho-mqtt
+ pip:
+   name: paho-mqtt
 - name: Instalando pip keyboard
-  shell: 'sudo pip install keyboard'
-  args:
-    warn: no
+ pip:
+   name: keyboard
 - name: Instalando pip logging
-  shell: 'sudo pip install logging'
-  args:
-    warn: no
+ pip:
+   name: logging
+#refeito em forma de shell, gera erro quando faz via modulo pip
+# - name: Instalando pip paho-mqtt
+#   shell: 'sudo pip install paho-mqtt'
+#   args:
+#     warn: no
+# - name: Instalando pip keyboard
+#   shell: 'sudo pip install keyboard'
+#   args:
+#     warn: no
+# - name: Instalando pip logging
+#   shell: 'sudo pip install logging'
+#   args:
+#     warn: no
