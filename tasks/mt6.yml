@@ -63,3 +63,67 @@
   npm:
     name: bbc-microbit
     path: /home/mindmakers/programs
+- name: Instalando e configurando pacotes do npm "node-red"
+  npm:
+    name: node-red
+    global: yes
+    path: /home/pi/.node-red
+    executable: /usr/bin/npm --unsafe-perm=true
+- copy:
+     src: files/node-red/lib/
+     dest: /lib
+     mode: 0644
+- copy:
+     src: files/node-red/usr/bin/
+     dest: /usr/bin
+     mode: 0755
+- copy:
+     src: files/node-red/usr/share
+     dest: /usr/share
+     mode: 0644
+- copy:
+     src: files/node-red/etc
+     dest: /etc
+     mode: 0644
+- copy:
+     src: files/node-red/home/
+     dest: /home
+     owner: pi
+     group: pi
+     mode: 0644
+- npm:
+    name: node-red-node-random
+    global: yes
+    path: /home/pi/.node-red
+    executable: /usr/bin/npm --unsafe-perm=true
+- npm:
+    name: node-red-contrib-ibm-watson-iot
+    global: yes
+    path: /home/pi/.node-red
+    executable: /usr/bin/npm --unsafe-perm=true
+- npm:
+    name: node-red-node-ping
+    global: yes
+    path: /home/pi/.node-red
+    executable: /usr/bin/npm --unsafe-perm=true
+- npm:
+    name: node-red-contrib-play-audio
+    global: yes
+    path: /home/pi/.node-red
+    executable: /usr/bin/npm --unsafe-perm=true
+- npm:
+    name: node-red-node-smooth
+    global: yes
+    path: /home/pi/.node-red
+    executable: /usr/bin/npm --unsafe-perm=true
+- npm:
+    name: node-red-node-serialport
+    global: yes
+    path: /home/pi/.node-red
+    executable: /usr/bin/npm --unsafe-perm=true
+- shell: 'sudo systemctl daemon-reload'
+  args:
+    warn: no
+- file:
+    path: /usr/lib/node_modules/node-red/node_modules/multilang-sentiment/build/output/build-all.json
+    state: absent
