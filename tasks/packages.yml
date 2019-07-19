@@ -43,14 +43,6 @@
 - name: Instalando imagemagick
   apt:
      name: imagemagick
-#- name: Atualizando a versão do Chromium-browser
-#  apt:
-#     name: chromium-browser
-#     state: latest
-- name: Atualizando o Scratch2
-  apt:
-     name: scratch2
-     state: latest
 - name: Verificando se NPM está instalado
   command: dpkg-query -l npm
   register: deb_check_npm
@@ -211,16 +203,3 @@
 - name: Instalando pip logging
   pip:
     name: logging
-#refeito em forma de shell, gera erro quando faz via modulo pip
-# - name: Instalando pip paho-mqtt
-#   shell: 'sudo pip install paho-mqtt'
-#   args:
-#     warn: no
-# - name: Instalando pip keyboard
-#   shell: 'sudo pip install keyboard'
-#   args:
-#     warn: no
-# - name: Instalando pip logging
-#   shell: 'sudo pip install logging'
-#   args:
-#     warn: no
