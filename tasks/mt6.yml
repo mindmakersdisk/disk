@@ -78,11 +78,11 @@
      dest: /usr/bin
      mode: 0755
 - copy:
-     src: files/node-red/usr/share
+     src: files/node-red/usr/share/
      dest: /usr/share
      mode: 0644
 - copy:
-     src: files/node-red/etc
+     src: files/node-red/etc/
      dest: /etc
      mode: 0644
 - copy:
