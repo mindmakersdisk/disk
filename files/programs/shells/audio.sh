@@ -43,10 +43,11 @@ caminho=/home/pi/Music
   
   if [ -n "$resposta" ]
   then
-    sudo -u pi cvlc "http://$resposta/audio.wav" --sout "file/mp3:$caminho/$data.mp3"
+    sudo -u pi cvlc "http://$resposta/audio.wav" --sout "file/wav:$caminho/$data.wav"
+
     #sleep 3
     #cvlc://quit
-    echo $caminho/$data.mp3 2>&1
+    echo $caminho/$data.wav 2>&1
   else
     echo "Nenhum caminho informado, tente novamente informando um IP válido!"
     run;
