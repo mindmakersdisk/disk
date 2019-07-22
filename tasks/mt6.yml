@@ -67,6 +67,7 @@
   npm:
     name: node-red
     global: yes
+    version: 'latest'
     path: /home/pi/.node-red
     executable: /usr/bin/npm --unsafe-perm=true
 - copy:
