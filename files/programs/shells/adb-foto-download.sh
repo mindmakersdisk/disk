@@ -29,8 +29,6 @@ pergunta(){
   done
 }
 
-pergunta;
-
 #adb vai na pasta "DEVICE_DIR" e lista todos arquivos em ordem de mais novo para mais antigo
 
 dir=$1
@@ -38,8 +36,15 @@ dir=$1
 if [ -n "$dir" ]
 then
   DEVICE_DIR=$dir
+else
+   if [ -e /var/log/adb-caminho.txt ] && [ $(cat /var/log/adb-caminho.txt | wc -m ) -gt 1 ]
+   then
+     export DEVICE_DIR=`cat /tmp/ipwebcam.txt`
+   fi
 fi
 
+pergunta;
+echo $DEVICE_DIR > /var/log/adb-caminho.txt
 
 for file in $(adb shell ls -t $DEVICE_DIR | grep $EXTENSION'$')
 do
