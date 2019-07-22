@@ -1,11 +1,23 @@
 #!/bin/bash
 
 pergunta(){
-  echo -n "Qual o IP do smartphone, mostrado no aplicativo IP Webcam? (Ex.: 192.168.100.40:8080) "
+  echo -n "Qual o IP do smartphone, mostrado no aplicativo IpWebcam? (Ex.: 192.168.100.40:8080) "
   echo ""
-  local SURE
-  read SURE
-  resposta=$SURE
+  
+  while :; do
+     local SURE
+     read SURE
+     if [[ $SURE =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\:8080$ ]];
+     then
+     resposta=$SURE && break
+     else
+     echo "Endereço IP inválido, favor verificar se o endereço digitato tem o formato exemplificado"
+     echo "Ex.: 192.168.100.40:8080"
+     echo ""
+     echo -n ""
+     fi
+     
+  done
 }
 
 run(){
