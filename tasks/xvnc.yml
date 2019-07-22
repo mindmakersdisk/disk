@@ -16,6 +16,8 @@
     regexp: '^#hdmi_force_hotplug=1'
     line: 'hdmi_force_hotplug=1'
     backrefs: yes
+- debug:
+     msg: "utilize o comando a seguir em um terminal para configurar a senha do vnc: x11vnc -forever -usepw -display :0"
 # - name: Copiando arquivo vncserver
 #   copy:
 #      src: files/tightvncserver
