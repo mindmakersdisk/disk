@@ -65,7 +65,7 @@ else
   if [ -n "$resposta" ]
   then
     sudo wget -O /tmp/$data.jpg "$resposta/photoaf.jpg"
-    convert "/tmp/$data.jpg" -resize 720x480 "$caminho/$data.jpg"
+    convert -quiet "/tmp/$data.jpg" -resize 720x480 "$caminho/$data.jpg"
     echo $caminho/$data.jpg 2>&1
     sleep 5
   else
