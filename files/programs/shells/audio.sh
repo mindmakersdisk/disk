@@ -76,7 +76,7 @@ caminho=/home/pi/Music
     fi
   fi
 
-  echo $resposta > /tmp/ipwebcam.txt
+  echo $resposta | sudo tee /tmp/ipwebcam.txt
 
   if [ -n "$resposta" ]
   then
