@@ -116,8 +116,8 @@
   when: "'en_' in ansible_facts.env.LANGUAGE"
 - lineinfile:
     path: "{{ path2desktop }}/scratch2_folder.desktop"
-    regexp: '^Exec=pcmanfm /home/mindmakers/Scratch2/portuguese'
-    line: 'Exec=pcmanfm /home/mindmakers/Scratch2/english'
+    regexp: '^Exec=pcmanfm /home/mindmakers/Scratch2/english'
+    line: 'Exec=pcmanfm /home/mindmakers/Scratch2/portuguese'
     backrefs: yes
   when: "'pt_BR' in ansible_facts.env.LANGUAGE"
 - name: Alterando atributos do atalho da pasta scratch2
