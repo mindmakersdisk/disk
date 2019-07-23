@@ -10,7 +10,7 @@ pergunta(){
   echo "*   Caso o diretório onde as fotos se encontram no celular seja diferente de   *"
   echo "*                             '/sdcard/DCIM/Camera'                            *"
   echo "*     favor executar a shell explicitando o caminho, como no exemplo abaixo    *"
-  echo "*                  'adb-foto-download.sh caminho/para/pasta'                   *"
+  echo "*                  'adb-foto-download.sh /caminho/para/pasta'                   *"
   echo "********************************************************************************"
   echo ""
   echo -n "Quantas fotos desja recuperar? "
