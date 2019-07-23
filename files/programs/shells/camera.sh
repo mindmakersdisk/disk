@@ -11,24 +11,24 @@ pergunta(){
      read SURE
      sureip=$(echo $SURE | awk -F'.' '{print $1,$2}' OFS='.')
 
-      if [[ $SURE =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\:8080$ ]];
+    if [[ $SURE =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\:8080$ ]];
+    then
+      if [ "$raspip" = "$sureip" ]
       then
-        if [ "$raspip" = "$sureip" ]
-        then
-          resposta=$SURE && break
-        else
-          echo "O Smartphone não se encontra na mesma rede(WIFI) do Raspberry, "
-          echo "certifique-se que eles estão na mesma rede e digite o ip novamente"
-          echo ""
-        fi
-        
+        resposta=$SURE && break
       else
+        echo "O Smartphone não se encontra na mesma rede(WIFI) do Raspberry, "
+        echo "certifique-se que eles estão na mesma rede e digite o ip novamente"
         echo ""
-        echo "Endereço IP inválido, favor verificar se o endereço digitato tem o formato exemplificado"
-        echo "Ex.: 192.168.100.40:8080"
-        echo ""
-        echo -n ""
       fi
+
+    else
+      echo ""
+      echo "Endereço IP inválido, favor verificar se o endereço digitato tem o formato exemplificado"
+      echo "Ex.: 192.168.100.40:8080"
+      echo ""
+      echo -n ""
+    fi
 
   done
 }
@@ -53,7 +53,7 @@ else
   if [ "$(adb shell ip addr show wlan0 | grep "inet\s" | awk '{print $2}' | awk -F'/' '{print $1}' | wc -l )" = 1 ]
   then
     adbip=$(adb shell ip addr show wlan0 | grep "inet\s" | awk '{print $2}' | awk -F'.' '{print $1,$2}' OFS='.')
-    if [ "$raspip" = "$adbip" ] 
+    if [ "$raspip" = "$adbip" ]
     then
       #se existir adb conectado pega o ip dele.
       resposta=$(adb shell ip addr show wlan0 | grep "inet\s" | awk '{print $2}' | awk -F'/' '{print $1}')
@@ -90,7 +90,7 @@ else
   if [ -n "$resposta" ]
   then
     #sudo wget -q --show-progress --progress=dot:mega -O /tmp/$data.jpg "$resposta/photoaf.jpg"
-    sudo wget -q --show-progress -O /tmp/$data.jpg "$resposta/photoaf.jpg" 
+    sudo wget -q --show-progress -O /tmp/$data.jpg "$resposta/photoaf.jpg"
 
     if [ -s /tmp/$data.jpg ]
     then
@@ -102,10 +102,10 @@ else
     sleep 5
 
     else
-    
+
       echo "Erro ao fazer download da foto."
       echo "Favor tentar novamente, caso o erro persista Reinicie o Raspberry e tente novamente."
-      
+
     fi
 
   else
