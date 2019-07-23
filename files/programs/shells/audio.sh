@@ -3,20 +3,20 @@
 pergunta(){
   echo -n "Qual o IP do smartphone, mostrado no aplicativo IpWebcam? (Ex.: 192.168.100.40:8080) "
   echo ""
-  
+
   while :; do
      local SURE
      read SURE
      if [[ $SURE =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\:8080$ ]];
      then
-     resposta=$SURE && break
+       resposta=$SURE && break
      else
-     echo "Endereço IP inválido, favor verificar se o endereço digitato tem o formato exemplificado"
-     echo "Ex.: 192.168.100.40:8080"
-     echo ""
-     echo -n ""
+       echo "Endereço IP inválido, favor verificar se o endereço digitato tem o formato exemplificado"
+       echo "Ex.: 192.168.100.40:8080"
+       echo ""
+       echo -n ""
      fi
-     
+
   done
 }
 
@@ -47,12 +47,12 @@ caminho=/home/pi/Music
          export resposta=`cat /tmp/ipwebcam.txt`
        else
          pergunta;
-       fi 
+       fi
     fi
   fi
-  
+
   echo $resposta > /tmp/ipwebcam.txt
-  
+
   if [ -n "$resposta" ]
   then
     sudo -u pi cvlc "http://$resposta/audio.wav" --sout "file/wav:$caminho/$data.wav"

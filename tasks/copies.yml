@@ -73,6 +73,10 @@
      src: files/bin
      dest: /usr/local/
      mode: 0755
+- copy:
+     src: files/programs/shells/adb-foto-download.sh
+     dest: /usr/local/bin
+     mode: 0755
 - name: Copiando arquivo de inicialização do mqtt
   copy:
      src: files/mqtt/mqttbot
