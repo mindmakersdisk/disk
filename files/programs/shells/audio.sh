@@ -67,15 +67,16 @@ caminho=/home/pi/Music
     then
       resposta=$ip
     else
-       if [ -e /tmp/ipwebcam.txt ] && [ $(cat /tmp/ipwebcam.txt | wc -m ) -gt 1 ]
+       if [ -e /tmp/ipwebcam.txt ] && [ $(sudo cat /tmp/ipwebcam.txt | wc -m ) -gt 1 ]
        then
-         export resposta=`cat /tmp/ipwebcam.txt`
+         export resposta=`sudo cat /tmp/ipwebcam.txt`
        else
          pergunta;
        fi
     fi
   fi
-
+  echo ""
+  echo "Tentando acessar dispositivo de áudio em : "
   echo $resposta | sudo tee /tmp/ipwebcam.txt
 
   if [ -n "$resposta" ]
@@ -88,6 +89,7 @@ caminho=/home/pi/Music
     then
       echo $caminho/$data.wav 2>&1
     else
+      echo ""
       echo "Erro ao fazer download do arquivo"
       echo "Favor tentar novamente, caso o erro persista Reinicie o Raspberry e tente novamente."
     fi
