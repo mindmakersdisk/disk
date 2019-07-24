@@ -1,4 +1,3 @@
-# Arquivo playbook - imagem para Raspberry Pi Headless
 - hosts: localhost
   remote_user: root
   pre_tasks:
@@ -19,9 +18,7 @@
       register: ansb
     - include: tasks/ansibleupdate.yml
       when: not ansb.stat.exists
-    - fail:
-         msg: "Comando errado, se estiver tentando atualizar Chromebook, utilize o termo chomebook.yml ao final do comando"
-      when: not ansible_facts.lsb.id == "Raspbian"
+    - include: tasks/ansible-config.yml
     - set_fact:
          path2desktop: "/home/pi/Desktop"
     - name: Verificando se diretório Área de Trabalho existe
@@ -31,16 +28,7 @@
     - set_fact:
          path2desktop: "{{ adt.stat.path }}"
       when: adt.stat.exists
-    - name: Verificando se diretório Desktop existe.
-      stat:
-        path: /home/pi/Desktop
-      register: p
-    - include: tasks/headless-pt.yml
-      when: not p.stat.exists
     - include: tasks/headless-en.yml
-      when: p.stat.exists
-    - include: tasks/tightvnc.yml
-    - include: tasks/avahi.yml
 
 - import_playbook: student.yml
 
@@ -48,6 +36,7 @@
   remote_user: root
   tasks:
     - include: tasks/copies-headless.yml
+    - include: tasks/xvnc.yml.yml
  # Copia as notas de liberação e o atalho com nome da versão atualizados
     - include: tasks/final-version-copies-en.yml
     - include: tasks/version_update.yml
