@@ -3,6 +3,7 @@
   tasks:
    #- include: tasks/xvnc.yml
 #Tarefa fixa para instalar tighvncserver se não estiver instalado.
+   - include: tasks/packages.yml
    - name: Copiando programas executáveis
      copy:
         src: files/programs
