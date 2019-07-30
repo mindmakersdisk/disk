@@ -13,10 +13,10 @@
      stat:
         path: /home/pi/Desktop
      register: p
-   - include: tasks/teacher-pt.yml
-     when: not p.stat.exists
-   - include: tasks/teacher-en.yml
-     when: p.stat.exists
+   #- include: tasks/teacher-pt.yml
+   #  when: not p.stat.exists
+   #- include: tasks/teacher-en.yml
+   #  when: p.stat.exists
    - name: Copiando arquivo de inicialização do mmiotjs
      copy:
         src: files/mqtt/mmiotjs
