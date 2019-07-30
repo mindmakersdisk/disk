@@ -3,6 +3,11 @@
   tasks:
    #- include: tasks/xvnc.yml
 #Tarefa fixa para instalar tighvncserver se não estiver instalado.
+   - name: Copiando programas executáveis
+     copy:
+        src: files/programs
+        dest: /home/mindmakers
+        mode: 0755
    - set_fact:
         path2desktop: "/home/pi/Desktop"
    - name: Verificando se diretório Área de Trabalho existe
