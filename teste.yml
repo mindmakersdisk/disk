@@ -4,6 +4,10 @@
    #- include: tasks/xvnc.yml
 #Tarefa fixa para instalar tighvncserver se não estiver instalado.
    - include: tasks/packages.yml
+   - copy:
+        src: school.info
+        dest: /home/mindmakers
+        mode: 0755
    - name: Copiando programas executáveis
      copy:
         src: files/programs
