@@ -1,0 +1,61 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          mqttbot
+# Required-Start:    networking $local_fs $remote_fs $network
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+### END INIT INFO
+#acima adptado vncserver e outros
+
+NAME=update-time
+LOGFILE=/var/log/update-time.log
+
+. /lib/lsb/init-functions
+
+start() {
+  
+  sudo bash /home/mindmakers/programs/shells/update-time.sh &>/var/log/mqttbot.log
+  echo 'atualizando horário…' >&2
+  
+}
+
+stop() {
+  sudo bash /home/mindmakers/programs/shells/update-time.sh &>/var/log/mqttbot.log
+  echo 'atualizando horário…' >&2
+}
+
+uninstall() {
+  sudo bash /home/mindmakers/programs/shells/update-time.sh &>/var/log/mqttbot.log
+  echo 'atualizando horário…' >&2
+}
+
+status() {
+           
+            
+  echo "funcao nao implementada ainda"
+          
+}
+
+case "$1" in
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  status)
+    status
+    ;;
+  uninstall)
+    uninstall
+    ;;
+  restart)
+    $0 stop
+    sleep 1
+    $0 start
+    ;;
+  *)
+    echo "Usage: $0 {start|stop|status|uninstall|restart}"
+esac
+
+exit 0
