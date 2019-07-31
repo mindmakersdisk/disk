@@ -1,0 +1,20 @@
+- hosts: localhost
+
+  tasks:
+  - name: Instalando htpdate
+    apt:
+        name: htpdate
+  - name: Copiando shell
+    copy:
+        src: ongoing/update/time/shells/
+        dest: /home/mindmakers/programs/shells
+        mode: 0755
+  - name: Copiando arquivo de inicialização do mmiotjs
+    copy:
+        src: ongoing/update/time/init.d/
+        dest: /etc/init.d
+        mode: 0755
+   - name: Configurando mmiotjs
+     shell: 'sudo update-rc.d update-time defaults'
+     args:
+       warn: no
