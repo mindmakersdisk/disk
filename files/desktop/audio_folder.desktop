@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Music
+Name[pt_BR]=Audios
+Icon=folder
+Exec=pcmanfm /home/pi/Music
+Type=Application
+Encoding=UTF-8
+Terminal=False
+Categories=None;

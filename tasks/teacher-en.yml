@@ -163,3 +163,16 @@
   args:
     warn: no
   when: "'pt_BR' in ansible_facts.env.LANGUAGE"
+- file:
+    path: /home/pi/Audios
+    state: absent
+- file:
+    path: /home/pi/Music/Audios
+    state: absent
+- file:
+    path: /home/pi/Music/Audios
+    state: absent
+- shell: 'sudo ln -s /home/pi/Music /home/pi/Audios'
+  args:
+    warn: no
+  when: "'pt_BR' in ansible_facts.env.LANGUAGE"

@@ -1,6 +1,6 @@
 [Desktop Entry]
-Name=GNU plot graph
-Name[pt_BR]=GNU plota gráfico
+Name=GNU Plot Graph
+Name[pt_BR]=GNU Plota Gráfico
 Comment=
 Icon= /usr/share/icons/gnuplot.png
 Exec=bash /home/mindmakers/programs/shells/gnu_plot-mt5.sh

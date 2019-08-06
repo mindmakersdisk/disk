@@ -18,7 +18,7 @@ pergunta(){
        then
          resposta=$SURE && break
        else
-         echo "O Smartphone não se encontra na mesma rede(WIFI) do Raspberry, "
+         echo "O Smartphone não se encontra na mesma rede(WiFi) do Raspberry, "
          echo "certifique-se que eles estão na mesma rede e digite o ip novamente"
          echo ""
        fi
@@ -52,7 +52,7 @@ caminho=/home/pi/Music
       resposta=$(adb shell ip addr show wlan0 | grep "inet\s" | awk '{print $2}' | awk -F'/' '{print $1}')
       resposta="$resposta:8080"
     else
-      echo "O Smartphone não se encontra na mesma rede(WIFI) do Raspberry, "
+      echo "O Smartphone não se encontra na mesma rede(WiFi) do Raspberry, "
       echo "certifique-se que eles estão na mesma rede e tente novamente"
       echo ""
       run;
@@ -76,7 +76,7 @@ caminho=/home/pi/Music
     fi
   fi
   echo ""
-  echo "Tentando acessar dispositivo de áudio em : "
+  echo "Tentando acessar dispositivo de áudio em: "
   echo $resposta | sudo tee /tmp/ipwebcam.txt
 
   if [ -n "$resposta" ]
