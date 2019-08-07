@@ -5,7 +5,7 @@
   tasks:
   - lineinfile:
        path: "/home/mindmakers/programs/mmiotcli.py"
-       regexp: "^        call(\"sudo vcgencmd display_power 0\",shell=True)"
+       regexp: "^        call\(\"sudo vcgencmd display_power 0\",shell=True\)"
        line: "#        call(\"sudo vcgencmd display_power 0\",shell=True)"
        backrefs: yes
   - name: Criando pastaa debug
