@@ -238,8 +238,17 @@ client.on_disconnect = on_disconnect
 client.on_message = on_message
 
 client.tls_set(ca_certs=root_cert_filepath) # Replace this with 3rd party cert if that was used when creating registry
-client.connect('mqtt.googleapis.com', 8883)
+#client.connect('mqtt.googleapis.com', 8883)
 
+try:
+    client.connect('mqtt.googleapis.com', 8883) #connect to broker
+except:
+    print(“connection failed”)
+    logging.error("Conexão falhou, vai parar o laço IoT")
+    #client.loop_stop()
+    #exit(1) #Should quit or raise flag to quit or retry
+
+logging.debug("Subscribing to %s", _MQTT_COMMANDS_TOPIC)
 print('Subscribing to {}'.format(_MQTT_COMMANDS_TOPIC))
 client.subscribe(_MQTT_COMMANDS_TOPIC, qos=0)
 client.loop_forever()
