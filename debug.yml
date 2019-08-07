@@ -3,11 +3,6 @@
 - hosts: localhost
 
   tasks:
-  - lineinfile:
-       path: "/home/mindmakers/programs/mmiotcli.py"
-       regexp: "vcgencmd display_power 0"
-       line: "#        call(\"sudo vcgencmd display_power 0\",shell=True)"
-       backrefs: yes
   - name: Criando pastaa debug
     file:
        path: /home/mindmakers/debug
