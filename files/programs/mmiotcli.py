@@ -5,15 +5,15 @@
  # Licensed under the Apache License, Version 2.0 (the `License`);
  # you may not use this file except in compliance with the License.
  # You may obtain a copy of the License at
- # 
+ #
  #    http://www.apache.org/licenses/LICENSE-2.0
- # 
+ #
  # Unless required by applicable law or agreed to in writing, software
  # distributed under the License is distributed on an `AS IS` BASIS,
  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  # See the License for the specific language governing permissions and
  # limitations under the License.
-### 
+###
 
 #from sense_hat import SenseHat
 import datetime
@@ -22,7 +22,7 @@ import os
 import jwt
 import sys
 import logging
-import keyboard 
+import keyboard
 
 logging.basicConfig(filename='/var/log/mmiotcli.log', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s', datefmt='%d/%m/%Y %I:%M:%S %p')
 
@@ -55,7 +55,7 @@ estacao=f.readline()[10:-3].strip()
 
 # Certificado
 ssl_private_key_filepath = '/home/mindmakers/programs/mm_private.pem'
-ssl_algorithm = 'RS256' 
+ssl_algorithm = 'RS256'
 root_cert_filepath = '/home/mindmakers/programs/roots.pem'
 project_id = 'mind-makers'
 gcp_location = 'us-central1'
@@ -78,7 +78,7 @@ def create_jwt():
       'exp': cur_time + datetime.timedelta(minutes=720),
       'aud': project_id
   }
-  
+
 
   with open(ssl_private_key_filepath, 'r') as f:
     private_key = f.read()
@@ -87,7 +87,7 @@ def create_jwt():
 
 _CLIENT_ID = 'projects/{}/locations/{}/registries/{}/devices/{}'.format(project_id, gcp_location, registry_id, device_id)
 
-# topico padrão para receber comandos!  
+# topico padrão para receber comandos!
 _MQTT_COMMANDS_TOPIC = '/devices/{}/commands/#'.format(device_id)
 
 _MQTT_STATE_TOPIC = '/devices/{}/{}'.format(device_id,'state')
@@ -105,7 +105,7 @@ def error_str(rc):
 def on_connect(unusued_client, unused_userdata, unused_flags, rc):
     logging.debug('on_connect %s', error_str(rc))
     print('Ao conectar', error_str(rc), datetime.datetime.now().strftime('%d-%m-%Y %H:%M:%S'))
-    
+
 
 def on_publish(unused_client, unused_userdata, unused_mid):
     logging.info('publicou com sucesso')
@@ -120,15 +120,15 @@ def getTemp():
         return temp.replace("temp=","")
     except:
        e = sys.exc_info()[0]
-       print(sys.exc_info()[1])   
-       
-       
-# Return RAM information (unit=kb) in a list                                        
-# Index 0: total RAM                                                                
-# Index 1: used RAM                                                                 
-# Index 2: free RAM                                                                 
+       print(sys.exc_info()[1])
+
+
+# Return RAM information (unit=kb) in a list
+# Index 0: total RAM
+# Index 1: used RAM
+# Index 2: free RAM
 def getRAMinfo():
-    try: 
+    try:
         logging.info('entrou ram')
         p = os.popen('free')
         i = 0
@@ -140,19 +140,19 @@ def getRAMinfo():
                 return(line.split()[1:4][2])
     except:
        e = sys.exc_info()[0]
-       print(e)              
+       print(e)
 
-# Return % of CPU used by user as a character string                                
+# Return % of CPU used by user as a character string
 def getCPUuse():
     logging.info('entrou CPU')
     return(str(os.popen("top -n1 | awk '/Cpu\(s\):/ {print $2}'").readline().strip(\
 )))
 
-# Return information about disk space as a list (unit included)                     
-# Index 0: total disk space                                                         
-# Index 1: used disk space                                                          
-# Index 2: remaining disk space                                                     
-# Index 3: percentage of disk used                                                  
+# Return information about disk space as a list (unit included)
+# Index 0: total disk space
+# Index 1: used disk space
+# Index 2: remaining disk space
+# Index 3: percentage of disk used
 def getDiskSpace():
     logging.info('entrou disco')
     p = os.popen("df -h /")
@@ -161,7 +161,7 @@ def getDiskSpace():
         i = i +1
         line = p.readline()
         if i==2:
-            return(line.split()[1:5][2])            
+            return(line.split()[1:5][2])
 
 def sendInfo():
     try:
@@ -169,7 +169,7 @@ def sendInfo():
         memoriaDisp = getRAMinfo()
         cpuUsada = getCPUuse()
         discoDisp = getDiskSpace()
-        
+
         now = datetime.datetime.now() # Getting date and time
         payload = '{{ "momento": {}, "escola": {}, "sala": {}, "estacao": {}, "temp":{},"cpuUsada":{},"mem":{},"discoDisp":{} }}'.format( str(now) , escolanome, sala, estacao, temperatura,cpuUsada,memoriaDisp,discoDisp)
     #    print(payload)
@@ -179,15 +179,15 @@ def sendInfo():
     except:
        e = sys.exc_info()[0]
        print(e)
-    
-        
+
+
 def exibeMsg(msg):
     nomeImg = msg[4:]
     logging.info(dir_base_imgs+'/'+nomeImg)
-    #pyimg.show(dir_base_imgs+'/'+nomeImg)  
+    #pyimg.show(dir_base_imgs+'/'+nomeImg)
     call("sudo killall fbi",shell=True)
     call("sudo fbi -T 10 --noverbose -t 10 --once -a "+dir_base_imgs+'/'+nomeImg,shell=True)
-      
+
 def executaUrl(msg):
     url = msg[4:]
     call(chromium_base+' ' + url + ' --start-fullscreen --no-sandbox --user-data-dir --allow-control-allow-origin --start-fullscreen --allow-running-insecure-content --incognito --disable-popup-blocking',shell=True)
@@ -195,7 +195,7 @@ def executaUrl(msg):
 def executaVideo(msg):
     url = msg[4:]
     call("sudo sed -i 's/geteuid/getppid/' /usr/bin/vlc",shell=True)
-    call(video_prefixo+' ' + url + video_sufixo,shell=True)        
+    call(video_prefixo+' ' + url + video_sufixo,shell=True)
 
 # Recebe mensagens
 # Method which handles parsing the text message coming back from the Cloud
@@ -207,17 +207,17 @@ def respondToMsg(msg):
     if msg == "oi":
         sendInfo()
     elif msg == "off":
-       call("sudo nohup shutdown -h now",shell=True)
+        call("sudo nohup shutdown -h now",shell=True)
     elif msg == "monitoroff":
-         call("sudo vcgencmd display_power 0",shell=True)
+        call("sudo vcgencmd display_power 0",shell=True)
     elif msg == "monitoron":
-       call("sudo vcgencmd display_power 1",shell=True) 
+        call("sudo vcgencmd display_power 1",shell=True)
     elif msg.startswith("img-") == True:
-       exibeMsg(msg)
+        exibeMsg(msg)
     elif msg.startswith("vid-") == True:
-       executaVideo(msg)   
+        executaVideo(msg)
     elif msg.startswith("url-") == True:
-       executaUrl(msg)
+        executaUrl(msg)
     else:
         print(msg)
 
@@ -226,7 +226,7 @@ def on_message(unused_client, unused_userdata, message):
     logging.debug('Recebeu mensagem \'{}\' on topic \'{}\''.format(payload, message.topic))
     print('Recebeu mensagem \'{}\' on topic \'{}\''.format(payload, message.topic), datetime.datetime.now().strftime('%d-%m-%Y %H:%M:%S'))
     respondToMsg(payload)
-    
+
 def on_disconnect(client,userdata,rc=0):
     print('on_disconnect', error_str(rc), datetime.datetime.now().strftime('%d-%m-%Y %H:%M:%S'))
     print('on_disconnect', error_str(userdata), datetime.datetime.now().strftime('%d-%m-%Y %H:%M:%S'))
@@ -257,4 +257,3 @@ client.loop_forever()
 #time.sleep(120)
 
 #client.loop_stop()
-
