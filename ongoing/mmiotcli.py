@@ -222,7 +222,7 @@ def respondToMsg(msg):
 
 def on_message(unused_client, unused_userdata, message):
     payload = str(message.payload)
-    logging.debug('Recebeu mensagem \'{}\' on topic \'{}\''.format(payload, message.topic))
+    logging.debug('Recebeu mensagem %s on topic ',payload)
     print('Recebeu mensagem \'{}\' on topic \'{}\''.format(payload, message.topic), datetime.datetime.now().strftime('%d-%m-%Y %H:%M:%S'))
     respondToMsg(payload)
 
