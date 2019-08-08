@@ -228,7 +228,9 @@ def on_message(unused_client, unused_userdata, message):
 
 def on_disconnect(client,userdata,rc=0):
     print('on_disconnect', error_str(rc), datetime.datetime.now().strftime('%d-%m-%Y %H:%M:%S'))
-    logging.error('rc: %s - client: %s - userdata: %s', rc, client, userdata)
+    logging.error('rc: %s ', rc)
+    logging.error('client: %s ', client)
+    logging.error('userdata: %s ', userdata)
     logging.error("Erro de conexão, vai parar o laço IoT")
     client.loop_stop()
 
