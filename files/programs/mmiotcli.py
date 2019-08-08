@@ -106,7 +106,6 @@ def on_connect(unusued_client, unused_userdata, unused_flags, rc):
     logging.debug('on_connect %s', error_str(rc))
     print('Ao conectar', error_str(rc), datetime.datetime.now().strftime('%d-%m-%Y %H:%M:%S'))
 
-
 def on_publish(unused_client, unused_userdata, unused_mid):
     logging.info('publicou com sucesso')
     print('on_publish', error_str(rc), datetime.datetime.now().strftime('%d-%m-%Y %H:%M:%S'))
@@ -223,25 +222,36 @@ def respondToMsg(msg):
 
 def on_message(unused_client, unused_userdata, message):
     payload = str(message.payload)
-    logging.debug('Recebeu mensagem \'{}\' on topic \'{}\''.format(payload, message.topic))
+    logging.debug('Recebeu mensagem %s on topic ',payload)
     print('Recebeu mensagem \'{}\' on topic \'{}\''.format(payload, message.topic), datetime.datetime.now().strftime('%d-%m-%Y %H:%M:%S'))
     respondToMsg(payload)
 
 def on_disconnect(client,userdata,rc=0):
     print('on_disconnect', error_str(rc), datetime.datetime.now().strftime('%d-%m-%Y %H:%M:%S'))
-    print('on_disconnect', error_str(userdata), datetime.datetime.now().strftime('%d-%m-%Y %H:%M:%S'))
-    print('on_disconnect', error_str(client), datetime.datetime.now().strftime('%d-%m-%Y %H:%M:%S'))
-    print('on_disconnect: Erro de conexão, vai parar o laço IoT')
-    logging.error('rc: %s - client: %s - userdata: %s', rc, client, userdata)
+    logging.error('rc: %s ', rc)
+    logging.error('client: %s ', client)
+    logging.error('userdata: %s ', userdata)
     logging.error("Erro de conexão, vai parar o laço IoT")
     client.loop_stop()
 
 client.on_connect = on_connect
 client.on_publish = on_publish
+client.on_disconnect = on_disconnect
 client.on_message = on_message
 
 client.tls_set(ca_certs=root_cert_filepath) # Replace this with 3rd party cert if that was used when creating registry
-client.connect('mqtt.googleapis.com', 8883)
+#client.connect('mqtt.googleapis.com', 8883)
+
+try:
+    client.connect('mqtt.googleapis.com', 8883) #connect to broker
+except:
+    print("connection failed")
+    logging.error("Falha ao tentar conectar, verifique sua conexão com a internet e acesso a porta 8883")
+    #client.loop_stop()
+    #exit(1) #Should quit or raise flag to quit or retry
+
+#logging.debug("trying to subscribe to %s", _MQTT_COMMANDS_TOPIC)
+print('Subscribing to {}'.format(_MQTT_COMMANDS_TOPIC))
 client.subscribe(_MQTT_COMMANDS_TOPIC, qos=0)
 client.loop_forever()
 
