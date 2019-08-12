@@ -72,7 +72,7 @@ video_sufixo = ' best'
 cur_time = datetime.datetime.utcnow()
 
 def create_jwt():
-  logging.debug('create_jwt')
+  logging.debug('CJ - create_jwt')
   token = {
       'iat': cur_time,
       'exp': cur_time + datetime.timedelta(minutes=720),
@@ -103,11 +103,11 @@ def error_str(rc):
     return '{}: {}'.format(rc, mqtt.error_string(rc))
 
 def on_connect(unusued_client, unused_userdata, unused_flags, rc):
-    logging.debug('on_connect %s', error_str(rc))
+    logging.debug('OC - rc %s', error_str(rc))
     print('Ao conectar', error_str(rc), datetime.datetime.now().strftime('%d-%m-%Y %H:%M:%S'))
 
 def on_publish(unused_client, unused_userdata, unused_mid):
-    logging.info('publicou com sucesso')
+    logging.info('OP - publicou com sucesso')
     print('on_publish', error_str(rc), datetime.datetime.now().strftime('%d-%m-%Y %H:%M:%S'))
     return
     #print('Publicou com sucesso')
@@ -128,7 +128,7 @@ def getTemp():
 # Index 2: free RAM
 def getRAMinfo():
     try:
-        logging.info('entrou ram')
+        logging.info('GRAMI - entrou ram')
         p = os.popen('free')
         i = 0
         while 1:
@@ -143,7 +143,7 @@ def getRAMinfo():
 
 # Return % of CPU used by user as a character string
 def getCPUuse():
-    logging.info('entrou CPU')
+    logging.info('GCPUU - entrou CPU')
     return(str(os.popen("top -n1 | awk '/Cpu\(s\):/ {print $2}'").readline().strip(\
 )))
 
@@ -153,7 +153,7 @@ def getCPUuse():
 # Index 2: remaining disk space
 # Index 3: percentage of disk used
 def getDiskSpace():
-    logging.info('entrou disco')
+    logging.info('GDS - entrou disco')
     p = os.popen("df -h /")
     i = 0
     while 1:
@@ -201,7 +201,7 @@ def executaVideo(msg):
 # This is where you could add your own messages to play with different
 # actions based on messages coming back from the Cloud
 def respondToMsg(msg):
-    logging.debug('respontToMsg: %s', msg)
+    logging.debug('RTM - respontToMsg: %s', msg)
     #print(msg)
     if msg == "oi":
         sendInfo()
@@ -222,16 +222,17 @@ def respondToMsg(msg):
 
 def on_message(unused_client, unused_userdata, message):
     payload = str(message.payload)
-    logging.debug('Recebeu mensagem %s on topic ',payload)
+    logging.debug('OM - Recebeu mensagem %s ',payload)
+    logging.debug('OM - Recebeu on topic %s ', message.topic) 
     print('Recebeu mensagem \'{}\' on topic \'{}\''.format(payload, message.topic), datetime.datetime.now().strftime('%d-%m-%Y %H:%M:%S'))
     respondToMsg(payload)
 
 def on_disconnect(client,userdata,rc=0):
     print('on_disconnect', error_str(rc), datetime.datetime.now().strftime('%d-%m-%Y %H:%M:%S'))
-    logging.error('rc: %s ', rc)
-    logging.error('client: %s ', client)
-    logging.error('userdata: %s ', userdata)
-    logging.error("Erro de conexão, vai parar o laço IoT")
+    logging.error('OD - rc: %s ', rc)
+    logging.error('OD - client: %s ', client)
+    logging.error('OD - userdata: %s ', userdata)
+    logging.error("OD - Erro de conexão, vai parar o laço IoT")
     client.loop_stop()
 
 client.on_connect = on_connect
@@ -246,7 +247,7 @@ try:
     client.connect('mqtt.googleapis.com', 8883) #connect to broker
 except:
     print("connection failed")
-    logging.error("Falha ao tentar conectar, verifique sua conexão com a internet e acesso a porta 8883")
+    logging.error("CF - Falha ao tentar conectar, verifique sua conexão com a internet e acesso a porta 8883")
     #client.loop_stop()
     #exit(1) #Should quit or raise flag to quit or retry
 
