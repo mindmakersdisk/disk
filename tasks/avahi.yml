@@ -45,7 +45,7 @@
   when: semregistro.matched > 0
 - lineinfile:
     path: "{{ path2desktop }}/classroom_test.desktop"
-    regexp: '^Icon='
+    regexp: 'Icon'
     line: 'Icon=/usr/share/icons/{{sala.stdout}}.jpg'
     backrefs: yes
 - name: Alterando atributos do atalho da pasta scratch2
