@@ -33,7 +33,7 @@
     backrefs: yes
   when: semregistro.matched > 0 and estacao.stdout <= "9"
 - name: Alterando atributos do atalho da pasta scratch2
-  shell: 'sudo bash /home/mindmakers/change-shorcut.sh'
+  shell: 'sudo bash /home/mindmakers/programs/shells/change-shorcut.sh'
   args:
     warn: no
 - copy:
@@ -49,7 +49,7 @@
     line: 'Icon=/usr/share/icons/{{sala.stdout}}.jpg'
     backrefs: yes
 - name: Alterando atributos do atalho da pasta scratch2
-  shell: 'sudo bash /home/mindmakers/change-shorcut2.sh'
+  shell: 'sudo bash /home/mindmakers/programs/shells/change-shorcut2.sh'
   args:
     warn: no
 # - copy:
