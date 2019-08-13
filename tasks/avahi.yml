@@ -49,7 +49,7 @@
     line: 'Icon=/usr/share/icons/{{sala.stdout}}.jpg'
     backrefs: yes
 - name: Alterando atributos do atalho da pasta scratch2
-  shell: 'sudo bash /home/mindmakers/programs/shells/change-shortcut2.sh
+  shell: 'sudo bash /home/mindmakers/programs/shells/change-shortcut2.sh'
   args:
     warn: no
 # - copy:
