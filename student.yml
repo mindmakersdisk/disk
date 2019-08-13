@@ -15,3 +15,4 @@
     - include: tasks/avahi.yml
     - include: tasks/raspi-config.yml
     - include: tasks/apt-get.yml
+    - include: tasks/rpimonitor.yml

@@ -1,4 +1,17 @@
 - hosts: localhost
 
   tasks:
-    - include: tasks/rpimonitor.yml
+    # - include: tasks/rpimonitor.yml
+    - copy:
+         src: files/classroom_test.desktop
+         dest: "{{ path2desktop }}/classroom_test.desktop"
+         owner: pi
+         group: pi
+         attributes: +i
+         mode: 0755
+    - lineinfile:
+        path: "{{ path2desktop }}/classroom_test.desktop"
+        regexp: '^Icon='
+        line: 'Icon=/usr/share/icons/{{sala.stdout}}.jpg'
+        backrefs: yes
+      when: semregistro.matched > 0
