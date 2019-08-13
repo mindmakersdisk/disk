@@ -40,7 +40,7 @@
 - lineinfile:
     path: "{{ path2desktop }}/classroom_test.desktop"
     regexp: 'Icon'
-    line: 'Icon=/usr/share/icons/{{sala.stdout}}.jpg'
+    line: 'Icon=/usr/share/icons/{{sala.stdout}}.png'
     backrefs: yes
 - name: Alterando atributos do atalho da pasta scratch2
   shell: 'sudo bash /home/mindmakers/programs/shells/change-shortcut2.sh'

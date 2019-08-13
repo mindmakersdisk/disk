@@ -28,8 +28,6 @@
     - set_fact:
          path2desktop: "{{ adt.stat.path }}"
       when: adt.stat.exists
-    - include: tasks/rpimonitor.yml
-    - include: tasks/avahi.yml
     - include: tasks/student-en.yml
     - include: tasks/copies.yml
     - include: tasks/packages.yml
@@ -41,6 +39,8 @@
     - include: tasks/apt-get.yml
     - include: tasks/copies-student.yml
     - include: tasks/mt6.yml
+    - include: tasks/rpimonitor.yml
+    - include: tasks/avahi.yml
  # Copia as notas de liberação e o atalho com nome da versão atualizados
     - include: tasks/final-version-copies-en.yml
     - include: tasks/version_update.yml
