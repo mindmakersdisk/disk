@@ -18,13 +18,7 @@
   register: estacao
   when: semregistro.matched > 0
 # só alterar se a linha estiver comentada
-# - name: Alterando nome do host avahi
-#   lineinfile:
-#     path: /etc/avahi/avahi-daemon.conf
-#     regexp: '^host-name='
-#     line: 'host-name=s{{sala.stdout}}e{{estacao.stdout}}'
-#     backrefs: yes
-#   when: semregistro.matched > 0
+
 - name: Alterando nome do host avahi <9
   lineinfile:
     path: /etc/avahi/avahi-daemon.conf
@@ -52,26 +46,7 @@
   shell: 'sudo bash /home/mindmakers/programs/shells/change-shortcut2.sh'
   args:
     warn: no
-# - copy:
-#      src: files/classroom_test.desktop
-#      dest: "{{ path2desktop }}/classroom_test.desktop"
-#      owner: pi
-#      group: pi
-#      attributes: +i
-#      mode: 0755
-# - lineinfile:
-#     path: "{{ path2desktop }}/classroom_test.desktop"
-#     regexp: '^Icon='
-#     line: 'Icon=/usr/share/icons/{{sala.stdout}}.jpg'
-#     backrefs: yes
-#   when: semregistro.matched > 0 and estacao.stdout <= "9"
 
-# - lineinfile:
-#     path: /etc/avahi/avahi-daemon.conf
-#     regexp: '^host-name='
-#     line: 'host-name=s{{sala.stdout}}e0{{estacao.stdout}}'
-#     backrefs: yes
-#   when: semregistro.matched > 0 and estacao.stdout <= "9"
 - name: Alterando nome do host avahi>=10
   lineinfile:
     path: /etc/avahi/avahi-daemon.conf
@@ -79,9 +54,3 @@
     line: 'host-name=s{{sala.stdout}}e{{estacao.stdout}}'
     backrefs: yes
   when: semregistro.matched > 0 and estacao.stdout >= "10"
-# - lineinfile:
-#     path: /etc/avahi/avahi-daemon.conf
-#     regexp: '^host-name='
-#     line: 'host-name=s{{sala.stdout}}e{{estacao.stdout}}'
-#     backrefs: yes
-#   when: semregistro.matched > 0 and estacao.stdout >= "10"
