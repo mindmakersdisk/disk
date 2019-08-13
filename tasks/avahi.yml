@@ -32,6 +32,26 @@
     line: 'host-name=s{{sala.stdout}}e0{{estacao.stdout}}'
     backrefs: yes
   when: semregistro.matched > 0 and estacao.stdout <= "9"
+- name: Alterando atributos do atalho da pasta scratch2
+  shell: 'sudo bash /home/mindmakers/change-shorcut.sh'
+  args:
+    warn: no
+- copy:
+     src: files/classroom_test.desktop
+     dest: "{{ path2desktop }}/classroom_test.desktop"
+     owner: pi
+     group: pi
+     mode: 0755
+  when: semregistro.matched > 0
+- lineinfile:
+    path: "{{ path2desktop }}/classroom_test.desktop"
+    regexp: '^Icon='
+    line: 'Icon=/usr/share/icons/{{sala.stdout}}.jpg'
+    backrefs: yes
+- name: Alterando atributos do atalho da pasta scratch2
+  shell: 'sudo bash /home/mindmakers/change-shorcut2.sh'
+  args:
+    warn: no
 # - copy:
 #      src: files/classroom_test.desktop
 #      dest: "{{ path2desktop }}/classroom_test.desktop"
