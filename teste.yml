@@ -26,7 +26,6 @@
         regexp: '^Icon='
         line: 'Icon=/usr/share/icons/{{sala.stdout}}.jpg'
         backrefs: yes
-      when: semregistro.matched > 0
     - name: Alterando atributos do atalho da pasta scratch2
       shell: 'sudo chattr +i /home/pi/Desktop/classroom_test.desktop'
       args:
