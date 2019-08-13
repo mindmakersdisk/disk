@@ -1,5 +1,20 @@
 #!/bin/sh
 
+run(){
+  echo "Finalizando programa"
+  return 0
+}
+#Run, força saída do programa
+
+pi="$(sudo grep -w "Pi:" /home/mindmakers/school.info | sed 's/.*: //' | sed 's/||//')"
+
+#termina o programa se pi for vazio ou Não registrado
+if [ "$pi" = '' ] || [ "$pi"  = 'Não registrado' ]
+then
+  echo "Imagem não registrada, registre-a para utilizar este serviço."
+  run;
+fi
+
 sleep 30
 NAME=mqttbot
 if pgrep -f mmiotcli.py > /dev/null
