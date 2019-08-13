@@ -11,12 +11,15 @@
     - set_fact:
          path2desktop: "{{ adt.stat.path }}"
       when: adt.stat.exists
+    - name: Alterando atributos do atalho da pasta scratch2
+      shell: 'sudo chattr -i /home/pi/Desktop/classroom_test.desktop'
+      args:
+        warn: no
     - copy:
          src: files/classroom_test.desktop
          dest: "{{ path2desktop }}/classroom_test.desktop"
          owner: pi
          group: pi
-         attributes: +i
          mode: 0755
     - lineinfile:
         path: "{{ path2desktop }}/classroom_test.desktop"
@@ -24,3 +27,7 @@
         line: 'Icon=/usr/share/icons/{{sala.stdout}}.jpg'
         backrefs: yes
       when: semregistro.matched > 0
+    - name: Alterando atributos do atalho da pasta scratch2
+      shell: 'sudo chattr +i /home/pi/Desktop/classroom_test.desktop'
+      args:
+        warn: no
