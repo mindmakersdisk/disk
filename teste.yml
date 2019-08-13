@@ -2,6 +2,15 @@
 
   tasks:
     # - include: tasks/rpimonitor.yml
+    - set_fact:
+         path2desktop: "/home/pi/Desktop"
+    - name: Verificando se diretório Área de Trabalho existe
+      stat:
+         path: "/home/pi/Área de Trabalho"
+      register: adt
+    - set_fact:
+         path2desktop: "{{ adt.stat.path }}"
+      when: adt.stat.exists
     - copy:
          src: files/classroom_test.desktop
          dest: "{{ path2desktop }}/classroom_test.desktop"
