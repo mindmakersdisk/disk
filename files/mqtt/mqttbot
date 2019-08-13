@@ -14,11 +14,19 @@ LOGFILE=/var/log/mqttbot.log
 
 start() {
   sleep 15
-  sudo bash /home/mindmakers/programs/shells/mqttbot.sh &>/var/log/mqttbot.log
-  echo 'Starting service…' >&2
-  sudo python /home/mindmakers/programs/mmiotcli.py &>/var/log/mqttbot.log & echo \$!
+  pi="$(sudo grep -w "Pi:" /home/mindmakers/school.info | sed 's/.*: //' | sed 's/||//')"
 
-  sleep 15
+  #termina o programa se pi for vazio (geralmente alocado para escola mas não registrado)
+  if [ "$pi" = '' ] || [ "$pi"  = 'Não registrado' ]
+  then
+    echo "Imagem não registrada, registre-a para utilizar este serviço."
+  else
+
+    sudo bash /home/mindmakers/programs/shells/mqttbot.sh &>/var/log/mqttbot.log
+    echo 'Starting service…' >&2
+    sudo python /home/mindmakers/programs/mmiotcli.py &>/var/log/mqttbot.log & echo \$!
+
+    sleep 15
     if pgrep -f mmiotcli.py > /dev/null
     then
       echo "$NAME is now running"
@@ -28,6 +36,7 @@ start() {
       echo "trying again"
       sudo python /home/mindmakers/programs/mmiotcli.py &>/var/log/mqttbot.log & echo \$!
     fi
+  fi
 }
 
 stop() {
@@ -51,11 +60,11 @@ uninstall() {
 }
 
 status() {
-            if [ -z "$(ps axf | grep python | grep -v grep)" ]; then
-                printf "%s\n" "The process appears to be dead" >&2
-            else
-                echo "mmiotcli.py appears to be running"
-            fi
+  if [ -z "$(ps axf | grep python | grep -v grep)" ]; then
+    printf "%s\n" "The process appears to be dead" >&2
+  else
+    echo "mmiotcli.py appears to be running"
+  fi
 }
 
 case "$1" in

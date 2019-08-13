@@ -222,23 +222,24 @@ def respondToMsg(msg):
 
 def on_message(unused_client, unused_userdata, message):
     payload = str(message.payload)
-    logging.debug('OM - Recebeu mensagem %s ',payload)
-    logging.debug('OM - Recebeu on topic %s ', message.topic) 
+    logging.debug('OM - Recebeu mensagem %s ', payload)
+    logging.debug('OM - Recebeu on topic %s ', message.topic)
     print('Recebeu mensagem \'{}\' on topic \'{}\''.format(payload, message.topic), datetime.datetime.now().strftime('%d-%m-%Y %H:%M:%S'))
     respondToMsg(payload)
 
 def on_disconnect(client,userdata,rc=0):
     print('on_disconnect', error_str(rc), datetime.datetime.now().strftime('%d-%m-%Y %H:%M:%S'))
-    logging.error('OD - rc: %s ', rc)
-    logging.error('OD - client: %s ', client)
-    logging.error('OD - userdata: %s ', userdata)
-    logging.error("OD - Erro de conexão, vai parar o laço IoT")
+    logging.error('OD - rc: %s ', error_str(rc))
+    #logging.error('OD - client: %s ', client)
+    #logging.error('OD - userdata: %s ', userdata)
+    logging.error("OD - Ao desconectar, vai reiniciar o serviço IoT e parar o laço")
+    call("sudo systemctl restart mqttbot.service",shell=True)
     client.loop_stop()
 
 client.on_connect = on_connect
 client.on_publish = on_publish
-client.on_disconnect = on_disconnect
 client.on_message = on_message
+client.on_disconnect = on_disconnect
 
 client.tls_set(ca_certs=root_cert_filepath) # Replace this with 3rd party cert if that was used when creating registry
 #client.connect('mqtt.googleapis.com', 8883)
@@ -247,7 +248,7 @@ try:
     client.connect('mqtt.googleapis.com', 8883) #connect to broker
 except:
     print("connection failed")
-    logging.error("CF - Falha ao tentar conectar, verifique sua conexão com a internet e acesso a porta 8883")
+    logging.error("CF - Falha ao tentar conectar, verifique sua conexão com a internet e se possui acesso a porta 8883")
     #client.loop_stop()
     #exit(1) #Should quit or raise flag to quit or retry
 
