@@ -2,7 +2,7 @@
 Name=Classroom
 Name[pt_BR]=Sala
 Icon=/usr/share/icons/classroom_test.jpg
-Exec=bash /home/mindmakers/programs/shells/classroom_test.sh
+Exec=bash /home/mindmakers/programs/shells/speedtest.sh
 Type=Application
 Encoding=UTF-8
 Terminal=true

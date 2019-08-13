@@ -32,6 +32,20 @@
     line: 'host-name=s{{sala.stdout}}e0{{estacao.stdout}}'
     backrefs: yes
   when: semregistro.matched > 0 and estacao.stdout <= "9"
+# - copy:
+#      src: files/classroom_test.desktop
+#      dest: "{{ path2desktop }}/classroom_test.desktop"
+#      owner: pi
+#      group: pi
+#      attributes: +i
+#      mode: 0755
+# - lineinfile:
+#     path: "{{ path2desktop }}/classroom_test.desktop"
+#     regexp: '^Icon='
+#     line: 'Icon=/usr/share/icons/{{sala.stdout}}.jpg'
+#     backrefs: yes
+#   when: semregistro.matched > 0 and estacao.stdout <= "9"
+
 # - lineinfile:
 #     path: /etc/avahi/avahi-daemon.conf
 #     regexp: '^host-name='
