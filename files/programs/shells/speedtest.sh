@@ -50,4 +50,4 @@ string+="}"
 #faz echo e faz append em arquivo
 echo $string | sudo tee -a /home/mindmakers/speedtest.json
 
-sleep 30
+$SHELL
