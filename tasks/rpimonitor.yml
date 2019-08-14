@@ -15,10 +15,10 @@
 - name: Instalando rpimonitor
   apt:
      name: rpimonitor
-- name: add key server rpimonitor
-  shell: 'sudo /etc/init.d/rpimonitor update'
-  args:
-    warn: no
+# - name: add key server rpimonitor
+#   shell: 'sudo /etc/init.d/rpimonitor update'
+#   args:
+#     warn: no
 
 # teste configurações
 # - lineinfile:
