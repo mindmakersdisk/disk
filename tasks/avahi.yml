@@ -26,6 +26,14 @@
     line: 'host-name=s{{sala.stdout}}e0{{estacao.stdout}}'
     backrefs: yes
   when: semregistro.matched > 0 and estacao.stdout <= "9"
+- name: Alterando nome do host avahi>=10
+  lineinfile:
+    path: /etc/avahi/avahi-daemon.conf
+    regexp: '^#host-name='
+    line: 'host-name=s{{sala.stdout}}e{{estacao.stdout}}'
+    backrefs: yes
+  when: semregistro.matched > 0 and estacao.stdout >= "10"
+
 - name: Alterando atributos do atalho da pasta scratch2
   shell: 'sudo bash /home/mindmakers/programs/shells/change-shortcut.sh'
   args:
@@ -46,11 +54,3 @@
   shell: 'sudo bash /home/mindmakers/programs/shells/change-shortcut2.sh'
   args:
     warn: no
-
-- name: Alterando nome do host avahi>=10
-  lineinfile:
-    path: /etc/avahi/avahi-daemon.conf
-    regexp: '^#host-name='
-    line: 'host-name=s{{sala.stdout}}e{{estacao.stdout}}'
-    backrefs: yes
-  when: semregistro.matched > 0 and estacao.stdout >= "10"
