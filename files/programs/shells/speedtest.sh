@@ -42,7 +42,9 @@ for line in $(speedtest-cli --simple); do
 done
 
 string+=', "timestamp": '
-string+="$(date +"%s")"
+string+='"'
+string+="$(date +%d%b%Y-%T)"
+string+='"'
 string+="}"
 
 #faz echo e faz append em arquivo
