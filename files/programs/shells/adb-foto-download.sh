@@ -82,10 +82,11 @@ then
       fi
 
   done
-
+  sleep 10
 else
 
   echo "A pasta selecionada não possúi nenhum arquivo .jpg"
   echo "Encerrando o programa."
+  sleep 10
 
 fi
