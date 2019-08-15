@@ -41,7 +41,7 @@
     - include: tasks/mt6.yml
     - include: tasks/rpimonitor.yml
     - include: tasks/avahi.yml
- # Copia as notas de liberação e o atalho com nome da versão atualizados
+# Copia as notas de liberação e o atalho com nome da versão atualizados
     - include: tasks/final-version-copies-en.yml
     - include: tasks/version_update.yml
     - include: tasks/reboot.yml

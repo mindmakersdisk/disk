@@ -2,7 +2,7 @@
 
   tasks:
    #- include: tasks/xvnc.yml
-#Tarefa fixa para instalar tighvncserver se não estiver instalado.
+   #Tarefa fixa para instalar tighvncserver se não estiver instalado.
    - include: tasks/packages.yml
    - copy:
         src: school.info
