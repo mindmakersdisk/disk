@@ -54,7 +54,7 @@
   shell: 'sudo bash /home/mindmakers/programs/shells/change-shortcut2.sh'
   args:
     warn: no
-- name: add key server rpimonitor
-  shell: 'sudo /etc/init.d/rpimonitor update'
-  args:
-    warn: no
+# - name: add key server rpimonitor
+#   shell: 'sudo /etc/init.d/rpimonitor update'
+#   args:
+#     warn: no
