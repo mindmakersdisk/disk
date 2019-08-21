@@ -14,7 +14,7 @@
     state: directory
     mode: 0444
 - stat:
-     path: /usr/share/raspi-ui-overrides/applications/libreoffice-draw.desktop
+     path: /usr/share/raspi-ui-overrides/applications
   register: uninstalled2
 - name: Removendo ícones libreoffice Draw e Math
   shell: 'cd /usr/share/raspi-ui-overrides/applications/ && rm -f libreoffice-draw.desktop libreoffice-math.desktop'
