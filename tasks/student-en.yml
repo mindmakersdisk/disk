@@ -113,13 +113,13 @@
     regexp: '^Exec=pcmanfm /home/mindmakers/Scratch2/portuguese'
     line: 'Exec=pcmanfm /home/mindmakers/Scratch2/english'
     backrefs: yes
-  when: "'en_' in ansible_facts.env.LANGUAGE"
+  when: "'en_' in ansible_facts.env.LANG"
 - lineinfile:
     path: "{{ path2desktop }}/scratch2_folder.desktop"
     regexp: '^Exec=pcmanfm /home/mindmakers/Scratch2/english'
     line: 'Exec=pcmanfm /home/mindmakers/Scratch2/portuguese'
     backrefs: yes
-  when: "'pt_BR' in ansible_facts.env.LANGUAGE"
+  when: "'pt_BR' in ansible_facts.env.LANG"
 - name: Alterando atributos do atalho da pasta scratch2
   shell: 'sudo chattr +i /home/pi/Desktop/scratch2_folder.desktop'
   args:
@@ -130,11 +130,11 @@
 - shell: 'sudo ln -s /home/mindmakers/Scratch2/english /home/pi/Scratch2'
   args:
     warn: no
-  when: "'en_' in ansible_facts.env.LANGUAGE"
+  when: "'en_' in ansible_facts.env.LANG"
 - shell: 'sudo ln -s /home/mindmakers/Scratch2/portuguese /home/pi/Scratch2'
   args:
     warn: no
-  when: "'pt_BR' in ansible_facts.env.LANGUAGE"
+  when: "'pt_BR' in ansible_facts.env.LANG"
 - file:
     path: /home/pi/Fotos
     state: absent
@@ -147,7 +147,7 @@
 - shell: 'sudo ln -s /home/pi/Pictures /home/pi/Fotos'
   args:
     warn: no
-  when: "'pt_BR' in ansible_facts.env.LANGUAGE"
+  when: "'pt_BR' in ansible_facts.env.LANG"
 - file:
     path: /home/pi/Audios
     state: absent
@@ -160,4 +160,4 @@
 - shell: 'sudo ln -s /home/pi/Music /home/pi/Audios'
   args:
     warn: no
-  when: "'pt_BR' in ansible_facts.env.LANGUAGE"
+  when: "'pt_BR' in ansible_facts.env.LANG"
