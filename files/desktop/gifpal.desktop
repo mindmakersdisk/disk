@@ -1,6 +1,6 @@
 [Desktop Entry]
 Version=1.0
-Name=Gifpal
+Name=Gifpal-edu
 Exec=chromium-browser https://gifpal-edu.com/ --allow-control-allow-origin --start-fullscreen --allow-running-insecure-content --disable-popup-blocking
 Terminal=false
 X-MultipleArgs=false
