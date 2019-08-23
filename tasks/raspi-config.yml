@@ -11,3 +11,12 @@
   shell: 'amixer cset numid=3 1'
   args:
     warn: no
+- name: Configurando memória swap
+  lineinfile:
+    path: /etc/dphys-swapfile
+    backrefs: yes
+    regexp: 'CONF_SWAPSIZE=100'
+    line: CONF_SWAPSIZE=1000
+#- shell: 'sudo systemctl restart dphys-swapfile.service'
+#  args:
+#    warn: no
