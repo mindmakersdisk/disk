@@ -16,7 +16,7 @@
     path: /etc/dphys-swapfile
     backrefs: yes
     regexp: 'CONF_SWAPSIZE=100'
-    line: CONF_SWAPSIZE=1000
+    line: CONF_SWAPSIZE=1024
 #- shell: 'sudo systemctl restart dphys-swapfile.service'
 #  args:
 #    warn: no
