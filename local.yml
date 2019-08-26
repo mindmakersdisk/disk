@@ -35,12 +35,12 @@
     - include: tasks/3dslash.yml
     - include: tasks/hide-games.yml
     - include: tasks/install-extension.yml
-    - include: tasks/raspi-config.yml
     - include: tasks/apt-get.yml
     - include: tasks/copies-student.yml
     - include: tasks/mt6.yml
     - include: tasks/rpimonitor.yml
     - include: tasks/avahi.yml
+    - include: tasks/raspi-config.yml
 # Copia as notas de liberação e o atalho com nome da versão atualizados
     - include: tasks/final-version-copies-en.yml
     - include: tasks/version_update.yml

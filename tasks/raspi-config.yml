@@ -17,6 +17,10 @@
     backrefs: yes
     regexp: 'CONF_SWAPSIZE=100'
     line: CONF_SWAPSIZE=1024
+- name: Tornando login usuário pi fixo
+  shell: 'sudo chattr +i /etc/lightdm/lightdm.conf'
+  args:
+    warn: no
 #- shell: 'sudo systemctl restart dphys-swapfile.service'
 #  args:
 #    warn: no
