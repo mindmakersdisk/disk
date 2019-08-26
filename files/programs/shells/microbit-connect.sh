@@ -52,3 +52,5 @@ else
 	executa;
 
 fi
+
+$SHELL

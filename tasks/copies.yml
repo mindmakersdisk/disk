@@ -46,6 +46,11 @@
     line: 'hdmi_mode=81'
     backrefs: yes
 - lineinfile:
+    path: /boot/config.txt
+    regexp: '^#hdmi_force_hotplug=1'
+    line: 'hdmi_force_hotplug=1'
+    backrefs: yes
+- lineinfile:
       path: /boot/config.txt
       regexp: 'disable_splash=1'
       line: 'disable_splash=1'
