@@ -99,9 +99,7 @@ fs.readFile('/home/mindmakers/school.info', function(err, data) {
 
         }
 
-
       });
-
 
     } else {
 
@@ -121,8 +119,7 @@ fs.readFile('/home/mindmakers/school.info', function(err, data) {
 const USAR_REGISTRADO = "Usar Registrado";
 const REGISTRAR_NOVO = "Registrar Novo";
 const REGISTRAR = "Registrar";
-const RECONECTAR = "Reconectar";
-const SAIR = "Sair";
+
 
 var questionsConfigurado = [{
   type: 'list',
@@ -147,13 +144,6 @@ var questionsInformar = [{
     " Ou aproxime o Sphero e aperte enter para tentar mais uma vez..."
 }];
 
-var questionsReconectar = [{
-  type: 'list',
-  name: 'reconectar',
-  message: "O Sphero desconectou, deseja tentar reconectá-lo?",
-  default: RECONECTAR,
-  choices: [RECONECTAR, SAIR]
-}];
 
 /* Atualiza atalho do servidor Sphero */
 function atualizaAtalhoSphero() {
@@ -431,8 +421,10 @@ function controlaSphero() {
   //console.log("Entrou no controlador do Sphero: "+macaddressArg);
 
   var sphero = require("sphero"),
-    bb8 = sphero(macaddressArg);
-
+    bb8 = sphero(macaddressArg, {
+      emitPacketErrors: false
+    });
+  //orb = sphero("/dev/rfcomm0", {emitPacketErrors: true});
 
   // submete comandos dinamicamente, para o SPRK+
   bb8.connect(function() {
@@ -450,17 +442,39 @@ function controlaSphero() {
 
     bb8.version(function(err, data) {
       if (err) {
-        console.error("err:", err);
+        console.error((new Date().toLocaleString()) + " err:", err);
       } else {
-        console.log((new Date().toLocaleString()) + " Versão:" + data.msaVer + '.' + data.msaRev);
+
+
+
+        console.log('\x1b[0m\x1b[32m', 'Leitura de componentes digitais do SPHERO via bluetooth ativada');
+        console.log('\x1b[0m', '---------------------------------------------------------------');
+        console.log('\x1b[0m', '---------        TESTE E CONTROLE POR TECLADO        ----------');
+        console.log('\x1b[0m', '---------                                            ----------');
+        console.log('\x1b[0m', '--------- SETAS > MOVIMENTO                          ----------');
+        console.log('\x1b[0m', '--------- BARRA DE ESPAÇO > COMEÇAR/PARAR CALIBRAGEM ----------');
+        console.log('\x1b[0m', '--------- R > LUZ VERMELHA                           ----------');
+        console.log('\x1b[0m', '--------- G > LUZ VERDE                              ----------');
+        console.log('\x1b[0m', '--------- B > LUZ AZUL                               ----------');
+        console.log('\x1b[0m', '--------- Y > LUZ AMARELA                            ----------');
+        console.log('\x1b[0m', '--------- 1 > LUZ BRANCA                             ----------');
+        console.log('\x1b[0m', '--------- 0 > DESLIGAR LUZ                           ----------');
+        console.log('\x1b[0m', '--------- CTRL + C > FINALIZA PROGRAMA               ----------');
+        console.log('\x1b[0m', '---------                                            ----------');
+        console.log('\x1b[0m', '---------------------------------------------------------------');
+        console.log('\x1b[0m', '---- Se for o primeiro uso, teste todos os comandos acima! ----');
+        console.log('\x1b[0m', '---------------------------------------------------------------');
+        console.log('');
+        console.log('\x1b[0m', (new Date().toLocaleString()) + " Versão:" + data.msaVer + '.' + data.msaRev);
+        console.log('');
       }
     });
 
     // console.log('Conectou com sucesso!! Aguardando comandos em http://localhost?code=')
 
-    console.error('\x1b[32m', '---------------------------------------------------');
-    console.error('\x1b[0m\x1b[32m', '-- Conectou com sucesso!! Aguardando comandos  ----');
-    console.error('\x1b[0m\x1b[32m', '---------------------------------------------------');
+    // console.error('\x1b[32m', '---------------------------------------------------');
+    // console.error('\x1b[0m\x1b[32m', '-- Conectou com sucesso!! Aguardando comandos  ----');
+    // console.error('\x1b[0m\x1b[32m', '---------------------------------------------------');
 
 
     count = 0;
@@ -470,12 +484,18 @@ function controlaSphero() {
       if (count % 60 == 0) {
         if (bb8.connection.peripheral.state == "connected") {
           estado = 'conectado'
+        } else {
+          estado = bb8.connection.peripheral.state;
         }
-        console.log((new Date().toLocaleString()) + ' Sphero ' + estado + '. Verificando comandos ...')
+        console.log('\x1b[32m', (new Date().toLocaleString()) + ' Sphero ' + estado + '. Verificando comandos ...');
+        bb8.ping(function(err, data) {
+          if (err)
+            console.log(err);
+        });
         //console.log(bb8.connection.peripheral.state);
       }
 
-      if (count % 10 == 0) {
+      if (count % 5 == 0) {
         if (bb8.connection.peripheral.state == "disconnected") {
           console.log('\x1b[31m', '-----------------------------------------------------------------------');
           console.log('\x1b[31m', (new Date().toLocaleString()) + " Sphero desonectou! Caso não tenha sido intencional,");
@@ -483,45 +503,23 @@ function controlaSphero() {
           console.log('\x1b[0m\x1b[31m', '-----------------------------------------------------------------------');
           modoRegistro = true;
 
-          inquirer.prompt(questionsReconectar).then(answers => {
+          process.exit();
 
-            if (answers.reconectar == RECONECTAR) {
-              // tenta Conexão normal
-              console.log("entrou RECONECTAR");
-
-              //TODO FAZER RECONECTAR
-              modoRegistro = false;
-              controlaSphero();
-
-              // noble.stopScanning();
-              // noble.startScanning();
-              // setTimeout(controlaSphero, 5000);
-              //console.log(err || "data: " + JSON.stringify(data));
-              // bb8.disconnect(function() {
-              //    console.log("Now disconnected from Sphero");
-              //
-              //    setTimeout(controlaSphero, 5000);
-              //  });
-
-            } else {
-              // SAI
-              //console.log("entrou SAIR");
-              process.exit();
-            }
-          });
-        }
+        };
       }
-
       count++;
 
-      if (count == 1)
+      if (count == 1) {
         code = 'bb8.setInactivityTimeout(1500);';
+
+      }
+
 
       if (code != '') {
 
         try {
 
-          console.log((new Date().toLocaleString()) + ' Vai executar: ' + code)
+          console.log('\x1b[32m', (new Date().toLocaleString()) + ' Vai executar: ' + code)
 
           eval(code);
 
@@ -641,9 +639,9 @@ function controlaSphero() {
       // Do something with the err or just ignore.
       console.log((new Date().toLocaleString()) + "bb8.onerro");
       if (err) {
-        console.log("error: ", err);
+        console.log((new Date().toLocaleString()) + " error: ", err);
       } else {
-        console.log("data: " + JSON.stringify(data));
+        console.log((new Date().toLocaleString()) + " data: " + JSON.stringify(data));
       }
     });
 
@@ -651,13 +649,11 @@ function controlaSphero() {
 
       console.log((new Date().toLocaleString()) + "desonectou");
 
-
     });
 
     bb8.on('close', function() {
 
       console.log((new Date().toLocaleString()) + "close");
-
 
     });
 
@@ -704,15 +700,14 @@ function controlaSphero() {
 
   });
 
-  process.on('SIGINT', function() {
+  process.on('SIGHUP', function() {
     //console.log((new Date().toLocaleString()) + 'Obrigado, até a próxima!');
+    //tentativa desconexão ao fechar a janela, funciona em ubuntu. estava SIGINT antes.
     bb8.sleep(10, 0, 0, function(err, data) {
       console.log((new Date().toLocaleString()) + 'Obrigado, até a próxima!');
+      console.log(err || "data: " + JSON.stringify(data));
       process.exit();
-      //console.log(err || "data: " + JSON.stringify(data));
     });
-
-    //process.exit();
 
   });
 
@@ -733,12 +728,14 @@ function controlaSphero() {
       });
     } else if (key.ctrl && key.name === 'q') {
       bb8.ping(function(err, data) {
+        console.log('\x1b[32m\x1b[0m', (new Date().toLocaleString()) + ' ping');
         console.log(err || "data: " + JSON.stringify(data));
       });
     } else if (key.ctrl && key.name === 'w') {
       //TODO - ver qual é o maximo batteryvoltage e fazer scale de 0 a 100
       // batteryvoltage 700 começa a piscar vermelho
       bb8.getPowerState(function(err, data) {
+        console.log('\x1b[32m\x1b[0m', (new Date().toLocaleString()) + ' getPowerState');
         if (err) {
           console.log("error: ", err);
         } else {
@@ -752,6 +749,7 @@ function controlaSphero() {
       });
     } else if (key.ctrl && key.name === 'e') {
       bb8.getVoltageTripPoints(function(err, data) {
+        console.log('\x1b[32m\x1b[0m', (new Date().toLocaleString()) + ' getVoltageTripPoints');
         if (err) {
           console.log("error: ", err);
         } else {
@@ -763,31 +761,16 @@ function controlaSphero() {
 
     } else if (key.ctrl && key.name === 'r') {
       bb8.runL1Diags(function(err, data) {
+        console.log('\x1b[32m\x1b[0m', (new Date().toLocaleString()) + ' runL1Diags');
         console.log(err || "data: " + JSON.stringify(data));
       });
     } else if (key.ctrl && key.name === 't') {
       bb8.runL2Diags(function(err, data) {
+        console.log('\x1b[32m\x1b[0m', (new Date().toLocaleString()) + ' runL2Diags');
         if (err) {
           console.log("error: ", err);
         } else {
-          console.log("data:");
-          console.log("  recVer:", data.recVer);
-          console.log("  rxGood:", data.rxGood);
-          console.log("  rxBadId:", data.rxBadId);
-          console.log("  rxBadDlen:", data.rxBadDlen);
-          console.log("  rxBadCID:", data.rxBadCID);
-          console.log("  rxBadCheck:", data.rxBadCheck);
-          console.log("  rxBufferOvr:", data.rxBufferOvr);
-          console.log("  txMsg:", data.txMsg);
-          console.log("  txBufferOvr:", data.txBufferOvr);
-          console.log("  lastBootReason:", data.lastBootReason);
-          console.log("  bootCounters:", data.bootCounters);
-          console.log("  chargeCount:", data.chargeCount);
-          console.log("  secondsSinceCharge:", data.secondsSinceCharge);
-          console.log("  secondsOn:", data.secondsOn);
-          console.log("  distancedRolled:", data.distancedRolled);
-          console.log("  sensorFailures:", data.sensorFailures);
-          console.log("  gyroAdjustCount:", data.gyroAdjustCount);
+          console.log("data: ", data);
         }
       });
     } else if (!modoRegistro) {
@@ -828,10 +811,16 @@ function controlaSphero() {
       if (key.name == 'b') {
         bb8.color("blue");
       }
+      if (key.name == 'w') {
+        bb8.color("white");
+      }
+      if (key.name == 'd') {
+        bb8.color("black");
+      }
       if (key.name == '1') {
         bb8.color("white");
       }
-      if (key.name == '2') {
+      if (key.name == '0') {
         bb8.color("black");
       }
       //   console.log();
