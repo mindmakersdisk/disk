@@ -8,6 +8,11 @@
     # - shell: 'sudo wget http://goo.gl/vewCLL -O /etc/apt/sources.list.d/rpimonitor.list'
     #   args:
     #     warn: no
+    - file:
+        path: /etc/apt/sources.list.d/rpimonitor.list
+        state: absent
+    - apt:
+         autoclean: yes
     - name: Atualizando Repositórios
       shell: 'sudo apt-get update --allow-releaseinfo-change'
       args:
