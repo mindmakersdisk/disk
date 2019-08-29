@@ -1,6 +1,6 @@
-- name: Instalando speedtest-cli
-  apt:
-     name: speedtest-cli
+# - name: Instalando speedtest-cli
+#   apt:
+#      name: speedtest-cli
 - name: add key server rpimonitor
   shell: 'sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 2C0D3C0F'
   args:

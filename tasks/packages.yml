@@ -203,3 +203,6 @@
 - name: Instalando pip logging
   pip:
     name: logging
+- name: Instalando speedtest-cli
+  apt:
+     name: speedtest-cli
