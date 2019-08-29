@@ -1,17 +1,11 @@
 - hosts: localhost
   remote_user: root
   pre_tasks:
-    #- name: Atualizando Repositórios
-    #  shell: 'sudo apt-get update --allow-releaseinfo-change'
-    #  args:
-    #    warn: no
-    #  when: ansible_facts.lsb.codename == "buster"
-    # - shell: 'sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 2C0D3C0F'
-    #   args:
-    #     warn: no
-    # - shell: 'sudo wget http://goo.gl/vewCLL -O /etc/apt/sources.list.d/rpimonitor.list'
-    #   args:
-    #     warn: no
+    - name: Atualizando Repositórios
+      shell: 'sudo apt update -y'
+      args:
+        warn: no
+      when: ansible_facts.lsb.codename == "buster"
     - file:
         path: /etc/apt/sources.list.d/rpimonitor.list
         state: absent
@@ -20,7 +14,7 @@
     - apt:
          update_cache: yes
       changed_when: False
-    #  when: not ansible_facts.lsb.codename == "buster"
+      when: not ansible_facts.lsb.codename == "buster"
 
   tasks:
     - name: Verificando versão do Ansible.
