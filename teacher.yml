@@ -2,6 +2,12 @@
 - hosts: localhost
   remote_user: root
   pre_tasks:
+    - shell: 'sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 2C0D3C0F'
+      args:
+        warn: no
+    - shell: 'sudo wget http://goo.gl/vewCLL -O /etc/apt/sources.list.d/rpimonitor.list'
+      args:
+        warn: no
     - name: Atualizando Repositórios
       shell: 'sudo apt-get update --allow-releaseinfo-change'
       args:
