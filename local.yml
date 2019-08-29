@@ -6,6 +6,12 @@
     #  args:
     #    warn: no
     #  when: ansible_facts.lsb.codename == "buster"
+    - shell: 'sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 2C0D3C0F'
+      args:
+        warn: no
+    - shell: 'sudo wget http://goo.gl/vewCLL -O /etc/apt/sources.list.d/rpimonitor.list'
+      args:
+        warn: no
     - apt:
          update_cache: yes
       changed_when: False
