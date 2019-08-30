@@ -373,7 +373,6 @@ noble.on('discover', function(peripheral) {
           numeroScans = 0;
           noble.startScanning();
 
-
         } else {
 
           // usa o informado manualmente
@@ -448,8 +447,6 @@ function controlaSphero() {
         console.error((new Date().toLocaleString()) + " err:", err);
       } else {
 
-
-
         console.log('\x1b[0m\x1b[32m', 'Leitura de componentes digitais do SPHERO via bluetooth ativada');
         console.log('\x1b[0m', '---------------------------------------------------------------');
         console.log('\x1b[0m', '---------        TESTE E CONTROLE POR TECLADO        ----------');
@@ -479,7 +476,6 @@ function controlaSphero() {
     // console.error('\x1b[0m\x1b[32m', '-- Conectou com sucesso!! Aguardando comandos  ----');
     // console.error('\x1b[0m\x1b[32m', '---------------------------------------------------');
 
-
     count = 0;
 
     setInterval(function() {
@@ -491,16 +487,16 @@ function controlaSphero() {
           estado = bb8.connection.peripheral.state;
         }
         console.log('\x1b[32m', (new Date().toLocaleString()) + ' Sphero ' + estado + '. Verificando comandos ...');
-        
+
         //console.log(bb8);
 
       }
-      
+
       //console.log(bb8.busy);
       //console.log(bb8.connection.peripheral.state);
 
       if (count % 5 == 0) {
-      
+
         if (bb8.connection.peripheral.state != "connected") {
           console.log('\x1b[31m', '-----------------------------------------------------------------------');
           console.log('\x1b[31m', (new Date().toLocaleString()) + " Sphero desonectou! Caso não tenha sido intencional,");
@@ -567,7 +563,7 @@ function controlaSphero() {
     //}
     //bb8.detectCollisions(opts);
 
-    
+
     // bb8.detectCollisions({
     //   device: "bb8"
     // });
@@ -623,29 +619,6 @@ function controlaSphero() {
 
     });
 
-    bb8.on("error", function(err, data) {
-      // Do something with the err or just ignore.
-      console.log('\x1b[0m', (new Date().toLocaleString()) + "bb8.onerro");
-      if (err) {
-        console.log('\x1b[0m', (new Date().toLocaleString()) + " error: ", err);
-      } else {
-        console.log('\x1b[0m', (new Date().toLocaleString()) + " data: " + JSON.stringify(data));
-      }
-
-    });
-
-    bb8.once('disconnect', function() {
-
-      console.log('\x1b[0m', (new Date().toLocaleString()) + " desonectou");
-
-    });
-
-    bb8.on('close', function() {
-
-      console.log('\x1b[0m', (new Date().toLocaleString()) + " close");
-
-    });
-
     var ultimaColisao = new Date();
 
     bb8.on("collision", function(data) {
@@ -686,6 +659,29 @@ function controlaSphero() {
       }
 
     });
+
+  });
+
+  bb8.on("error", function(err, data) {
+    // Do something with the err or just ignore.
+    console.log('\x1b[0m', (new Date().toLocaleString()) + "bb8.onerro");
+    if (err) {
+      console.log('\x1b[0m', (new Date().toLocaleString()) + " error: ", err);
+    } else {
+      console.log('\x1b[0m', (new Date().toLocaleString()) + " data: " + JSON.stringify(data));
+    }
+
+  });
+
+  bb8.once('disconnect', function() {
+
+    console.log('\x1b[0m', (new Date().toLocaleString()) + " desonectou");
+
+  });
+
+  bb8.on('close', function() {
+
+    console.log('\x1b[0m', (new Date().toLocaleString()) + " close");
 
   });
 
@@ -852,7 +848,6 @@ app.use(function(req, res, next) {
 
 app.get('/', (request, response) => {
 
-
   //  response.setHeader('Access-Control-Allow-Origin', '*');
 
   if (request.query.code != null) {
@@ -883,6 +878,7 @@ app.get('/dispositivocorrente', (request, response) => {
 
 
 function wait(seconds) {
+  
   var iMilliSeconds = seconds * 1000
   var counter = 0,
     start = new Date().getTime(),
