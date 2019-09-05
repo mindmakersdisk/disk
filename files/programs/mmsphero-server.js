@@ -700,6 +700,7 @@ function controlaSphero() {
   process.stdin.resume();
   process.stdin.setEncoding('utf8');
   calli = false;
+  lastdir = 0;
 
   process.stdin.on('keypress', (str, key) => {
     speed = 20;
@@ -788,18 +789,26 @@ function controlaSphero() {
             calli = false;
           }
         }
+        if (key.name == '2') {
+          //bb8.stop();
+          bb8.roll(0,lastdir);
+        }
 
         if (key.name == 'up') {
           bb8.roll(speed, 0);
+          lastdir =0;
         }
         if (key.name == 'down') {
           bb8.roll(speed, 180);
+          lastdir = 180;
         }
         if (key.name == 'right') {
           bb8.roll(speed, 90);
+          lastdir = 90;
         }
         if (key.name == 'left') {
           bb8.roll(speed, 270);
+          lastdir = 270;
         }
         if (key.name == 'r') {
           bb8.color("red");
@@ -878,7 +887,7 @@ app.get('/dispositivocorrente', (request, response) => {
 
 
 function wait(seconds) {
-
+  
   var iMilliSeconds = seconds * 1000
   var counter = 0,
     start = new Date().getTime(),
