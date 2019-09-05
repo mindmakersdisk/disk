@@ -1,16 +1,16 @@
 - hosts: localhost
   remote_user: root
   pre_tasks:
-    - name: Atualizando Repositórios
-      shell: 'sudo apt update -y'
-      args:
-        warn: no
-      when: ansible_facts.lsb.codename == "buster"
     - file:
         path: /etc/apt/sources.list.d/rpimonitor.list
         state: absent
     - apt:
          autoclean: yes
+    - name: Atualizando Repositórios
+      shell: 'sudo apt update -y'
+      args:
+        warn: no
+      when: ansible_facts.lsb.codename == "buster"
     - apt:
          update_cache: yes
       changed_when: False

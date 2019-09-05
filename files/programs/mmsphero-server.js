@@ -878,7 +878,7 @@ app.get('/dispositivocorrente', (request, response) => {
 
 
 function wait(seconds) {
-  
+
   var iMilliSeconds = seconds * 1000
   var counter = 0,
     start = new Date().getTime(),
