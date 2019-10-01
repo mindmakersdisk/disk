@@ -160,10 +160,10 @@ function atualizaAtalhoMbot() {
       process.exit(1);
     } else {
 
-      console.error('\x1b[32m',        '---------------------------------------------------');
+      console.error('\x1b[32m', '---------------------------------------------------');
       console.error('\x1b[0m\x1b[32m', '----- Alterou a configuração para usar o mBot -----');
-      console.error('\x1b[0m\x1b[1m',  '            ' + macaddressArg);
-      console.error('\x1b[0m\x1b[1m',  '----- Chame novamente para começar a usar     -----');
+      console.error('\x1b[0m\x1b[1m', '            ' + macaddressArg);
+      console.error('\x1b[0m\x1b[1m', '----- Chame novamente para começar a usar     -----');
       console.error('\x1b[0m\x1b[32m', '----- Esta janela fecha em 7 segundos...      -----');
       console.log('');
 
@@ -286,12 +286,12 @@ function procurarNovoMbot() {
   noble.on('stateChange', function(state) {
 
     //console.log('Estado = '+state);
-    if (state === 'poweredOff') {
+    if (state == 'poweredOff') {
       console.log('');
       console.error('\x1b[31m', 'O Bluetooth não está ativado! Ative no ícone superior direito em seu computador e tente novamente.');
       console.error('\x1b[0m', '');
       process.exit(1);
-    } else if (state === 'poweredOn') {
+    } else if (state == 'poweredOn') {
       console.log('---------------------------------------------------------------');
       console.log('                    Serviço Bluetooth Ativo                    ');
       console.log('---------------------------------------------------------------');
@@ -338,7 +338,7 @@ function procurarNovoMbot() {
       console.error('\x1b[31m', 'Confira se ele está ligado com a placa BLE e luz branca piscando.');
       console.error('\x1b[31m', 'Se tudo estiver ok, tente novamente após desligar e ligar a antena Bluetooth');
       console.error('\x1b[31m', 'do computador, usando o atalho no canto superior direito.');
-      console.error('\x1b[0m',  '----------------------------------------------------------------------------');
+      console.error('\x1b[0m', '----------------------------------------------------------------------------');
       // Encerra com falha
       noble.stopScanning();
       setTimeout(encerraAposLeitura, 10000);
@@ -470,7 +470,11 @@ var ledLeft2 = new Buffer([0xff, 0x55, 0x09, 0x00, 0x02, 0x08, 0x07, 0x02, 0x02,
 var face = new Buffer([0xff, 0x55, 0x17, 0x00, 0x02, 0x29, 0x04, 0x02, 0x00, 0x00, 0x00, 0x00, 0x40, 0x48, 0x44, 0x42, 0x02, 0x02, 0x02, 0x02, 0x42, 0x44, 0x48, 0x40, 0x00, 0x00]);
 
 // Read Ultrasensor data
-var readUS = new Buffer([0xff, 0x55, 0x04, 0x00, 0x01, 0x01, 0x03]);
+var readUS = new Buffer([0x07, 0xff, 0x55, 0x04, 0x00, 0x01, 0x01, 0x03]);
+
+// Altecacoes de valores dos buffers do readUS, readLightSensor e readLineFollower
+// feitas a partir de padroes extraidos do app do scratchx e como o buffer se apresenta la.
+
 
 //**************************************************
 //     ff    55      len idx action device port slot data a
@@ -480,10 +484,10 @@ var readUS = new Buffer([0xff, 0x55, 0x04, 0x00, 0x01, 0x01, 0x03]);
 
 //o valor de 0x03 é o device(sensor de luz), e o 0x06 é a port(onborard)
 // Sensor de luz
-var readLightSensor = new Buffer([0xff, 0x55, 0x04, 0x00, 0x01, 0x03, 0x06]);
+var readLightSensor = new Buffer([0x07, 0xff, 0x55, 0x04, 0x18, 0x01, 0x03, 0x06]);
 
 // Segue linha
-var readLineFollower = new Buffer([0xff, 0x55, 0x04, 0x00, 0x01, 0x11, 0x02]);
+var readLineFollower = new Buffer([0x07, 0xff, 0x55, 0x04, 0x08, 0x01, 0x11, 0x02]);
 
 //Lê segue linha, botão A
 var readIR = new Buffer([0xff, 0x55, 0x05, 0x00, 0x01, 0x1E, 0x00, 0x45]);
@@ -566,12 +570,12 @@ function controlaMbot() {
 
   noble.on('stateChange', function(state) {
 
-    if (state === 'poweredOff') {
+    if (state == 'poweredOff') {
       console.log('');
       console.error('\x1b[31m', 'O Bluetooth não está ativado! Ative no ícone superior direito em seu computador e tente novamente.');
       console.error('\x1b[0m', '');
       process.exit(1);
-    } else if (state === 'poweredOn') {
+    } else if (state == 'poweredOn') {
       console.log('---------------------------------------------------------------');
       console.log('                    Serviço Bluetooth Ativo                    ');
       console.log('---------------------------------------------------------------');
@@ -608,7 +612,7 @@ function controlaMbot() {
       console.error('\x1b[31m', 'Confira se ele está ligado com a placa BLE e luz branca piscando.');
       console.error('\x1b[31m', 'Se tudo estiver ok, tente novamente após desligar e ligar a antena Bluetooth');
       console.error('\x1b[31m', 'do computador, usando o atalho no canto superior direito.');
-      console.error('\x1b[0m' , '----------------------------------------------------------------------------');
+      console.error('\x1b[0m', '----------------------------------------------------------------------------');
       // Encerra com falha
       noble.stopScanning();
       setTimeout(encerraAposLeitura, 10000);
@@ -872,7 +876,7 @@ function monitoraDispositivoConectado() {
 
   if (contadorIntervalo == ultimoContador) {
 
-    console.log('contadorIntervalo=' + contadorIntervalo + ' e ultimoContador=' + ultimoContador);
+    // console.log('contadorIntervalo=' + contadorIntervalo + ' e ultimoContador=' + ultimoContador);
 
     ultimoContador = contadorIntervalo;
 
@@ -889,77 +893,16 @@ function monitoraDispositivoConectado() {
 
 }
 
-var poolSensor = 0;
+var sensoresUtilizados = [];
 
 function mbotReadDataDriver(error, services, characteristics) {
 
   var mbotRComms = characteristics;
 
   //   console.log('! mbot READ BLE characteristic found.');
-
-
-  // data callback receives notifications
-  mbotRComms.on('data', (data, isNotification) => {
-    //console.log('> mbot data received: "' + data.toString('hex') + '"');
-
-    contadorIntervalo++;
-
-    // Se não notificou cliente da conexão notifica agora
-    if (temClienteConectado() && (contadorIntervalo == 300 || !notificouClienteConexao)) {
-      //console.log('Entrou para notificar conexao');
-      enviaMsgParaTodosClientes('conectado:' + macaddressConectado);
-      notificouClienteConexao = true;
-      contadorIntervalo = 0;
-    }
-
-
-    // This doesn't work all the time.
-    // We are epecting that the received data is a complete answer starting by 0xff and 0x55
-    // To be perfect we need to "slide" the buffer looking for 0xff0x55
-    if (data[0] == 0xff) // Command header
-      if (data[1] == 0x55)
-        if (data[3] == 0x2) { // Float value
-          var buf = new Buffer(4);
-          buf[3] = data[4];
-          buf[2] = data[5];
-          buf[1] = data[6];
-          buf[0] = data[7];
-
-          //console.log(buf.toString('hex'));
-          var b = new ArrayBuffer(4);
-          var v = new DataView(b);
-          buf.forEach(function(b, i) {
-            v.setUint8(i, b);
-          });
-
-          // console.log("float: " + v.getFloat32(0) );
-          //console.log("teste: " + JSON.stringify(data));
-
-          if (poolSensor == 0) {
-            // Mitiga problema de contaminação. TODO Melhorar em versão 1.01
-            if (v.getFloat32(0) >= 0 && v.getFloat32(0) <= 3)
-              notificaCliente(LINESENSOR, v.getFloat32(0))
-            poolSensor = 1;
-          } else if (poolSensor == 1) {
-            // Despreza zeros porque ocorre eventualmente por algum motivo
-            if (v.getFloat32(0) > 0)
-              notificaCliente(LIGHTSENSOR, v.getFloat32(0))
-            poolSensor = 2;
-          } else if (poolSensor == 2) {
-            if (v.getFloat32(0) >= 0 && v.getFloat32(0) <= 400)
-              notificaCliente(ULTRASOUNDSENSOR, v.getFloat32(0))
-            poolSensor = 0;
-          }
-
-
-
-        }
-
-
-  });
-
   // subscribe to be notified whenever the peripheral update the characteristic
   mbotRComms.subscribe(error => {
+
     if (error) {
       console.error('Erro ao subscrever para ouvir características do mbot BLE');
       notificaClienteDesconexao(error);
@@ -983,7 +926,79 @@ function mbotReadDataDriver(error, services, characteristics) {
       console.log('\x1b[0m', '-------------------------------------------------------------');
       monitoriaTask = setInterval(monitoraDispositivoConectado, 3000);
     }
+
   });
+
+
+  //var bufAnterior=new Buffer(4);
+  // data callback receives notifications
+  mbotRComms.on('data', (data, isNotification) => {
+
+    // console.log('> mbot data received: "' + data.toString('hex') + '"');
+
+    contadorIntervalo++;
+
+    // Se não notificou cliente da conexão notifica agora
+    if (temClienteConectado() && (contadorIntervalo == 300 || !notificouClienteConexao)) {
+      //console.log('Entrou para notificar conexao');
+      enviaMsgParaTodosClientes('conectado:' + macaddressConectado);
+      notificouClienteConexao = true;
+      contadorIntervalo = 0;
+    }
+
+
+    // This doesn't work all the time.
+    // We are epecting that the received data is a complete answer starting by 0xff and 0x55
+    // To be perfect we need to "slide" the buffer looking for 0xff0x55
+    if (data[0] == 0xff && data.length >= 7) // Command header
+      if (data[1] == 0x55)
+        if (data[3] == 0x2) { // Float value
+          var buf = new Buffer(4);
+          buf[3] = data[4];
+          buf[2] = data[5];
+          buf[1] = data[6];
+          buf[0] = data[7];
+
+          // if (buf!=bufAnterior) {
+          //   bufAnterior=buf;
+          //   //console.log('buffer = '+buf.toString('hex'));
+          // }
+
+          var b = new ArrayBuffer(4);
+          var v = new DataView(b);
+          buf.forEach(function(b, i) {
+            v.setUint8(i, b);
+          });
+
+          // console.log("float: " + v.getFloat32(0) );
+          //console.log("teste: " + JSON.stringify(data));
+
+          //Alteracao condicionais para isolar sensores que sao recebidos
+
+          if (sensoresUtilizados && sensoresUtilizados.length > 0 && sensoresUtilizados[0] && data[2] == 0x08) {
+            // Mitiga problema de contaminação. TODO Melhorar em versão 1.01
+            if (v.getFloat32(0) >= 0 && v.getFloat32(0) <= 4)
+              notificaCliente(LINESENSOR, v.getFloat32(0))
+            //poolSensor = 1;
+          }
+
+          if (sensoresUtilizados && sensoresUtilizados.length > 0 && sensoresUtilizados[1] && data[2] == 0x18) {
+            // Despreza zeros porque ocorre eventualmente por algum motivo
+            if (v.getFloat32(0) > 0)
+              notificaCliente(LIGHTSENSOR, v.getFloat32(0))
+            //poolSensor = 2;
+          }
+
+          if (sensoresUtilizados && sensoresUtilizados.length > 0 && sensoresUtilizados[2] && data[2] == 0x00) {
+            if (v.getFloat32(0) > 4 && v.getFloat32(0) <= 400)
+              notificaCliente(ULTRASOUNDSENSOR, v.getFloat32(0))
+            // poolSensor = 0;
+          }
+
+        }
+
+  });
+
 }
 
 var mbotWComms = null;
@@ -1011,32 +1026,39 @@ function mbotWriteDataDriver(error, services, characteristics) {
     //resposta 1, apenas direito em cima da linha
     //resposta 0, ambos  em cima da linha
     //
-    if (poolSensor == 0) {
+    if (sensoresUtilizados && sensoresUtilizados.length > 0 && sensoresUtilizados[0]) {
+      //console.log("Lendo dados do sensor de segue linha...");
       mbotWComms.write(readLineFollower, true, function(error) {
-        // console.log("Lendo dados do sensor de segue linha...");
-      });
 
-    } else if (poolSensor == 1) {
-
-      // Lê dados do sensor de luz
-      mbotWComms.write(readLightSensor, true, function(error) {
-        //  console.log("Lendo dados do sensor de luz...");
-      });
-
-    } else if (poolSensor == 2) {
-
-      // Lê dados do sensor ultrassom
-      mbotWComms.write(readUS, true, function(error) {
-        // console.log("Lendo dados do sensor ultrassom...");
       });
 
     }
 
+    if (sensoresUtilizados && sensoresUtilizados.length > 0 && sensoresUtilizados[1]) {
+      // console.log("Lendo dados do sensor de luz...");
+      // Lê dados do sensor de luz
+      mbotWComms.write(readLightSensor, true, function(error) {
 
-    loop = ++loop % 2;
+      });
+
+    }
+
+    if (sensoresUtilizados && sensoresUtilizados.length > 0 && sensoresUtilizados[2]) {
+      // console.log("Lendo dados do sensor ultrassom...");
+      // Lê dados do sensor ultrassom
+      mbotWComms.write(readUS, true, function(error) {
+
+        }
+
+      );
+
+    }
+
+
+    //loop = ++loop % 2;
 
     //if ( (count % 5) == 0) console.log(".");
-  }, 100);
+  }, 20);
 }
 
 
@@ -1090,12 +1112,25 @@ function escreveParaMBot(comando, valor) {
   // Comando que apenas restringe a captura de sensores
   if (comando == SUBSCRICAO) {
 
-    var sensores = valor.split(',');
+    // console.log('valor subscricao = '+valor);
+    sensoresUtilizadosStr = valor.split(',');
 
-    usaSensorLinha = sensores[0] == "true";
-    usaSensorLuz = sensores[1] == "true";
-    usaSensorUltrasom = sensores[2] == "true";
+    if (sensoresUtilizadosStr[0] == "true")
+      sensoresUtilizados[0] = true;
+    else
+      sensoresUtilizados[0] = false;
 
+    if (sensoresUtilizadosStr[1] == "true")
+      sensoresUtilizados[1] = true;
+    else
+      sensoresUtilizados[1] = false;
+
+    if (sensoresUtilizadosStr[2] == "true")
+      sensoresUtilizados[2] = true;
+    else
+      sensoresUtilizados[2] = false;
+
+    // console.log('recebeu = '+sensoresUtilizados);
   }
 
   // Comandos a enviar imediatamente
