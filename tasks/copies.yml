@@ -1,109 +1,109 @@
-- name: Copiando arquivos de imagens
+- name:            Copiando arquivos de imagens
   copy:
-     src: files/icons
-     dest: /usr/share
-     mode: 0777
-- name: Copiando programas executáveis
+     src:          files/icons
+     dest:         /usr/share
+     mode:         0777
+- name:            Copiando programas executáveis
   copy:
-     src: files/programs
-     dest: /home/mindmakers
-     mode: 0755
-- name: Verificando shell Sphero
+     src:          files/programs
+     dest:         /home/mindmakers
+     mode:         0755
+- name:            Verificando shell Sphero
   stat:
-     path: /home/mindmakers/programs/shells/sphero-connect.sh
-  register: sphero
+     path:         /home/mindmakers/programs/shells/sphero-connect.sh
+  register:        sphero
 - copy:
-     src: files/sphero-connect.sh
-     dest: /home/mindmakers/programs/shells/
-     mode: 0755
-  when: not sphero.stat.exists
+     src:          files/sphero-connect.sh
+     dest:         /home/mindmakers/programs/shells/
+     mode:         0755
+  when:            not sphero.stat.exists
 - file:
-    path: /home/pi/.config/lxpanel
-    state: directory
-    attributes: -i
-    recurse: yes
-- name: Personalizando barra superior
+    path:          /home/pi/.config/lxpanel
+    state:         directory
+    attributes:    -i
+    recurse:       yes
+- name:            Personalizando barra superior
   copy:
-     src: files/panel
-     dest: /home/pi/.config/lxpanel/LXDE-pi/panels
+     src:          files/panel
+     dest:         /home/pi/.config/lxpanel/LXDE-pi/panels
      # attributes: +i
-     mode: 0755
-- name: Personalizando configurações Desktop
+     mode:         0755
+- name:            Personalizando configurações Desktop
   copy:
-     src: files/config/libfm
-     dest: /home/pi/.config/
+     src:          files/config/libfm
+     dest:         /home/pi/.config/
      # attributes: +i
-     mode: 0755
-- name: Alterando resolução da tela
+     mode:         0755
+- name:            Alterando resolução da tela
   lineinfile:
-    path: /boot/config.txt
-    regexp: '^#hdmi_group=1'
-    line: 'hdmi_group=2'
-    backrefs: yes
+    path:          /boot/config.txt
+    regexp:        '^#hdmi_group=1'
+    line:          'hdmi_group=2'
+    backrefs:      yes
 - lineinfile:
-    path: /boot/config.txt
-    regexp: '^#hdmi_mode=1'
-    line: 'hdmi_mode=81'
-    backrefs: yes
+    path:          /boot/config.txt
+    regexp:        '^#hdmi_mode=1'
+    line:          'hdmi_mode=81'
+    backrefs:      yes
 - lineinfile:
-    path: /boot/config.txt
-    regexp: '^#hdmi_force_hotplug=1'
-    line: 'hdmi_force_hotplug=1'
-    backrefs: yes
+    path:          /boot/config.txt
+    regexp:        '^#hdmi_force_hotplug=1'
+    line:          'hdmi_force_hotplug=1'
+    backrefs:      yes
 - lineinfile:
-      path: /boot/config.txt
-      regexp: 'disable_splash=1'
-      line: 'disable_splash=1'
+      path:        /boot/config.txt
+      regexp:      'disable_splash=1'
+      line:        'disable_splash=1'
       insertafter: EOF
-- name: Verificando se existe arquivo school.info
+- name:            Verificando se existe arquivo school.info
   stat:
-     path: /home/mindmakers/school.info
-  register: school
+     path:         /home/mindmakers/school.info
+  register:        school
 - copy:
-     src: school.info
-     dest: /home/mindmakers/school.info
-     mode: 0755
-  when: not school.stat.exists
+     src:          school.info
+     dest:         /home/mindmakers/school.info
+     mode:         0755
+  when:            not school.stat.exists
 - file:
-     path: /usr/local/bin
-     state: directory
-     mode: 0755
+     path:         /usr/local/bin
+     state:        directory
+     mode:         0755
 - file:
-    path: /usr/local/bin/alocar-para-escola.sh
-    state: absent
+    path:          /usr/local/bin/alocar-para-escola.sh
+    state:         absent
 - file:
-    path: /usr/local/bin/alocar-para-instrutor.sh
-    state: absent
+    path:          /usr/local/bin/alocar-para-instrutor.sh
+    state:         absent
 - copy:
-     src: files/bin
-     dest: /usr/local/
-     mode: 0755
+     src:          files/bin
+     dest:         /usr/local/
+     mode:         0755
 - copy:
-     src: files/programs/shells/adb-foto-download.sh
-     dest: /usr/local/bin
-     mode: 0755
-- name: Copiando arquivo de inicialização do mqtt
+     src:          files/programs/shells/adb-foto-download.sh
+     dest:         /usr/local/bin
+     mode:         0755
+- name:            Copiando arquivo de inicialização do mqtt
   copy:
-     src: files/mqtt/mqttbot
-     dest: /etc/init.d
-     mode: 0755
-- shell: 'sudo update-rc.d mqttbot defaults'
+     src:          files/mqtt/mqttbot
+     dest:         /etc/init.d
+     mode:         0755
+- shell:           'sudo update-rc.d mqttbot defaults'
   args:
-    warn: no
-- name: Copiando arquivo de inicialização do mmiotjs
+    warn:          no
+- name:            Copiando arquivo de inicialização do mmiotjs
   copy:
-     src: files/mqtt/mmiotjs
-     dest: /etc/init.d
-     mode: 0755
-- shell: 'sudo update-rc.d mmiotjs defaults'
+     src:          files/mqtt/mmiotjs
+     dest:         /etc/init.d
+     mode:         0755
+- shell:           'sudo update-rc.d mmiotjs defaults'
   args:
-    warn: no
+    warn:          no
 - stat:
-     path: /home/mindmakers/imgs/z.png
-  register: imgs
-- name: Copiando imagens
+     path:         /home/mindmakers/imgs/z.png
+  register:        imgs
+- name:            Copiando imagens
   copy:
-     src: files/imgs
-     dest: /home/mindmakers
-     mode: 0755
-  when: not imgs.stat.exists
+     src:          files/imgs
+     dest:         /home/mindmakers
+     mode:         0755
+  when:            not imgs.stat.exists

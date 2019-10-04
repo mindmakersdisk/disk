@@ -1,15 +1,15 @@
-- name: Verificando se Requests já existe
+- name:     Verificando se Requests já existe
   stat:
-     path: /home/mindmakers/programs/requests
+     path:  /home/mindmakers/programs/requests
   register: req
-- name: Clonando módulo Requests para Python.
+- name:     Clonando módulo Requests para Python.
   git:
-    repo: 'https://github.com/requests/requests.git'
-    dest: /home/mindmakers/programs/requests
-    clone: yes
-  when: not req.stat.exists
-- name: Instalando requests
-  shell: 'cd /home/mindmakers/programs/requests && sudo pip install .'
+    repo:   'https://github.com/requests/requests.git'
+    dest:   /home/mindmakers/programs/requests
+    clone:  yes
+  when:     not req.stat.exists
+- name:     Instalando requests
+  shell:    'cd /home/mindmakers/programs/requests && sudo pip install .'
   args:
-    warn: no
-  when: not req.stat.exists
+    warn:   no
+  when:     not req.stat.exists

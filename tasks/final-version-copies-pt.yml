@@ -1,13 +1,13 @@
-- name: Copiando o atalho notas de liberacão para a Área de Trabalho
+- name:          Copiando o atalho notas de liberacão para a Área de Trabalho
   copy:
-     src: releasenotes.desktop
-     dest: "/home/pi/Área de Trabalho"
-     owner: pi
-     group: pi
+     src:        releasenotes.desktop
+     dest:       "/home/pi/Área de Trabalho"
+     owner:      pi
+     group:      pi
      attributes: +i
-     mode: 0755
-- name: Copiando o arquivo com as notas de liberação da versão para o disco
+     mode:       0755
+- name:          Copiando o arquivo com as notas de liberação da versão para o disco
   copy:
-     src: releasenotes.info
-     dest: /home/mindmakers
-     mode: 0755
+     src:        releasenotes.info
+     dest:       /home/mindmakers
+     mode:       0755

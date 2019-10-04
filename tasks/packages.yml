@@ -1,208 +1,208 @@
-- name: Verificando se o Node.js já foi instalado
+- name:            Verificando se o Node.js já foi instalado
   stat:
-     path: /home/mindmakers/programs/verify/node815
-  register: nodejs
-- name: Configurando arquivos para instalar Nodejs 8.16*
-  shell: 'curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -'
+     path:         /home/mindmakers/programs/verify/node815
+  register:        nodejs
+- name:            Configurando arquivos para instalar Nodejs 8.16*
+  shell:           'curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -'
   args:
-    warn: no
-  when: not nodejs.stat.exists
-- name: Atualizando Repositórios
+    warn:          no
+  when:            not nodejs.stat.exists
+- name:            Atualizando Repositórios
   apt:
      update_cache: yes
-  when: not nodejs.stat.exists
-- name: Verifica Versao npm
-  command: nodejs --version
-  register: node_output
-- name: Instalando Nodejs 8.* se versão < 8.12
+  when:            not nodejs.stat.exists
+- name:            Verifica Versao npm
+  command:         nodejs --version
+  register:        node_output
+- name:            Instalando Nodejs 8.* se versão < 8.12
   apt:
-     name: nodejs=8*
-  when: node_output.stdout|int is version('8.12', operator='gt')
-- name: Instalando Nodejs 8.* se versão > 10.0
+     name:         nodejs=8*
+  when:            node_output.stdout|float is version('8.12', operator='gt')
+- name:            Instalando Nodejs 8.* se versão > 10.0
   apt:
-     name: nodejs=8*
-     force: yes
-  when: node_output.stdout|int is version('10.0', operator='lt')
-- name: Criando pasta de verificação de instalação do node 8.15.*
+     name:         nodejs=8*
+     force:        yes
+  when:            node_output.stdout|float is version('10.0', operator='lt')
+- name:            Criando pasta de verificação de instalação do node 8.15.*
   file:
-    path: /home/mindmakers/programs/verify/node815
-    state: directory
-    mode: 0444
-- name: Instalando libudev-dev e build-essential
+    path:          /home/mindmakers/programs/verify/node815
+    state:         directory
+    mode:          0444
+- name:            Instalando libudev-dev e build-essential
   apt:
-     name: [libudev-dev, build-essential]
-- name: Instalando vnstat
+     name:         [libudev-dev, build-essential]
+- name:            Instalando vnstat
   apt:
-     name: vnstat
-- name: Instalando android-tools
+     name:         vnstat
+- name:            Instalando android-tools
   apt:
-     name: android-tools-adb
-- name: Instalando fbi
+     name:         android-tools-adb
+- name:            Instalando fbi
   apt:
-     name: fbi
-- name: Instalando imagemagick
+     name:         fbi
+- name:            Instalando imagemagick
   apt:
-     name: imagemagick
-- name: Verificando se NPM está instalado
-  command: dpkg-query -l npm
-  register: deb_check_npm
-  ignore_errors: yes
-- name: Instalando npm 1.4* se o pacote não estiver instalado
+     name:         imagemagick
+- name:            Verificando se NPM está instalado
+  command:         dpkg-query -l npm
+  register:        deb_check_npm
+  ignore_errors:   yes
+- name:            Instalando npm 1.4* se o pacote não estiver instalado
   apt:
-     name: npm
-  when: deb_check_npm is failed
-- name: Verifica Versao npm
-  command: npm --version
-  register: npm_output
-  #ignore_errors: yes
-- name: Atualizando npm se versão <6.5.0
+     name:         npm
+  when:            deb_check_npm is failed
+- name:            Verifica Versao npm
+  command:         npm --version
+  register:        npm_output
+  #ignore_errors:  yes
+- name:            Atualizando npm se versão <6.5.0
   npm:
-     name: npm
-     global: yes
-     state: latest
-  when: npm_output.stdout|int is version('6.5.0', operator='lt')
-- name: Verificando npm se versão <6.5.0
+     name:         npm
+     global:       yes
+     state:        latest
+  when:            npm_output.stdout|int is version('6.5.0', operator='lt')
+- name:            Verificando npm se versão <6.5.0
   npm:
-     name: npm
-     global: yes
-     state: latest
-  when: npm_output.stdout|int is version('6.5.0', 'gt')
-- name: Verificando se as dependências npm do Sphero já foram instaladas
+     name:         npm
+     global:       yes
+     state:        latest
+  when:            npm_output.stdout|int is version('6.5.0', 'gt')
+- name:            Verificando se as dependências npm do Sphero já foram instaladas
   stat:
-     path: /home/mindmakers/programs/verify/npmsphero
-  register: npmsphero
-- name: Copia packages.json para iniciar npm
+     path:         /home/mindmakers/programs/verify/npmsphero
+  register:        npmsphero
+- name:            Copia packages.json para iniciar npm
   copy:
-     src: files/package.json
-     dest: /home/mindmakers/programs/
-     mode: 0755
-  when: not npmsphero.stat.exists
-- name: Instalando pacote do npm "bluetooth-hci-socket"
+     src:          files/package.json
+     dest:         /home/mindmakers/programs/
+     mode:         0755
+  when:            not npmsphero.stat.exists
+- name:            Instalando pacote do npm "bluetooth-hci-socket"
   npm:
-    name: bluetooth-hci-socket
-    version: '0.5.1'
-    path: /home/mindmakers/programs
-    executable: /usr/bin/npm --unsafe-perm=true
-  # when: not npmsphero.stat.exists
-- name: Instalando pacote do npm "bluebird"
+    name:          bluetooth-hci-socket
+    version:       '0.5.1'
+    path:          /home/mindmakers/programs
+    executable:    /usr/bin/npm --unsafe-perm=true
+  # when:          not npmsphero.stat.exists
+- name:            Instalando pacote do npm "bluebird"
   npm:
-    name: bluebird
-    version: '3.5.3'
-    path: /home/mindmakers/programs
-  # when: not npmsphero.stat.exists
-- name: Instalando pacote do npm "browser-serialport"
+    name:          bluebird
+    version:       '3.5.3'
+    path:          /home/mindmakers/programs
+  # when:          not npmsphero.stat.exists
+- name:            Instalando pacote do npm "browser-serialport"
   npm:
-    name: browser-serialport
-    version: '2.1.0'
-    path: /home/mindmakers/programs
-  # when: not npmsphero.stat.exists
-- name: Instalando pacote do npm "debug"
+    name:          browser-serialport
+    version:       '2.1.0'
+    path:          /home/mindmakers/programs
+  # when:          not npmsphero.stat.exists
+- name:            Instalando pacote do npm "debug"
   npm:
-    name: debug
-    version: '4.1.1'
-    path: /home/mindmakers/programs
-  # when: not npmsphero.stat.exists
-- name: Instalando pacote do npm "express"
+    name:          debug
+    version:       '4.1.1'
+    path:          /home/mindmakers/programs
+  # when:          not npmsphero.stat.exists
+- name:            Instalando pacote do npm "express"
   npm:
-    name: express
-    version: '4.16.4'
-    path: /home/mindmakers/programs
-  # when: not npmsphero.stat.exists
-- name: Instalando pacote do npm "grunt"
+    name:          express
+    version:       '4.16.4'
+    path:          /home/mindmakers/programs
+  # when:          not npmsphero.stat.exists
+- name:            Instalando pacote do npm "grunt"
   npm:
-    name: grunt
-    version: '1.0.3'
-    path: /home/mindmakers/programs
-  # when: not npmsphero.stat.exists
-- name: Instalando pacote do npm "keypress"
+    name:          grunt
+    version:       '1.0.3'
+    path:          /home/mindmakers/programs
+  # when:          not npmsphero.stat.exists
+- name:            Instalando pacote do npm "keypress"
   npm:
-    name: keypress
-    version: '0.2.1'
-    path: /home/mindmakers/programs
-  # when: not npmsphero.stat.exists
-- name: Instalando pacote do npm "webworker-threads"
+    name:          keypress
+    version:       '0.2.1'
+    path:          /home/mindmakers/programs
+  # when:          not npmsphero.stat.exists
+- name:            Instalando pacote do npm "webworker-threads"
   npm:
-    name: webworker-threads
-    version: '0.7.17'
-    path: /home/mindmakers/programs
-    executable: /usr/bin/npm --unsafe-perm=true
-  # when: not npmsphero.stat.exists
-- name: Instalando pacote do npm "noble"
+    name:          webworker-threads
+    version:       '0.7.17'
+    path:          /home/mindmakers/programs
+    executable:    /usr/bin/npm --unsafe-perm=true
+  # when:          not npmsphero.stat.exists
+- name:            Instalando pacote do npm "noble"
   npm:
-    name: noble
-    version: '1.9.1'
-    path: /home/mindmakers/programs
-    executable: /usr/bin/npm --unsafe-perm=true
-  # when: not npmsphero.stat.exists
-- name: Instalando pacote do npm "sphero"
+    name:          noble
+    version:       '1.9.1'
+    path:          /home/mindmakers/programs
+    executable:    /usr/bin/npm --unsafe-perm=true
+  # when:          not npmsphero.stat.exists
+- name:            Instalando pacote do npm "sphero"
   npm:
-    name: sphero
-    version: '0.9.2'
-    path: /home/mindmakers/programs
-  # when: not npmsphero.stat.exists
-- name: Instalando pacote do npm "serialport"
+    name:          sphero
+    version:       '0.9.2'
+    path:          /home/mindmakers/programs
+  # when:          not npmsphero.stat.exists
+- name:            Instalando pacote do npm "serialport"
   npm:
-    name: serialport
-    version: '4.0.7'
-    path: /home/mindmakers/programs
-    executable: /usr/bin/npm --unsafe-perm=true --build-from-source=true
-  # when: not npmsphero.stat.exists
-- name: Instalando pacote do npm "request"
+    name:          serialport
+    version:       '4.0.7'
+    path:          /home/mindmakers/programs
+    executable:    /usr/bin/npm --unsafe-perm=true --build-from-source=true
+  # when:          not npmsphero.stat.exists
+- name:            Instalando pacote do npm "request"
   npm:
-    name: request
-    version: '2.88.0'
-    path: /home/mindmakers/programs
-  # when: not npmsphero.stat.exists
-- name: Instalando pacote do npm "websocket"
+    name:          request
+    version:       '2.88.0'
+    path:          /home/mindmakers/programs
+  # when:          not npmsphero.stat.exists
+- name:            Instalando pacote do npm "websocket"
   npm:
-    name: websocket
-    version: '1.0.28'
-    path: /home/mindmakers/programs
-  # when: not npmsphero.stat.exists
-- name: Instalando pacote do npm "inquirer"
+    name:          websocket
+    version:       '1.0.28'
+    path:          /home/mindmakers/programs
+  # when:          not npmsphero.stat.exists
+- name:            Instalando pacote do npm "inquirer"
   npm:
-    name: inquirer
-    version: '6.2.2'
-    path: /home/mindmakers/programs
-  # when: not npmsphero.stat.exists
-- name: Instalando pacote do npm "readline"
+    name:          inquirer
+    version:       '6.2.2'
+    path:          /home/mindmakers/programs
+  # when:          not npmsphero.stat.exists
+- name:            Instalando pacote do npm "readline"
   npm:
-    name: readline
-    version: '1.3.0'
-    path: /home/mindmakers/programs
-  # when: not npmsphero.stat.exists
-- name: Instalando pacote do npm "googleapis"
+    name:          readline
+    version:       '1.3.0'
+    path:          /home/mindmakers/programs
+  # when:          not npmsphero.stat.exists
+- name:            Instalando pacote do npm "googleapis"
   npm:
-    name: googleapis
-    #version: '39.2.0'
-    path: /home/mindmakers/programs
-  # when: not npmsphero.stat.exists
-- name: Instalando pacote do npm "key-sender"
+    name:          googleapis
+    #version:      '39.2.0'
+    path:          /home/mindmakers/programs
+  # when:          not npmsphero.stat.exists
+- name:            Instalando pacote do npm "key-sender"
   npm:
-    name: node-key-sender
-    #version: '39.2.0'
-    path: /home/mindmakers/programs
-  # when: not npmsphero.stat.exists
-- name: Instalando pacote do npm "shelljs"
+    name:          node-key-sender
+    #version:      '39.2.0'
+    path:          /home/mindmakers/programs
+  # when:          not npmsphero.stat.exists
+- name:            Instalando pacote do npm "shelljs"
   npm:
-    name: shelljs
-    #version: '39.2.0'
-    path: /home/mindmakers/programs
-  # when: not npmsphero.stat.exists
-- name: Criando pasta de verificação das dependências Sphero
+    name:          shelljs
+    #version:      '39.2.0'
+    path:          /home/mindmakers/programs
+  # when:          not npmsphero.stat.exists
+- name:            Criando pasta de verificação das dependências Sphero
   file:
-    path: /home/mindmakers/programs/verify/npmsphero
-    state: directory
-    mode: 0444
-- name: Instalando paho-mqtt
+    path:          /home/mindmakers/programs/verify/npmsphero
+    state:         directory
+    mode:          0444
+- name:            Instalando paho-mqtt
   pip:
-    name: paho-mqtt
-- name: Instalando pip keyboard
+    name:          paho-mqtt
+- name:            Instalando pip keyboard
   pip:
-    name: keyboard
-- name: Instalando pip logging
+    name:          keyboard
+- name:            Instalando pip logging
   pip:
-    name: logging
-- name: Instalando speedtest-cli
+    name:          logging
+- name:            Instalando speedtest-cli
   apt:
-     name: speedtest-cli
+     name:         speedtest-cli

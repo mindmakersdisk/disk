@@ -1,30 +1,30 @@
-- name: Verificando se mBot já existe
+- name:      Verificando se mBot já existe
   stat:
-     path: /home/mindmakers/mbot/mBlock_RaspberryPI
-  register: mbot
-- name: Criando a pasta mBot
+     path:   /home/mindmakers/mbot/mBlock_RaspberryPI
+  register:  mbot
+- name:      Criando a pasta mBot
   file:
-    path: /home/mindmakers/mbot
-    state: directory
-    mode: 0755
-- name: Baixando arquivo de instalação mBot -- Este passo pode demorar bastante --
+    path:    /home/mindmakers/mbot
+    state:   directory
+    mode:    0755
+- name:      Baixando arquivo de instalação mBot -- Este passo pode demorar bastante --
   get_url:
-    url: http://download.makeblock.com/mBlock_RaspberryPI.zip
-    dest: /home/mindmakers/mbot
+    url:     http://download.makeblock.com/mBlock_RaspberryPI.zip
+    dest:    /home/mindmakers/mbot
     timeout: 60
-    mode: 0744
-  when: not mbot.stat.exists
-- name: Verificando se mBot já foi extraído
+    mode:    0744
+  when:      not mbot.stat.exists
+- name:      Verificando se mBot já foi extraído
   stat:
-     path: /home/mindmakers/mbot/mBlock_RaspberryPI/mBlock
-  register: mbotext
-- name: Extraindo mBlock_RaspberryPI.zip
-  shell: 'unzip mBlock_RaspberryPI.zip'
+     path:   /home/mindmakers/mbot/mBlock_RaspberryPI/mBlock
+  register:  mbotext
+- name:      Extraindo mBlock_RaspberryPI.zip
+  shell:     'unzip mBlock_RaspberryPI.zip'
   args:
-     chdir: /home/mindmakers/mbot
-     warn: no
-  when: not mbotext.stat.exists
-- name: Instando pacotes npm baseados no package.json.
+     chdir:  /home/mindmakers/mbot
+     warn:   no
+  when:      not mbotext.stat.exists
+- name:      Instando pacotes npm baseados no package.json.
   npm:
-    path: /home/mindmakers/mbot/mBlock_RaspberryPI/desktop-app
-  when: not mbotext.stat.exists
+    path:    /home/mindmakers/mbot/mBlock_RaspberryPI/desktop-app
+  when:      not mbotext.stat.exists

@@ -1,21 +1,21 @@
 #Cria arquivos .log na máquina local em /home/mindmakers/debug de todos os:
 #ansible_facts, pacotes instalados e suas versões.
-- hosts: localhost
+- hosts:        localhost
 
   tasks:
-  - name: Criando pastaa debug
+  - name:       Criando pastaa debug
     file:
-       path: /home/mindmakers/debug
-       state: directory
-       mode: 0755
-  - name: Copiando conteúdo de ansible_facts para arquivo em /home/mindmakers/debug/ansible_facts.log
+       path:    /home/mindmakers/debug
+       state:   directory
+       mode:    0755
+  - name:       Copiando conteúdo de ansible_facts para arquivo em /home/mindmakers/debug/ansible_facts.log
     copy:
-       content: "{{ ansible_facts }}" 
-       dest: "/home/mindmakers/debug/ansible_facts.log"
-  - name: Verificando arquivos instalados
-    command: apt list --installed
-    register: apt_list
-  - name: Copiando lista de pacotes instalados e suas versões para arquivo em /home/mindmakers/debug/apt_list.log
+       content: "{{ ansible_facts }}"
+       dest:    "/home/mindmakers/debug/ansible_facts.log"
+  - name:       Verificando arquivos instalados
+    command:    apt list --installed
+    register:   apt_list
+  - name:       Copiando lista de pacotes instalados e suas versões para arquivo em /home/mindmakers/debug/apt_list.log
     copy:
        content: "{{ apt_list.stdout_lines }}"
-       dest: "/home/mindmakers/debug/apt_list.log"
+       dest:    "/home/mindmakers/debug/apt_list.log"

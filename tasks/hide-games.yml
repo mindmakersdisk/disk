@@ -1,12 +1,12 @@
-- name: Escondendo Python-games
+- name:            Escondendo Python-games
   lineinfile:
-      path: /usr/share/applications/python-games.desktop
-      regexp: 'NoDisplay=true'
-      line: 'NoDisplay=true'
+      path:        /usr/share/applications/python-games.desktop
+      regexp:      'NoDisplay=true'
+      line:        'NoDisplay=true'
       insertafter: EOF
-- name: Escondendo Minecraft
+- name:            Escondendo Minecraft
   lineinfile:
-      path: /usr/share/raspi-ui-overrides/applications/minecraft-pi.desktop
-      regexp: 'NoDisplay=true'
-      line: 'NoDisplay=true'
+      path:        /usr/share/raspi-ui-overrides/applications/minecraft-pi.desktop
+      regexp:      'NoDisplay=true'
+      line:        'NoDisplay=true'
       insertafter: EOF

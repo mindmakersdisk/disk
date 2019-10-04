@@ -1,44 +1,44 @@
 # Arquivo playbook complementar - imagem para do professor
-- hosts: localhost
-  remote_user: root
+- hosts:               localhost
+  remote_user:         root
   pre_tasks:
     - file:
-        path: /etc/apt/sources.list.d/rpimonitor.list
-        state: absent
+        path:          /etc/apt/sources.list.d/rpimonitor.list
+        state:         absent
     - apt:
-         autoclean: yes
-    - name: Atualizando Repositórios
-      shell: 'sudo apt-get update --allow-releaseinfo-change'
+         autoclean:    yes
+    - name:            Atualizando Repositórios
+      shell:           'sudo apt-get update --allow-releaseinfo-change'
       args:
-        warn: no
-      when: ansible_facts.lsb.codename == "buster"
+        warn:          no
+      when:            ansible_facts.lsb.codename == "buster"
     - apt:
          update_cache: yes
-      changed_when: False
-      when: not ansible_facts.lsb.codename == "buster"
+      changed_when:    False
+      when:            not ansible_facts.lsb.codename == "buster"
 
   tasks:
    - set_fact:
-        path2desktop: "/home/pi/Desktop"
-   - name: Verificando se diretório Área de Trabalho existe
+        path2desktop:  "/home/pi/Desktop"
+   - name:             Verificando se diretório Área de Trabalho existe
      stat:
-        path: "/home/pi/Área de Trabalho"
-     register: adt
+        path:          "/home/pi/Área de Trabalho"
+     register:         adt
    - set_fact:
-        path2desktop: "{{ adt.stat.path }}"
-     when: adt.stat.exists
-   - include: tasks/teacher-en.yml
+        path2desktop:  "{{ adt.stat.path }}"
+     when:             adt.stat.exists
+   - include:          tasks/teacher-en.yml
 
-- import_playbook: student.yml
+- import_playbook:     student.yml
 
-- hosts: localhost
-  remote_user: root
+- hosts:               localhost
+  remote_user:         root
   tasks:
-    - include: tasks/copies-student.yml
-    - include: tasks/3dslash.yml
-    - shell: 'amixer cset numid=3 2'
+    - include:         tasks/copies-student.yml
+    - include:         tasks/3dslash.yml
+    - shell:           'amixer cset numid=3 2'
 # Copia as notas de liberação e o atalho com nome da versão atualizados
-    - include: tasks/final-version-copies-en.yml
-    - include: tasks/version_update.yml
-    - include: tasks/reboot.yml
+    - include:         tasks/final-version-copies-en.yml
+    - include:         tasks/version_update.yml
+    - include:         tasks/reboot.yml
 # Não acrescentar tarefas após estas últimas.

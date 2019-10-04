@@ -1,32 +1,32 @@
-- hosts:                localhost
+- hosts:               localhost
 
   tasks:
-    # - include:        tasks/rpimonitor.yml
+    # - include:       tasks/rpimonitor.yml
     - set_fact:
-         path2desktop:  "/home/pi/Desktop"
-    - name:             Verificando se diretório Área de Trabalho existe
+         path2desktop: "/home/pi/Desktop"
+    - name:            Verificando se diretório Área de Trabalho existe
       stat:
-         path:          "/home/pi/Área de Trabalho"
-      register:         adt
+         path:         "/home/pi/Área de Trabalho"
+      register:        adt
     - set_fact:
-         path2desktop:  "{{ adt.stat.path }}"
-      when:             adt.stat.exists
-    - name:             Alterando atributos do atalho da pasta scratch2
-      shell:            'sudo chattr -i /home/pi/Desktop/classroom_test.desktop'
+         path2desktop: "{{ adt.stat.path }}"
+      when:            adt.stat.exists
+    - name:            Alterando atributos do atalho da pasta scratch2
+      shell:           'sudo chattr -i /home/pi/Desktop/classroom_test.desktop'
       args:
-        warn:           no
+        warn:          no
     - copy:
-         src:           files/classroom_test.desktop
-         dest:          "{{ path2desktop }}/classroom_test.desktop"
-         owner:         pi
-         group:         pi
-         mode:          0755
+         src:          files/classroom_test.desktop
+         dest:         "{{ path2desktop }}/classroom_test.desktop"
+         owner:        pi
+         group:        pi
+         mode:         0755
     - lineinfile:
-        path:           "{{ path2desktop }}/classroom_test.desktop"
-        regexp:         '^Icon='
-        line:           'Icon=/usr/share/icons/{{sala.stdout}}.jpg'
-        backrefs:       yes
-    - name:             Alterando atributos do atalho da pasta scratch2
-      shell:            'sudo chattr +i /home/pi/Desktop/classroom_test.desktop'
+        path:          "{{ path2desktop }}/classroom_test.desktop"
+        regexp:        '^Icon='
+        line:          'Icon=/usr/share/icons/{{sala.stdout}}.jpg'
+        backrefs:      yes
+    - name:            Alterando atributos do atalho da pasta scratch2
+      shell:           'sudo chattr +i /home/pi/Desktop/classroom_test.desktop'
       args:
-        warn:           no
+        warn:          no

@@ -1,30 +1,30 @@
-- name: Copiando a imagem tema de fundo
+- name:          Copiando a imagem tema de fundo
   copy:
-     src: files/headless/fundo.png
-     dest: /home/mindmakers
-     mode: 0755
+     src:        files/headless/fundo.png
+     dest:       /home/mindmakers
+     mode:       0755
 - file:
-    path: "/home/pi/Área de Trabalho"
-    state: directory
-    attributes: -i
-    recurse: yes
-- name: Copiando demais atalhos para a Área de Trabalho
+    path:        "/home/pi/Área de Trabalho"
+    state:       directory
+    attributes:  -i
+    recurse:     yes
+- name:          Copiando demais atalhos para a Área de Trabalho
   copy:
-     src: files/headless/desktop/
-     dest: "/home/pi/Área de Trabalho"
-     owner: pi
-     group: pi
+     src:        files/headless/desktop/
+     dest:       "/home/pi/Área de Trabalho"
+     owner:      pi
+     group:      pi
      attributes: +i
-     mode: 0755
-- name: Verificando ícone sphero.desktop
+     mode:       0755
+- name:          Verificando ícone sphero.desktop
   stat:
-     path: "/home/pi/Área de Trabalho/sphero.desktop"
-  register: spherodesk
-- name: Copiando atalho sphero.desktop
+     path:       "/home/pi/Área de Trabalho/sphero.desktop"
+  register:      spherodesk
+- name:          Copiando atalho sphero.desktop
   copy:
-     src: files/sphero.desktop
-     dest: "/home/pi/Área de Trabalho/sphero.desktop"
-     owner: pi
-     group: pi
-     mode: 0755
-  when: not spherodesk.stat.exists
+     src:        files/sphero.desktop
+     dest:       "/home/pi/Área de Trabalho/sphero.desktop"
+     owner:      pi
+     group:      pi
+     mode:       0755
+  when:          not spherodesk.stat.exists

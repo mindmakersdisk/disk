@@ -1,163 +1,163 @@
-- name: Copiando a imagem tema de fundo
+- name:          Copiando a imagem tema de fundo
   copy:
-     src: files/fundo.png
-     dest: /home/mindmakers
-     mode: 0755
+     src:        files/fundo.png
+     dest:       /home/mindmakers
+     mode:       0755
 - copy:
-     src: files/fundo-en.png
-     dest: /home/mindmakers
-     mode: 0755
+     src:        files/fundo-en.png
+     dest:       /home/mindmakers
+     mode:       0755
 - file:
-    path: "{{ path2desktop }}"
-    state: directory
-    attributes: -i
-    recurse: yes
-- name: Copiando update.desktop para o Desktop
+    path:        "{{ path2desktop }}"
+    state:       directory
+    attributes:  -i
+    recurse:     yes
+- name:          Copiando update.desktop para o Desktop
   copy:
-     src: files/update.desktop
-     dest: "{{ path2desktop }}"
-     owner: pi
-     group: pi
+     src:        files/update.desktop
+     dest:       "{{ path2desktop }}"
+     owner:      pi
+     group:      pi
      attributes: +i
-     mode: 0755
+     mode:       0755
 - file:
-    path: /home/mindmakers/Scratch2
-    state: directory
-    attributes: -i
-    recurse: yes
+    path:        /home/mindmakers/Scratch2
+    state:       directory
+    attributes:  -i
+    recurse:     yes
 - file:
-    path: /home/mindmakers/Scratch2/portuguese/Gabaritos
-    state: absent
+    path:        /home/mindmakers/Scratch2/portuguese/Gabaritos
+    state:       absent
 - file:
-    path: /home/mindmakers/Scratch2/english/Answer-Sheet
-    state: absent
+    path:        /home/mindmakers/Scratch2/english/Answer-Sheet
+    state:       absent
 - file:
-    path: /home/mindmakers/Scratch2
-    state: directory
-    attributes: +i
-    recurse: yes
-- name: Copiando demais atalhos para o Desktop
+    path:        /home/mindmakers/Scratch2
+    state:       directory
+    attributes:  +i
+    recurse:     yes
+- name:          Copiando demais atalhos para o Desktop
   copy:
-     src: files/desktop/
-     dest: "{{ path2desktop }}"
-     owner: pi
-     group: pi
+     src:        files/desktop/
+     dest:       "{{ path2desktop }}"
+     owner:      pi
+     group:      pi
      attributes: +i
-     mode: 0755
-- name: Verificando ícone mindmakers.desktop
+     mode:       0755
+- name:          Verificando ícone mindmakers.desktop
   stat:
-     path: "{{ path2desktop }}/mindmakers.desktop"
-  register: mmdesk
+     path:       "{{ path2desktop }}/mindmakers.desktop"
+  register:      mmdesk
 - copy:
-     src: files/mindmakers.desktop
-     dest: "{{ path2desktop }}/mindmakers.desktop"
-     owner: pi
-     group: pi
-     mode: 0755
-  when: not mmdesk.stat.exists
-- name: Verificando ícone sphero.desktop
+     src:        files/mindmakers.desktop
+     dest:       "{{ path2desktop }}/mindmakers.desktop"
+     owner:      pi
+     group:      pi
+     mode:       0755
+  when:          not mmdesk.stat.exists
+- name:          Verificando ícone sphero.desktop
   stat:
-     path: "{{ path2desktop }}/sphero.desktop"
-  register: spherodesk
+     path:       "{{ path2desktop }}/sphero.desktop"
+  register:      spherodesk
 - copy:
-     src: files/sphero.desktop
-     dest: "{{ path2desktop }}/sphero.desktop"
-     owner: pi
-     group: pi
+     src:        files/sphero.desktop
+     dest:       "{{ path2desktop }}/sphero.desktop"
+     owner:      pi
+     group:      pi
      attributes: +i
-     mode: 0755
-  #when: not spherodesk.stat.exists
-- name: Verificando ícone activate.desktop
+     mode:       0755
+  #when:         not spherodesk.stat.exists
+- name:          Verificando ícone activate.desktop
   stat:
-     path: "{{ path2desktop }}/activate.desktop"
-  register: activatedesk
+     path:       "{{ path2desktop }}/activate.desktop"
+  register:      activatedesk
 - copy:
-     src: files/activate.desktop
-     dest: "{{ path2desktop }}/activate.desktop"
-     owner: pi
-     group: pi
+     src:        files/activate.desktop
+     dest:       "{{ path2desktop }}/activate.desktop"
+     owner:      pi
+     group:      pi
      attributes: +i
-     mode: 0755
-  when: not activatedesk.stat.exists
-- name: Verificando ícone classroom_test.desktop
+     mode:       0755
+  when:          not activatedesk.stat.exists
+- name:          Verificando ícone classroom_test.desktop
   stat:
-     path: "{{ path2desktop }}/classroom_test.desktop"
-  register: classroom_testdesk
+     path:       "{{ path2desktop }}/classroom_test.desktop"
+  register:      classroom_testdesk
 - copy:
-     src: files/classroom_test.desktop
-     dest: "{{ path2desktop }}/classroom_test.desktop"
-     owner: pi
-     group: pi
+     src:        files/classroom_test.desktop
+     dest:       "{{ path2desktop }}/classroom_test.desktop"
+     owner:      pi
+     group:      pi
      attributes: +i
-     mode: 0755
-  when: not classroom_testdesk.stat.exists
-- name: Verificando ícone scratch2_folder.desktop
+     mode:       0755
+  when:          not classroom_testdesk.stat.exists
+- name:          Verificando ícone scratch2_folder.desktop
   stat:
-     path: "{{ path2desktop }}/scratch2_folder.desktop"
-  register: scratch2_folder
+     path:       "{{ path2desktop }}/scratch2_folder.desktop"
+  register:      scratch2_folder
 - copy:
-     src: files/scratch2_folder.desktop
-     dest: "{{ path2desktop }}/scratch2_folder.desktop"
-     owner: pi
-     group: pi
+     src:        files/scratch2_folder.desktop
+     dest:       "{{ path2desktop }}/scratch2_folder.desktop"
+     owner:      pi
+     group:      pi
      attributes: +i
-     mode: 0755
-  when: not scratch2_folder.stat.exists
-- name: Alterando atributos do atalho da pasta scratch2
-  shell: 'sudo chattr -i /home/pi/Desktop/scratch2_folder.desktop'
+     mode:       0755
+  when:          not scratch2_folder.stat.exists
+- name:          Alterando atributos do atalho da pasta scratch2
+  shell:         'sudo chattr -i /home/pi/Desktop/scratch2_folder.desktop'
   args:
-    warn: no
-- name: Alterando atalho da pasta Scratch2
+    warn:        no
+- name:          Alterando atalho da pasta Scratch2
   lineinfile:
-    path: "{{ path2desktop }}/scratch2_folder.desktop"
-    regexp: '^Exec=pcmanfm /home/mindmakers/Scratch2/portuguese'
-    line: 'Exec=pcmanfm /home/mindmakers/Scratch2/english'
-    backrefs: yes
-  when: "'en_' in ansible_facts.env.LANG"
+    path:        "{{ path2desktop }}/scratch2_folder.desktop"
+    regexp:      '^Exec=pcmanfm /home/mindmakers/Scratch2/portuguese'
+    line:        'Exec=pcmanfm /home/mindmakers/Scratch2/english'
+    backrefs:    yes
+  when:          "'en_' in ansible_facts.env.LANG"
 - lineinfile:
-    path: "{{ path2desktop }}/scratch2_folder.desktop"
-    regexp: '^Exec=pcmanfm /home/mindmakers/Scratch2/english'
-    line: 'Exec=pcmanfm /home/mindmakers/Scratch2/portuguese'
-    backrefs: yes
-  when: "'pt_BR' in ansible_facts.env.LANG"
-- name: Alterando atributos do atalho da pasta scratch2
-  shell: 'sudo chattr +i /home/pi/Desktop/scratch2_folder.desktop'
+    path:        "{{ path2desktop }}/scratch2_folder.desktop"
+    regexp:      '^Exec=pcmanfm /home/mindmakers/Scratch2/english'
+    line:        'Exec=pcmanfm /home/mindmakers/Scratch2/portuguese'
+    backrefs:    yes
+  when:          "'pt_BR' in ansible_facts.env.LANG"
+- name:          Alterando atributos do atalho da pasta scratch2
+  shell:         'sudo chattr +i /home/pi/Desktop/scratch2_folder.desktop'
   args:
-    warn: no
+    warn:        no
 - file:
-    path: /home/pi/Scratch2
-    state: absent
-- shell: 'sudo ln -s /home/mindmakers/Scratch2/english /home/pi/Scratch2'
+    path:        /home/pi/Scratch2
+    state:       absent
+- shell:         'sudo ln -s /home/mindmakers/Scratch2/english /home/pi/Scratch2'
   args:
-    warn: no
-  when: "'en_' in ansible_facts.env.LANG"
-- shell: 'sudo ln -s /home/mindmakers/Scratch2/portuguese /home/pi/Scratch2'
+    warn:        no
+  when:          "'en_' in ansible_facts.env.LANG"
+- shell:         'sudo ln -s /home/mindmakers/Scratch2/portuguese /home/pi/Scratch2'
   args:
-    warn: no
-  when: "'pt_BR' in ansible_facts.env.LANG"
+    warn:        no
+  when:          "'pt_BR' in ansible_facts.env.LANG"
 - file:
-    path: /home/pi/Fotos
-    state: absent
+    path:        /home/pi/Fotos
+    state:       absent
 - file:
-    path: /home/pi/Pictures/Pictures
-    state: absent
+    path:        /home/pi/Pictures/Pictures
+    state:       absent
 - file:
-    path: /home/pi/Pictures/Fotos
-    state: absent
-- shell: 'sudo ln -s /home/pi/Pictures /home/pi/Fotos'
+    path:        /home/pi/Pictures/Fotos
+    state:       absent
+- shell:         'sudo ln -s /home/pi/Pictures /home/pi/Fotos'
   args:
-    warn: no
-  when: "'pt_BR' in ansible_facts.env.LANG"
+    warn:        no
+  when:          "'pt_BR' in ansible_facts.env.LANG"
 - file:
-    path: /home/pi/Audios
-    state: absent
+    path:        /home/pi/Audios
+    state:       absent
 - file:
-    path: /home/pi/Music/Audios
-    state: absent
+    path:        /home/pi/Music/Audios
+    state:       absent
 - file:
-    path: /home/pi/Music/Audios
-    state: absent
-- shell: 'sudo ln -s /home/pi/Music /home/pi/Audios'
+    path:        /home/pi/Music/Audios
+    state:       absent
+- shell:         'sudo ln -s /home/pi/Music /home/pi/Audios'
   args:
-    warn: no
-  when: "'pt_BR' in ansible_facts.env.LANG"
+    warn:        no
+  when:          "'pt_BR' in ansible_facts.env.LANG"

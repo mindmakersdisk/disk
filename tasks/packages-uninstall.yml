@@ -1,23 +1,23 @@
-- name: Verificando se os pacotes desnecessários já foram desinstalados
+- name:     Verificando se os pacotes desnecessários já foram desinstalados
   stat:
-     path: /home/mindmakers/programs/verify/uninstalled-pkg
+     path:  /home/mindmakers/programs/verify/uninstalled-pkg
   register: uninstalled
-- name: Desinstalando aplicações não utilizadas
+- name:     Desinstalando aplicações não utilizadas
   apt:
-     name: [scratch, bluej, greenfoot, greenfoot-unbundled, claws-mail, claws-mail-i18n, libreoffice-draw, libreoffice-impress, libreoffice-math, libreoffice-writer, piclone, realvnc-vnc-viewer, realvnc-vnc-server]
+     name:  [scratch, bluej, greenfoot, greenfoot-unbundled, claws-mail, claws-mail-i18n, libreoffice-draw, libreoffice-impress, libreoffice-math, libreoffice-writer, piclone, realvnc-vnc-viewer, realvnc-vnc-server]
      state: absent
      purge: yes
-  when: not uninstalled.stat.exists
-- name: Criando pasta de verificação
+  when:     not uninstalled.stat.exists
+- name:     Criando pasta de verificação
   file:
-    path: /home/mindmakers/programs/verify/uninstalled-pkg
-    state: directory
-    mode: 0444
+    path:   /home/mindmakers/programs/verify/uninstalled-pkg
+    state:  directory
+    mode:   0444
 - stat:
-     path: /usr/share/raspi-ui-overrides/applications
+     path:  /usr/share/raspi-ui-overrides/applications
   register: uninstalled2
-- name: Removendo ícones libreoffice Draw e Math
-  shell: 'cd /usr/share/raspi-ui-overrides/applications/ && rm -f libreoffice-draw.desktop libreoffice-math.desktop'
+- name:     Removendo ícones libreoffice Draw e Math
+  shell:    'cd /usr/share/raspi-ui-overrides/applications/ && rm -f libreoffice-draw.desktop libreoffice-math.desktop'
   args:
-    warn: no
-  when: not uninstalled2.stat.exists
+    warn:   no
+  when:     not uninstalled2.stat.exists

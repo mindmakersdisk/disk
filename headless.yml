@@ -1,44 +1,44 @@
-- hosts: localhost
-  remote_user: root
+- hosts:               localhost
+  remote_user:         root
   pre_tasks:
-    - name: Atualizando Repositórios
-      shell: 'sudo apt-get update --allow-releaseinfo-change'
+    - name:            Atualizando Repositórios
+      shell:           'sudo apt-get update --allow-releaseinfo-change'
       args:
-        warn: no
-      when: ansible_facts.lsb.codename == "buster"
+        warn:          no
+      when:            ansible_facts.lsb.codename == "buster"
     - apt:
          update_cache: yes
-      changed_when: False
-      when: not ansible_facts.lsb.codename == "buster"
+      changed_when:    False
+      when:            not ansible_facts.lsb.codename == "buster"
 
   tasks:
-    - name: Verificando versão do Ansible.
+    - name:            Verificando versão do Ansible.
       stat:
-        path: /home/mindmakers/programs/verify/ansible27
-      register: ansb
-    - include: tasks/ansibleupdate.yml
-      when: not ansb.stat.exists
-    - include: tasks/ansible-config.yml
+        path:          /home/mindmakers/programs/verify/ansible27
+      register:        ansb
+    - include:         tasks/ansibleupdate.yml
+      when:            not ansb.stat.exists
+    - include:         tasks/ansible-config.yml
     - set_fact:
          path2desktop: "/home/pi/Desktop"
-    - name: Verificando se diretório Área de Trabalho existe
+    - name:            Verificando se diretório Área de Trabalho existe
       stat:
-         path: "/home/pi/Área de Trabalho"
-      register: adt
+         path:         "/home/pi/Área de Trabalho"
+      register:        adt
     - set_fact:
          path2desktop: "{{ adt.stat.path }}"
-      when: adt.stat.exists
-    - include: tasks/headless-en.yml
+      when:            adt.stat.exists
+    - include:         tasks/headless-en.yml
 
-- import_playbook: student.yml
+- import_playbook:     student.yml
 
-- hosts: localhost
-  remote_user: root
+- hosts:               localhost
+  remote_user:         root
   tasks:
-    - include: tasks/copies-headless.yml
-    - include: tasks/xvnc.yml.yml
+    - include:         tasks/copies-headless.yml
+    - include:         tasks/xvnc.yml.yml
  # Copia as notas de liberação e o atalho com nome da versão atualizados
-    - include: tasks/final-version-copies-en.yml
-    - include: tasks/version_update.yml
-    - include: tasks/reboot.yml
+    - include:         tasks/final-version-copies-en.yml
+    - include:         tasks/version_update.yml
+    - include:         tasks/reboot.yml
  # Não acrescentar tarefas após estas últimas.

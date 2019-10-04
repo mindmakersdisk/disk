@@ -1,28 +1,28 @@
 #Troca linhas de um documento para tornar o ipv4 eth0 atual o ip fixo (backrefs: yes faz trocar somente se for achado a linha regexp)
 - lineinfile:
-    path: /etc/dhcpcd.conf
+    path:     /etc/dhcpcd.conf
     backrefs: yes
-    regexp: '#interface eth0'
-    line: interface eth0
-  when: ansible_facts.eth0.active
+    regexp:   '#interface eth0'
+    line:     interface eth0
+  when:       ansible_facts.eth0.active
 - lineinfile:
-    path: /etc/dhcpcd.conf
+    path:     /etc/dhcpcd.conf
     backrefs: yes
-    regexp: '#static ip_address=192.168.0.10/24'
-    line: static ip_address={{ansible_facts.default_ipv4.address}}/24
-  when: ansible_facts.eth0.active
+    regexp:   '#static ip_address=192.168.0.10/24'
+    line:     static ip_address={{ansible_facts.default_ipv4.address}}/24
+  when:       ansible_facts.eth0.active
 - lineinfile:
-    path: /etc/dhcpcd.conf
+    path:     /etc/dhcpcd.conf
     backrefs: yes
-    regexp: '#static routers=192.168.0.1'
-    line: static routers={{ansible_facts.default_ipv4.gateway}}
-  when: ansible_facts.eth0.active
+    regexp:   '#static routers=192.168.0.1'
+    line:     static routers={{ansible_facts.default_ipv4.gateway}}
+  when:       ansible_facts.eth0.active
 - lineinfile:
-    path: /etc/dhcpcd.conf
+    path:     /etc/dhcpcd.conf
     backrefs: yes
-    regexp: '#static domain_name_servers=192.168.0.1'
-    line: static domain_name_servers={{ansible_facts.default_ipv4.gateway}}
-  when: ansible_facts.eth0.active
-  
+    regexp:   '#static domain_name_servers=192.168.0.1'
+    line:     static domain_name_servers={{ansible_facts.default_ipv4.gateway}}
+  when:       ansible_facts.eth0.active
+
 #- debug:
-#     var: ansible_facts.eth0
+#     var:    ansible_facts.eth0

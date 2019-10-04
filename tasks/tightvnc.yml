@@ -1,24 +1,24 @@
-#- name: Verificando se tightvncserver está instalado
+#- name:   Verificando se tightvncserver está instalado
 #  command: dpkg-query -l tightvncserver
 #  register: deb_check
 #  ignore_errors: yes
 #- debug:
-#    var: deb_check
-- name: Instalando tightvncserver
+#    var:  deb_check
+- name:    Instalando tightvncserver
   apt:
      name: tightvncserver
-#  when: deb_check.stdout.find('<nenhuma>') != -1 or deb_check.stdout.find('<none>') != -1
-- name: Copiando arquivo vncserver
+#  when:   deb_check.stdout.find('<nenhuma>') != -1 or deb_check.stdout.find('<none>') != -1
+- name:    Copiando arquivo vncserver
   copy:
-     src: files/vncserver
+     src:  files/vncserver
      dest: /etc/init.d
      mode: 0755
-#  when: deb_check.stdout.find('<nenhuma>') != -1 or deb_check.stdout.find('<none>') != -1
-- name: Configurando VncServer
-  shell: 'sudo update-rc.d vncserver defaults'
+#  when:   deb_check.stdout.find('<nenhuma>') != -1 or deb_check.stdout.find('<none>') != -1
+- name:    Configurando VncServer
+  shell:   'sudo update-rc.d vncserver defaults'
   args:
-    warn: no
-#  when: deb_check.stdout.find('<nenhuma>') != -1 or deb_check.stdout.find('<none>') != -1
+    warn:  no
+#  when:   deb_check.stdout.find('<nenhuma>') != -1 or deb_check.stdout.find('<none>') != -1
 
-#- name: Chama o server para configurar uma senha de acesso
-#  shell: 'lxterminal -e tightvncserver'
+#- name:   Chama o server para configurar uma senha de acesso
+#  shell:  'lxterminal -e tightvncserver'

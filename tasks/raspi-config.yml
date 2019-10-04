@@ -3,24 +3,24 @@
 #raspi-config nonint functions obey sh return codes
 #0 is in general success / yes / selected
 #1 is failed / no / not selected */
-- name: Configurando acesso da Câmera
-  shell: 'sudo raspi-config nonint do_camera 0'
+- name:       Configurando acesso da Câmera
+  shell:      'sudo raspi-config nonint do_camera 0'
   args:
-    warn: no
-- name: Configurando saída de audio padrão para Analógico
-  shell: 'amixer cset numid=3 1'
+    warn:     no
+- name:       Configurando saída de audio padrão para Analógico
+  shell:      'amixer cset numid=3 1'
   args:
-    warn: no
-- name: Configurando memória swap
+    warn:     no
+- name:       Configurando memória swap
   lineinfile:
-    path: /etc/dphys-swapfile
+    path:     /etc/dphys-swapfile
     backrefs: yes
-    regexp: 'CONF_SWAPSIZE=100'
-    line: CONF_SWAPSIZE=1024
-- name: Tornando login usuário pi fixo
-  shell: 'sudo chattr +i /etc/lightdm/lightdm.conf'
+    regexp:   'CONF_SWAPSIZE=100'
+    line:     CONF_SWAPSIZE=1024
+- name:       Tornando login usuário pi fixo
+  shell:      'sudo chattr +i /etc/lightdm/lightdm.conf'
   args:
-    warn: no
-#- shell: 'sudo systemctl restart dphys-swapfile.service'
+    warn:     no
+#- shell:     'sudo systemctl restart dphys-swapfile.service'
 #  args:
-#    warn: no
+#    warn:    no

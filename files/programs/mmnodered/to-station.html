@@ -1,34 +1,42 @@
 <script type="text/javascript">
-    RED.nodes.registerType('to-station',{
-        category: 'Sala de Aula IoT',
-        color: '#87A980',
-        defaults: {
-            name: {value:""},
-            acao: {value:""},
-            numero: {value:""},
-            estacao: {value:""}
-        },
-        inputs:1,
-        outputs:1,
-        color: '#87A980',
-        align: 'right',
-        icon: "white-globe.png",
-        label: function() {
-            return this.name||"para estação";
-        },
-        oneditprepare: function() {
-            // TODO
-        },
-        oneditsave: function(node) {
-           // TODO validar não informar numero se não for envio de numero
-        },
-        
-        
-    });
+  RED.nodes.registerType('to-station', {
+    category: 'Sala de Aula IoT',
+    color: '#87A980',
+    defaults: {
+      name: {
+        value: ""
+      },
+      acao: {
+        value: ""
+      },
+      numero: {
+        value: ""
+      },
+      estacao: {
+        value: ""
+      }
+    },
+    inputs: 1,
+    outputs: 1,
+    color: '#87A980',
+    align: 'right',
+    icon: "white-globe.png",
+    label: function() {
+      return this.name || "para estação";
+    },
+    oneditprepare: function() {
+      // TODO
+    },
+    oneditsave: function(node) {
+      // TODO validar não informar numero se não for envio de numero
+    },
+
+
+  });
 </script>
 
 <script type="text/x-red" data-template-name="to-station">
-    <div class="form-row">
+  <div class="form-row">
         <label for="node-input-name">Nome <i class="icon-tag"></i></label>
         <input type="text" id="node-input-name" placeholder="Nome">
     </div>
@@ -51,5 +59,5 @@
 </script>
 
 <script type="text/x-red" data-help-name="to-station">
-    <p>Um componente que envia mensagens via Internet para outras estações da sala</p>
+  <p>Um componente que envia mensagens via Internet para outras estações da sala</p>
 </script>
