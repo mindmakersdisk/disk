@@ -4,9 +4,9 @@ resposta=$1
 
 if [ -n "$resposta" ]
 then
-	tempo=$resposta
+    tempo=$resposta
 else
-	tempo=30
+    tempo=30
 fi
 
 sleep $tempo

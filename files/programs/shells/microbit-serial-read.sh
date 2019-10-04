@@ -1,16 +1,16 @@
 #!/bin/bash
 
 sair(){
-  echo ""
-  echo "Finalizando programa"
-  sleep 5
-  return 0
+    echo ""
+    echo "Finalizando programa"
+    sleep 5
+    return 0
 }
 pergunta(){
-  echo -n "Por quantos segundos os dados devem ser capturados? (Padrão: 30) "
-  local SURE
-  read SURE
-  resposta=$SURE
+    echo -n "Por quantos segundos os dados devem ser capturados? (Padrão: 30) "
+    local SURE
+    read SURE
+    resposta=$SURE
 }
 
 echo "********************************************************************************"
@@ -29,18 +29,18 @@ pergunta;
 if [ -e /dev/ttyACM0 ]
 then
 
-  sudo bash /home/mindmakers/programs/shells/microbit-serial-kill.sh $resposta &
-  rm -f ~/Desktop/screenlog.0
-  cd ~/Desktop
-  screen -L -Logfile screenlog.0 /dev/ttyACM0 115200
+    sudo bash /home/mindmakers/programs/shells/microbit-serial-kill.sh $resposta &
+    rm -f ~/Desktop/screenlog.0
+    cd ~/Desktop
+    screen -L -Logfile screenlog.0 /dev/ttyACM0 115200
 
-  sleep 5
+    sleep 5
 
 else
 
-  echo ""
-  echo ""
-  echo "Microbit não conectado ao computador ou não configurado corretamente"
-  sair;
+    echo ""
+    echo ""
+    echo "Microbit não conectado ao computador ou não configurado corretamente"
+    sair;
 
 fi

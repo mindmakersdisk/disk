@@ -1,8 +1,8 @@
 #!/bin/sh
 
 run(){
-  echo "Finalizando programa"
-  return 0
+    echo "Finalizando programa"
+    return 0
 }
 #Run, força saída do programa
 
