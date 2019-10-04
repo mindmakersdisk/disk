@@ -331,9 +331,7 @@ function validaComando(comando) {
   // Se chegou até aqui,não tem um comando válido
   throw new Error("Comando " + comando + " é inválido");
 
-
 }
-
 
 
 // Envia comandos para um, todos os computadores de uma sala
@@ -508,10 +506,7 @@ function macroDemo1Submacro(idEscola, sala) {
   // TODO Acertar quando tiver configuração do instrutor
   enviarComandoComputadoresSala(EXIBE_IMAGEM, "t.jpg", idEscola, sala, null, "1");
 
-
 }
-
-
 
 
 function macroDemo2(idEscola, sala) {
@@ -652,18 +647,15 @@ function getClient(serviceAccountJson, cb) {
         auth: authClient,
       });
 
-      google.discoverAPI(discoveryUrl).then(client => {
-
+      google.discoverAPI(discoveryUrl)
+        .then(client => {
           cb(client);
         })
         .catch(err => {
           console.log('Erro durante a descoberta da API GCloud.', err);
         });
     });
-
 }
-
-
 
 /*
  Envia comando MQTT para um dispositivo
@@ -684,21 +676,21 @@ function enviaComandosMQTT(registryId, deviceId, commandMessage) {
   };
 
 
-
   // Client retrieved in callback
   getClient(serviceJSON, function(client) {
 
-    client.projects.locations.registries.devices.sendCommandToDevice(
-      request,
-      (err, data) => {
-        if (err) {
-          console.log('Não pode enviar comando:', request);
-          console.log('Erro: ', err);
-        } else {
-          console.log('Sucesso:', data.status);
+    client.projects.locations.registries.devices
+      .sendCommandToDevice(
+        request,
+        (err, data) => {
+          if (err) {
+            console.log('Não pode enviar comando:', request);
+            console.log('Erro: ', err);
+          } else {
+            console.log('Sucesso:', data.status);
+          }
         }
-      }
-    );
+      );
 
   });
 

@@ -75,7 +75,7 @@ cur_time = datetime.datetime.utcnow()
 
 
 def create_jwt():
-    logging.debug('CJ - create_jwt')
+    # logging.debug('CJ - create_jwt')
     token = {
         'iat': cur_time,
         'exp': cur_time + datetime.timedelta(minutes=720),
@@ -222,7 +222,7 @@ def executaVideo(msg):
 
 
 def respondToMsg(msg):
-    logging.debug('RTM - respontToMsg: %s', msg)
+    # logging.debug('RTM - respontToMsg: %s', msg)
     # print(msg)
     if msg == "oi":
         sendInfo()
@@ -244,8 +244,8 @@ def respondToMsg(msg):
 
 def on_message(unused_client, unused_userdata, message):
     payload = str(message.payload)
-    logging.debug('OM - Recebeu mensagem %s ', payload)
-    logging.debug('OM - Recebeu on topic %s ', message.topic)
+    # logging.debug('OM - Recebeu mensagem %s ', payload)
+    # logging.debug('OM - Recebeu on topic %s ', message.topic)
     print('Recebeu mensagem \'{}\' on topic \'{}\''.format(
         payload, message.topic), datetime.datetime.now().strftime('%d-%m-%Y %H:%M:%S'))
     respondToMsg(payload)
