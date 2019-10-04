@@ -13,79 +13,78 @@ LOGFILE=/var/log/mmiotjs.log
 . /lib/lsb/init-functions
 
 start() {
-  sleep 15
-
-  if [ "$(sudo grep -wc "#host-name" /etc/avahi/avahi-daemon.conf)" -gt 0 ]
-  then
-    echo "Imagem não ativada, ative-a para utilizar este serviço."
-  else
-
-    sudo bash /home/mindmakers/programs/shells/mmiotjs.sh &>/var/log/mmiotjs.log
-    echo 'Starting service…' >&2
-    sudo nodejs /home/mindmakers/programs/mmiotcli.js &>/var/log/mmiotjs.log & echo \$!
-
     sleep 15
-    if pgrep -f mmiotcli.js > /dev/null
-    then
-      echo "$NAME is now running"
-    else
-      echo ''
-      echo "Error! Could not start $NAME!"
-      echo "trying again"
-      sudo nodejs /home/mindmakers/programs/mmiotcli.js &>/var/log/mmiotjs.log & echo \$!
-    fi
 
-  fi
+    if [ "$(sudo grep -wc "#host-name" /etc/avahi/avahi-daemon.conf)" -gt 0 ]
+    then
+        echo "Imagem não ativada, ative-a para utilizar este serviço."
+    else
+
+        sudo bash /home/mindmakers/programs/shells/mmiotjs.sh &>/var/log/mmiotjs.log
+        echo 'Starting service…' >&2
+        sudo nodejs /home/mindmakers/programs/mmiotcli.js &>/var/log/mmiotjs.log & echo \$!
+
+        sleep 15
+        if pgrep -f mmiotcli.js > /dev/null
+        then
+            echo "$NAME is now running"
+        else
+            echo ''
+            echo "Error! Could not start $NAME!"
+            echo "trying again"
+            sudo nodejs /home/mindmakers/programs/mmiotcli.js &>/var/log/mmiotjs.log & echo \$!
+        fi
+    fi
 }
 
 stop() {
-  echo 'Stopping service…' >&2
-  sudo pkill nodejs
-  echo 'Service stopped' >&2
+    echo 'Stopping service…' >&2
+    sudo pkill nodejs
+    echo 'Service stopped' >&2
 }
 
 uninstall() {
-  echo -n "Are you really sure you want to uninstall this service? That cannot be undone. [yes|no] "
-  local SURE
-  read SURE
-  if [ "$SURE" = "yes" ]; then
-    stop
-    echo "Notice: log file was not removed: $LOGFILE" >&2
-    update-rc.d -f $NAME remove
-    rm -fv "$0"
-  else
-    echo "Abort!"
-  fi
+    echo -n "Are you really sure you want to uninstall this service? That cannot be undone. [yes|no] "
+    local SURE
+    read SURE
+    if [ "$SURE" = "yes" ]; then
+        stop
+        echo "Notice: log file was not removed: $LOGFILE" >&2
+        update-rc.d -f $NAME remove
+        rm -fv "$0"
+    else
+        echo "Abort!"
+    fi
 }
 
 status() {
-  if [ -z "$(ps axf | grep node | grep -v grep)" ]; then
-    printf "%s\n" "The process appears to be dead" >&2
-  else
-    echo "mmiotcli.js appears to be running"
-  fi
+    if [ -z "$(ps axf | grep node | grep -v grep)" ]; then
+        printf "%s\n" "The process appears to be dead" >&2
+    else
+        echo "mmiotcli.js appears to be running"
+    fi
 }
 
 case "$1" in
-  start)
-    start
-    ;;
-  stop)
-    stop
-    ;;
-  status)
-    status
-    ;;
-  uninstall)
-    uninstall
-    ;;
-  restart)
-    $0 stop
-    sleep 1
-    $0 start
-    ;;
-  *)
-    echo "Usage: $0 {start|stop|status|uninstall|restart}"
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    status)
+        status
+        ;;
+    uninstall)
+        uninstall
+        ;;
+    restart)
+        $0 stop
+        sleep 1
+        $0 start
+        ;;
+    *)
+        echo "Usage: $0 {start|stop|status|uninstall|restart}"
 esac
 
 exit 0
