@@ -15,8 +15,7 @@ LOGFILE=/var/log/mmiotjs.log
 start() {
     sleep 15
 
-    if [ "$(sudo grep -wc "#host-name" /etc/avahi/avahi-daemon.conf)" -gt 0 ]
-    then
+    if [ "$(sudo grep -wc "#host-name" /etc/avahi/avahi-daemon.conf)" -gt 0 ]; then
         echo "Imagem não ativada, ative-a para utilizar este serviço."
     else
 
