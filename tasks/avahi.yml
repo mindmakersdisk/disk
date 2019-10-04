@@ -1,61 +1,61 @@
-- name: Validando ativação
+- name:         Validando ativação
   find:
-     paths: /home/mindmakers/
-     patterns: 'school.info'
+     paths:     /home/mindmakers/
+     patterns:  'school.info'
      contains: "^Sala: [0-9]+"
      use_regex: yes
-  register: semregistro
-- name: Verificando numero da sala
+  register:     semregistro
+- name:         Verificando numero da sala
   shell: "sudo grep -w 'Sala:' /home/mindmakers/school.info | sed 's/.*: //' | sed 's/||//'"
   args:
-    warn: no
-  register: sala
-  when: semregistro.matched > 0
-- name: Verificando numero da sala
+    warn:       no
+  register:     sala
+  when:         semregistro.matched > 0
+- name:         Verificando numero da sala
   shell: "sudo grep -w 'Estação:' /home/mindmakers/school.info | sed 's/.*: //' | sed 's/||//'"
   args:
-    warn: no
-  register: estacao
-  when: semregistro.matched > 0
+    warn:       no
+  register:     estacao
+  when:         semregistro.matched > 0
 # só alterar se a linha estiver comentada
 
-- name: Alterando nome do host avahi <9
+- name:         Alterando nome do host avahi <9
   lineinfile:
-    path: /etc/avahi/avahi-daemon.conf
-    regexp: '^#host-name='
-    line: 'host-name=s{{sala.stdout}}e0{{estacao.stdout}}'
-    backrefs: yes
-  when: semregistro.matched > 0 and estacao.stdout <= "9"
-- name: Alterando nome do host avahi>=10
+    path:       /etc/avahi/avahi-daemon.conf
+    regexp:     '^#host-name='
+    line:       'host-name=s{{sala.stdout}}e0{{estacao.stdout}}'
+    backrefs:   yes
+  when:         semregistro.matched > 0 and estacao.stdout <= "9"
+- name:         Alterando nome do host avahi>=10
   lineinfile:
-    path: /etc/avahi/avahi-daemon.conf
-    regexp: '^#host-name='
-    line: 'host-name=s{{sala.stdout}}e{{estacao.stdout}}'
-    backrefs: yes
-  when: semregistro.matched > 0 and estacao.stdout >= "10"
+    path:       /etc/avahi/avahi-daemon.conf
+    regexp:     '^#host-name='
+    line:       'host-name=s{{sala.stdout}}e{{estacao.stdout}}'
+    backrefs:   yes
+  when:         semregistro.matched > 0 and estacao.stdout >= "10"
 
-- name: Alterando atributos do atalho da pasta scratch2
-  shell: 'sudo bash /home/mindmakers/programs/shells/change-shortcut.sh'
+- name:         Alterando atributos do atalho da pasta scratch2
+  shell:        'sudo bash /home/mindmakers/programs/shells/change-shortcut.sh'
   args:
-    warn: no
+    warn:       no
 - copy:
-     src: files/classroom_test.desktop
-     dest: "{{ path2desktop }}/classroom_test.desktop"
-     owner: pi
-     group: pi
-     mode: 0755
-  when: semregistro.matched > 0
+     src:       files/classroom_test.desktop
+     dest:      "{{ path2desktop }}/classroom_test.desktop"
+     owner:     pi
+     group:     pi
+     mode:      0755
+  when:         semregistro.matched > 0
 - lineinfile:
-    path: "{{ path2desktop }}/classroom_test.desktop"
-    regexp: 'Icon'
-    line: 'Icon=/usr/share/icons/{{sala.stdout}}.png'
-    backrefs: yes
-  when: semregistro.matched > 0
-- name: Alterando atributos do atalho da pasta scratch2
-  shell: 'sudo bash /home/mindmakers/programs/shells/change-shortcut2.sh'
+    path:       "{{ path2desktop }}/classroom_test.desktop"
+    regexp:     'Icon'
+    line:       'Icon=/usr/share/icons/{{sala.stdout}}.png'
+    backrefs:   yes
+  when:         semregistro.matched > 0
+- name:         Alterando atributos do atalho da pasta scratch2
+  shell:        'sudo bash /home/mindmakers/programs/shells/change-shortcut2.sh'
   args:
-    warn: no
-# - name: add key server rpimonitor
-#   shell: 'sudo /etc/init.d/rpimonitor update'
+    warn:       no
+# - name:       add key server rpimonitor
+#   shell:      'sudo /etc/init.d/rpimonitor update'
 #   args:
-#     warn: no
+#     warn:     no

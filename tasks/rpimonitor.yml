@@ -1,43 +1,43 @@
-# - name: Instalando speedtest-cli
+# - name:         Instalando speedtest-cli
 #   apt:
-#      name: speedtest-cli
-- name: add key server rpimonitor
-  shell: 'sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 2C0D3C0F'
+#      name:      speedtest-cli
+- name:           add key server rpimonitor
+  shell:          'sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 2C0D3C0F'
   args:
-    warn: no
-- name: rpimonitor list
-  shell: 'sudo wget http://goo.gl/vewCLL -O /etc/apt/sources.list.d/rpimonitor.list'
+    warn:         no
+- name:           rpimonitor list
+  shell:          'sudo wget http://goo.gl/vewCLL -O /etc/apt/sources.list.d/rpimonitor.list'
   args:
-    warn: no
-- name: Atualizando Repositórios
+    warn:         no
+- name:           Atualizando Repositórios
   apt:
     update_cache: yes
-- name: Instalando rpimonitor
+- name:           Instalando rpimonitor
   apt:
-     name: rpimonitor
+     name:        rpimonitor
 
-# - name: add key server rpimonitor
-#   shell: 'sudo /etc/init.d/rpimonitor update'
+# - name:         add key server rpimonitor
+#   shell:        'sudo /etc/init.d/rpimonitor update'
 #   args:
-#     warn: no
+#     warn:       no
 
 # teste configurações
 # - lineinfile:
-#     path: /etc/rpimonitor/daemon.conf
-#     regexp: '^#daemon.delay=10'
-#     line: 'daemon.delay=60'
-#     backrefs: yes
+#     path:       /etc/rpimonitor/daemon.conf
+#     regexp:     '^#daemon.delay=10'
+#     line:       'daemon.delay=60'
+#     backrefs:   yes
 
 # teste 2 configurações
-# - name: Configurações
-#   shell: 'sudo rpimonitord -k'
+# - name:         Configurações
+#   shell:        'sudo rpimonitord -k'
 #   args:
-#     warn: no
-# - name: Configurações
-#   shell: 'sudo rpimonitord -l /var/log/rpimonitor'
+#     warn:       no
+# - name:         Configurações
+#   shell:        'sudo rpimonitord -l /var/log/rpimonitor'
 #   args:
-#     warn: no
-# - name: Configurações
-#   shell: 'sudo rpimonitord -d 60'
+#     warn:       no
+# - name:         Configurações
+#   shell:        'sudo rpimonitord -d 60'
 #   args:
-#     warn: no
+#     warn:       no

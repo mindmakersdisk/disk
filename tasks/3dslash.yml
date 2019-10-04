@@ -1,29 +1,29 @@
-- name: Verificando se 3DSlash já existe
+- name:       Verificando se 3DSlash já existe
   stat:
-     path: /home/mindmakers/programs/verify/3DSlash
-  register: slash
-- name: Copiando arquivos 3DSlash
+     path:    /home/mindmakers/programs/verify/3DSlash
+  register:   slash
+- name:       Copiando arquivos 3DSlash
   copy:
-     src: files/3DSlash
-     dest: /home/mindmakers/programs/verify/
-     mode: 0644
-  when: not slash.stat.exists
-- name: Extraindo 3DSlash
-  shell: 'cd /home/mindmakers/programs/verify/3DSlash/ && tar -xvzpf 3dslash_raspberry_3_0_0.tgz -C /usr/local'
+     src:     files/3DSlash
+     dest:    /home/mindmakers/programs/verify/
+     mode:    0644
+  when:       not slash.stat.exists
+- name:       Extraindo 3DSlash
+  shell:      'cd /home/mindmakers/programs/verify/3DSlash/ && tar -xvzpf 3dslash_raspberry_3_0_0.tgz -C /usr/local'
   args:
-    warn: no
-  when: not slash.stat.exists
-- name: Instalando 3DSlash
-  shell: 'cd /home/mindmakers/programs/verify/3DSlash/ && chown -R root:staff /usr/local/3DSlash'
+    warn:     no
+  when:       not slash.stat.exists
+- name:       Instalando 3DSlash
+  shell:      'cd /home/mindmakers/programs/verify/3DSlash/ && chown -R root:staff /usr/local/3DSlash'
   args:
-    warn: no
-  when: not slash.stat.exists
-- name: Instalando libgles2-mesa e libsdl2-dev
+    warn:     no
+  when:       not slash.stat.exists
+- name:       Instalando libgles2-mesa e libsdl2-dev
   apt:
-     name: [libgles2-mesa, libsdl2-dev]
-  when: not slash.stat.exists
-- name: Criando links simbólicos necessários do 3DSlash
-  shell: "{{ item }}"
+     name:    [libgles2-mesa, libsdl2-dev]
+  when:       not slash.stat.exists
+- name:       Criando links simbólicos necessários do 3DSlash
+  shell:      "{{ item }}"
   with_items:
     - 'sudo ln -fs /opt/vc/lib/libbrcmEGL.so /opt/vc/lib/libEGL.so'
     - 'sudo ln -fs /opt/vc/lib/libbrcmGLESv2.so /opt/vc/lib/libGLESv2.so'
@@ -33,5 +33,5 @@
     - 'sudo ln -fs /opt/vc/lib/libGLESv2.so /usr/lib/arm-linux-gnueabihf/libGLESv2.so'
     - 'sudo ldconfig'
   args:
-    warn: no
-  when: not slash.stat.exists
+    warn:     no
+  when:       not slash.stat.exists

@@ -1,24 +1,32 @@
 <script type="text/javascript">
-    RED.nodes.registerType('from-microbit',{
-        category: 'Sala de Aula IoT',
-        defaults: {
-            name: {value:""},
-            acao: {value:""},
-            pinId: {value:""},
-            pinSinal: {value:""}
-        },
-        inputs:0,
-        color: '#FFCC66',
-        outputs:1,
-        icon: "bluetooth.png",
-        label: function() {
-            return this.name||"de microbit";
-        }
-    });
+  RED.nodes.registerType('from-microbit', {
+    category: 'Sala de Aula IoT',
+    defaults: {
+      name: {
+        value: ""
+      },
+      acao: {
+        value: ""
+      },
+      pinId: {
+        value: ""
+      },
+      pinSinal: {
+        value: ""
+      }
+    },
+    inputs: 0,
+    color: '#FFCC66',
+    outputs: 1,
+    icon: "bluetooth.png",
+    label: function() {
+      return this.name || "de microbit";
+    }
+  });
 </script>
 
 <script type="text/x-red" data-template-name="from-microbit">
-    <div class="form-row">
+  <div class="form-row">
         <label for="node-input-name"><i class="icon-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
@@ -48,5 +56,5 @@
 </script>
 
 <script type="text/x-red" data-help-name="from-microbit">
-    <p>Um componente que recebe mensagens de wearables microbit, enviadas via bluetooth pelo firmware da Mind Makers</p>
+  <p>Um componente que recebe mensagens de wearables microbit, enviadas via bluetooth pelo firmware da Mind Makers</p>
 </script>

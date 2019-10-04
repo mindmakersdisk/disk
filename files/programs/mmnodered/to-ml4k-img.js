@@ -6,7 +6,7 @@ module.exports = function(RED) {
 
   function ML4KOutput(config) {
 
-    RED.nodes.createNode(this,config);
+    RED.nodes.createNode(this, config);
 
     this.key = config.key;
     this.locationOfImg = config.locationOfImg;
@@ -24,17 +24,17 @@ module.exports = function(RED) {
 
       //TODO, validar que msg.payload começa com / e termina com .jpg ou .png
 
-      if (isNaN(msg.payload+'')) {
-        msg.payload = msg.payload.replace(/[\n\t\r]/g,"");
+      if (isNaN(msg.payload + '')) {
+        msg.payload = msg.payload.replace(/[\n\t\r]/g, "");
         //retirar \n no final da mensagem camera.sh
 
-        if(lastMsg !=''){
-           //verifica se exite uma ultima msg e substitui pela atual.
-           node.locationOfImg = msg.payload;
+        if (lastMsg != '') {
+          //verifica se exite uma ultima msg e substitui pela atual.
+          node.locationOfImg = msg.payload;
 
-           //console.log('lastMsg exite',msg.payload);
+          //console.log('lastMsg exite',msg.payload);
 
-        }else if (node.locationOfImg=='') {
+        } else if (node.locationOfImg == '') {
 
           node.locationOfImg = msg.payload;
 
@@ -52,63 +52,77 @@ module.exports = function(RED) {
       //TODO, parar se (node.acao == 'treinar' && node.locationOfImg == '')
 
 
-      node.acao = node.acao.replace(/[\n\t\r]/g,"");
+      node.acao = node.acao.replace(/[\n\t\r]/g, "");
       //precisa retirar para funcionar.
 
 
 
-      if(node.acao == 'T' ){
-        var jsonMsg = {"data" : img,
-                       "label": node.label };
+      if (node.acao == 'T') {
+        var jsonMsg = {
+          "data": img,
+          "label": node.label
+        };
         var URL_FINAL = '/train';
-      }else{
-        var jsonMsg = {"data" : img};
+      } else {
+        var jsonMsg = {
+          "data": img
+        };
         var URL_FINAL = '/classify';
       }
-        //console.log('entrou classificar', node.label);
-        //console.log('URL_FINAL ', URL_FINAL)
+      //console.log('entrou classificar', node.label);
+      //console.log('URL_FINAL ', URL_FINAL)
 
       //console.log('entrou para enviar msg',jsonMsg);
 
-      request({url: URL_BASE+node.key+URL_FINAL,
-      method: 'POST',
-      json: jsonMsg},
-      function(error, response, body){
-        //             console.log(body);
-        if (error) {
-          console.log('Erro ao enviar comando - erro: ',error);
-          var msg = {payload:error};
-          node.send(msg);
-        } else if (body.error) {
-          console.log('Erro ao enviar comando - corpo do erro: ',body.error);
-          var msg = {payload:body.error};
-          node.send(msg);
-        } else {
-          //console.log('body ',body);
+      request({
+          url: URL_BASE + node.key + URL_FINAL,
+          method: 'POST',
+          json: jsonMsg
+        },
+        function(error, response, body) {
+          //             console.log(body);
+          if (error) {
+            console.log('Erro ao enviar comando - erro: ', error);
+            var msg = {
+              payload: error
+            };
+            node.send(msg);
+          } else if (body.error) {
+            console.log('Erro ao enviar comando - corpo do erro: ', body.error);
+            var msg = {
+              payload: body.error
+            };
+            node.send(msg);
+          } else {
+            //console.log('body ',body);
 
-          if(node.acao == 'T' ){
-             var msg = {payload: 'stored: '+body.isstored+' & label: '+body.label,
-                        stored: body.isstored,
-                        label: body.label};
+            if (node.acao == 'T') {
+              var msg = {
+                payload: 'stored: ' + body.isstored + ' & label: ' + body.label,
+                stored: body.isstored,
+                label: body.label
+              };
 
-           }else{
-             var msg = {payload: 'result: '+body[0].class_name+' & confidence: '+body[0].confidence+'%',
-                        result: body[0].class_name,
-                        confidence: body[0].confidence+'%'};
-           }
+            } else {
+              var msg = {
+                payload: 'result: ' + body[0].class_name + ' & confidence: ' + body[0].confidence + '%',
+                result: body[0].class_name,
+                confidence: body[0].confidence + '%'
+              };
+            }
 
-          console.log('msg ',msg);
-          node.send(msg);
+            console.log('msg ', msg);
+            node.send(msg);
 
 
+          }
         }
-      }
-    );
+      );
 
-  });
+    });
 
-}
+  }
 
-RED.nodes.registerType("to-ml4k-img",ML4KOutput);
+  RED.nodes.registerType("to-ml4k-img", ML4KOutput);
 
 }

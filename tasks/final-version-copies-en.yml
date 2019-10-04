@@ -1,13 +1,13 @@
-- name: Copiando o atalho de notas de liberacão para o Desktop
+- name:          Copiando o atalho de notas de liberacão para o Desktop
   copy:
-     src: releasenotes.desktop
-     dest: "{{ path2desktop }}"
-     owner: pi
-     group: pi
+     src:        releasenotes.desktop
+     dest:       "{{ path2desktop }}"
+     owner:      pi
+     group:      pi
      attributes: +i
-     mode: 0755
-- name: Copiando arquivo com notas de liberação da versão para o disco
+     mode:       0755
+- name:          Copiando arquivo com notas de liberação da versão para o disco
   copy:
-     src: releasenotes.info
-     dest: /home/mindmakers
-     mode: 0755
+     src:        releasenotes.info
+     dest:       /home/mindmakers
+     mode:       0755

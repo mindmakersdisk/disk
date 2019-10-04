@@ -553,13 +553,13 @@ function controlaSphero() {
 
     //tentativa diminuir eventos de colisão que estavam sendo disparados somente por movimento
     //var opts = {
-      //device: "bb8",
-      //meth: 0x01,
-      //xt: 0xff,
-      //yt: 0xff,
-      //xs: 0xff,
-      //ys: 0xff,
-      //dead: 0xf0
+    //device: "bb8",
+    //meth: 0x01,
+    //xt: 0xff,
+    //yt: 0xff,
+    //xs: 0xff,
+    //ys: 0xff,
+    //dead: 0xf0
     //}
     //bb8.detectCollisions(opts);
 
@@ -771,7 +771,7 @@ function controlaSphero() {
     } else if (key.ctrl && key.name === 'a') {
       //tentativa diminuir mensagens "command sync lost" e só ligar colisão e freefall quando necessário
       bb8.detectCollisions({
-       device: "bb8"
+        device: "bb8"
       });
 
       bb8.detectFreefall();
@@ -791,12 +791,12 @@ function controlaSphero() {
         }
         if (key.name == '2') {
           //bb8.stop();
-          bb8.roll(0,lastdir);
+          bb8.roll(0, lastdir);
         }
 
         if (key.name == 'up') {
           bb8.roll(speed, 0);
-          lastdir =0;
+          lastdir = 0;
         }
         if (key.name == 'down') {
           bb8.roll(speed, 180);
@@ -887,7 +887,7 @@ app.get('/dispositivocorrente', (request, response) => {
 
 
 function wait(seconds) {
-  
+
   var iMilliSeconds = seconds * 1000
   var counter = 0,
     start = new Date().getTime(),

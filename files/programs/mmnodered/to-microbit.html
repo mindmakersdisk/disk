@@ -1,28 +1,40 @@
 <script type="text/javascript">
-    RED.nodes.registerType('to-microbit',{
-        category: 'Sala de Aula IoT',
-        color: '#a6bbcf',
-        defaults: {
-            name: {value:""},
-            acao: {value:""},
-            indiceFiguraLED: {value:""},
-            textoLED: {value:""},
-            pinId: {value:""},
-            pinValor: {value:""}
-        },
-        inputs:1,
-        outputs:0,
-        color: '#FFCC66',
-        align: 'right',
-        icon: "bluetooth.png",
-        label: function() {
-            return this.name||"para microbit";
-        }
-    });
+  RED.nodes.registerType('to-microbit', {
+    category: 'Sala de Aula IoT',
+    color: '#a6bbcf',
+    defaults: {
+      name: {
+        value: ""
+      },
+      acao: {
+        value: ""
+      },
+      indiceFiguraLED: {
+        value: ""
+      },
+      textoLED: {
+        value: ""
+      },
+      pinId: {
+        value: ""
+      },
+      pinValor: {
+        value: ""
+      }
+    },
+    inputs: 1,
+    outputs: 0,
+    color: '#FFCC66',
+    align: 'right',
+    icon: "bluetooth.png",
+    label: function() {
+      return this.name || "para microbit";
+    }
+  });
 </script>
 
 <script type="text/x-red" data-template-name="to-microbit">
-    <div class="form-row">
+  <div class="form-row">
         <label for="node-input-name">Nome<i class="icon-tag"></i></label>
         <input type="text" id="node-input-name" placeholder="Nome">
     </div>
@@ -63,5 +75,5 @@
 </script>
 
 <script type="text/x-red" data-help-name="to-microbit">
-    <p>Um componente que envia mensagens bluetooth para o wearable microbit</p>
+  <p>Um componente que envia mensagens bluetooth para o wearable microbit</p>
 </script>

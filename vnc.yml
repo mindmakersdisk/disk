@@ -1,5 +1,5 @@
-- hosts: localhost
+- hosts:       localhost
   remote_user: root
 
   tasks:
-   - include: tasks/xvnc.yml
+   - include:  tasks/xvnc.yml

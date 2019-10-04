@@ -1,130 +1,130 @@
-- name: Copiando arquivo 50-microbit.rules
+- name:         Copiando arquivo 50-microbit.rules
   copy:
-     src: files/rules.d
-     dest: /etc/udev
-     mode: 0755
-- name: Ativando 50-microbit.rules
-  shell: 'sudo udevadm control --reload-rules'
+     src:       files/rules.d
+     dest:      /etc/udev
+     mode:      0755
+- name:         Ativando 50-microbit.rules
+  shell:        'sudo udevadm control --reload-rules'
   args:
-    warn: no
-- command: dpkg-query -l
-  register: dpkg_check
-- name: Instalando gnuplot
+    warn:       no
+- command:      dpkg-query -l
+  register:     dpkg_check
+- name:         Instalando gnuplot
   apt:
-     name: gnuplot
-  #when: not dpkg_check.stdout.find('gnuplot') != -1
-- name: Instalando screen
+     name:      gnuplot
+  #when:        not dpkg_check.stdout.find('gnuplot') != -1
+- name:         Instalando screen
   apt:
-     name: screen
-  #when: not dpkg_check.stdout.find('screen') != -1
-- name: Verificando se aiStarter já existe
+     name:      screen
+  #when:        not dpkg_check.stdout.find('screen') != -1
+- name:         Verificando se aiStarter já existe
   stat:
-     path: /home/mindmakers/programs/verify/aiStarter/appinventor2-setup_2.3_all.deb
-  register: aiStarter
+     path:      /home/mindmakers/programs/verify/aiStarter/appinventor2-setup_2.3_all.deb
+  register:     aiStarter
 - file:
-    path: /home/mindmakers/programs/verify/aiStarter
-    state: directory
-    mode: 0755
-- name: Baixando arquivo de instalação aiStarter -- Este passo pode demorar --
+    path:       /home/mindmakers/programs/verify/aiStarter
+    state:      directory
+    mode:       0755
+- name:         Baixando arquivo de instalação aiStarter -- Este passo pode demorar --
   get_url:
-    url: http://appinv.us/aisetup_linux_deb
-    dest: /home/mindmakers/programs/verify/aiStarter
-    timeout: 60
-    mode: 0744
-  when: not aiStarter.stat.exists
-- name: Instalando aiStarted do pacote .deb
+    url:        http://appinv.us/aisetup_linux_deb
+    dest:       /home/mindmakers/programs/verify/aiStarter
+    timeout:    60
+    mode:       0744
+  when:         not aiStarter.stat.exists
+- name:         Instalando aiStarted do pacote .deb
   apt:
-    deb: /home/mindmakers/programs/verify/aiStarter/appinventor2-setup_2.3_all.deb
-- name: Copiando programas executáveis aiStarter
+    deb:        /home/mindmakers/programs/verify/aiStarter/appinventor2-setup_2.3_all.deb
+- name:         Copiando programas executáveis aiStarter
   copy:
-     src: files/appinventor/usr
-     dest: /
-     mode: 0755
+     src:       files/appinventor/usr
+     dest:      /
+     mode:      0755
 - file:
-    path: /usr/google/appinventor/commands-for-Appinventor/adb
-    state: absent
-- shell: 'sudo ln -v -s /usr/bin/adb /usr/google/appinventor/commands-for-Appinventor/adb'
+    path:       /usr/google/appinventor/commands-for-Appinventor/adb
+    state:      absent
+- shell:        'sudo ln -v -s /usr/bin/adb /usr/google/appinventor/commands-for-Appinventor/adb'
   args:
-    warn: no
-- name: Instalando pacote do npm "node-ipc"
+    warn:       no
+- name:         Instalando pacote do npm "node-ipc"
   npm:
-    name: node-ipc
-    path: /home/mindmakers/programs
-- name: Instalando pacote do npm "node-red-dashboard"
+    name:       node-ipc
+    path:       /home/mindmakers/programs
+- name:         Instalando pacote do npm "node-red-dashboard"
   npm:
-    name: node-red-dashboard
-    global: yes
-    path: /home/mindmakers/programs
-- name: Instalando pacote do npm "node-red-mindmakers"
-  shell: 'sudo npm -g install /home/mindmakers/programs/mmnodered'
+    name:       node-red-dashboard
+    global:     yes
+    path:       /home/mindmakers/programs
+- name:         Instalando pacote do npm "node-red-mindmakers"
+  shell:        'sudo npm -g install /home/mindmakers/programs/mmnodered'
   args:
-    warn: no
-- name: Instalando pacote do npm "node-bbc-microbit"
+    warn:       no
+- name:         Instalando pacote do npm "node-bbc-microbit"
   npm:
-    name: bbc-microbit
-    path: /home/mindmakers/programs
-- name: Instalando e configurando pacotes do npm "node-red"
+    name:       bbc-microbit
+    path:       /home/mindmakers/programs
+- name:         Instalando e configurando pacotes do npm "node-red"
   npm:
-    name: node-red
-    global: yes
-    version: 'latest'
-    path: /home/pi/.node-red
+    name:       node-red
+    global:     yes
+    version:    'latest'
+    path:       /home/pi/.node-red
     executable: /usr/bin/npm --unsafe-perm=true
 - copy:
-     src: files/node-red/lib/
-     dest: /lib
-     mode: 0644
+     src:       files/node-red/lib/
+     dest:      /lib
+     mode:      0644
 - copy:
-     src: files/node-red/usr/bin/
-     dest: /usr/bin
-     mode: 0755
+     src:       files/node-red/usr/bin/
+     dest:      /usr/bin
+     mode:      0755
 - copy:
-     src: files/node-red/usr/share/
-     dest: /usr/share
-     mode: 0644
+     src:       files/node-red/usr/share/
+     dest:      /usr/share
+     mode:      0644
 - copy:
-     src: files/node-red/etc/
-     dest: /etc
-     mode: 0644
+     src:       files/node-red/etc/
+     dest:      /etc
+     mode:      0644
 - copy:
-     src: files/node-red/home/
-     dest: /home
-     owner: pi
-     group: pi
-     mode: 0644
+     src:       files/node-red/home/
+     dest:      /home
+     owner:     pi
+     group:     pi
+     mode:      0644
 - npm:
-    name: node-red-node-random
-    global: yes
-    path: /home/pi/.node-red
+    name:       node-red-node-random
+    global:     yes
+    path:       /home/pi/.node-red
     executable: /usr/bin/npm --unsafe-perm=true
 - npm:
-    name: node-red-contrib-ibm-watson-iot
-    global: yes
-    path: /home/pi/.node-red
+    name:       node-red-contrib-ibm-watson-iot
+    global:     yes
+    path:       /home/pi/.node-red
     executable: /usr/bin/npm --unsafe-perm=true
 - npm:
-    name: node-red-node-ping
-    global: yes
-    path: /home/pi/.node-red
+    name:       node-red-node-ping
+    global:     yes
+    path:       /home/pi/.node-red
     executable: /usr/bin/npm --unsafe-perm=true
 - npm:
-    name: node-red-contrib-play-audio
-    global: yes
-    path: /home/pi/.node-red
+    name:       node-red-contrib-play-audio
+    global:     yes
+    path:       /home/pi/.node-red
     executable: /usr/bin/npm --unsafe-perm=true
 - npm:
-    name: node-red-node-smooth
-    global: yes
-    path: /home/pi/.node-red
+    name:       node-red-node-smooth
+    global:     yes
+    path:       /home/pi/.node-red
     executable: /usr/bin/npm --unsafe-perm=true
 - npm:
-    name: node-red-node-serialport
-    global: yes
-    path: /home/pi/.node-red
+    name:       node-red-node-serialport
+    global:     yes
+    path:       /home/pi/.node-red
     executable: /usr/bin/npm --unsafe-perm=true
-- shell: 'sudo systemctl daemon-reload'
+- shell:        'sudo systemctl daemon-reload'
   args:
-    warn: no
+    warn:       no
 - file:
-    path: /usr/lib/node_modules/node-red/node_modules/multilang-sentiment/build/output/build-all.json
-    state: absent
+    path:       /usr/lib/node_modules/node-red/node_modules/multilang-sentiment/build/output/build-all.json
+    state:      absent

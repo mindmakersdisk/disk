@@ -1,20 +1,20 @@
-# - name: Atualizando a distribuição do sistema.
+# - name:       Atualizando a distribuição do sistema.
 #   apt:
-#     upgrade: dist
+#     upgrade:  dist
 
-#- name: Atualizando a versão do Chromium-browser
+#- name:        Atualizando a versão do Chromium-browser
 #  apt:
-#     name: chromium-browser
-#     state: latest
-# - name: Atualizando o Scratch2
+#     name:     chromium-browser
+#     state:    latest
+# - name:       Atualizando o Scratch2
 #   apt:
-#      name: scratch2
-#      state: latest
+#      name:    scratch2
+#      state:   latest
 
-- name: Removendo pacotes desnecessários do cache
+- name:         Removendo pacotes desnecessários do cache
   apt:
-    autoclean: yes
+    autoclean:  yes
 
-- name: Removendo dependências que não são mais necessárias
+- name:         Removendo dependências que não são mais necessárias
   apt:
     autoremove: yes
