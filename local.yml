@@ -1,3 +1,4 @@
+# - hosts:               local
 - hosts:               produto
   remote_user:         root
   pre_tasks:
