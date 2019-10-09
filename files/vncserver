@@ -30,20 +30,20 @@ OPTIONS="-name ${NAME} -depth ${DEPTH} -geometry ${GEOMETRY} :${DISPLAY}"
 . /lib/lsb/init-functions
 
 case "$1" in
-start)
-log_action_begin_msg "Starting vncserver for user '${USER}' on localhost:${DISPLAY}"
-su ${USER} -c "/usr/bin/vncserver ${OPTIONS}"
-;;
+  start)
+  log_action_begin_msg "Starting vncserver for user '${USER}' on localhost:${DISPLAY}"
+  su ${USER} -c "/usr/bin/vncserver ${OPTIONS}"
+  ;;
 
-stop)
-log_action_begin_msg "Stoping vncserver for user '${USER}' on localhost:${DISPLAY}"
-su ${USER} -c "/usr/bin/vncserver -kill :${DISPLAY}"
-;;
+  stop)
+  log_action_begin_msg "Stoping vncserver for user '${USER}' on localhost:${DISPLAY}"
+  su ${USER} -c "/usr/bin/vncserver -kill :${DISPLAY}"
+  ;;
 
-restart)
-$0 stop
-$0 start
-;;
+  restart)
+  $0 stop
+  $0 start
+  ;;
 esac
 
 exit 0

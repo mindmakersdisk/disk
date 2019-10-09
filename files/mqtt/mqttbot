@@ -13,80 +13,80 @@ LOGFILE=/var/log/mqttbot.log
 . /lib/lsb/init-functions
 
 start() {
+  sleep 15
+  pi="$(sudo grep -w "Pi:" /home/mindmakers/school.info | sed 's/.*: //' | sed 's/||//')"
+
+  #termina o programa se pi for vazio (geralmente alocado para escola mas não registrado)
+  if [ "$pi" = '' ] || [ "$pi"  = 'Não registrado' ]
+  then
+    echo "Imagem não registrada, registre-a para utilizar este serviço."
+  else
+
+    sudo bash /home/mindmakers/programs/shells/mqttbot.sh &>/var/log/mqttbot.log
+    echo 'Starting service…' >&2
+    sudo python /home/mindmakers/programs/mmiotcli.py &>/var/log/mqttbot.log & echo \$!
+
     sleep 15
-    pi="$(sudo grep -w "Pi:" /home/mindmakers/school.info | sed 's/.*: //' | sed 's/||//')"
-
-    #termina o programa se pi for vazio (geralmente alocado para escola mas não registrado)
-    if [ "$pi" = '' ] || [ "$pi"  = 'Não registrado' ]
+    if pgrep -f mmiotcli.py > /dev/null
     then
-        echo "Imagem não registrada, registre-a para utilizar este serviço."
+      echo "$NAME is now running"
     else
-
-        sudo bash /home/mindmakers/programs/shells/mqttbot.sh &>/var/log/mqttbot.log
-        echo 'Starting service…' >&2
-        sudo python /home/mindmakers/programs/mmiotcli.py &>/var/log/mqttbot.log & echo \$!
-
-        sleep 15
-        if pgrep -f mmiotcli.py > /dev/null
-        then
-            echo "$NAME is now running"
-        else
-            echo ''
-            echo "Error! Could not start $NAME!"
-            echo "trying again"
-            sudo python /home/mindmakers/programs/mmiotcli.py &>/var/log/mqttbot.log & echo \$!
-        fi
+      echo ''
+      echo "Error! Could not start $NAME!"
+      echo "trying again"
+      sudo python /home/mindmakers/programs/mmiotcli.py &>/var/log/mqttbot.log & echo \$!
     fi
+  fi
 }
 
 stop() {
-    echo 'Stopping service…' >&2
-    sudo pkill python
-    echo 'Service stopped' >&2
+  echo 'Stopping service…' >&2
+  sudo pkill python
+  echo 'Service stopped' >&2
 }
 
 uninstall() {
-    echo -n "Are you really sure you want to uninstall this service? That cannot be undone. [yes|No] "
-    local SURE
-    read SURE
-    if [ "$SURE" = "yes" ]; then
-        stop
-        echo "Notice: log file was not removed: $LOGFILE" >&2
-        update-rc.d -f $NAME remove
-        rm -fv "$0"
-    else
-        echo "Abort!"
-    fi
+  echo -n "Are you really sure you want to uninstall this service? That cannot be undone. [yes|No] "
+  local SURE
+  read SURE
+  if [ "$SURE" = "yes" ]; then
+    stop
+    echo "Notice: log file was not removed: $LOGFILE" >&2
+    update-rc.d -f $NAME remove
+    rm -fv "$0"
+  else
+    echo "Abort!"
+  fi
 }
 
 status() {
-    if [ -z "$(ps axf | grep python | grep -v grep)" ]; then
-        printf "%s\n" "The process appears to be dead" >&2
-    else
-        echo "mmiotcli.py appears to be running"
-    fi
+  if [ -z "$(ps axf | grep python | grep -v grep)" ]; then
+    printf "%s\n" "The process appears to be dead" >&2
+  else
+    echo "mmiotcli.py appears to be running"
+  fi
 }
 
 case "$1" in
-    start)
-        start
-        ;;
-    stop)
-        stop
-        ;;
-    status)
-        status
-        ;;
-    uninstall)
-        uninstall
-        ;;
-    restart)
-        $0 stop
-        sleep 1
-        $0 start
-        ;;
-    *)
-        echo "Usage: $0 {start|stop|status|uninstall|restart}"
+  start)
+  start
+  ;;
+  stop)
+  stop
+  ;;
+  status)
+  status
+  ;;
+  uninstall)
+  uninstall
+  ;;
+  restart)
+  $0 stop
+  sleep 1
+  $0 start
+  ;;
+  *)
+  echo "Usage: $0 {start|stop|status|uninstall|restart}"
 esac
 
 exit 0

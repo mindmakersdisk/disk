@@ -1,17 +1,17 @@
-# - hosts:               local
-- hosts:               produto
+# - hosts:             local
+- hosts:               sala1
   remote_user:         root
   pre_tasks:
     # - file:
-    #     path:          /etc/apt/sources.list.d/rpimonitor.list
-    #     state:         absent
+    #     path:        /etc/apt/sources.list.d/rpimonitor.list
+    #     state:       absent
     # - apt:
-    #      autoclean:    yes
-    # - name:            Atualizando Repositórios
-    #   shell:           'sudo apt update -y'
+    #      autoclean:  yes
+    # - name:          Atualizando Repositórios
+    #   shell:         'sudo apt update -y'
     #   args:
-    #     warn:          no
-    #   when:            ansible_facts.lsb.codename == "buster"
+    #     warn:        no
+    #   when:          ansible_facts.lsb.codename == "buster"
     - apt:
          update_cache: yes
       changed_when:    False
