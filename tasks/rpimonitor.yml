@@ -1,43 +1,63 @@
-# - name: Instalando speedtest-cli
+# - name:  Instalando speedtest-cli
 #   apt:
 #      name: speedtest-cli
-- name: add key server rpimonitor
-  shell: 'sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 2C0D3C0F'
-  args:
-    warn: no
-- name: rpimonitor list
-  shell: 'sudo wget http://goo.gl/vewCLL -O /etc/apt/sources.list.d/rpimonitor.list'
-  args:
-    warn: no
-- name: Atualizando Repositórios
-  apt:
-    update_cache: yes
-- name: Instalando rpimonitor
-  apt:
-     name: rpimonitor
 
-# - name: add key server rpimonitor
-#   shell: 'sudo /etc/init.d/rpimonitor update'
+# - name:  add key server rpimonitor
+#   shell: 'sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 2C0D3C0F'
 #   args:
 #     warn: no
+# - name:  rpimonitor list
+#   shell: 'sudo wget http://goo.gl/vewCLL -O /etc/apt/sources.list.d/rpimonitor.list'
+#   args:
+#     warn: no
+# - name:  Atualizando Repositórios
+#   apt:
+#     update_cache: yes
+# - name:  Instalando rpimonitor
+#   apt:
+#      name: rpimonitor
 
-# teste configurações
-# - lineinfile:
-#     path: /etc/rpimonitor/daemon.conf
-#     regexp: '^#daemon.delay=10'
-#     line: 'daemon.delay=60'
+- name:    Copiando instalador rpimonitor
+  copy:
+     src:  ongoing/rpimonitor/rpimonitor_latest.deb
+     dest: /home/mindmakers/programs/verify
+     mode: 0777
+- name:    Instalando pacotes necessarios
+  apt:
+     name: [librrds-perl, libhttp-daemon-perl, libjson-perl, libipc-sharelite-perl, libfile-which-perl, libsnmp-extension-passpersist-perl, nmap]
+- name:    Instalando pacote
+  shell:   'cd /home/mindmakers/programs/verify/ && sudo dpkg -i rpimonitor_latest.deb'
+  args:
+    warn:  no
+- name:    Validando instalação
+  shell:   'sudo apt install --fix-broken'
+  args:
+    warn:  no
+- name:    Completando instalação
+  shell:   'sudo /usr/share/rpimonitor/scripts/updatePackagesStatus.pl'
+  args:
+    warn:  no
+# - name:  Ativando coleta de dados WiFi
+#   lineinfile:
+#     path: /etc/rpimonitor/template/raspbian.conf
 #     backrefs: yes
-
-# teste 2 configurações
-# - name: Configurações
-#   shell: 'sudo rpimonitord -k'
-#   args:
-#     warn: no
-# - name: Configurações
-#   shell: 'sudo rpimonitord -l /var/log/rpimonitor'
-#   args:
-#     warn: no
-# - name: Configurações
-#   shell: 'sudo rpimonitord -d 60'
-#   args:
-#     warn: no
+#     regexp: '#include=/etc/rpimonitor/template/wlan.conf'
+#     line: include=/etc/rpimonitor/template/wlan.conf
+# - name:  Copiando template network rpimonitor
+#   copy:
+#      src: ongoing/rpimonitor/template/network.conf
+#      dest: /etc/rpimonitor/template/
+#      mode: 0664
+- name:    Copiando todos templates rpimonitor
+  copy:
+     src:  ongoing/rpimonitor
+     dest: /etc
+     mode: 0664
+- name:    Copiando template network rpimonitor
+  copy:
+     src:  ongoing/rpimonitor/rpimonitor
+     dest: /etc/init.d
+     mode: 0755
+- shell:   'sudo update-rc.d rpimonitor defaults'
+  args:
+    warn:  no
