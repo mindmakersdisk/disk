@@ -22,7 +22,7 @@
      src:  ongoing/rpimonitor/rpimonitor_latest.deb
      dest: /home/mindmakers/programs/verify
      mode: 0777
-- name:    Instalando pacotes necessarios
+- name:    Instalando pacotes necessários
   apt:
      name: [librrds-perl, libhttp-daemon-perl, libjson-perl, libipc-sharelite-perl, libfile-which-perl, libsnmp-extension-passpersist-perl, nmap]
 - name:    Instalando pacote
@@ -53,7 +53,7 @@
      src:  ongoing/rpimonitor
      dest: /etc
      mode: 0664
-- name:    Copiando template network rpimonitor
+- name:    Sobrepondo arquivo de inicialização rpimonitor
   copy:
      src:  ongoing/rpimonitor/rpimonitor
      dest: /etc/init.d
