@@ -53,6 +53,21 @@
      src:  ongoing/rpimonitor
      dest: /etc
      mode: 0664
+- file:
+    path: /etc/rpimonitor/rpimonitor
+    state: absent
+# - file:
+#     path: /etc/rpimonitor/rpimonitor-e10
+#     state: absent
+- file:
+    path: /etc/rpimonitor/rpimonitor_latest.deb
+    state: absent
+# - file:
+#     path: /etc/rpimonitor/template/network-modified-test.conf
+#     state: absent
+# - file:
+#     path: /etc/rpimonitor/template/network_wifi.conf
+#     state: absent
 - name:    Sobrepondo arquivo de inicialização rpimonitor
   copy:
      src:  ongoing/rpimonitor/rpimonitor

@@ -1,53 +1,53 @@
-- hosts: localhost
-  remote_user: root
+- hosts:               localhost
+  remote_user:         root
   pre_tasks:
     - file:
-        path: /etc/apt/sources.list.d/rpimonitor.list
-        state: absent
+        path:          /etc/apt/sources.list.d/rpimonitor.list
+        state:         absent
     - apt:
-         autoclean: yes
-    - name: Atualizando Repositórios
-      shell: 'sudo apt update -y'
+         autoclean:    yes
+    - name:            Atualizando Repositórios
+      shell:           'sudo apt update -y'
       args:
-        warn: no
-      when: ansible_facts.lsb.codename == "buster"
+        warn:          no
+      when:            ansible_facts.lsb.codename == "buster"
     - apt:
          update_cache: yes
-      changed_when: False
-      when: not ansible_facts.lsb.codename == "buster"
+      changed_when:    False
+      when:            not ansible_facts.lsb.codename == "buster"
 
   tasks:
-    - name: Verificando versão do Ansible.
+    - name:            Verificando versão do Ansible.
       stat:
-        path: /home/mindmakers/programs/verify/ansible27
-      register: ansb
-    - include: tasks/ansibleupdate.yml
-      when: not ansb.stat.exists
-    - include: tasks/ansible-config.yml
+        path:          /home/mindmakers/programs/verify/ansible27
+      register:        ansb
+    - include:         tasks/ansibleupdate.yml
+      when:            not ansb.stat.exists
+    - include:         tasks/ansible-config.yml
     - set_fact:
          path2desktop: "/home/pi/Desktop"
-    - name: Verificando se diretório Área de Trabalho existe
+    - name:            Verificando se diretório Área de Trabalho existe
       stat:
-         path: "/home/pi/Área de Trabalho"
-      register: adt
+         path:         "/home/pi/Área de Trabalho"
+      register:        adt
     - set_fact:
          path2desktop: "{{ adt.stat.path }}"
-      when: adt.stat.exists
-    - include: tasks/student-en.yml
-    - include: tasks/copies.yml
-    - include: tasks/packages.yml
-    - include: tasks/packages-uninstall.yml
-    - include: tasks/3dslash.yml
-    - include: tasks/hide-games.yml
-    - include: tasks/install-extension.yml
-    - include: tasks/apt-get.yml
-    - include: tasks/copies-student.yml
-    - include: tasks/mt6.yml
-    #- include: tasks/rpimonitor.yml
-    - include: tasks/avahi.yml
-    - include: tasks/raspi-config.yml
+      when:            adt.stat.exists
+    - include:         tasks/student-en.yml
+    - include:         tasks/copies.yml
+    - include:         tasks/packages.yml
+    - include:         tasks/packages-uninstall.yml
+    - include:         tasks/3dslash.yml
+    - include:         tasks/hide-games.yml
+    - include:         tasks/install-extension.yml
+    - include:         tasks/apt-get.yml
+    - include:         tasks/copies-student.yml
+    - include:         tasks/mt6.yml
+    #- include:        tasks/rpimonitor.yml
+    - include:         tasks/avahi.yml
+    - include:         tasks/raspi-config.yml
 # Copia as notas de liberação e o atalho com nome da versão atualizados
-    - include: tasks/final-version-copies-en.yml
-    - include: tasks/version_update.yml
-    - include: tasks/reboot.yml
+    - include:         tasks/final-version-copies-en.yml
+    - include:         tasks/version_update.yml
+    - include:         tasks/reboot.yml
 # Não acrescentar tarefas após estas últimas.

@@ -1,5 +1,8 @@
 ########### IMAGEM DE DISCO MIND MAKERS ###########
 
+Versão 3.5 23/10/2019
+- Alterações na validação de captura de imagem via IpWebcam nos smartphone Android.
+
 Versão 3.4 01/10/2019
 - Alterações no servidor BLE do mBot para melhorar a performace dos sensores, facilitando o uso do segue-linha no mmblockly.
 

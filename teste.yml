@@ -2,6 +2,7 @@
 
   tasks:
     - include: tasks/rpimonitor.yml
+    # - include: tasks/reboot.yml
 
     # - set_fact:
     #      path2desktop: "/home/pi/Desktop"
