@@ -1,7 +1,16 @@
-- hosts:  localhost
+- hosts:       localhost
 
   tasks:
     - include: tasks/rpimonitor.yml
+    # - stat:
+    #      path: /home/mindmakers/imgs/win.png
+    #   register: imgs
+    # - name: Copiando imagens
+    #   copy:
+    #      src: files/imgs
+    #      dest: /home/mindmakers
+    #      mode: 0755
+    #   when: not imgs.stat.exists
     # - include: tasks/reboot.yml
 
     # - set_fact:

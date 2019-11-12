@@ -37,6 +37,7 @@
   shell:   'sudo /usr/share/rpimonitor/scripts/updatePackagesStatus.pl'
   args:
     warn:  no
+
 # - name:  Ativando coleta de dados WiFi
 #   lineinfile:
 #     path: /etc/rpimonitor/template/raspbian.conf
@@ -54,13 +55,13 @@
      dest: /etc
      mode: 0664
 - file:
-    path: /etc/rpimonitor/rpimonitor
+    path:  /etc/rpimonitor/rpimonitor
     state: absent
 # - file:
 #     path: /etc/rpimonitor/rpimonitor-e10
 #     state: absent
 - file:
-    path: /etc/rpimonitor/rpimonitor_latest.deb
+    path:  /etc/rpimonitor/rpimonitor_latest.deb
     state: absent
 # - file:
 #     path: /etc/rpimonitor/template/network-modified-test.conf
