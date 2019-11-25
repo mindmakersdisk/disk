@@ -1,28 +1,44 @@
 - hosts:       localhost
 
   tasks:
-    - include: tasks/rpimonitor.yml
+    # - include: tasks/rpimonitor.yml
     # - stat:
     #      path: /home/mindmakers/imgs/win.png
     #   register: imgs
-    # - name: Copiando imagens
-    #   copy:
-    #      src: files/imgs
-    #      dest: /home/mindmakers
-    #      mode: 0755
-    #   when: not imgs.stat.exists
+    - file:
+        path:  /home/mindmakers/vw
+        state: absent
+    - file:
+        path:  /home/mindmakers/mmiotcli.js
+        state: absent
+    - name:    Copiando vw
+      copy:
+         src:  ongoing/vw
+         dest: /home/mindmakers/programs
+         mode: 0755
+    - name:    Copiando cli
+      copy:
+         src:  ongoing/mmiotcli.js
+         dest: /home/mindmakers/programs
+         mode: 0755
+    - name:    Instalando pacote do npm "cors"
+      npm:
+        name:  cors
+        # version: '4.1.1'
+        path:  /home/mindmakers/programs
+    #   when:  not imgs.stat.exists
     # - include: tasks/reboot.yml
 
     # - set_fact:
     #      path2desktop: "/home/pi/Desktop"
-    # - name: Verificando se diretório Área de Trabalho existe
+    # - name:  Verificando se diretório Área de Trabalho existe
     #   stat:
     #      path: "/home/pi/Área de Trabalho"
     #   register: adt
     # - set_fact:
     #      path2desktop: "{{ adt.stat.path }}"
-    #   when: adt.stat.exists
-    # - name: Alterando atributos do atalho da pasta scratch2
+    #   when:  adt.stat.exists
+    # - name:  Alterando atributos do atalho da pasta scratch2
     #   shell: 'sudo chattr -i /home/pi/Desktop/classroom_test.desktop'
     #   args:
     #     warn: no
@@ -37,7 +53,7 @@
     #     regexp: '^Icon='
     #     line: 'Icon=/usr/share/icons/{{sala.stdout}}.jpg'
     #     backrefs: yes
-    # - name: Alterando atributos do atalho da pasta scratch2
+    # - name:  Alterando atributos do atalho da pasta scratch2
     #   shell: 'sudo chattr +i /home/pi/Desktop/classroom_test.desktop'
     #   args:
     #     warn: no

@@ -29,7 +29,7 @@ var lastvaluepinread = -1;
 //TODO -- validar utilizacão de pin também no netsblox?
 function escreveParaCircuito(componente, pin, valor) {
   if (boardReady == true) {
-    if (!isNaN(pin)) {} else {
+    if (!isNaN(pin)) {} else { //Acomodar pins Analógicos chamando eles de 14 pra frente i.e. A0 vira pin 14, mais facil trabalhar com numeros e fazer uma array
       if (pin != undefined)
         pin = parseInt(pin.slice(1)) + 14;
     }
