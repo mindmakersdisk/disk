@@ -75,14 +75,7 @@ fs.readFile('/home/mindmakers/school.info', function(err,data)
       }
       
     });
-
-
-/*******************************************************************
- *  controlador Sphero daqui por diante 
- *******************************************************************/
-var WebSocketServer = require('websocket').server;
-
-var http = require('http');    
+   
 const express = require('express');  
 const app = express();
 const path = require('path');
@@ -148,6 +141,16 @@ app.get('/usrxtml111kkkxxvyi812902134lk', (request, response) => {
 })
 
 
+// devolve a sala e a estacao corrente.
+app.get('/id', (request, response) => {
+    
+  response.json({
+    estacao:estacao_registrado,
+    sala:sala_registrado})
+    
+})
+
+
 // registra ou devolve senha, conforme parametros
 app.get('/usrxtml111mmsdskkkdk112399s', (request, response) => {
   
@@ -173,7 +176,75 @@ app.get('/usrxtml111mmsdskkkdk112399s', (request, response) => {
     
 })
 
+/****************************************************
+ *                TIMELINE NESTE TRECHO
+ * *************************************************/
+var timelineMarcoCorrente="";
 
+// envia indicacao para exibir recurso (imagens, URL, texto, timeline ou marco) em outra estação ativada.
+app.get('/show', (request, response) => {
+  
+  // Simplesmente pega a mensagem na URL e reenvia introduzindo um prefixo como indicativo do tipo - ver encoding
+   if (request.query.msg!=null) {
+     
+     var evento = "timeline:"+request.query.msg;
+     
+     console.log('vai enviar evento via websocket '+evento);
+     
+      enviaMsgParaTodosClientes(evento);
+      
+       response.json({
+            status: 'ok'
+          })
+   }
+    
+})
+
+
+// controla a linha do tempo - feito apenas na maquina de quem publica uma linha do tempo
+app.get('/timelinepublica', (request, response) => {
+  
+  // Pega o nome concatenado com marco, separado por @@
+   timelineMarcoCorrente=request.query.nome;
+   response.json({
+            status: 'ok'
+          })
+   setTimeout(limpaPublicacao,30000);
+   // limpa em 30segundos. Se ninguem 'ouviu' (ouvem de 5 em 5 seg) e porque a execucao parou
+    
+})
+
+function limpaPublicacao() {
+  timelineMarcoCorrente="";
+}
+
+
+// verificar se um marco foi publicado e responde no status 'ok' ou 'no'
+app.get('/timeline', (request, response) => {
+  
+  // Pega o nome concatenado com marco, separado por @@
+ // console.log('vai comparar '+request.query.nome+' com '+timelineMarcoCorrente);
+   if (request.query.nome == timelineMarcoCorrente) {
+     // console.log('ok');
+         response.json({
+            status: 'ok'
+          })
+          
+   } else {
+     // console.log('no');
+      response.json({
+            status: 'no'
+      })
+   }
+        
+    
+})
+
+
+/****************************************************
+ *                TIMELINE NESTE TRECHO - FIM
+ * *************************************************/
+ 
 // PING
 app.post('/', (request, response) => {  
 
@@ -301,6 +372,10 @@ app.listen(800, function () {
 /****************************************************************
  *  daqui em diante websocket
  ****************************************************************/
+var WebSocketServer = require('websocket').server;
+
+var http = require('http'); 
+
 var notificouClienteConexao=false;
 
 
@@ -317,13 +392,15 @@ var server = http.createServer(function(request, response) {
     response.end();
 });
 
-if (verificaInstrutor()) {
-  server.listen(700, function() {
+//var estacaoInstrutor = verificaInstrutor();
+
+//if (estacaoInstrutor) {
+  server.listen(801, function() {
       console.log('---------------------------------------------------------------');
-      console.log(' '+(new Date().toLocaleString()) + ' Websocket facilitador ouvindo na porta 700');
+      console.log(' '+(new Date().toLocaleString()) + ' Websocket ouvindo na porta 801');
       console.log('---------------------------------------------------------------');    
   });
-}
+//} 
  
 wsServer = new WebSocketServer({
     httpServer: server,
@@ -332,11 +409,11 @@ wsServer = new WebSocketServer({
     // facilities built into the protocol and the browser.  You should
     // *always* verify the connection's origin and decide whether or not
     // to accept it.
-    autoAcceptConnections: false
+    autoAcceptConnections: true
 });
  
 function originIsAllowed(origin) {
-   // console.log('entrou para permitir origin');
+  //  console.log('entrou para permitir origin');
   // put logic here to detect whether the specified origin is allowed.
   return true;
 }
@@ -364,7 +441,7 @@ wsServer.on('request', function(request) {
     connection.on('message', function(message) {
 
       // Implementa envios para Sphero por aqui.
-      
+       console.log((new Date().toLocaleString()) + ' message recebida ' + message);
      
     });
     
