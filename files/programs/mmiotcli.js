@@ -75,17 +75,14 @@ fs.readFile('/home/mindmakers/school.info', function(err,data)
       }
       
     });
+   
+const express = require('express');  
+const app = express();
+const path = require('path');
+const router = express.Router();
+const cors = require('cors');
 
-
-/*******************************************************************
- *  controlador Sphero daqui por diante 
- *******************************************************************/
-var WebSocketServer = require('websocket').server;
-
-var http = require('http');    
-const express = require('express')  
-const app = express()
- 
+app.use(cors()) 
 // Permite que página da aplicação Mind Makers acesse este servidor local
 app.use(function (req, res, next) {
 
@@ -94,6 +91,8 @@ app.use(function (req, res, next) {
 
     next();
 });
+
+//app.use(express.static("public"));
 
 // PING
 app.get('/', (request, response) => {  
@@ -112,6 +111,149 @@ app.get('/', (request, response) => {
     status: 'ok',codigo:code
   })
 })
+
+var pontos = new Map();
+pontos.set('personal',0);
+pontos.set('company',0);
+pontos.set('bank',0);
+
+
+var senha = new Map();
+
+// devolve a estacao corrente do servidor e pontos do usuario em cada app virtual
+app.get('/usrxtml111kkkxxvyi812902134lk', (request, response) => {
+  
+  // Se enviou pontos, soma
+   if (request.query.xtml111kkkxxv!=null && request.query.xtml111kkkxxv.indexOf('$')>-1) {
+     var pontosRetorno = request.query.xtml111kkkxxv.split('$');
+     console.log('vai somar '+pontosRetorno[1]+' pontos para ' + pontosRetorno[0]);
+     if (!Number.isNaN(parseInt(pontosRetorno[1])))
+          pontos.set(pontosRetorno[0], parseInt(pontosRetorno[1]));
+  } 
+    
+  response.json({
+    user:estacao_registrado,
+    personal:pontos.get('personal'),
+    company:pontos.get('company'),
+    bank:pontos.get('bank')})
+    
+    
+})
+
+
+// devolve a sala e a estacao corrente.
+app.get('/id', (request, response) => {
+    
+  response.json({
+    estacao:estacao_registrado,
+    sala:sala_registrado})
+    
+})
+
+
+// registra ou devolve senha, conforme parametros
+app.get('/usrxtml111mmsdskkkdk112399s', (request, response) => {
+  
+  // Se enviou senha, registra
+   if (request.query.x42342341kkkxxv!=null && request.query.x42342341kkkxxv.indexOf('-')>-1) {
+     var usuarioSenha = request.query.x42342341kkkxxv.split('-');
+     
+     
+  //   console.log('vai registrar '+usuarioSenha[1]+' para ' + usuarioSenha[0]);
+          senha.set(usuarioSenha[0], usuarioSenha[1]);
+    
+  } else if (request.query.x42342341kkkxxv!=null) {
+
+      //  console.log('sem senha', request.query.x42342341kkkxxv)
+      //  console.log('com senha', senha.get(request.query.x42342341kkkxxv))
+        
+        response.json({
+          user:estacao_registrado,
+          login:request.query.x42342341kkkxxv,
+          senha:senha.get(request.query.x42342341kkkxxv)})
+  }
+    
+    
+})
+
+/****************************************************
+ *                TIMELINE NESTE TRECHO
+ * *************************************************/
+var timelineMarcoCorrente="";
+
+// envia indicacao para exibir recurso (imagens, URL, texto, timeline ou marco) em outra estação ativada.
+app.get('/show', (request, response) => {
+  
+  // Simplesmente pega a mensagem na URL e reenvia introduzindo um prefixo como indicativo do tipo - ver encoding
+   if (request.query.msg!=null) {
+     
+     var evento = "timeline:"+request.query.msg;
+     
+     console.log('vai enviar evento via websocket '+evento);
+     
+      enviaMsgParaTodosClientes(evento);
+      
+       response.json({
+            status: 'ok'
+          })
+   }
+    
+})
+
+
+// controla a linha do tempo - feito apenas na maquina de quem publica uma linha do tempo
+app.get('/timelinepublica', (request, response) => {
+  
+  // Pega o nome concatenado com marco, separado por @@
+   timelineMarcoCorrente=request.query.nome;
+   response.json({
+            status: 'ok'
+          })
+   setTimeout(limpaPublicacao,30000);
+   // limpa em 30segundos. Se ninguem 'ouviu' (ouvem de 5 em 5 seg) e porque a execucao parou
+    
+})
+
+function limpaPublicacao() {
+  timelineMarcoCorrente="";
+}
+
+
+// verificar se um marco foi publicado e responde no status 'ok' ou 'no'
+app.get('/timeline', (request, response) => {
+  
+  // Pega o nome concatenado com marco, separado por @@
+ // console.log('vai comparar '+request.query.nome+' com '+timelineMarcoCorrente);
+   if (request.query.nome == timelineMarcoCorrente) {
+     // console.log('ok');
+         response.json({
+            status: 'ok'
+          })
+          
+   } else {
+     // console.log('no');
+      response.json({
+            status: 'no'
+      })
+   }
+        
+    
+})
+
+
+/****************************************************
+ *                TIMELINE NESTE TRECHO - FIM
+ * *************************************************/
+ 
+// PING
+app.post('/', (request, response) => {  
+
+  response.json({
+    status: 'ok',codigo:code
+  })
+})
+
+app.use('/vw',express.static(path.join(__dirname,'vw')));
 
 const DIR_BASE_IMGS = '/home/mindmakers/imgs';
 const CHROMIUM_BASE = 'chromium-browser';
@@ -230,6 +372,10 @@ app.listen(800, function () {
 /****************************************************************
  *  daqui em diante websocket
  ****************************************************************/
+var WebSocketServer = require('websocket').server;
+
+var http = require('http'); 
+
 var notificouClienteConexao=false;
 
 
@@ -246,13 +392,15 @@ var server = http.createServer(function(request, response) {
     response.end();
 });
 
-if (verificaInstrutor()) {
-  server.listen(700, function() {
+//var estacaoInstrutor = verificaInstrutor();
+
+//if (estacaoInstrutor) {
+  server.listen(801, function() {
       console.log('---------------------------------------------------------------');
-      console.log(' '+(new Date().toLocaleString()) + ' Websocket facilitador ouvindo na porta 700');
+      console.log(' '+(new Date().toLocaleString()) + ' Websocket ouvindo na porta 801');
       console.log('---------------------------------------------------------------');    
   });
-}
+//} 
  
 wsServer = new WebSocketServer({
     httpServer: server,
@@ -261,11 +409,11 @@ wsServer = new WebSocketServer({
     // facilities built into the protocol and the browser.  You should
     // *always* verify the connection's origin and decide whether or not
     // to accept it.
-    autoAcceptConnections: false
+    autoAcceptConnections: true
 });
  
 function originIsAllowed(origin) {
-   // console.log('entrou para permitir origin');
+  //  console.log('entrou para permitir origin');
   // put logic here to detect whether the specified origin is allowed.
   return true;
 }
@@ -293,7 +441,7 @@ wsServer.on('request', function(request) {
     connection.on('message', function(message) {
 
       // Implementa envios para Sphero por aqui.
-      
+       console.log((new Date().toLocaleString()) + ' message recebida ' + message);
      
     });
     

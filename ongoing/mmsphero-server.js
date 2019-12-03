@@ -373,7 +373,6 @@ noble.on('discover', function(peripheral) {
           numeroScans = 0;
           noble.startScanning();
 
-
         } else {
 
           // usa o informado manualmente
@@ -429,7 +428,10 @@ function controlaSphero() {
   // submete comandos dinamicamente, para o SPRK+
   bb8.connect(function() {
 
-    bb8.ping(); // Importante: evita travamentos inesperados
+    bb8.ping(function(err, data) {
+      if (err)
+        console.log(err);
+    }); // Importante: evita travamentos inesperados
 
     // Notifica NODE-RED
     if (temNodeRedConectado()) {
@@ -444,8 +446,6 @@ function controlaSphero() {
       if (err) {
         console.error((new Date().toLocaleString()) + " err:", err);
       } else {
-
-
 
         console.log('\x1b[0m\x1b[32m', 'Leitura de componentes digitais do SPHERO via bluetooth ativada');
         console.log('\x1b[0m', '---------------------------------------------------------------');
@@ -476,7 +476,6 @@ function controlaSphero() {
     // console.error('\x1b[0m\x1b[32m', '-- Conectou com sucesso!! Aguardando comandos  ----');
     // console.error('\x1b[0m\x1b[32m', '---------------------------------------------------');
 
-
     count = 0;
 
     setInterval(function() {
@@ -488,15 +487,17 @@ function controlaSphero() {
           estado = bb8.connection.peripheral.state;
         }
         console.log('\x1b[32m', (new Date().toLocaleString()) + ' Sphero ' + estado + '. Verificando comandos ...');
-        bb8.ping(function(err, data) {
-          if (err)
-            console.log(err);
-        });
-        //console.log(bb8.connection.peripheral.state);
+
+        //console.log(bb8);
+
       }
 
+      //console.log(bb8.busy);
+      //console.log(bb8.connection.peripheral.state);
+
       if (count % 5 == 0) {
-        if (bb8.connection.peripheral.state == "disconnected") {
+
+        if (bb8.connection.peripheral.state != "connected") {
           console.log('\x1b[31m', '-----------------------------------------------------------------------');
           console.log('\x1b[31m', (new Date().toLocaleString()) + " Sphero desonectou! Caso não tenha sido intencional,");
           console.log('\x1b[31m', "                   feche esta janela e reinicie o serviço.");
@@ -511,6 +512,7 @@ function controlaSphero() {
 
       if (count == 1) {
         code = 'bb8.setInactivityTimeout(1500);';
+        bb8.setDefaultSettings();
 
       }
 
@@ -549,25 +551,37 @@ function controlaSphero() {
 
     }, 1000);
 
+    //tentativa diminuir eventos de colisão que estavam sendo disparados somente por movimento
+    //var opts = {
+    //device: "bb8",
+    //meth: 0x01,
+    //xt: 0xff,
+    //yt: 0xff,
+    //xs: 0xff,
+    //ys: 0xff,
+    //dead: 0xf0
+    //}
+    //bb8.detectCollisions(opts);
 
-    bb8.detectCollisions({
-      device: "bb8"
-    });
 
-    bb8.detectFreefall();
+    // bb8.detectCollisions({
+    //   device: "bb8"
+    // });
+
+
+    //ver se da pra diminuir falso-positivo com detectFreefall
+    //bb8.detectFreefall();
 
     bb8.on("freefall", function(data) {
       //console.log("freefall detected");
       //console.log("  data:", data);
-      console.log((new Date().toLocaleString()) + " Queda livre detectada!");
+      console.log('\x1b[32m', (new Date().toLocaleString()) + " Queda livre detectada!");
 
       if (temClienteConectado())
         enviaMsgParaTodosClientes('quedaLivre={"valor":' + data.value + '}');
 
       if (temNodeRedConectado()) {
-
         //  console.log('teste colisao');
-
         ipc.server.broadcast(
           'sphero.freeFall', {
             id: ipc.config.id,
@@ -579,49 +593,19 @@ function controlaSphero() {
 
       }
 
-
     });
 
-
-    bb8.on("freefall", function(data) {
-      //console.log("freefall detected");
-      //console.log("  data:", data);
-      console.log((new Date().toLocaleString()) + " Queda livre detectada!");
-
-      if (temClienteConectado())
-        enviaMsgParaTodosClientes('quedaLivre={"valor":' + data.value + '}');
-
-      if (temNodeRedConectado()) {
-
-        //  console.log('teste colisao');
-
-        ipc.server.broadcast(
-          'sphero.freeFall', {
-            id: ipc.config.id,
-            message: {
-              value: data.value
-            }
-          }
-        );
-
-      }
-
-
-    });
 
     bb8.on("landed", function(data) {
       //console.log("landing detected");
       //console.log("  data:", data);
-      console.log((new Date().toLocaleString()) + " Aterrisagem detectada!");
-
+      console.log('\x1b[32m', (new Date().toLocaleString()) + " Aterrisagem detectada!");
 
       if (temClienteConectado())
         enviaMsgParaTodosClientes('aterrisou={"valor":' + data.value + '}');
 
       if (temNodeRedConectado()) {
-
         //  console.log('teste colisao');
-
         ipc.server.broadcast(
           'sphero.landing', {
             id: ipc.config.id,
@@ -635,28 +619,6 @@ function controlaSphero() {
 
     });
 
-    bb8.on("error", function(err, data) {
-      // Do something with the err or just ignore.
-      console.log((new Date().toLocaleString()) + "bb8.onerro");
-      if (err) {
-        console.log((new Date().toLocaleString()) + " error: ", err);
-      } else {
-        console.log((new Date().toLocaleString()) + " data: " + JSON.stringify(data));
-      }
-    });
-
-    bb8.once('disconnect', function() {
-
-      console.log((new Date().toLocaleString()) + "desonectou");
-
-    });
-
-    bb8.on('close', function() {
-
-      console.log((new Date().toLocaleString()) + "close");
-
-    });
-
     var ultimaColisao = new Date();
 
     bb8.on("collision", function(data) {
@@ -667,7 +629,7 @@ function controlaSphero() {
 
       if ((colisaoAtual - ultimaColisao) >= 1000) {
 
-        console.log((new Date().toLocaleString()) + " Colisão detectada!");
+        console.log('\x1b[32m', (new Date().toLocaleString()) + " Colisão detectada!");
 
         if (temClienteConectado())
           enviaMsgParaTodosClientes('colisao={"x":' + data.x + ',"y":' + data.y + ',"xMagnitude":' + data.xMagnitude +
@@ -700,8 +662,30 @@ function controlaSphero() {
 
   });
 
+  bb8.on("error", function(err, data) {
+    // Do something with the err or just ignore.
+    console.log('\x1b[0m', (new Date().toLocaleString()) + "bb8.onerro");
+    if (err) {
+      console.log('\x1b[0m', (new Date().toLocaleString()) + " error: ", err);
+    } else {
+      console.log('\x1b[0m', (new Date().toLocaleString()) + " data: " + JSON.stringify(data));
+    }
+
+  });
+
+  bb8.once('disconnect', function() {
+
+    console.log('\x1b[0m', (new Date().toLocaleString()) + " desonectou");
+
+  });
+
+  bb8.on('close', function() {
+
+    console.log('\x1b[0m', (new Date().toLocaleString()) + " close");
+
+  });
+
   process.on('SIGHUP', function() {
-    //console.log((new Date().toLocaleString()) + 'Obrigado, até a próxima!');
     //tentativa desconexão ao fechar a janela, funciona em ubuntu. estava SIGINT antes.
     bb8.sleep(10, 0, 0, function(err, data) {
       console.log((new Date().toLocaleString()) + 'Obrigado, até a próxima!');
@@ -716,21 +700,26 @@ function controlaSphero() {
   process.stdin.resume();
   process.stdin.setEncoding('utf8');
   calli = false;
+  lastdir = 0;
 
   process.stdin.on('keypress', (str, key) => {
     speed = 20;
     //console.log(modoRegistro);
 
     if (key.ctrl && key.name === 'c') {
+
       bb8.sleep(10, 0, 0, function(err, data) {
         //console.log(err || "data: " + JSON.stringify(data));
         process.exit();
       });
+
     } else if (key.ctrl && key.name === 'q') {
+
       bb8.ping(function(err, data) {
         console.log('\x1b[32m\x1b[0m', (new Date().toLocaleString()) + ' ping');
         console.log(err || "data: " + JSON.stringify(data));
       });
+
     } else if (key.ctrl && key.name === 'w') {
       //TODO - ver qual é o maximo batteryvoltage e fazer scale de 0 a 100
       // batteryvoltage 700 começa a piscar vermelho
@@ -747,7 +736,9 @@ function controlaSphero() {
           console.log("  secondsSinceCharge:", data.secondsSinceCharge);
         }
       });
+
     } else if (key.ctrl && key.name === 'e') {
+
       bb8.getVoltageTripPoints(function(err, data) {
         console.log('\x1b[32m\x1b[0m', (new Date().toLocaleString()) + ' getVoltageTripPoints');
         if (err) {
@@ -760,11 +751,14 @@ function controlaSphero() {
       });
 
     } else if (key.ctrl && key.name === 'r') {
+
       bb8.runL1Diags(function(err, data) {
         console.log('\x1b[32m\x1b[0m', (new Date().toLocaleString()) + ' runL1Diags');
         console.log(err || "data: " + JSON.stringify(data));
       });
+
     } else if (key.ctrl && key.name === 't') {
+
       bb8.runL2Diags(function(err, data) {
         console.log('\x1b[32m\x1b[0m', (new Date().toLocaleString()) + ' runL2Diags');
         if (err) {
@@ -773,69 +767,79 @@ function controlaSphero() {
           console.log("data: ", data);
         }
       });
+
+    } else if (key.ctrl && key.name === 'a') {
+      //tentativa diminuir mensagens "command sync lost" e só ligar colisão e freefall quando necessário
+      bb8.detectCollisions({
+        device: "bb8"
+      });
+
+      bb8.detectFreefall();
+
     } else if (!modoRegistro) {
       //console.log(`You pressed the "${str}" key`);
+      if (!bb8.busy) {
+        if (key.name == 'space') {
 
-      if (key.name == 'space') {
-
-        if (calli == false) {
-          bb8.startCalibration();
-          calli = true;
-        } else if (calli == true) {
-          bb8.finishCalibration();
-          calli = false;
+          if (calli == false) {
+            bb8.startCalibration();
+            calli = true;
+          } else if (calli == true) {
+            bb8.finishCalibration();
+            calli = false;
+          }
         }
-      }
+        if (key.name == '2') {
+          //bb8.stop();
+          bb8.roll(0, lastdir);
+        }
 
-      if (key.name == 'up') {
-        bb8.roll(speed, 0);
+        if (key.name == 'up') {
+          bb8.roll(speed, 0);
+          lastdir = 0;
+        }
+        if (key.name == 'down') {
+          bb8.roll(speed, 180);
+          lastdir = 180;
+        }
+        if (key.name == 'right') {
+          bb8.roll(speed, 90);
+          lastdir = 90;
+        }
+        if (key.name == 'left') {
+          bb8.roll(speed, 270);
+          lastdir = 270;
+        }
+        if (key.name == 'r') {
+          bb8.color("red");
+        }
+        if (key.name == 'y') {
+          bb8.color("yellow");
+        }
+        if (key.name == 'g') {
+          bb8.color("green");
+        }
+        if (key.name == 'b') {
+          bb8.color("blue");
+        }
+        if (key.name == 'w') {
+          bb8.color("white");
+        }
+        if (key.name == 'd') {
+          bb8.color("black");
+        }
+        if (key.name == '1') {
+          bb8.color("white");
+        }
+        if (key.name == '0') {
+          bb8.color("black");
+        }
+        //   console.log();
+        //   console.log(key);
+        //   console.log();
       }
-      if (key.name == 'down') {
-        bb8.roll(speed, 180);
-      }
-      if (key.name == 'right') {
-        bb8.roll(speed, 90);
-      }
-      if (key.name == 'left') {
-        bb8.roll(speed, 270);
-      }
-      if (key.name == 'r') {
-        bb8.color("red");
-      }
-      if (key.name == 'y') {
-        bb8.color("yellow");
-      }
-      if (key.name == 'g') {
-        bb8.color("green");
-      }
-      if (key.name == 'b') {
-        bb8.color("blue");
-      }
-      if (key.name == 'w') {
-        bb8.color("white");
-      }
-      if (key.name == 'd') {
-        bb8.color("black");
-      }
-      if (key.name == '1') {
-        bb8.color("white");
-      }
-      if (key.name == '0') {
-        bb8.color("black");
-      }
-      //   console.log();
-      //   console.log(key);
-      //   console.log();
     }
   });
-}
-
-var ks = require('node-key-sender');
-
-function acionaRegistradoTemporal() {
-
-  ks.sendKey('enter');
-
 }
 
 
@@ -852,7 +856,6 @@ app.use(function(req, res, next) {
 });
 
 app.get('/', (request, response) => {
-
 
   //  response.setHeader('Access-Control-Allow-Origin', '*');
 
@@ -884,6 +887,7 @@ app.get('/dispositivocorrente', (request, response) => {
 
 
 function wait(seconds) {
+
   var iMilliSeconds = seconds * 1000
   var counter = 0,
     start = new Date().getTime(),
@@ -896,6 +900,97 @@ function wait(seconds) {
 
 app.listen(80)
 
+
+
+
+//implementação comando via WebSocket
+const COMANDO_FINAL = "comandoFinal";
+const COLOR = "color";
+const ROLL = "roll";
+
+//Possívelmente ver comando em sphero.js dentro do noble
+const STARTCALIBRATION = "startCalibration";
+const FINISHCALLIBRATION = "finishCalibration";
+const SETBACKLED = "setBackLed";
+const SETRGBLED = "setRgbLed";
+const SETRAWMOTORS = "setRawMotors";
+const RANDOMCOLOR  = "randomColor"
+
+/*
+EXEMPLOS DE COD
+"bb8.randomColor()"
+"bb8.setBackLed(255);"
+"bb8.setBackLed(0);"
+"bb8.color({red:" + red + ",green:" + green + ",blue:" + blue + "});"
+*/
+
+
+//para implementação genérica
+const arrComandos = [COLOR, ROLL];
+var exitecomando = 0;
+
+function retornaFim() {
+
+  notificaCliente(COMANDO_FINAL, "");
+
+}
+
+// Recebe comando obtido do Blockly e envia para Sphero.
+function escreveParaSphero(comando, valor) {
+  //console.log('comando: '+comando);
+  //console.log('valor: '+valor);
+
+  if (comando == COMANDO_FINAL) {
+    // Devolve mensagem após 5 segundos, avisando que execução finalizou.
+    setTimeout(retornaFim, 2000);
+  }
+
+  // Comandos a enviar imediatamente
+
+  //Implementação genérica de comandos validando nome do comando com a array de possíveis
+  for (i = 0; i < arrComandos.length; i++) {
+    //console.log('arrComandos: ' + arrComandos[i]);
+    //console.log('comando: ' + comando);
+    if (comando == arrComandos[i]) {
+      exitecomando = 1;
+    }
+  }
+  if (exitecomando == 1) {
+    code = 'bb8.' + comando + '("' + valor + '");';
+    exitecomando = 0;
+  } else {
+    //console.log('comando não exite');
+  }
+
+
+  /*
+    //Implementação comando a comando
+    if (comando == COLOR) {
+
+      //code = 'bb8.color("'+valor+'");';
+      code = 'bb8.'+COLOR+'("'+valor+'");';
+
+      //codigo direto assim fala que bb8 não exite
+      //bb8.color('"'+valor+'"');
+
+    } else if (comando == ROLL) {
+
+      var potenciaSentido = valor.split(',');
+      var potencia = potenciaSentido[0];
+      var sentido = potenciaSentido[1];
+
+      code = 'bb8.roll("'+potencia+','+sentido+'");';
+
+      //bb8.roll(potencia + ',' + sentido);
+
+    } else {
+
+      console.log('comando não implementado');
+
+    }
+  */
+
+}
 
 /****************************************************************
  *  daqui em diante websocket para MMBlockly
@@ -961,12 +1056,19 @@ wsServer.on('request', function(request) {
 
     // Implementa envios para Sphero por aqui.
 
+    var comandoValor = JSON.parse(message.utf8Data);
+
+    //  console.log('RECEBEU MENSAGEM ',comandoValor.valor);
+
+    escreveParaSphero(comandoValor.comando, comandoValor.valor);
+
 
   });
 
   connection.on('close', function(reasonCode, description) {
     console.log((new Date().toLocaleString()) + ' Conexão ' + connection.remoteAddress + ' finalizada.');
   });
+
 });
 
 function enviaMsgParaTodosClientes(evento) {

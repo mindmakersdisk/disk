@@ -1,0 +1,25 @@
+function atualizaBarra(iframe) {
+  var novaUrl = iframe.src;
+  if (novaUrl.indexOf(':800')>1) {
+      urlExibida=novaUrl.substring(novaUrl.indexOf(':800')+4);
+//       document.getElementById('').value=urlExibida;
+  }
+  setTimeout(disponibilizaIds,5000,iframe);
+}
+
+function disponibilizaIds() {
+	var iframe = document.getElementById('formTargetIFrame');
+	
+	iframe.contentWindow.postMessage('digitar','senha', '*');
+	iframe.contentWindow.postMessage('clicar','login');
+	
+	// no iframe: window.parent.postMessage('',''); e xxxxxxx.
+		
+// 	var elmnts = iframe.contentWindow.document.body.getElementsByTagName("*");
+// 	//var elmnts = document.getElementById(iframe).getElementsByTagName("*");	
+// 	var i;
+//     for (i = 0; i < elmnts.length; i++) {
+// 		console.log(elmnts+' '+elmnts.id);
+// 	}
+	
+}

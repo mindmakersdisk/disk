@@ -1,5 +1,9 @@
 ########### IMAGEM DE DISCO MIND MAKERS ###########
 
+Versão 3.6 03/12/2019
+- Nova versão dos serviço de interação de sala para possibilitar projetos MT3, MT6 e MK7.
+- Inclusão IDE arduino para instalação de firmware de comunicação com o MMSnap!.
+
 Versão 3.5 23/10/2019
 - Alterações na validação de ip para captura de imagens via IpWebcam em smartphones Android.
 - Inclusão de 3 novas imagens que podem ser exibidas em sala de aula via IoT.

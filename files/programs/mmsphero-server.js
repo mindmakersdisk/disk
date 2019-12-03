@@ -553,13 +553,13 @@ function controlaSphero() {
 
     //tentativa diminuir eventos de colisão que estavam sendo disparados somente por movimento
     //var opts = {
-      //device: "bb8",
-      //meth: 0x01,
-      //xt: 0xff,
-      //yt: 0xff,
-      //xs: 0xff,
-      //ys: 0xff,
-      //dead: 0xf0
+    //device: "bb8",
+    //meth: 0x01,
+    //xt: 0xff,
+    //yt: 0xff,
+    //xs: 0xff,
+    //ys: 0xff,
+    //dead: 0xf0
     //}
     //bb8.detectCollisions(opts);
 
@@ -771,7 +771,7 @@ function controlaSphero() {
     } else if (key.ctrl && key.name === 'a') {
       //tentativa diminuir mensagens "command sync lost" e só ligar colisão e freefall quando necessário
       bb8.detectCollisions({
-       device: "bb8"
+        device: "bb8"
       });
 
       bb8.detectFreefall();
@@ -791,12 +791,12 @@ function controlaSphero() {
         }
         if (key.name == '2') {
           //bb8.stop();
-          bb8.roll(0,lastdir);
+          bb8.roll(0, lastdir);
         }
 
         if (key.name == 'up') {
           bb8.roll(speed, 0);
-          lastdir =0;
+          lastdir = 0;
         }
         if (key.name == 'down') {
           bb8.roll(speed, 180);
@@ -887,7 +887,7 @@ app.get('/dispositivocorrente', (request, response) => {
 
 
 function wait(seconds) {
-  
+
   var iMilliSeconds = seconds * 1000
   var counter = 0,
     start = new Date().getTime(),
@@ -900,6 +900,97 @@ function wait(seconds) {
 
 app.listen(80)
 
+
+
+
+//implementação comando via WebSocket
+const COMANDO_FINAL = "comandoFinal";
+const COLOR = "color";
+const ROLL = "roll";
+
+//Possívelmente ver comando em sphero.js dentro do noble
+const STARTCALIBRATION = "startCalibration";
+const FINISHCALLIBRATION = "finishCalibration";
+const SETBACKLED = "setBackLed";
+const SETRGBLED = "setRgbLed";
+const SETRAWMOTORS = "setRawMotors";
+const RANDOMCOLOR  = "randomColor"
+
+/*
+EXEMPLOS DE COD
+"bb8.randomColor()"
+"bb8.setBackLed(255);"
+"bb8.setBackLed(0);"
+"bb8.color({red:" + red + ",green:" + green + ",blue:" + blue + "});"
+*/
+
+
+//para implementação genérica
+const arrComandos = [COLOR, ROLL];
+var exitecomando = 0;
+
+function retornaFim() {
+
+  notificaCliente(COMANDO_FINAL, "");
+
+}
+
+// Recebe comando obtido do Blockly e envia para Sphero.
+function escreveParaSphero(comando, valor) {
+  //console.log('comando: '+comando);
+  //console.log('valor: '+valor);
+
+  if (comando == COMANDO_FINAL) {
+    // Devolve mensagem após 5 segundos, avisando que execução finalizou.
+    setTimeout(retornaFim, 2000);
+  }
+
+  // Comandos a enviar imediatamente
+
+  //Implementação genérica de comandos validando nome do comando com a array de possíveis
+  for (i = 0; i < arrComandos.length; i++) {
+    //console.log('arrComandos: ' + arrComandos[i]);
+    //console.log('comando: ' + comando);
+    if (comando == arrComandos[i]) {
+      exitecomando = 1;
+    }
+  }
+  if (exitecomando == 1) {
+    code = 'bb8.' + comando + '("' + valor + '");';
+    exitecomando = 0;
+  } else {
+    //console.log('comando não exite');
+  }
+
+
+  /*
+    //Implementação comando a comando
+    if (comando == COLOR) {
+
+      //code = 'bb8.color("'+valor+'");';
+      code = 'bb8.'+COLOR+'("'+valor+'");';
+
+      //codigo direto assim fala que bb8 não exite
+      //bb8.color('"'+valor+'"');
+
+    } else if (comando == ROLL) {
+
+      var potenciaSentido = valor.split(',');
+      var potencia = potenciaSentido[0];
+      var sentido = potenciaSentido[1];
+
+      code = 'bb8.roll("'+potencia+','+sentido+'");';
+
+      //bb8.roll(potencia + ',' + sentido);
+
+    } else {
+
+      console.log('comando não implementado');
+
+    }
+  */
+
+}
 
 /****************************************************************
  *  daqui em diante websocket para MMBlockly
@@ -965,12 +1056,19 @@ wsServer.on('request', function(request) {
 
     // Implementa envios para Sphero por aqui.
 
+    var comandoValor = JSON.parse(message.utf8Data);
+
+    //  console.log('RECEBEU MENSAGEM ',comandoValor.valor);
+
+    escreveParaSphero(comandoValor.comando, comandoValor.valor);
+
 
   });
 
   connection.on('close', function(reasonCode, description) {
     console.log((new Date().toLocaleString()) + ' Conexão ' + connection.remoteAddress + ' finalizada.');
   });
+
 });
 
 function enviaMsgParaTodosClientes(evento) {

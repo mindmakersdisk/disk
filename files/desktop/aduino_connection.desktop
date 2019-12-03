@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Arduino Connection
+Name[pt_BR]=Conexão Arduino
+Comment=
+Icon=/usr/share/icons/arduino.png
+Exec=sudo s3a
+Type=Application
+Encoding=UTF-8
+Terminal=true
+Categories=None;

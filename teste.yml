@@ -1,21 +1,22 @@
-- hosts:       localhost
+- hosts:       sala2
 
   tasks:
     # - include: tasks/rpimonitor.yml
+    # - include: tasks/reboot.yml
     # - stat:
     #      path: /home/mindmakers/imgs/win.png
     #   register: imgs
-    - file:
-        path:  /home/mindmakers/vw
-        state: absent
-    - file:
-        path:  /home/mindmakers/mmiotcli.js
-        state: absent
-    - name:    Copiando vw
-      copy:
-         src:  ongoing/vw
-         dest: /home/mindmakers/programs
-         mode: 0755
+    # - file:
+    #     path:  /home/mindmakers/vw
+    #     state: absent
+    # - file:
+    #     path:  /home/mindmakers/mmiotcli.js
+    #     state: absent
+    # - name:    Copiando vw
+    #   copy:
+    #      src:  ongoing/vw
+    #      dest: /home/mindmakers/programs
+    #      mode: 0755
     - name:    Copiando cli
       copy:
          src:  ongoing/mmiotcli.js
@@ -27,7 +28,7 @@
         # version: '4.1.1'
         path:  /home/mindmakers/programs
     #   when:  not imgs.stat.exists
-    # - include: tasks/reboot.yml
+    - include: tasks/reboot.yml
 
     # - set_fact:
     #      path2desktop: "/home/pi/Desktop"

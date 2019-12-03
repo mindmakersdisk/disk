@@ -1,0 +1,32 @@
+- name:    Instalando pacote do npm "cors"
+  npm:
+    name:  cors
+    # version: '4.1.1'
+    path:  /home/mindmakers/programs
+- name:  Instalando xterm
+  apt:
+     name: xterm
+- name:    Instalando ide arduino
+  apt:
+     name: arduino
+- name:    Instalando requests
+  shell:   'sudo pip3 install s3-extend'
+  args:
+    warn:  no
+- name:    Copiando arquivo de inicialização do s3r
+  copy:
+     src:  files/mqtt/mmgpio
+     dest: /etc/init.d
+     mode: 0755
+- shell:   'sudo update-rc.d mmgpio defaults'
+  args:
+    warn:  no
+# - name:    Copiando arquivos de imagens
+#   copy:
+#      src:  ongoing/s3_extend
+#      dest: /usr/local/lib/python3.7/dist-packages/s3_extend
+#      mode: 0644
+# - name:  update chomium
+#   apt:
+#     name: chromium-browser
+#     state: latest
