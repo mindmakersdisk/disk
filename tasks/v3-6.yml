@@ -1,32 +1,45 @@
-- name:    Instalando pacote do npm "cors"
+- name:     Instalando pacote do npm "cors"
   npm:
-    name:  cors
+    name:   cors
     # version: '4.1.1'
-    path:  /home/mindmakers/programs
-- name:  Instalando xterm
-  apt:
-     name: xterm
-- name:    Instalando ide arduino
-  apt:
-     name: arduino
-- name:    Instalando requests
-  shell:   'sudo pip3 install s3-extend'
-  args:
-    warn:  no
-- name:    Copiando arquivo de inicialização do s3r
-  copy:
-     src:  files/mqtt/mmgpio
-     dest: /etc/init.d
-     mode: 0755
-- shell:   'sudo update-rc.d mmgpio defaults'
-  args:
-    warn:  no
-# - name:    Copiando arquivos de imagens
-#   copy:
-#      src:  ongoing/s3_extend
-#      dest: /usr/local/lib/python3.7/dist-packages/s3_extend
-#      mode: 0644
-# - name:  update chomium
+    path:   /home/mindmakers/programs
+# - name:   Instalando xterm
 #   apt:
-#     name: chromium-browser
-#     state: latest
+#      name: xterm
+- name:     Desinstalando aplicações não utilizadas
+  apt:
+     name:  xterm
+     state: absent
+     purge: yes
+- name:     Instalando IDE Arduino
+  apt:
+     name:  arduino
+- name:     Instalando s3-extend
+  shell:    'sudo pip3 install s3-extend'
+  args:
+    warn:   no
+- name:     Copiando arquivo de inicialização do s3r
+  copy:
+     src:   files/mqtt/mmgpio
+     dest:  /etc/init.d
+     mode:  0644
+- name:     Copiando arquivo de inicialização do s3r
+  copy:
+     src:   ongoing/s3_extend
+     dest:  /usr/local/lib/python3.7/dist-packages/
+     owner: root
+     group: staff
+     mode:  0644
+
+- name:     Copiando arquivo de inicialização do s3r
+  copy:
+     src:   files/mqtt/mmgpio
+     dest:  /etc/init.d
+     mode:  0755
+- shell:    'sudo update-rc.d mmgpio defaults'
+  args:
+    warn:   no
+- name:     update chomium
+  apt:
+    name:   chromium-browser
+    state:  latest

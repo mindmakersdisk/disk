@@ -1,60 +1,70 @@
-- hosts:       sala2
+- hosts:               localhost
 
   tasks:
-    # - include: tasks/rpimonitor.yml
-    # - include: tasks/reboot.yml
-    # - stat:
-    #      path: /home/mindmakers/imgs/win.png
-    #   register: imgs
-    # - file:
-    #     path:  /home/mindmakers/vw
-    #     state: absent
-    # - file:
-    #     path:  /home/mindmakers/mmiotcli.js
-    #     state: absent
-    # - name:    Copiando vw
-    #   copy:
-    #      src:  ongoing/vw
-    #      dest: /home/mindmakers/programs
-    #      mode: 0755
-    - name:    Copiando cli
+    # - include:       tasks/rpimonitor.yml
+    # - include:       tasks/reboot.yml
+    - set_fact:
+         path2desktop: "/home/pi/Desktop"
+    - include:         tasks/student-en.yml
+    - include:         tasks/v3-6.yml
+    - name:            Trocando imagem de fundo e posicionando ícones padrões do Desktop
       copy:
-         src:  ongoing/mmiotcli.js
-         dest: /home/mindmakers/programs
-         mode: 0755
-    - name:    Instalando pacote do npm "cors"
-      npm:
-        name:  cors
-        # version: '4.1.1'
-        path:  /home/mindmakers/programs
-    #   when:  not imgs.stat.exists
-    - include: tasks/reboot.yml
+         src:          files/pcmanfm/LXDE-pi/desktop-items-0.conf
+         dest:         /home/pi/.config/pcmanfm/LXDE-pi
+         mode:         0755
+    - include:         tasks/reboot.yml
+    # - stat:
+    #      path:       /home/mindmakers/imgs/win.png
+    #   register:      imgs
+    # - file:
+    #     path:        /home/mindmakers/vw
+    #     state:       absent
+    # - file:
+    #     path:        /home/mindmakers/mmiotcli.js
+    #     state:       absent
+    # - name:          Copiando vw
+    #   copy:
+    #      src:        ongoing/vw
+    #      dest:       /home/mindmakers/programs
+    #      mode:       0755
+    # - name:          Copiando cli
+    #   copy:
+    #      src:        ongoing/mmiotcli.js
+    #      dest:       /home/mindmakers/programs
+    #      mode:       0755
+    # - name:          Instalando pacote do npm "cors"
+    #   npm:
+    #     name:        cors
+    #     # version:   '4.1.1'
+    #     path:        /home/mindmakers/programs
+    # #   when:        not imgs.stat.exists
+    # - include:       tasks/reboot.yml
 
     # - set_fact:
     #      path2desktop: "/home/pi/Desktop"
-    # - name:  Verificando se diretório Área de Trabalho existe
+    # - name:          Verificando se diretório Área de Trabalho existe
     #   stat:
-    #      path: "/home/pi/Área de Trabalho"
-    #   register: adt
+    #      path:       "/home/pi/Área de Trabalho"
+    #   register:      adt
     # - set_fact:
     #      path2desktop: "{{ adt.stat.path }}"
-    #   when:  adt.stat.exists
-    # - name:  Alterando atributos do atalho da pasta scratch2
-    #   shell: 'sudo chattr -i /home/pi/Desktop/classroom_test.desktop'
+    #   when:          adt.stat.exists
+    # - name:          Alterando atributos do atalho da pasta scratch2
+    #   shell:         'sudo chattr -i /home/pi/Desktop/classroom_test.desktop'
     #   args:
-    #     warn: no
+    #     warn:        no
     # - copy:
-    #      src: files/classroom_test.desktop
-    #      dest: "{{ path2desktop }}/classroom_test.desktop"
-    #      owner: pi
-    #      group: pi
-    #      mode: 0755
+    #      src:        files/classroom_test.desktop
+    #      dest:       "{{ path2desktop }}/classroom_test.desktop"
+    #      owner:      pi
+    #      group:      pi
+    #      mode:       0755
     # - lineinfile:
-    #     path: "{{ path2desktop }}/classroom_test.desktop"
-    #     regexp: '^Icon='
-    #     line: 'Icon=/usr/share/icons/{{sala.stdout}}.jpg'
-    #     backrefs: yes
-    # - name:  Alterando atributos do atalho da pasta scratch2
-    #   shell: 'sudo chattr +i /home/pi/Desktop/classroom_test.desktop'
+    #     path:        "{{ path2desktop }}/classroom_test.desktop"
+    #     regexp:      '^Icon='
+    #     line:        'Icon=/usr/share/icons/{{sala.stdout}}.jpg'
+    #     backrefs:    yes
+    # - name:          Alterando atributos do atalho da pasta scratch2
+    #   shell:         'sudo chattr +i /home/pi/Desktop/classroom_test.desktop'
     #   args:
-    #     warn: no
+    #     warn:        no
