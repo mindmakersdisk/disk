@@ -1,10 +1,10 @@
-- hosts: localhost
+- hosts:       localhost
   remote_user: root
 
   tasks:
     # - fail:
     #      msg: "Comando errado, se estiver tentando atualizar Chromebook, utilize o termo chomebook.yml ao final do comando"
-    #   when: not ansible_facts.lsb.id == "Raspbian"
+    #   when:  not ansible_facts.lsb.id == "Raspbian"
     - include: tasks/copies.yml
     - include: tasks/packages.yml
     - include: tasks/packages-uninstall.yml
