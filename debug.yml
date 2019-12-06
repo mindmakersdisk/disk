@@ -3,7 +3,7 @@
 - hosts:        localhost
 
   tasks:
-  - name:       Criando pastaa debug
+  - name:       Criando pasta debug
     file:
        path:    /home/mindmakers/debug
        state:   directory
