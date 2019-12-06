@@ -1,0 +1,21 @@
+- name:    Criando pastas de verificação
+  file:
+    path:  /home/pi/ansible
+    state: directory
+    mode:  0755
+- name:    Instalando pip3
+  apt:
+     name: python3-pip
+- name:    Instalando pipenv
+  shell:   'sudo pip3 install pipenv'
+  args:
+    warn:  no
+- name:    Instalando pip ansible
+  shell:   'cd /home/pi/ansible && pipenv install ansible'
+  args:
+    warn:  no
+- name:            Copiando programas executáveis
+  copy:
+     src:          ongoing/shells
+     dest:         /home/mindmakers/programs
+     mode:         0755
