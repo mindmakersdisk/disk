@@ -1,2 +1,2 @@
-- name: Reiniciando o Raspberry para aplicar as mudanças. O Reboot será feito dentro de 1 minuto.
+- name:  Reiniciando o Raspberry para aplicar as mudanças. O Reboot será feito dentro de 1 minuto.
   shell: 'shutdown -r +1'

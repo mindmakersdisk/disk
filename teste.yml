@@ -1,7 +1,7 @@
 - hosts:        localhost
 
   tasks:
-    # - include: tasks/rpimonitor.yml
+    - include:  tasks/rpimonitor.yml
     # - include: tasks/reboot.yml
     # - set_fact:
     #      path2desktop: "/home/pi/Desktop"
@@ -11,13 +11,13 @@
     # - file:
     #     path: /home/pi/sketchbook
     #     state: absent
-    # - name:   copiando arquivos sketchbook
-    #   copy:
-    #      src: ongoing/arduino/sketchbook
-    #      dest: /home/pi/
-    #      owner: pi
-    #      group: pi
-    #      mode: 0755
+    - name:     copiando arquivos sketchbook
+      copy:
+         src:   files/arduino/sketchbook
+         dest:  /home/pi/
+         owner: pi
+         group: pi
+         mode:  0755
     - name:     Criando pastas de sketchbook
       file:
         path:   /home/pi/.arduino
@@ -25,7 +25,7 @@
         mode:   0755
     - name:     copiando arquivos sketchbook
       copy:
-         src:   ongoing/arduino/preferences.txt
+         src:   files/arduino/preferences.txt
          dest:  /home/pi/.arduino
          owner: pi
          group: pi
@@ -52,7 +52,7 @@
     #      owner: pi
     #      group: pi
     #      mode: 0755
-    # - include: tasks/reboot.yml
+    - include:  tasks/reboot.yml
     # - stat:
     #      path: /home/mindmakers/imgs/win.png
     #   register: imgs

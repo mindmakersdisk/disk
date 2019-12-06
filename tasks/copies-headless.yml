@@ -1,52 +1,52 @@
-- name: Criando pastas de configuração
+- name:         Criando pastas de configuração
   file:
-    path: /home/pi/.config/pcmanfm
-    state: directory
-    mode: 0755
+    path:       /home/pi/.config/pcmanfm
+    state:      directory
+    mode:       0755
 - file:
-    path: /home/pi/.config/pcmanfm/LXDE-pi
-    state: directory
-    mode: 0755
+    path:       /home/pi/.config/pcmanfm/LXDE-pi
+    state:      directory
+    mode:       0755
 - file:
-    path: /home/pi/.config/pcmanfm
-    state: directory
+    path:       /home/pi/.config/pcmanfm
+    state:      directory
     attributes: -i
-    recurse: yes
-- name: Trocando imagem de fundo e posiciona icones padrões do Desktop
+    recurse:    yes
+- name:         Trocando imagem de fundo e posiciona icones padrões do Desktop
   copy:
-     src: files/headless/pcmanfm/LXDE-pi/desktop-items-0.conf
-     dest: /home/pi/.config/pcmanfm/LXDE-pi
-     mode: 0755
-- name: Copiando a imagem tema de fundo
+     src:       files/headless/pcmanfm/LXDE-pi/desktop-items-0.conf
+     dest:      /home/pi/.config/pcmanfm/LXDE-pi
+     mode:      0755
+- name:         Copiando a imagem tema de fundo
   copy:
-     src: files/headless/fundo.png
-     dest: /home/mindmakers
-     mode: 0755
-- name: Alterando fundo.png para fundo-en.png
+     src:       files/headless/fundo.png
+     dest:      /home/mindmakers
+     mode:      0755
+- name:         Alterando fundo.png para fundo-en.png
   lineinfile:
-    path: /home/pi/.config/pcmanfm/LXDE-pi/desktop-items-0.conf
-    regexp: '^wallpaper=/home/mindmakers/fundo.png'
-    line: 'wallpaper=/home/mindmakers/fundo-en.png'
-    backrefs: yes
-  when: "'en_' in ansible_facts.env.LANGUAGE"
+    path:       /home/pi/.config/pcmanfm/LXDE-pi/desktop-items-0.conf
+    regexp:     '^wallpaper=/home/mindmakers/fundo.png'
+    line:       'wallpaper=/home/mindmakers/fundo-en.png'
+    backrefs:   yes
+  when:         "'en_' in ansible_facts.env.LANGUAGE"
 - file:
-    path: /home/mindmakers/Scratch2
-    state: directory
+    path:       /home/mindmakers/Scratch2
+    state:      directory
     attributes: -i
-    recurse: yes
-- name: Copiando pasta Scratch2
+    recurse:    yes
+- name:         Copiando pasta Scratch2
   copy:
-     src: files/Scratch2
-     dest: /home/mindmakers
-     owner: pi
-     group: pi
-     mode: 0755
-- name: Tornando ícones dentro da pasta Scratch2 imutáveis
+     src:       files/Scratch2
+     dest:      /home/mindmakers
+     owner:     pi
+     group:     pi
+     mode:      0755
+- name:         Tornando ícones dentro da pasta Scratch2 imutáveis
   file:
-    path: /home/mindmakers/Scratch2
-    state: directory
+    path:       /home/mindmakers/Scratch2
+    state:      directory
     attributes: +i
-    recurse: yes
-- shell: 'sudo bash /home/mindmakers/programs/shells/change-shortcut2.sh'
+    recurse:    yes
+- shell:        'sudo bash /home/mindmakers/programs/shells/change-shortcut2.sh'
   args:
-    warn: no
+    warn:       no
