@@ -1,9 +1,12 @@
-- hosts:  localhost
+- hosts:       localhost
 
   tasks:
+    # - include:
     # - include: tasks/rpimonitor.yml
-    - include: tasks/ansibleVirtualENV.yml
-    - include: tasks/reboot.yml
+
+    # - include: tasks/ansibleVirtualENV.yml
+    # - include: tasks/reboot.yml
+
     # - set_fact:
     #      path2desktop: "/home/pi/Desktop"
     # - include: tasks/student-en.yml
@@ -12,48 +15,48 @@
     # - file:
     #     path: /home/pi/sketchbook
     #     state: absent
-    # - name: copiando arquivos sketchbook
+    # - name:  copiando arquivos sketchbook
     #   copy:
     #      src: files/arduino/sketchbook
     #      dest: /home/pi/
     #      owner: pi
     #      group: pi
     #      mode: 0755
-    # - name: Criando pastas de sketchbook
+    # - name:  Criando pastas de sketchbook
     #   file:
     #     path: /home/pi/.arduino
     #     state: directory
     #     mode: 0755
-    # - name: copiando arquivos sketchbook
+    # - name:  copiando arquivos sketchbook
     #   copy:
     #      src: files/arduino/preferences.txt
     #      dest: /home/pi/.arduino
     #      owner: pi
     #      group: pi
     #      mode: 0755
-    # - name: Criando pastas de sketchbook
+    # - name:  Criando pastas de sketchbook
     #   file:
     #     path: /home/pi/sketchbook
     #     state: directory
     #     mode: 0755
-    # - name: Criando pastas de libraries
+    # - name:  Criando pastas de libraries
     #   file:
     #     path: /home/pi/sketchbook/libraries
     #     state: directory
     #     mode: 0755
-    # - name: Criando pastas de FirmataExpress
+    # - name:  Criando pastas de FirmataExpress
     #   file:
     #     path: /home/pi/sketchbook/libraries/FirmataExpress
     #     state: directory
     #     mode: 0755
-    # - name: copiando arquivos sketchbook
+    # - name:  copiando arquivos sketchbook
     #   copy:
     #      src: ongoing/arduino/sketchbook/libraries/FirmataExpress
     #      dest: /home/pi/sketchbook/libraries
     #      owner: pi
     #      group: pi
     #      mode: 0755
-    - include: tasks/reboot.yml
+    # - include: tasks/reboot.yml
     # - stat:
     #      path: /home/mindmakers/imgs/win.png
     #   register: imgs
@@ -63,17 +66,17 @@
     # - file:
     #     path: /home/mindmakers/mmiotcli.js
     #     state: absent
-    # - name: Copiando vw
-    #   copy:
-    #      src: ongoing/vw
-    #      dest: /home/mindmakers/programs
-    #      mode: 0755
-    # - name: Copiando cli
-    #   copy:
-    #      src: ongoing/mmiotcli.js
-    #      dest: /home/mindmakers/programs
-    #      mode: 0755
-    # - name: Instalando pacote do npm "cors"
+    - name:    Copiando vw
+      copy:
+         src:  files/programs/vw
+         dest: /home/mindmakers/programs
+         mode: 0755
+    - name:    Copiando cli
+      copy:
+         src:  files/programs/mmiotcli.js
+         dest: /home/mindmakers/programs
+         mode: 0755
+    # - name:  Instalando pacote do npm "cors"
     #   npm:
     #     name: cors
     #     # version: '4.1.1'
@@ -83,14 +86,14 @@
 
     # - set_fact:
     #      path2desktop: "/home/pi/Desktop"
-    # - name: Verificando se diretório Área de Trabalho existe
+    # - name:  Verificando se diretório Área de Trabalho existe
     #   stat:
     #      path: "/home/pi/Área de Trabalho"
     #   register: adt
     # - set_fact:
     #      path2desktop: "{{ adt.stat.path }}"
-    #   when: adt.stat.exists
-    # - name: Alterando atributos do atalho da pasta scratch2
+    #   when:  adt.stat.exists
+    # - name:  Alterando atributos do atalho da pasta scratch2
     #   shell: 'sudo chattr -i /home/pi/Desktop/classroom_test.desktop'
     #   args:
     #     warn: no
@@ -105,7 +108,7 @@
     #     regexp: '^Icon='
     #     line: 'Icon=/usr/share/icons/{{sala.stdout}}.jpg'
     #     backrefs: yes
-    # - name: Alterando atributos do atalho da pasta scratch2
+    # - name:  Alterando atributos do atalho da pasta scratch2
     #   shell: 'sudo chattr +i /home/pi/Desktop/classroom_test.desktop'
     #   args:
     #     warn: no

@@ -369,7 +369,7 @@ function validaRegister() {
 		return false;
 	}
 	
-	if (ultimaSenhaDoLogin && ultimaSenhaDoLogin!=undefined && ultimaSenhaDoLogin != null) {
+	if (localStorage.getItem(aplicacaoCorrente+"Registrado")) {
 		alertify.alert("Erro no Registro","Esse usuário já foi registrado. Se esqueceu sua senha, utilize a opção para troca");
 		try{event.preventDefault(); }catch(e){}
 		return false;
