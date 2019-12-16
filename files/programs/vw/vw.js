@@ -23,6 +23,7 @@ window.addEventListener("message", function({data}){
        parent.postMessage(document.getElementById('tela').innerHTML,'*');       
  }, false);
 
+var contadorColeta=0;
 function obtemLoginCorrente(chamador) {
 	
 	// Neste caso, formado por "usuario_eXX", onde eXX é o numero da estacao corrente se usando localhost	
@@ -45,8 +46,11 @@ function obtemLoginCorrente(chamador) {
 			
 	//		alert(chamador+'');
 			
-			if (chamador && chamador=='coletaOferta')
+			if (chamador && chamador=='coletaOferta' && contadorColeta==0) {
+				contadorColeta=1;
 				coletaOferta();
+			} else if (contadorColeta==1)
+				contadorColeta=0;
 		
 		} catch(e) {
 			//console.log('Erro ao tentar recuperar usuario = '+e);
@@ -61,14 +65,52 @@ function getPontoApp(tipoApp) {
 	return pontos.get(tipoApp);
 }
 
+
+// Recupera total de pontos correntes no servidor, por tipo de aplicacao
+function getPontosServico() {
+	
+	var Http = new XMLHttpRequest();	
+	Http.open("GET",url);
+	Http.send();
+	
+	Http.onreadystatechange=(e)=>{
+		
+		if (Http && Http.responseText) {
+		
+			var retorno = JSON.parse(Http.responseText);
+				
+			//console.log(retorno);	
+			//{"user":"1","personal":200,"company":20000,"bank":20000}
+			
+			var pontoPersonal = retorno.personal;
+			var pontoBank = retorno.bank;
+			var pontoCompany = retorno.company;
+			var totalPontos = (pontoPersonal?parseInt(pontoPersonal):0) + 
+							  (pontoBank?parseInt(pontoBank):0) +
+							  (pontoCompany?parseInt(pontoCompany):0);
+			
+			exibePontosTotais(totalPontos);
+		}
+	}
+	
+}
+
 function setPontoApp(url,tipoApp,pontosTotais) {
 
 	var Http = new XMLHttpRequest();	
 	Http.open("GET",url+tipoApp+"$"+pontosTotais);
 	Http.send();
 	
-	pontos.set(tipoApp,pontosTotais);
-	
+	Http.onreadystatechange=(e)=>{
+		pontos.set(tipoApp,pontosTotais);
+		
+		var pontoLocal = localStorage.getItem(tipoApp+"patrimonioAtual");
+		var pontoLocalInt = 0;
+		if (pontoLocal && pontoLocal != null)
+			pontoLocalInt = parseInt(pontoLocal);
+			
+		localStorage.setItem(tipoApp+"patrimonioAtual",(pontoLocalInt+pontosTotais)+'');
+	}
 }
 
 
@@ -98,7 +140,7 @@ function getSenha(tipoApp,login,next) {
 
 function setSenha(tipoApp,login,senha) {
 	
-		var Http = new XMLHttpRequest();
+	var Http = new XMLHttpRequest();
 	Http.open("GET",urlSenha+tipoApp+login+"-"+senha);
 	Http.send();
 	
@@ -159,7 +201,8 @@ function formInit(chamador) {
 		} catch(e){}	
 	}
 	
-   parent.postMessage(document.getElementById('tela').innerHTML,'*');      
+   parent.postMessage(document.getElementById('tela').innerHTML,'*');  
+   parent.postMessage('URL,'+window.location.href,'*');    
 	
 }
 
@@ -178,56 +221,32 @@ function comutePsw(img) {
 
 function canChangePsw() {
 	
-	// So pode trocar se já definiu uma vez
+	// So pode trocar se já registrou
 	var login = usuarioCorrente;
 	
-	var senhaEsquecida = localStorage.getItem('vw_senha_'+aplicacaoCorrente+login);	
+	if (!localStorage.getItem(aplicacaoCorrente+"Registrado")) {
 	
-	if (!senhaEsquecida || senhaEsquecida==null) {
 		try{document.getElementById('changePsw').style.display="none";}catch(e){};
-		try{document.getElementById('codeMsg').style.visibility="hidden";}catch(e){};
+
 		return false;
 	}
 	
-	var d = new Date();
-	var momentoAtualInt = d.getTime();
-	var ultimaTrocaInt=-1;
-	ultimaTrocaStr = localStorage.getItem('vw_ultima_trocasenha'+aplicacaoCorrente);
+
+	try{document.getElementById('changePsw').style.display="inline";}catch(e){}
 	
-	if (ultimaTrocaStr && ultimaTrocaStr!=null) {
-		ultimaTrocaInt = parseInt(ultimaTrocaStr);
+	// Envia o código, para a máquina "localhost" somente.
+	// TODO TIRAR O TRUE
+	if ((window.location.href.indexOf('localhost')>-1) && window.location.href.indexOf('_forgot')>-1) {
+		
+		var code = makeid(3);
+		
+		localStorage.setItem('vw_vefification_code'+aplicacaoCorrente,code);
+		setTimeout(enviaAlerta,2000,"Código: <b>"+code+"</b>");
+		
 	} 
 	
-	if (ultimaTrocaInt==-1 || ((momentoAtualInt-ultimaTrocaInt)>(1000*60*1))) {
-		// passou 5 minutos, então permite
-		try{document.getElementById('changePsw').style.display="inline";}catch(e){}
-		try{document.getElementById('codeMsg').style.visibility="visible";}catch(e){}
-		try{document.getElementById('changePswMsg').style.display="none";}catch(e){}
-		
-		// Envia o código, para a máquina "localhost" somente.
-		// TODO TIRAR O TRUE
-		if ((window.location.href.indexOf('localhost')>-1) && window.location.href.indexOf('_forgot')>-1) {
-			
-			var code = makeid(3);
-			
-			localStorage.setItem('vw_vefification_code'+aplicacaoCorrente,code);
-			setTimeout(enviaAlerta,2000,"Código: <b>"+code+"</b>");
-			
-		} else {
-			try{document.getElementById('changePsw').style.display="inline";}catch(e){};
-			try{document.getElementById('codeMsg').style.visibility="visible";}catch(e){};
-			try{document.getElementById('changePswMsg').style.display="none";}catch(e){};
-		}
-		
-		return true;
-		
-	} else {
-		localStorage.removeItem('vw_vefification_code'+aplicacaoCorrente);
-		document.getElementById('changePsw').style.display="none";
-		document.getElementById('codeMsg').style.visibility="hidden";
-		document.getElementById('changePswMsg').style.display="inline";
-		document.getElementById('tempo').innerHTML=(Math.trunc((((1000*60*1) - (momentoAtualInt-ultimaTrocaInt))/1000/60))+1)+'';
-	}
+	return true;
+
 }
 
 function validaChangePsw() {
@@ -335,6 +354,8 @@ function validaLogin(urlFinal) {
 
 function validaRegister() {
 	
+	//console.log('entrou');
+	
 	// Salva nova senha do aluno e ultima hora para evitar excesso de troca.
 	var login = document.getElementById('login').value;
 	var senha = document.getElementById('password').value;
@@ -379,7 +400,9 @@ function validaRegister() {
 		return false;		
 	}
 	
-	
+	//console.log('vai registrar '+aplicacaoCorrente+"Registrado");
+	localStorage.setItem(aplicacaoCorrente+"Registrado","S");
+		
 	//localStorage.setItem('vw_senha_'+aplicacaoCorrente+login,senha);
 	setSenha(aplicacaoCorrente,login,senha);
 		
@@ -427,7 +450,7 @@ function simulaPostForm(acao,urlDestino) {
 	} else if (acao=="changePsw" && validaChangePsw()) {
 		var urlBase = window.location.href.substring(0,window.location.href.lastIndexOf('/'));
 	//	alert(urlBase+'/'+urlDestino);
-		console.log(urlBase+'/'+urlDestino);
+		//console.log(urlBase+'/'+urlDestino);
 		 window.location.href=urlBase+'/'+urlDestino;
 		//window.open(urlBase+'/'+urlDestino, "_self");
 	}
@@ -452,6 +475,25 @@ function ganhos() {
 	setTimeout(geraGanhoPorAplicacao,primeira,aplicacaoCorrente);
 	
 }
+
+function iniciaJogo() {
+	if (confirm('Tem certeza de que deseja reiniciar o jogo? Seus registros serão desfeitos e pontos serão zerados')) {
+		localStorage.setItem("personal"+"patrimonioAtual","0");	
+		localStorage.setItem("bank"+"patrimonioAtual","0");	
+		localStorage.setItem("company"+"patrimonioAtual","0");	
+		localStorage.removeItem("personalRegistrado");	
+		localStorage.removeItem("bankRegistrado");	
+		localStorage.removeItem("companyRegistrado");	
+		exibePontosTotais(0);
+	}
+}
+
+function exibePontosTotais(totalPontos) {
+	try{
+		document.getElementById('pontosTotais').innerHTML=totalPontos+'';
+    } catch(e){console.log(e);}
+}
+
 var tipoGanho=["personal","bank","company"];
 function geraGanhoPorAplicacao(aplicacao) {
 	
@@ -475,9 +517,31 @@ function geraGanhoPorAplicacao(aplicacao) {
 	
 }
 
-var ganhoPersonal=["Seus 200 livros digitais chegaram!#200pt","Você ganhou licença para 500 músicas!#500pt","Seu amigo lhe presenteou com 1000 séries de TV!#1000pt"];
-var ganhoBank=["Seu cliente pagou! Receba R$ 20.000,00.#20000pt","Seu salário foi depositado! Receba R$ 5.000,00#5000pt","Você ganhou um presente em dinheiro, receba R$ 2.000,00.#2000pt"];
-var ganhoCompany=["Confidencial! Armazene as 10 plantas industriais deste mês.#10000pt","Você recebeu 5 projetos confidenciais.#5000pt","5 novas patentes da empresa precisam ser armazenadas.#5000pt"];
+var ganhoPersonal=["Seus 200 livros digitais chegaram!#200#https://mycloud.com.br?b=2312#S#Amazônia Livros",
+"Você ganhou licença para 500 músicas!#500#https://mycloud.com.br/#S#Amazônia Music",
+"Seu amigo lhe presenteou com 1000 séries de TV!#1000#https://www.mycloud.com.br/#S#Net Filmes",
+"Oi, é aqui de casa! Me passa a senha da internet.#1500#https://www.facesocial.com.br/#p2#Face Social",
+"Aqui é seu professor. Este é um bônus extra não divulgado! Clique pra ganhar a disputa!#500#https://www.micloud.com.br/#p2#Face Social",
+"Promoção Net Filmes! 500 sessões de filmes inéditos!#500#https://www.mycloud.com.br/#S#Amazônia Filmes",
+"Somente hoje! 1500 livros narrados em oferta#1500#https://mycloud.com.br?b=482#S#Amazônia Livros",
+"Não dá pra perder! São 30000 livros de grátis! Pegue logo seus pontos!!#30000#http://mycloudd.com?b=44#p1#Amazônia Livros"
+];
+var ganhoBank=["Seu cliente pagou!#20000#https://www.bancodigital.com.br/ibanking/x13kd#S#Banco Digital",
+"Seu salário foi depositado!#5000#https://www.bancodigital.com.br/ibanking/sal?id=132#S#Banco Digital",
+"Olá, aqui é seu gerente! Você ganhou um seguro gratuito no valor de R$ 50.000,00, basta depositar a taxa de R$ 50,00 na conta ACE213.#50000pt#https://www.facesocial.com.br/#p2#Face Social",
+"Seu imposto de renda foi devolvido.#10000#https://www.bancodigital.com.br/ir/f?t=xdfd#S#Banco Digital",
+"Seu investimento rendeu juros!#5000#https://bancodigital.com.br/invest?i=3#S#Banco Digital",
+"Seu 13o salário foi depositado!.#5000#https://www.bancodigital.com.br/ibanking/sal?id=409#S#Banco Digital",
+"Você ganhou na loteria!!! Que sorte Hein?!#200000#https://www.bancodigitali.com.br#p2#Banco Digital",
+"Olá, aqui é a Marcela! Depositei na sua conta o que estava te devendo.#8000#https://www.bancodigital.com.br/trnsf?t=100#S#Face Social"];
+var ganhoCompany=["Confidencial! Armazene as 10 plantas industriais deste mês.#10000#https://www.acme.cc?pi=009#S#ACME LTDA",
+"Aqui é o presidente da ACME!! Me passe seus dados para atualização do nosso RH. Agradeço antecipadamente!#50000#https://acmee.cc/#p2#ACME LTDA",
+"Você recebeu 5 projetos confidenciais.#5000#https://www.acme.cc/projeto/conf?p=9949499399388493994348343#S#ACME LTDA",
+"5 novas patentes da empresa precisam ser armazenadas.#5000#https://www.acme.cc?patentes=06930,05906820,302342#S#ACME LTDA",
+"Seus trabalhos deste mês subiram para a plataforma da empresa.#5000#https://acme.cc?t=1#S#ACME LTDA",
+"Os projetos do nosso principal cliente foram aprovados e estão no site#15000#https://www.acme.cc/#S#ACME LTDA",
+"Mais 10 projetos confidenciais estão sob sua responsabilidade.#10000#https://acme.cc/projeto/conf?p=p1ppo2i32#S#ACME LTDA",
+"Você foi promovido e assumiu 20 projetos muito importantes. Confira!#20000#https://www.acme.cc?projs=a203021#S#ACME LTDA"];
 
 function notificaGanho(indiceGanho) {
 	
@@ -485,24 +549,38 @@ function notificaGanho(indiceGanho) {
 	if (window.location.href.indexOf('localhost:800')==-1)
 		return;
 	
-	var ganho = Math.floor(Math.random() * 3);
+		ganho = Math.floor(Math.random() * 8);
 	
 	if (indiceGanho==0) {
-		var notification = alertify.notify(ganhoPersonal[ganho].replace('#',' '), 'custom', 10, function(){  if (window.location.href.indexOf('personal_login')==-1) window.open("personal_login.html", "_self"); });
-		var pontosCorrentes =  ganhoPersonal[ganho].substring(ganhoPersonal[ganho].indexOf('#')+1,ganhoPersonal[ganho].length-2);
-		localStorage.setItem(tipoGanho[indiceGanho]+'pontosCorrentes',pontosCorrentes);
-		//setPontoApp(tipoGanho[indiceGanho],pontosCorrentes);
+
+		var notification = alertify.notify(decodificaNotificacao(ganhoPersonal[ganho]), 'custom', 10, function(){  if (window.location.href.indexOf('personal_login')==-1) window.open("personal_login.html", "_self"); });
+		var pontosEmOferta =  ganhoPersonal[ganho].split('#')[1];
+		localStorage.setItem(tipoGanho[indiceGanho]+'pontosEmOferta',pontosEmOferta);
+		//setPontoApp(tipoGanho[indiceGanho],pontosEmOferta);
 	} else if (indiceGanho==1) {
-		var notification = alertify.notify(ganhoBank[ganho].replace('#',' '), 'success', 10, function(){  if (window.location.href.indexOf('bank_login')==-1) window.open("bank_login.html", "_self"); });
-		var pontosCorrentes =  ganhoBank[ganho].substring(ganhoBank[ganho].indexOf('#')+1,ganhoBank[ganho].length-2);
-		localStorage.setItem(tipoGanho[indiceGanho]+'pontosCorrentes',pontosCorrentes);
-		//setPontoApp(tipoGanho[indiceGanho],pontosCorrentes);
+		//  TODO estilo diferente para link
+		var notification = alertify.notify(decodificaNotificacao(ganhoBank[ganho]), 'success', 10, function(){  if (window.location.href.indexOf('bank_login')==-1) window.open("bank_login.html", "_self"); });
+		var pontosEmOferta =  ganhoBank[ganho].split('#')[1];
+		localStorage.setItem(tipoGanho[indiceGanho]+'pontosEmOferta',pontosEmOferta);
+		//setPontoApp(tipoGanho[indiceGanho],pontosEmOferta);
 	} else if (indiceGanho==2) {
-		var notification = alertify.notify(ganhoCompany[ganho].replace('#',' '), 'warning', 10, function(){  if (window.location.href.indexOf('company_login')==-1) window.open("company_login.html", "_self"); });
-		var pontosCorrentes =  ganhoCompany[ganho].substring(ganhoCompany[ganho].indexOf('#')+1,ganhoCompany[ganho].length-2);
-		localStorage.setItem(tipoGanho[indiceGanho]+'pontosCorrentes',pontosCorrentes);
-		//setPontoApp(tipoGanho[indiceGanho],pontosCorrentes);
+		var notification = alertify.notify(decodificaNotificacao(ganhoCompany[ganho]), 'warning', 10, function(){  if (window.location.href.indexOf('company_login')==-1) window.open("company_login.html", "_self"); });
+		var pontosEmOferta = ganhoCompany[ganho].split('#')[1];
+		localStorage.setItem(tipoGanho[indiceGanho]+'pontosEmOferta',pontosEmOferta);
+		//setPontoApp(tipoGanho[indiceGanho],pontosEmOferta);
 	}
+}
+
+function decodificaNotificacao(notificacaoCodificada) {
+	//'<b>Banco ACME</b><p><a href="sdfsd" title="https://www.meubanco.com/meudominio/este/testes">'+ganhoPersonal[ganho].replace('#',' ')+'</a>'
+   var topicos = notificacaoCodificada.split('#');
+   
+   if (topicos[3]=='p2')
+	return '<b>'+topicos[4]+'</b><p><a style="text-decoration:none;" href="/vw/hackeado.html" title="'+topicos[2]+'">'+topicos[0]+
+         "</a><p><span style='font-size:12px'>["+topicos[1]+"]</span>";
+   else
+	return '<b>'+topicos[4]+'</b><p><a style="text-decoration:none;" href="#" title="'+topicos[2]+'">'+topicos[0]+
+         "</a><p><span style='font-size:12px'>["+topicos[1]+"]</span>";
 }
 
 function coletaOferta() {
@@ -512,7 +590,7 @@ function coletaOferta() {
 	var meuPatrimonioAtualInt=0;
 	
 	var meuPatrimonioAtual = getPontoApp(aplicacaoCorrente);
-	console.log('meu total de pontos em '+aplicacaoCorrente+ " é de "+meuPatrimonioAtual);
+//	console.log('meu total de pontos em '+aplicacaoCorrente+ " é de "+meuPatrimonioAtual);
 
 	if (!meuPatrimonioAtual || meuPatrimonioAtual==undefined || meuPatrimonioAtual == null) {
 		if (!Number.isNaN(parseInt(document.getElementById('pontos').innerHTML)))
@@ -528,7 +606,7 @@ function coletaOferta() {
 		return;
 	}
 	
-	var ganho = localStorage.getItem(aplicacaoCorrente+'pontosCorrentes');
+	var ganho = localStorage.getItem(aplicacaoCorrente+'pontosEmOferta');
 	
 	if (!ganho || ganho == undefined || ganho == null || Number.isNaN(parseInt(ganho)))
 		return;
@@ -541,7 +619,7 @@ function coletaOferta() {
 	
 	document.getElementById('pontos').innerHTML=patrimonioAcrescido+"";
 
-	localStorage.removeItem(aplicacaoCorrente+'pontosCorrentes');
+	localStorage.removeItem(aplicacaoCorrente+'pontosEmOferta');
 	
 //	localStorage.setItem(aplicacaoCorrente+"patrimonioAtual"+usuarioCorrente,patrimonioAcrescido+"");
 	setPontoApp(urlPonto,aplicacaoCorrente,patrimonioAcrescido);
@@ -558,6 +636,7 @@ function rotinaHacker() {
 	
 }
 
+// quando um aluno hackeia o outro
 function transfereParaMim() {
 
 	var valorHackeadoInt = parseInt(document.getElementById('pontos').innerHTML);
@@ -568,7 +647,7 @@ function transfereParaMim() {
 	var fim = window.location.href.indexOf('800');
 	var servicoHackeado = window.location.href.substring(0,fim+3);
 	var urlPontoHackeado=servicoHackeado+'/'+URL_VW+"?"+URL_ARG+'=';
-	console.log(urlPontoHackeado);
+//	console.log(urlPontoHackeado);
 	setPontoApp(urlPontoHackeado,aplicacaoCorrente,-valorHackeadoInt);
 	
 	// Acrescenta pontos para o hacker
@@ -576,3 +655,18 @@ function transfereParaMim() {
 	document.getElementById('pontos').innerHTML='0';	
 }
 
+// quando as mensagens padroes hackeiam o aluno
+function limpaPontos() {
+	
+	// Retira pontos do hackeado
+	var urlZeraPontos=urlPonto+"zera";
+	
+	var Http = new XMLHttpRequest();	
+	Http.open("GET",urlZeraPontos);
+	Http.send();
+	
+	Http.onreadystatechange=(e)=>{
+		
+	}
+	
+}

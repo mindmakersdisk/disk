@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Meus Arquivos Digitais</title>
+  <title>My Cloud</title>
   <link rel="icon" type="image/png" href="img/personal_icon_color.png">
   <script src="msg/pt-br.js"></script>
   <script src="vw.js"></script>
@@ -15,18 +15,18 @@
 <div id="tela">
 <div class="form">
   <div class="container" style="background-color:#f1f1f1">
-   My Personal Files
+   My Cloud
   </div>
   <div class="imgcontainer" id="imgcontainer">
     <img src="img/personal_icon_color.png" alt="Personal logo" class="avatar">
   </div>
 
   <div class="container">
-    <label for="uname"><b>Username</b></label>
+    <label for="uname"><b>Login</b></label>
     <input id="login" type="text" placeholder="Enter Username" name="uname" required readonly style="visibility:visible;">
     <input id="loginaux" type="text" placeholder="Enter Username" name="uname" required readonly value="login-camuflado" style="visibility:hidden;">
 
-    <label for="password"><b>Password</b></label><br/>
+    <label for="password"><b>Senha</b></label><br/>
     <input id="password" type="password" placeholder="Enter Password" name="password" required style="width:80%;float:left;" maxlength="2" autofocus>
 	 <img src="img/eye.png" alt="Bank logo" class="eye" onclick="comutePsw(this);">
 
@@ -35,10 +35,9 @@
   </div>
 
   <div class="container" style="background-color:#f1f1f1">
-    <button type="button" class="cancelbtn" onclick="window.open('index.html','_self');">Cancel</button>
-    <span class="register">Not a member? <a href="personal_register.html">register</a></span>
-    <span id="changePsw" class="psw">Forgot <a href="personal_forgot.html">password?</a></span>
-		<label id="changePswMsg" style="visibility:hidden;">Pode trocar senha em <span id="tempo"></span>min</label>
+    <button type="button" class="cancelbtn" onclick="window.open('index.html','_self');">Cancelar</button>
+    <span class="register">Não é um membro? <a href="personal_register.html">registre-se</a></span>
+    <span id="changePsw" class="psw">Esqueceu a <a href="personal_forgot.html">senha?</a></span>
   </div>
 </div>
 </div>

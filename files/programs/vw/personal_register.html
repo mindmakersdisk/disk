@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Meus Arquivos Digitais</title>
+  <title>My Cloud</title>
   <link rel="icon" type="image/png" href="img/personal_icon_color.png">
   <script src="msg/pt-br.js"></script>
   <script src="vw.js"></script>
@@ -16,31 +16,31 @@
 <div id="tela">
 <form action="personal_login.html" onsubmit="return validaRegister();" method="get" >
   <div class="container" style="background-color:#f1f1f1">
-  Personal Files Registration
+  My Cloud
   </div>
   <div class="imgcontainer">
     <img src="img/personal_icon_color.png" alt="Bank logo" class="avatar">
   </div>
 
   <div class="container">
-    <label for="uname"><b>Username</b></label>
+    <label for="uname"><b>Login</b></label>
        <input id="login" type="text" placeholder="Enter Username" name="uname" required readonly style="visibility:visible;" tabindex="-1">
     <input id="loginaux" type="text" placeholder="Enter Username" name="uname" required readonly value="login-camuflado" style="visibility:hidden;">
 
 
-    <label for="psw"><b>Password</b></label><br/>
+    <label for="psw"><b>Senha</b></label><br/>
     <input id="password" type="password" placeholder="Enter Password" name="psw" required tabindex="1" autofocus maxlength="2">
 	<div style="clear:both;text-align:center;">
-	<label for="psw2"><b>Repeat Password</b></label><br/>
+	<label for="psw2"><b>Repita Senha</b></label><br/>
     <input id="password2" type="password" placeholder="Enter Password Again" name="psw2" required tabindex="2" maxlength="2" style="width:80%;float:left;">
 	 <img src="img/eye.png" alt="Bank logo" class="eye" onclick="comutePsw(this);">
 	</div>
-    <button tabindex="3">Register</button>
+    <button tabindex="3">Registro</button>
 
   </div>
 
   <div class="container" style="background-color:#f1f1f1">
-    <button type="button" class="cancelbtn" tabindex="4" onclick="window.open('personal_login.html','_self');">Return</button>
+    <button type="button" class="cancelbtn" tabindex="4" onclick="window.open('personal_login.html','_self');">Retornar</button>
   </div>
 </form>
 </div>

@@ -124,12 +124,17 @@ var senha = new Map();
 app.get('/usrxtml111kkkxxvyi812902134lk', (request, response) => {
   
   // Se enviou pontos, soma
-   if (request.query.xtml111kkkxxv!=null && request.query.xtml111kkkxxv.indexOf('$')>-1) {
+   if (request.query.xtml111kkkxxv!=null && request.query.xtml111kkkxxv != 'zera' && request.query.xtml111kkkxxv.indexOf('$')>-1) {
      var pontosRetorno = request.query.xtml111kkkxxv.split('$');
      console.log('vai somar '+pontosRetorno[1]+' pontos para ' + pontosRetorno[0]);
      if (!Number.isNaN(parseInt(pontosRetorno[1])))
           pontos.set(pontosRetorno[0], parseInt(pontosRetorno[1]));
-  } 
+  } else if (request.query.xtml111kkkxxv == 'zera' ) {
+    pontos.set('personal',0);
+    pontos.set('company',0);
+    pontos.set('bank',0);
+
+  }
     
   response.json({
     user:estacao_registrado,
@@ -206,6 +211,7 @@ app.get('/timelinepublica', (request, response) => {
   
   // Pega o nome concatenado com marco, separado por @@
    timelineMarcoCorrente=request.query.nome;
+   console.log('marco corrente alterado para '+timelineMarcoCorrente);
    response.json({
             status: 'ok'
           })
@@ -223,7 +229,7 @@ function limpaPublicacao() {
 app.get('/timeline', (request, response) => {
   
   // Pega o nome concatenado com marco, separado por @@
- // console.log('vai comparar '+request.query.nome+' com '+timelineMarcoCorrente);
+  console.log('vai comparar '+request.query.nome+' com '+timelineMarcoCorrente);
    if (request.query.nome == timelineMarcoCorrente) {
      // console.log('ok');
          response.json({

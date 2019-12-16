@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Meu Banco</title>
+  <title>Banco Digital</title>
   <link rel="icon" type="image/png" href="img/bank_icon_color.png">
   <script src="msg/pt-br.js"></script>
   <script src="vw.js"></script>
@@ -18,19 +18,19 @@
 <div class="form" >
  
  <div class="container" style="background-color:#f1f1f1">
-   My Bank
+   Banco Digital
   </div>
   <div class="imgcontainer">
     <img src="img/bank_icon_color.png" alt="Bank logo" class="avatar">
   </div>
 
   <div class="container">
-    <label for="uname"><b>Username</b></label>
+    <label for="uname"><b>Login</b></label>
     <input id="login" type="text" placeholder="Enter Username" name="uname" required readonly style="visibility:visible;">
     <input id="loginaux" type="text" placeholder="Enter Username" name="uname" required readonly value="login-camuflado" style="visibility:hidden;">
 
 
-    <label for="psw"><b>Password</b></label>
+    <label for="psw"><b>Senha</b></label>
     <input id="password" type="password" placeholder="Enter Password" name="psw" required autofocus maxlength="2" autofocus>
 
     <button id="loginButton" onclick="simulaPostForm('login','bank.html');">Login</button>
@@ -38,10 +38,9 @@
   </div>
 
   <div class="container" style="background-color:#f1f1f1">
-    <button id="cancel" type="button" class="cancelbtn" onclick="window.open('index.html','_self');">Cancel</button>
-    <span class="register">Not a member? <a href="bank_register.html">register</a></span>
-    <span id="changePsw" class="psw">Forgot <a href="bank_forgot.html">password?</a></span>
-		<label id="changePswMsg" style="visibility:hidden;">Pode trocar senha em <span id="tempo"></span>min</label>
+    <button id="cancel" type="button" class="cancelbtn" onclick="window.open('index.html','_self');">Cancelar</button>
+    <span class="register">Não é registrado? <a href="bank_register.html">registre agora</a></span>
+    <span id="changePsw" class="psw">Esqueceu a <a href="bank_forgot.html">senha?</a></span>
   </div>
   
 </div>

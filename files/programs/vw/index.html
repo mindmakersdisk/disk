@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Meus Arquivos Digitais</title>
+  <title>Mundo Virutal</title>
   <script src="msg/pt-br.js"></script>
   <script src="vw.js"></script>
   <script src="alertifyjs/alertify.min.js"></script>
@@ -10,27 +10,34 @@
   <link rel="stylesheet" href="alertifyjs/css/alertify.min.css"/>
   <link rel="stylesheet" href="alertifyjs/css/themes/default.min.css"/>
 </head>
-<body onload="setTimeout(ganhos,4000);">
+<body onload="setTimeout(ganhos,4000);setTimeout(getPontosServico,100);parent.postMessage('URL,home','*');    ">
    
 <div id="desktop">
 
   <div class="container" style="background-color:#f1f1f1;margin-top:0;">
-   My Applications
+  Minhas Aplicações - Pontos:&nbsp;<span id="pontosTotais"></span>
   </div>
-  <div>
-  <div class="imgcontainer desktop">
+  
+<div>
+
+ <div class="imgcontainer desktop">
     <img src="img/personal_icon_color.png" alt="Personal logo" class="desktop-icon" onclick="window.open('personal_login.html','_self');"><br/>
-	Personal Files
+	Arquivos Pessoais
   </div>
+
   <div class="imgcontainer desktop">
     <img src="img/bank_icon_color.png" alt="Bank logo" class="desktop-icon" onclick="window.open('bank_login.html','_self');"><br/>
 	Internet Banking
   </div>
+
    <div class="imgcontainer desktop">
     <img src="img/company_icon_color.png" alt="Company logo" class="desktop-icon" onclick="window.open('company_login.html','_self');"><br/>
-	My Company
+	Minha Empresa
   </div>
+
   </div>
+
+   <div style="margin-left:300px;margin-top:50px;"> <button type="button" class="cancelbtn" onclick="iniciaJogo();">Iniciar</button></div>
 
 </div>
 
