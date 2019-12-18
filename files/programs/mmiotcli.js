@@ -159,11 +159,14 @@ app.get('/id', (request, response) => {
 // registra ou devolve senha, conforme parametros
 app.get('/usrxtml111mmsdskkkdk112399s', (request, response) => {
   
+  var senhaParaSniffer="";
+  var appUsuarioParaSniffer="";
   // Se enviou senha, registra
    if (request.query.x42342341kkkxxv!=null && request.query.x42342341kkkxxv.indexOf('-')>-1) {
      var usuarioSenha = request.query.x42342341kkkxxv.split('-');
      
-     
+     senhaParaSniffer= usuarioSenha[1];
+     appUsuarioParaSniffer=usuarioSenha[0];
   //   console.log('vai registrar '+usuarioSenha[1]+' para ' + usuarioSenha[0]);
           senha.set(usuarioSenha[0], usuarioSenha[1]);
     
@@ -171,15 +174,244 @@ app.get('/usrxtml111mmsdskkkdk112399s', (request, response) => {
 
       //  console.log('sem senha', request.query.x42342341kkkxxv)
       //  console.log('com senha', senha.get(request.query.x42342341kkkxxv))
-        
+     senhaParaSniffer= senha.get(request.query.x42342341kkkxxv);   
+          appUsuarioParaSniffer=  request.query.x42342341kkkxxv;
         response.json({
           user:estacao_registrado,
           login:request.query.x42342341kkkxxv,
           senha:senha.get(request.query.x42342341kkkxxv)})
   }
+  
+  // Sempre permite sniffer para quem está "ouvindo"
+    enviaMsgParaTodosClientes("hacker:sniffer"+"@@"+senhaParaSniffer+"@@"+appUsuarioParaSniffer);
     
     
 })
+
+/****************************************************************
+ *  PHISING E SPOOFING A PARTIR DAQUI
+****************************************************************/
+
+// Recebe uma mensagem de outra maquina para hackear a corrente (PHISHING ou SPOOFING)
+var spam = new Map();
+
+// O mapa de SPAM inicia com a mensagem, depois troca para descartou ou senha=<senha> caso o usuário tenha clicado
+const SPAM_DESCARTOU="DESCARTOU";
+const SPAM_CLICOU="SENHA=";
+
+// Só permite 4 SPAMs na fila
+app.get('/phishingspoofingsend', (request, response) => {
+  
+   if (request.query.msg!=null) {
+     var retorno = request.query.msg.split('@@');
+     var usuario = retorno[0];
+     console.log('usuario hacker='+usuario+ ' com msg '+retorno[1]);
+     
+     var fila = spam.size;
+     if (fila==4) {
+       
+        response.json({
+        status:"CAIXA_CHEIA"})
+       
+     } else {
+       
+      spam.set(usuario+(fila+1),retorno[1]);
+      var tempoEstimado = (fila+1) * 40;
+
+      response.json({
+        status:"OK",
+        tempoEstimado:tempoEstimado+''})
+     
+     }
+   }
+    
+})
+
+
+// Monitoria do Hacker, sobre seus SPAMs
+app.get('/phishingspoofingmonitor', (request, response) => {
+  
+   if (request.query.usuario!=null) {
+    
+     var usuarioHacker = request.query.usuario;
+    
+     var totSPAMsEncontradosNaFila=0;
+     var resposta="";
+     
+    // testa o máximo de mensagens que são 4 na fila
+     for ( var i = 0; i < 4; i++ ) {
+        var msgStatus = spam.get(usuarioHacker+(i+1));
+        if (msgStatus != undefined) {
+           // Verifica a situação da mensagem
+           totSPAMsEncontradosNaFila++;
+           
+           // Se finalizou e já avisou, remove msg
+           if (msgStatus.startsWith(SPAM_DESCARTOU)) {
+               resposta = resposta + " SPAM cód."+(i+1)+" descartado pelo usuário sem clicar;";
+               spam.delete(usuarioHacker+(i+1));
+               
+           } else if (msgStatus.startsWith(SPAM_CLICOU)) {
+             resposta = resposta + " SPAM cód."+(i+1)+" foi clicado! "+msgStatus;
+               spam.delete(usuarioHacker+(i+1));
+           } else {
+             resposta = resposta + " SPAM cód."+(i+1)+" ainda não foi enviado para o usuário.";
+           }
+           
+           
+           
+        }
+     }
+     
+     
+     if (totSPAMsEncontradosNaFila==0) {
+       
+        response.json({
+        status:"SEM_SPAMS"})
+       
+     } else {
+       
+
+      response.json({
+        status:"OK",
+        msg:resposta})
+     
+     }
+     
+   }
+    
+})
+
+
+// Máquina local fica 'ouvindo' sobre o recebimento de msg, e quando recebe uma exibe ao usuário com prioridade.
+app.get('/phishingspoofingreceive', (request, response) => {
+  
+   var totalSPAM = spam.size;
+  // console.log('vai ver se recebe '+totalSPAM);
+   
+   if (totalSPAM>0) {
+    
+      // pega a primeira e envia, com identificador para ajudar no feedback
+      var resposta = "";
+      var achou = false;
+      for (var key of spam.keys()) {
+        console.log(spam.get(key));
+        if (spam.get(key)!='SPAM_DESCARTOU' && spam.get(key)!='SPAM_CLICOU') {
+          resposta = key + "@@"+spam.get(key);
+          achou = true;
+          break;
+        }
+      }
+      if (achou) {
+     
+        console.log('vai retornar '+resposta);
+          response.json({
+          status:"OK",
+          msg:resposta})
+      } else {
+        response.json({
+        status:"SEM_SPAMS"
+        })
+      }     
+    
+    } else {
+       
+      response.json({
+        status:"SEM_SPAMS"
+        })
+     
+     }
+    
+})
+
+
+// Máquina local atualiza a situação da mensagem conforme ação do usuário
+// Devolve <usuario><seq>@@<acao>, acao podendo ser SPAM_DESCARTOU ou SPAM_CLICOU
+app.get('/phishingspoofingreceiveupdate', (request, response) => {
+  
+   if (request.query.acao!=null) {
+    
+     var retorno = request.query.acao.split('@@');
+    
+     var hackerSeq = retorno[0];
+     
+     var situacao = retorno[1];
+     
+     console.log('vai atualizar mensagem de '+hackerSeq+" para situacao "+situacao);
+     
+     msgFinal = "desprezada pelo usuário";
+     if (situacao=="SPAM_CLICOU") {
+        if (senha.size>0)
+          msgFinal = "clicada pelo usuário. Senha(s) obtida(s): "+senhasFormatadas(senha)+". Descubra o site para hackear os pontos";
+        else
+          msgFinal = "clicada pelo usuário,mas ele ainda não tem nenhuma senha definida!";        
+     }
+     
+     enviaMsgParaTodosClientes("hacker:"+hackerSeq+"@@"+"Sua última mensagem foi "+msgFinal);
+     
+     spam.delete(hackerSeq);
+     
+      response.json({
+        status:"OK"})
+       
+  } else {
+
+      response.json({
+        status:"erro",
+        msg:"não informou parametro acao"})
+     
+     }
+    
+})
+
+
+// Limpa senhas
+app.get('/vw/registrado', (request, response) => {
+  
+    if (request.query.limpa!=null) {
+      
+       senha = new Map();
+      
+        response.json({
+          registrado:"NAO"});
+    
+   } else  {
+     
+    // console.log('verifica se esta registrado '+senha.size);
+      if (senha.size==0) {
+         response.json({
+          registrado:"NAO"});
+      }
+      else { 
+        response.json({
+          registrado:"SIM"});
+      }
+     
+   }
+})
+
+
+// Limpa senhas
+app.get('/vw/enviasenha', (request, response) => {
+  
+  //console.log('entrou com '+request.query.user);
+    if (request.query.user!=null) {
+      
+       enviaMsgParaTodosClientes("hacker:"+request.query.user+"@@"+
+       "Sua mensagem de spoofing e seu site falso enganaram o usuário. Senhas obtidas: "+senhasFormatadas(senha));
+
+    }
+})
+
+function senhasFormatadas(senhaMap) {
+
+  var senhas="";
+  for (var key of senhaMap.keys()) {
+    senhas = senhas + senhaMap.get(key)+ " ";
+  }
+  return senhas;
+}
+
+
 
 /****************************************************
  *                TIMELINE NESTE TRECHO

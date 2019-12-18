@@ -66,16 +66,27 @@
     # - file:
     #     path: /home/mindmakers/mmiotcli.js
     #     state: absent
-    - name:    Copiando vw
+
+
+    - name:    Copiando programs
       copy:
-         src:  files/programs/vw
-         dest: /home/mindmakers/programs
+         src:  files/programs
+         dest: /home/mindmakers
          mode: 0755
-    - name:    Copiando cli
-      copy:
-         src:  files/programs/mmiotcli.js
-         dest: /home/mindmakers/programs
-         mode: 0755
+
+
+
+    # - name:    Copiando vw
+    #   copy:
+    #      src:  files/programs/vw
+    #      dest: /home/mindmakers/programs
+    #      mode: 0755
+    # - name:    Copiando cli
+    #   copy:
+    #      src:  files/programs/mmiotcli.js
+    #      dest: /home/mindmakers/programs
+    #      mode: 0755
+    - include: tasks/reboot.yml
     # - name:  Instalando pacote do npm "cors"
     #   npm:
     #     name: cors

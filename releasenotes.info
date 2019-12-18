@@ -1,5 +1,9 @@
 ########### IMAGEM DE DISCO MIND MAKERS ###########
 
+Versão 3.7 03/12/2019
+- Nova versão dos serviço de interação de sala para possibilitar projetos MT3, MT6 e MK7.
+- Refatoramento servidor mBot para melhorar taxa reconexão com o robô.
+
 Versão 3.6 03/12/2019
 - Nova versão dos serviço de interação de sala para possibilitar projetos MT3, MT6 e MK7.
 - Inclusão IDE arduino para instalação de firmware de comunicação com o MMSnap!.

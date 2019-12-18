@@ -286,21 +286,19 @@ function procurarNovoMbot() {
   noble.on('stateChange', function(state) {
 
     //console.log('Estado = '+state);
-    if (state == 'poweredOff') {
-      console.log('');
-      console.error('\x1b[31m', 'O Bluetooth não está ativado! Ative no ícone superior direito em seu computador e tente novamente.');
-      console.error('\x1b[0m', '');
-      process.exit(1);
-    } else if (state == 'poweredOn') {
+    if (state === 'poweredOn') {
       console.log('---------------------------------------------------------------');
       console.log('                    Serviço Bluetooth Ativo                    ');
       console.log('---------------------------------------------------------------');
 
-      console.log('Procurando por um mBot a menos de 2m para configurar...');
+      console.log('Procurando pelo mBot com módulo BLE para conectar: ' + macaddressArg);
       noble.startScanning();
     } else {
-      console.log('Encerrando procura por dispositivos Bluetooth');
+      console.log('');
+      console.error('\x1b[31m', 'O Bluetooth não está ativado! Ative no ícone superior direito em seu computador e tente novamente.');
+      console.error('\x1b[0m', '');
       noble.stopScanning();
+      process.exit(1);
     }
   });
 
@@ -332,7 +330,7 @@ function procurarNovoMbot() {
 
     }
 
-    if (numeroScans >= 8) {
+    if (numeroScans >= 10) {
 
       console.error('\x1b[31m', 'Não foi possível encontrar um mBot ligado para registrar.');
       console.error('\x1b[31m', 'Confira se ele está ligado com a placa BLE e luz branca piscando.');
@@ -341,7 +339,7 @@ function procurarNovoMbot() {
       console.error('\x1b[0m', '----------------------------------------------------------------------------');
       // Encerra com falha
       noble.stopScanning();
-      setTimeout(encerraAposLeitura, 10000);
+      setTimeout(encerraAposLeitura, 4000);
 
     }
 
@@ -564,18 +562,15 @@ var macaddressConectado = null;
 var notificouClienteConexao = false;
 var monitoriaTask = null;
 
-function controlaMbot() {
 
+function controlaMbot() {
   modoRegistro = false;
+
+  //console.log(noble.state)
 
   noble.on('stateChange', function(state) {
 
-    if (state == 'poweredOff') {
-      console.log('');
-      console.error('\x1b[31m', 'O Bluetooth não está ativado! Ative no ícone superior direito em seu computador e tente novamente.');
-      console.error('\x1b[0m', '');
-      process.exit(1);
-    } else if (state == 'poweredOn') {
+    if (state === 'poweredOn') {
       console.log('---------------------------------------------------------------');
       console.log('                    Serviço Bluetooth Ativo                    ');
       console.log('---------------------------------------------------------------');
@@ -583,8 +578,11 @@ function controlaMbot() {
       console.log('Procurando pelo mBot com módulo BLE para conectar: ' + macaddressArg);
       noble.startScanning();
     } else {
-      console.log('Encerrando procura por dispositivos Bluetooth');
+      console.log('');
+      console.error('\x1b[31m', 'O Bluetooth não está ativado! Ative no ícone superior direito em seu computador e tente novamente.');
+      console.error('\x1b[0m', '');
       noble.stopScanning();
+      process.exit(1);
     }
   });
 
@@ -606,7 +604,7 @@ function controlaMbot() {
 
     }
 
-    if (numeroScans >= 8) {
+    if (numeroScans >= 10) {
 
       console.error('\x1b[31m', 'Não foi possível encontrar o mBot registrado para conectar.');
       console.error('\x1b[31m', 'Confira se ele está ligado com a placa BLE e luz branca piscando.');
@@ -615,7 +613,7 @@ function controlaMbot() {
       console.error('\x1b[0m', '----------------------------------------------------------------------------');
       // Encerra com falha
       noble.stopScanning();
-      setTimeout(encerraAposLeitura, 10000);
+      setTimeout(encerraAposLeitura, 4000);
 
     }
 
@@ -641,6 +639,7 @@ function controlaMbot() {
   process.stdin.setEncoding('utf8');
 
 }
+
 
 process.stdin.on('keypress', (str, key) => {
 
@@ -763,6 +762,7 @@ function notificaClienteDesconexao(error) {
   console.error('\x1b[31m', 'Perdeu a conexão com o circuito eletrônico digital...');
   console.error('\x1b[0m', '');
 
+
   if (temClienteConectado()) {
     enviaMsgParaTodosClientes('desconectado:' + error);
   }
@@ -864,11 +864,27 @@ function connectTombot(peripheral) {
 
   peripheral.on('disconnect', () => {
 
-    console.error('\x1b[31m', 'mBot foi desconectado, tentando reconexão... Se não reconectar, feche este serviço com "control+C" e reinicie novamente.')
+    console.error('\x1b[31m', 'mBot foi desconectado, tentando reconexão... ');
+    console.error('\x1b[31m', 'Se não reconectar corretamente mostrando as informações de TESTE e CONTROLE,');
+    console.error('\x1b[31m', 'feche este serviço com "control+C" e reinicie novamente.');
+
     console.error('\x1b[0m', '');
-    noble.startScanning();
+
+    var shouldReconnect = setInterval(() => {
+      //console.log(peripheral.state);
+      //tenta reconexão a cada 5 segundos até conectar
+      if (peripheral.state == 'disconnected')
+        connectTombot(peripheral);
+      else
+        clearInterval(shouldReconnect);
+
+    }, 3000);
+
+    //noble.startScanning();
   });
 }
+
+
 
 var ultimoContador = -1;
 
@@ -895,39 +911,46 @@ function monitoraDispositivoConectado() {
 
 var sensoresUtilizados = [];
 
+
 function mbotReadDataDriver(error, services, characteristics) {
 
   var mbotRComms = characteristics;
 
   //   console.log('! mbot READ BLE characteristic found.');
   // subscribe to be notified whenever the peripheral update the characteristic
-  mbotRComms.subscribe(error => {
+  //garantir nao subscreve mais de uma vez (maxEventLisners)
+  mbotRComms.unsubscribe(() => {
+    mbotRComms.subscribe(error => {
+      console.log(' .');
+      if (error) {
+        console.error('Erro ao subscrever para ouvir características do mbot BLE');
+        notificaClienteDesconexao(error);
+      } else {
+        console.log('\x1b[0m\x1b[32m', 'Leitura de componentes digitais do mBot via bluetooth ativada');
+        console.log('\x1b[0m', '-------------------------------------------------------------');
+        console.log('\x1b[0m', '------------  TESTE E CONTROLE POR TECLADO   ----------------');
+        console.log('\x1b[0m', '------------                                 ----------------');
+        console.log('\x1b[0m', '------------      SETAS > MOTORES            ----------------');
+        console.log('\x1b[0m', '------------      BARRA DE ESPAÇO > PARE     ----------------');
+        console.log('\x1b[0m', '------------      1 > LUZ AMARELA            ----------------');
+        console.log('\x1b[0m', '------------      2 > LUZ AZUL               ----------------');
+        console.log('\x1b[0m', '------------      3 > BUZINA                 ----------------');
+        console.log('\x1b[0m', '------------      4 > SERVO 0º               ----------------');
+        console.log('\x1b[0m', '------------      5 > SERVO 45º              ----------------');
+        console.log('\x1b[0m', '------------      6 > SERVO 90º              ----------------');
+        console.log('\x1b[0m', '------------      7 > SERVO 135º             ----------------');
+        console.log('\x1b[0m', '------------                                 ----------------');
+        console.log('\x1b[0m', '-------------------------------------------------------------');
+        console.log('\x1b[0m', '--- Se for o primeiro uso, teste todos os comandos acima! ---');
+        console.log('\x1b[0m', '-------------------------------------------------------------');
+        monitoriaTask = setInterval(monitoraDispositivoConectado, 3000);
 
-    if (error) {
-      console.error('Erro ao subscrever para ouvir características do mbot BLE');
-      notificaClienteDesconexao(error);
-    } else {
-      console.log('\x1b[0m\x1b[32m', 'Leitura de componentes digitais do mBot via bluetooth ativada');
-      console.log('\x1b[0m', '-------------------------------------------------------------');
-      console.log('\x1b[0m', '------------  TESTE E CONTROLE POR TECLADO   ----------------');
-      console.log('\x1b[0m', '------------                                 ----------------');
-      console.log('\x1b[0m', '------------      SETAS > MOTORES            ----------------');
-      console.log('\x1b[0m', '------------      BARRA DE ESPAÇO > PARE     ----------------');
-      console.log('\x1b[0m', '------------      1 > LUZ AMARELA            ----------------');
-      console.log('\x1b[0m', '------------      2 > LUZ AZUL               ----------------');
-      console.log('\x1b[0m', '------------      3 > BUZINA                 ----------------');
-      console.log('\x1b[0m', '------------      4 > SERVO 0º               ----------------');
-      console.log('\x1b[0m', '------------      5 > SERVO 45º              ----------------');
-      console.log('\x1b[0m', '------------      6 > SERVO 90º              ----------------');
-      console.log('\x1b[0m', '------------      7 > SERVO 135º             ----------------');
-      console.log('\x1b[0m', '------------                                 ----------------');
-      console.log('\x1b[0m', '-------------------------------------------------------------');
-      console.log('\x1b[0m', '--- Se for o primeiro uso, teste todos os comandos acima! ---');
-      console.log('\x1b[0m', '-------------------------------------------------------------');
-      monitoriaTask = setInterval(monitoraDispositivoConectado, 3000);
-    }
+      }
+
+    });
 
   });
+
 
 
   //var bufAnterior=new Buffer(4);
@@ -950,7 +973,8 @@ function mbotReadDataDriver(error, services, characteristics) {
     // This doesn't work all the time.
     // We are epecting that the received data is a complete answer starting by 0xff and 0x55
     // To be perfect we need to "slide" the buffer looking for 0xff0x55
-    if (data[0] == 0xff && data.length >= 7) // Command header
+    //console.log(data.length);
+    if (data[0] == 0xff && data.length >= 10) // Command header
       if (data[1] == 0x55)
         if (data[3] == 0x2) { // Float value
           var buf = new Buffer(4);
@@ -958,6 +982,8 @@ function mbotReadDataDriver(error, services, characteristics) {
           buf[2] = data[5];
           buf[1] = data[6];
           buf[0] = data[7];
+          //console.log(data);
+          //console.log(data.length);
 
           // if (buf!=bufAnterior) {
           //   bufAnterior=buf;
@@ -1220,7 +1246,7 @@ function escreveParaMBot(comando, valor) {
         dcMotorsBaseBufferMax.writeUInt8(veldir, 8);
         dcMotorsBaseBufferMax.writeUInt8(0, 9);
       } else if (comando == DCMOTORS_BACK) {
-        console.log('Entrou para voltar');
+        //console.log('Entrou para voltar');
         //referencia: var motor_reverse100 =  new Buffer( [0xFF, 0X55, 0x07, 0x00, 0x02, 0x05, 0x55, 0x00, 0xaa, 0xFF]);
         velm1 = velm1 - potenciaAdicionalEsquerda;
         if (velm1 <= 0) velm1 = 1;
