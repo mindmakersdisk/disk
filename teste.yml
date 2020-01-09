@@ -1,4 +1,4 @@
-- hosts:       localhost
+- hosts:       gabriel
 
   tasks:
     # - include:
@@ -10,7 +10,7 @@
     # - set_fact:
     #      path2desktop: "/home/pi/Desktop"
     # - include: tasks/student-en.yml
-    # - include: tasks/v3-6.yml
+    - include: tasks/v3-6.yml
 
     # - file:
     #     path: /home/pi/sketchbook
@@ -68,11 +68,11 @@
     #     state: absent
 
 
-    - name:    Copiando programs
-      copy:
-         src:  files/programs
-         dest: /home/mindmakers
-         mode: 0755
+    # - name:    Copiando programs
+    #   copy:
+    #      src:  files/programs
+    #      dest: /home/mindmakers
+    #      mode: 0755
 
 
 
