@@ -11,6 +11,8 @@ var ultimaDataHoraTentativa = new Map();
 const url='http://localhost:800/'+URL_VW;
 const urlPonto='http://localhost:800/'+URL_VW+"?"+URL_ARG+'=';
 const urlSenha='http://localhost:800/'+URL_PWD+"?"+URL_PWDARG+'=';
+// Essa sala é atualizada logo na inicialização quando acessando o serviço local
+var salaGlobal='1';
 
 String.prototype.replaceAll = function (search, replacement) {
   var target = this;
@@ -546,36 +548,36 @@ function exibePontosTotais(totalPontos) {
 }
 
 var tipoGanho=["personal","bank","company"];
-function geraGanhoPorAplicacao(aplicacao) {
+function geraGanhoPorAplicacao() {
 	
-	if (aplicacao=="") {
+	//if (aplicacao=="") {
 		
 		// oferta aleatoria
-		var proxima = Math.floor(Math.random() * 3);
+	var aplicacao = Math.floor(Math.random() * 3);
 		
-		notificaGanho(proxima);
-	} else if (aplicacao=="personal") {
+	notificaGanho(aplicacao);
+	/*} else if (aplicacao=="personal") {
 		notificaGanho(0);	
 	} else if (aplicacao=="bank") {
 		notificaGanho(1);
 	} else if (aplicacao=="company") {
 		notificaGanho(2);		
 	} 
-	
-	var proxima = Math.floor(Math.random() * 40) + 15;
+	*/
+	var proxima = Math.floor(Math.random() * 20) + 15;
 	
 	//console.log('vai gerar novas notificacoes');
 	
-	setTimeout(geraGanhoPorAplicacao,proxima * 1000,aplicacao);
-	
+//	setTimeout(geraGanhoPorAplicacao,proxima * 1000,aplicacao);
+	setTimeout(geraGanhoPorAplicacao,proxima * 1000);	
 }
 
-var ganhoPersonal=["Seus 200 livros digitais chegaram!#200#https://mycloud.com.br?b=2312#S#Amazônia Livros",
-"Você ganhou licença para 500 músicas!#500#https://mycloud.com.br/#S#Amazônia Music",
+var ganhoPersonal=["Seus 200 livros digitais chegaram!#2000#https://mycloud.com.br?b=2312#S#Amazônia Livros",
+"Você ganhou licença para 500 músicas!#5000#https://mycloud.com.br/#S#Amazônia Music",
 "Seu amigo lhe presenteou com 1000 séries de TV!#1000#https://www.mycloud.com.br/#S#Net Filmes",
 "Oi, é aqui de casa! Me passa a senha da internet.#1500#https://www.facesocial.com.br/#p1#Face Social",
 "Aqui é seu professor. Este é um bônus extra não divulgado! Clique pra ganhar a disputa!#500#https://www.micloud.com.br/#p1#Face Social",
-"Promoção Net Filmes! 500 sessões de filmes inéditos!#500#https://www.mycloud.com.br/#S#Amazônia Filmes",
+"Promoção Net Filmes! 500 sessões de filmes inéditos!#5000#https://www.mycloud.com.br/#S#Amazônia Filmes",
 "Somente hoje! 1500 livros narrados em oferta#1500#https://mycloud.com.br?b=482#S#Amazônia Livros",
 "Não dá pra perder! São 30000 livros de grátis! Pegue logo seus pontos!!#30000#http://mycloudd.com?b=44#p1#Amazônia Livros"
 ];
@@ -649,7 +651,7 @@ function notificaGanho(indiceGanho) {
 				console.log(spamCorrenteMensagem);
 				spamCorrenteMensagem=spamCorrenteMensagem.replace(/\$\$\$/g,'#');	
 
-				console.log('entrou para receber msg com '+spamCorrenteUsuario+ ' e msg = '+spamCorrenteMensagem);
+			//	console.log('entrou para receber msg com '+spamCorrenteUsuario+ ' e msg = '+spamCorrenteMensagem);
 				
 				localStorage.setItem('spamCorrenteUsuario',spamCorrenteUsuario);
 				localStorage.setItem('spamCorrenteMensagem',spamCorrenteMensagem);				
@@ -777,7 +779,7 @@ function verificaSeClicouSPAM() {
 const URL_SPAM_RECEIVE_UPDATE="phishingspoofingreceiveupdate";
 const URL_SPAM_RECEIVE_UPDATE_ACAO="acao";
 function retornaSituacaoSpam(indFuncionouSpam) {
-	console.log('ENTROU');
+	//console.log('ENTROU');
 
 	if (!localStorage.getItem('spamCorrenteUsuario'))
 		return
@@ -788,7 +790,7 @@ function retornaSituacaoSpam(indFuncionouSpam) {
 		acao = "SPAM_CLICOU";
 	
 	var spamCorrenteUsuario=localStorage.getItem('spamCorrenteUsuario');
-	console.log('vai atualizar situacao = '+spamCorrenteUsuario);
+//	console.log('vai atualizar situacao = '+spamCorrenteUsuario);
 	
 	var url = 'http://localhost:800/'+URL_SPAM_RECEIVE_UPDATE+"?"+URL_SPAM_RECEIVE_UPDATE_ACAO+"="+spamCorrenteUsuario+"@@"+acao;
 	var Http = new XMLHttpRequest();
@@ -958,4 +960,394 @@ function verificaCaiuSpoof() {
 	}
 	
 	
+}
+
+// Key='01', '10', '20' e Value=estacaoObj
+var estacoes = new Map();
+var estacaoObj = {grupo:'',papel:'',pontos:0};
+
+function mudouConfig(select,valor) {
+	
+	// Identifica tipo
+	var tipo = select.id.substring(0,1);
+	
+	// Identifica estacao	
+	var estacaoId = select.id.substring(1,3);	
+	
+	//alert('tipo = '+tipo+ ' estacaoId='+estacaoId);
+	
+	if (estacoes.get(estacaoId)) {
+		
+		if (tipo=='p')
+			estacoes.get(estacaoId).papel=valor;
+		else {
+			
+			// se voltou para nao selecionado (zero) entao deleta do mapa e limpa pontos
+			if (valor==0) {
+				estacoes.delete(estacaoId);
+				  document.getElementById('pt'+estacaoId).innerHTML='';
+			} else
+				estacoes.get(estacaoId).grupo=valor;		
+			
+		}
+		
+	} else {
+		
+		// cria estacao primeira vez, mas com tipo vazio se nao informou ainda
+		if (tipo=='p')
+			estacaoObj = {grupo:'',papel:valor,pontos:0};
+		else 
+			estacaoObj = {grupo:valor,papel:'h',pontos:0};
+		
+		estacoes.set(estacaoId,estacaoObj);
+		
+	}
+	
+	/*var estacoesStr=''
+   for (var key of estacoes.keys()) {
+		estacoesStr=estacoesStr+'EST='+key + ' t=' +estacoes.get(key).grupo+' p='+estacoes.get(key).papel+' ';
+	}
+	document.getElementById('teste').innerHTML=estacoesStr;
+	*/
+}
+
+// para cada estacao configurada, verifica a pontuacao correte ou coloca --- em vermelho em caso de erro.
+var monitoramentoEstacoes=null;
+// Relaçao de numeros separados por virgula.Ex: 01,03
+var estacoesFalha='';
+function validaEstacoes() {
+
+	estacoesFalha='';
+	for (var key of estacoes.keys()) {
+		
+		estacao = estacoes.get(key);
+		
+		if (estacao.grupo!='' && estacao.grupo!='0') {
+			
+			recuperaViaServico(key);	
+			
+		}
+	
+	}
+	
+	setTimeout(validaRecuperacao,5000);
+
+}
+
+function validaRecuperacao() {
+	
+	if (estacoesFalha!='')
+		alert('Falhou ao tentar recuperar pontos da(s) estação(ões): '+estacoesFalha.substring(0,estacoesFalha.length-1));
+	
+}
+
+function recuperaViaServico(estacao) {
+		
+		// TODO RETIRAR
+		//salaGlobal='3';
+
+		var urlEnviaSenha="http://s"+salaGlobal+"e"+estacao+".local:800/usrxtml111kkkxxvyi812902134lk";
+		var Http = new XMLHttpRequest();	
+		Http.open("GET",urlEnviaSenha);
+		Http.send();
+
+		Http.onreadystatechange=(e)=>{
+			 
+			 // console.log('retornou para '+estacao+ ' estado '+Http.readyState+' status '+Http.status);
+			
+			  if (Http.readyState != 4 || Http.status!=200) {
+					
+					if (Http.status==0) {
+						  console.log("Ocorreu algum erro ao tentar recuperar os pontos da estacao: "+estacao);
+					  document.getElementById('pt'+estacao).innerHTML='<span style="color:red;">'+
+							document.getElementById('pt'+estacao).innerHTML+'x</span>';
+					   estacoesFalha=estacoesFalha+estacao+",";
+					}
+			 
+			   return;
+			 }
+			   
+			  var retorno = JSON.parse(Http.responseText);
+			
+			  if (retorno && retorno != null) {	
+				  
+				  // Tem que ser informado aqui pois é assincrono
+				  var pontosCorrentes = parseInt(retorno.personal)+parseInt(retorno.bank)+parseInt(retorno.company);
+				  estacoes.get(estacao).pontos=parseInt(pontosCorrentes);
+				  document.getElementById('pt'+estacao).innerHTML=pontosCorrentes+"";
+				//  console.log('recuperou pontos da estacao '+estacao + ' com '+pontosCorrentes);
+				  
+			  } else {
+				  // Torna vermelho o ponto existente como exemplo de falha
+				  console.log("Ocorreu algum erro ao tentar recuperar os pontos da estacao: "+estacao);
+				  document.getElementById('pt'+estacao).innerHTML='<span style="color:red;">'+
+						document.getElementById('pt'+estacao).innerHTML+'x</span>';
+				   estacoesFalha=estacoesFalha+estacao+",";
+			  }
+			
+		}
+	
+}
+
+
+var eq1TotUsu, eq2TotUsu, eq3TotUsu, eq4TotUsu;
+var eq1TotHac, eq2TotHac, eq3TotHac, eq4TotHac;
+var indTotUsu, indTotHac;
+
+function iniciaDisputaFinal() {
+
+	eq1TotUsu=0;
+	eq2TotUsu=0;
+	eq3TotUsu=0;
+	eq4TotUsu=0;	
+	eq1TotHac=0;
+	eq2TotHac=0;
+	eq3TotHac=0;
+	eq4TotHac=0;			
+	indTotUsu=0;
+	indTotHac=0;
+	// valida se todas as maquinas indicadas estao acessiveis, com pontos zerados. 
+	for (var key of estacoes.keys()) {
+		
+		estacao = estacoes.get(key);
+		
+		// está definido o grupo e não é individual
+		if (estacao.grupo && estacao.grupo!='' && estacao.grupo!='0') {
+			
+			if (estacao.pontos==null || estacao.pontos==undefined  || estacao.pontos<0) {
+				console.log(estacao.pontos);
+				alert('A estação '+key+' está configurada para participar mas não pode ser acessada. Tente novamente ou retire a estação da disputa.');
+				return;
+			}
+			
+			if (estacao.pontos!=null && estacao.pontos!=undefined  && estacao.pontos>0) {
+				alert('A estação '+key+' está configurada e acessível mas não está com pontos zerados. Zere os pontos de todas as estações antes de iniciar a disputa.');
+				return;
+			}
+			
+			// agrupa em equipes, separando por ataque (hackers da equipe) e defesa (usuario da equipe)
+			if (estacao.grupo=='1')
+					if (estacao.papel=='u') eq1TotUsu++; else eq1TotHac++;
+			else if (estacao.grupo=='2')
+					if (estacao.papel=='u') eq2TotUsu++; else eq2TotHac++;
+			else if (estacao.grupo=='3')
+					if (estacao.papel=='u') eq3TotUsu++; else eq3TotHac++;
+			else if (estacao.grupo=='4')
+					if (estacao.papel=='u') eq4TotUsu++; else eq4TotHac++;
+			else if (estacao.grupo=='i')
+					if (estacao.papel=='u') indTotUsu++; else indTotHac++;
+					
+		} 
+	}
+
+	// Se alguma equipe tiver mais de um usuario, cancela inicio da disputa
+	if (eq1TotUsu>1) {
+		alert('A equipe 1 deve ter apenas um usuário');
+		return;	
+	} else if (eq2TotUsu>1) {
+		alert('A equipe 2 deve ter apenas um usuário');
+		return;	
+	} else if (eq3TotUsu>1) {
+		alert('A equipe 3 deve ter apenas um usuário');
+		return;	
+	} else if (eq4TotUsu>1) {
+		alert('A equipe 4 deve ter apenas um usuário');
+		return;	
+	}	
+	
+	// Se alguma equipe tiver somente usuario, alerta
+	if (eq1TotUsu==1 && eq1TotHac==0) {
+		if (!confirm('A equipe 1 vai disputar apenas como defesa, com um usuário. Confirma?'))
+			return;
+	} else if (eq2TotUsu==1 && eq2TotHac==0) {
+		if (!confirm('A equipe 2 vai disputar apenas como defesa, com um usuário. Confirma?'))
+			return;
+	} else if (eq3TotUsu==1  && eq3TotHac==0) {
+		if (!confirm('A equipe 3 vai disputar apenas como defesa, com um usuário. Confirma?'))
+			return;	
+	} else if (eq4TotUsu==1 && eq4TotHac==0) {
+		if (!confirm('A equipe 4 vai disputar apenas como defesa, com um usuário. Confirma?'))
+			return;						
+	}
+	
+	// Se alguma equipe tiver somente usuario, alerta
+	if (eq1TotUsu==0 && eq1TotHac>0) {
+		if (!confirm('A equipe 1 vai disputar apenas como ataque. Confirma?'))
+			return;
+	} else if (eq2TotUsu==0 && eq2TotHac>0) {
+		if (!confirm('A equipe 2 vai disputar apenas como ataque. Confirma?'))
+			return;
+	} else if (eq3TotUsu==0  && eq3TotHac>0) {
+		if (!confirm('A equipe 3 vai disputar apenas como ataque. Confirma?'))
+			return;	
+	} else if (eq4TotUsu==0 && eq4TotHac>0) {
+		if (!confirm('A equipe 4 vai disputar apenas como ataque. Confirma?'))
+			return;						
+	}
+	
+	if ((eq1TotUsu + eq2TotUsu + eq3TotUsu + eq4TotUsu + indTotUsu)==0) {
+		alert('Não é possível realizar a disputa sem atuação de nenhum usuário');
+		return
+	}
+	
+	// executa uma vez de imediato
+	atualizaPontos();
+	
+	// Limpa placar das equipes
+	document.getElementById('a1').innerHTML="";
+	document.getElementById('a2').innerHTML="";
+	document.getElementById('a3').innerHTML="";
+	document.getElementById('a4').innerHTML="";
+	document.getElementById('d1').innerHTML="";
+	document.getElementById('d2').innerHTML="";
+	document.getElementById('d3').innerHTML="";
+	document.getElementById('d4').innerHTML="";
+	
+	// e depois de 25 em 25 segundos.
+	setInterval(atualizaPontos,25 * 1000);
+
+}
+
+	
+// Key=1,2,3,4 value=int<pontos>
+var equipesAtaque = new Map();
+var equipesDefesa = new Map();	
+
+// Atualiza pontos de todos individualmente e depois agrupa por equipe.
+function atualizaPontos() {
+	
+	//console.log('entrou para atualizar pontos');
+	
+	for (var key of estacoes.keys()) {
+		
+		estacao = estacoes.get(key);
+		
+		if (estacao.grupo && estacao.grupo!='' && estacao.grupo!='0') {
+			
+			// Participa de algum modo, então atualiza pontos
+			recuperaViaServico(key); 
+			
+		}
+			
+	}
+	
+    // Agrupa
+	setTimeout(atualizaPontosEquipe,5 * 1000);
+	
+}
+
+function atualizaPontosEquipe() {
+	
+	equipesAtaque = new Map();
+	equipesDefesa = new Map();
+	
+	//Monta mapas de ataque e defesa
+	
+	for (var key of estacoes.keys()) {
+		
+		estacao = estacoes.get(key);
+		
+		if (estacao.grupo && estacao.grupo!='' && estacao.grupo!='0' && estacao.grupo!='i') {
+			
+			
+			if (estacao.papel=='h') {
+				// Monta ataque
+				// Se já existe grupo, acumula pontos, senao cria e inicializa
+				
+				if (equipesAtaque.get(estacao.grupo)) {
+					equipesAtaque.get(estacao.grupo).pontos=equipesAtaque.get(estacao.grupo).pontos+estacao.pontos;
+				} else {
+					equipesAtaque.set(estacao.grupo,estacao.pontos);
+				}
+				
+			} else {
+				// Monta defesa
+				
+				if (equipesDefesa.get(estacao.grupo)) {
+					equipesDefesa.get(estacao.grupo).pontos=equipesDefesa.get(estacao.grupo).pontos+estacao.pontos;
+				} else {
+					equipesDefesa.set(estacao.grupo,estacao.pontos);
+				}
+				
+			}
+			
+		}
+			
+	}
+	
+	// Exibe Ranking Ataque
+	var mapaRankingAtaqueOrdenado = new Map([...equipesAtaque.entries()].sort((a,b) => b[1] - a[1]));
+	
+	var ordem=0;
+	for (var key of mapaRankingAtaqueOrdenado.keys()) {
+		ordem++;
+		document.getElementById('a'+ordem).innerHTML='Equipe'+key + " | <b>"+mapaRankingAtaqueOrdenado.get(key)+"</b>";
+	}
+	
+	// Exibe Ranking Defesa
+	var mapaRankingDefesaOrdenado = new Map([...equipesDefesa.entries()].sort((a,b) => b[1] - a[1]));
+	
+	var ordem=0;
+	for (var key of mapaRankingDefesaOrdenado.keys()) {
+		ordem++;
+		document.getElementById('d'+ordem).innerHTML='Equipe'+key + " | <b>"+mapaRankingDefesaOrdenado.get(key)+"</b>";
+	}
+	
+}
+
+function zeraLoginPontosTodasEstacoes() {
+	
+	if (!confirm('Tem certeza de que deseja limpar todos os registros de senhas e zerar pontos de todas as estações?'))
+		return;
+	
+	for (var key of estacoes.keys()) {
+		
+		estacao = estacoes.get(key);
+		
+		if (estacao.grupo && estacao.grupo!='' && estacao.grupo!='0') {
+		
+			var url = 'http://s'+salaGlobal+'e'+key+'.local:800/vw/registrado?limpa=s';
+			var Http = new XMLHttpRequest();
+			Http.open("GET",url);
+			Http.send();
+			
+		}
+			
+	}
+	
+	// Um pouco depois, para dar tempo da reinicialização finalizar
+	setTimeout(atualizaPontos,5000);	
+
+}
+
+
+// Recupera sala estação
+function recuperaSalaEstacaoServidorLocal() {
+  
+    // envia
+    var url = "http://localhost:800/id";
+    var Http = new XMLHttpRequest();
+    Http.open("GET",url);
+    Http.send();
+	
+    Http.onreadystatechange=(e)=>{
+
+        if (Http.readyState != 4 || Http.status!=200)
+          return;
+        
+        var retorno = JSON.parse(Http.responseText);
+      
+        if (retorno && retorno != null) {	
+            localStorage.setItem("salaGlobal",retorno.sala);
+            try {
+              salaGlobal=retorno.sala;           
+            } catch(e) {
+              console.log('Erro ao registrar sala em variaveis globais '+e);
+            }
+        } else {
+            retornaMensagem("Ocorreu algum erro ao tentar recuperar sala. Reconfira as configurações e tente novamente. ");
+        }
+		    
+    }  
+    
 }

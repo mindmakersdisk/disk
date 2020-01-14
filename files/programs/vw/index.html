@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="utf-8">
   <title>Mundo Virtual</title>
@@ -7,45 +8,46 @@
   <script src="vw.js"></script>
   <script src="alertifyjs/alertify.min.js"></script>
   <link rel="stylesheet" type="text/css" href="vw.css">
-  <link rel="stylesheet" href="alertifyjs/css/alertify.min.css"/>
-  <link rel="stylesheet" href="alertifyjs/css/themes/default.min.css"/>
+  <link rel="stylesheet" href="alertifyjs/css/alertify.min.css" />
+  <link rel="stylesheet" href="alertifyjs/css/themes/default.min.css" />
 </head>
+
 <body onload="setTimeout(ganhos,4000);setTimeout(getPontosServico,100);parent.postMessage('URL,home','*');    ">
-   
-<div id="desktop">
 
-  <div class="container" style="background-color:#f1f1f1;margin-top:0;">
-  Minhas Aplicações <span id="pontos" style="visibility:hidden">- Pontos:&nbsp;<span id="pontosTotais"></span></span>
+  <div id="desktop">
+
+    <div class="container" style="background-color:#f1f1f1;margin-top:0;">
+      Minhas Aplicações <span id="pontos" style="visibility:hidden">- Pontos:&nbsp;<span id="pontosTotais"></span></span>
+    </div>
+
+    <div>
+
+      <div class="imgcontainer desktop">
+        <img src="img/personal_icon_color.png" alt="Personal logo" class="desktop-icon" onclick="window.open('personal_login.html','_self');"><br />
+        Arquivos Pessoais
+      </div>
+
+      <div class="imgcontainer desktop">
+        <img src="img/bank_icon_color.png" alt="Bank logo" class="desktop-icon" onclick="window.open('bank_login.html','_self');"><br />
+        Internet Banking
+      </div>
+
+      <div class="imgcontainer desktop">
+        <img src="img/company_icon_color.png" alt="Company logo" class="desktop-icon" onclick="window.open('company_login.html','_self');"><br />
+        Minha Empresa
+      </div>
+
+    </div>
+
+    <div id="iniciaJogo" style="margin-left:300px;margin-top:50px;visibility:hidden;"> <button type="button" class="cancelbtn" onclick="iniciaJogo();">Zerar Meus Pontos</button></div>
+
   </div>
-  
-<div>
-
- <div class="imgcontainer desktop">
-    <img src="img/personal_icon_color.png" alt="Personal logo" class="desktop-icon" onclick="window.open('personal_login.html','_self');"><br/>
-	Arquivos Pessoais
-  </div>
-
-  <div class="imgcontainer desktop">
-    <img src="img/bank_icon_color.png" alt="Bank logo" class="desktop-icon" onclick="window.open('bank_login.html','_self');"><br/>
-	Internet Banking
-  </div>
-
-   <div class="imgcontainer desktop">
-    <img src="img/company_icon_color.png" alt="Company logo" class="desktop-icon" onclick="window.open('company_login.html','_self');"><br/>
-	Minha Empresa
-  </div>
-
-  </div>
-
-   <div id="iniciaJogo" style="margin-left:300px;margin-top:50px;visibility:hidden;"> <button  type="button" class="cancelbtn" onclick="iniciaJogo();">Iniciar</button></div>
-
-</div>
-<script>
-if (window.location.href.indexOf('localhost')>-1) {
-    document.getElementById('iniciaJogo').style.visibility="visible";
-    document.getElementById('pontos').style.visibility="visible";
-  }
-</script>
+  <script>
+    if (window.location.href.indexOf('localhost') > -1) {
+      document.getElementById('iniciaJogo').style.visibility = "visible";
+      document.getElementById('pontos').style.visibility = "visible";
+    }
+  </script>
 </body>
-</html>
 
+</html>

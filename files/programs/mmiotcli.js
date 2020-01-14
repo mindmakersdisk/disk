@@ -364,12 +364,16 @@ app.get('/phishingspoofingreceiveupdate', (request, response) => {
 })
 
 
-// Limpa senhas
+// Limpa senhas e pontos
 app.get('/vw/registrado', (request, response) => {
   
     if (request.query.limpa!=null) {
       
        senha = new Map();
+       pontos = new Map();
+       pontos.set('personal',0);
+       pontos.set('company',0);
+       pontos.set('bank',0);
       
         response.json({
           registrado:"NAO"});
