@@ -1,4 +1,4 @@
-- hosts:               salae10
+- hosts:               localhost
   remote_user:         root
   pre_tasks:
     - file:

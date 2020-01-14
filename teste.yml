@@ -10,7 +10,7 @@
     # - set_fact:
     #      path2desktop: "/home/pi/Desktop"
     # - include: tasks/student-en.yml
-    - include: tasks/v3-6.yml
+    # - include: tasks/v3-6.yml
 
     # - file:
     #     path: /home/pi/sketchbook
@@ -67,7 +67,16 @@
     #     path: /home/mindmakers/mmiotcli.js
     #     state: absent
 
-
+    - name:            Copiando arquivos de imagens
+      copy:
+         src:          files/icons
+         dest:         /usr/share
+         mode:         0777
+    - name:         Trocando imagem de fundo e posicionando ícones padrões do Desktop
+      copy:
+         src:       files/pcmanfm/LXDE-pi/desktop-items-0.conf
+         dest:      /home/pi/.config/pcmanfm/LXDE-pi
+         mode:      0755
     # - name:    Copiando programs
     #   copy:
     #      src:  files/programs
