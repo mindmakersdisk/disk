@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
   <meta charset="utf-8">
   <title>Banco Digital</title>
@@ -10,35 +9,34 @@
   <script src="./alertifyjs/alertify.min.js"></script>
   <link rel="stylesheet" type="text/css" href="vw.css">
   <link rel="stylesheet" href="./alertifyjs/css/alertify.min.css" />
-  <link rel="stylesheet" href="./alertifyjs/css/themes/default.min.css" />
+   <link rel="stylesheet" href="./alertifyjs/css/themes/default.min.css" />
 </head>
-
 <body onload="setTimeout(formInit,500,'coletaOferta');">
-
-  <div id="tela">
-    <form action="" method="post">
-
-      <div class="container" style="background-color:#f1f1f1">
-        Banco Digital
-      </div>
-      <div class="imgcontainer">
-        <img src="img/bank_icon_color.png" alt="Bank logo" class="avatar">
-      </div>
-
-      <div class="container">
-        <label for="uname">Você tem <b>U$ <span id="pontos">0</span>,00</b></label>
-      </div>
-      <div class="container" style="background-color:#f1f1f1">
-        <button id="transferir" type="button" onclick="transfereParaMim();" style="display:none;">Transfira para Minha Conta</button>
-      </div>
-
-      <div class="container" style="background-color:#f1f1f1">
-        <button type="button" class="cancelbtn" onclick="window.open('index.html','_self');">Ok</button>
-      </div>
-
-    </form>
+   
+<div id="tela">
+<form action="" method="post">
+ 
+ <div class="container" style="background-color:#f1f1f1">
+   Banco Digital
+  </div>
+  <div class="imgcontainer">
+    <img src="img/bank_icon_color.png" alt="Bank logo" class="avatar">
   </div>
 
-</body>
+  <div class="container">
+    <label for="uname">Você tem <b>U$ <span id="pontos">0</span>,00</b></label>
+  </div>
+   <div class="container" style="background-color:#f1f1f1">
+    <button id="transferir" type="button" onclick="transfereParaMim();" style="display:none;">Transfira para Minha Conta</button>
+  </div>
 
+  <div class="container" style="background-color:#f1f1f1">
+    <button type="button" class="cancelbtn" onclick="window.open('index.html','_self');">Ok</button>
+  </div>
+  
+</form>
+</div>
+
+</body>
 </html>
+

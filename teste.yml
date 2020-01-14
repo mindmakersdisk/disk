@@ -1,4 +1,4 @@
-- hosts:       gabriel
+- hosts:       localhost
 
   tasks:
     # - include:

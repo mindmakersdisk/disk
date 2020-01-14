@@ -817,7 +817,7 @@ function retornaSituacaoSpam(indFuncionouSpam) {
 function decodificaNotificacao(notificacaoCodificada) {
 	//'<b>Banco ACME</b><p><a href="sdfsd" title="https://www.meubanco.com/meudominio/este/testes">'+ganhoPersonal[ganho].replace('#',' ')+'</a>'
    var topicos = notificacaoCodificada.split('#');
-   
+   console.log('chegou notificacao com codigo = '+topicos[3]);
    if (topicos[3]=='p1') {
 		// phishing automatico
 	return '<b>'+topicos[4]+'</b><p><a style="text-decoration:none;" class="link-message" href="/vw/hackeado.html" title="'+topicos[2]+'">'+topicos[0]+
@@ -1030,7 +1030,7 @@ function validaEstacoes() {
 	
 	}
 	
-	setTimeout(validaRecuperacao,5000);
+	setTimeout(validaRecuperacao,3000);
 
 }
 
@@ -1203,8 +1203,8 @@ function iniciaDisputaFinal() {
 	document.getElementById('d3').innerHTML="";
 	document.getElementById('d4').innerHTML="";
 	
-	// e depois de 25 em 25 segundos.
-	setInterval(atualizaPontos,25 * 1000);
+	// e depois de 10 em 10 segundos.
+	setInterval(atualizaPontos,10 * 1000);
 
 }
 
@@ -1232,7 +1232,7 @@ function atualizaPontos() {
 	}
 	
     // Agrupa
-	setTimeout(atualizaPontosEquipe,5 * 1000);
+	setTimeout(atualizaPontosEquipe,2 * 1000);
 	
 }
 

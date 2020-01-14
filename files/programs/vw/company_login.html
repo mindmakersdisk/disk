@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
   <meta charset="utf-8">
   <title>ACME</title>
@@ -12,40 +11,39 @@
   <link rel="stylesheet" href="./alertifyjs/css/alertify.min.css" />
   <link rel="stylesheet" href="./alertifyjs/css/themes/default.min.css" />
 </head>
-
 <body onload="setTimeout(formInit,50);setTimeout(canChangePsw,100);setTimeout(ganhos,4000);">
+   
+<div id="tela">
 
-  <div id="tela">
-
-    <div class="form">
-      <div class="container" style="background-color:#f1f1f1">
-        ACME
-      </div>
-      <div class="imgcontainer">
-        <img src="img/company_icon_color.png" alt="Bank logo" class="avatar">
-      </div>
-
-      <div class="container">
-        <label for="uname"><b>Login</b></label>
-        <input id="login" type="text" placeholder="Enter Username" name="uname" required readonly style="visibility:visible;">
-        <input id="loginaux" type="text" placeholder="Enter Username" name="uname" required readonly value="login-camuflado" style="visibility:hidden;">
-
-
-        <label for="psw"><b>Senha</b></label>
-        <input id="password" type="password" placeholder="Enter Password" name="psw" required autofocus maxlength="2">
-
-        <button id="loginButton" onclick="simulaPostForm('login','company.html');">Login</button>
-
-      </div>
-
-      <div class="container" style="background-color:#f1f1f1">
-        <button type="button" class="cancelbtn" onclick="window.open('index.html','_self');">Cancelar</button>
-        <span class="register">Não está cadastrado? <a href="company_register.html">Faça o registro</a></span>
-        <span id="changePsw" class="psw">Esqueceu sua <a href="company_forgot.html">senha?</a></span>
-      </div>
-    </div>
+<div class="form" >
+  <div class="container" style="background-color:#f1f1f1">
+   ACME
+  </div>
+  <div class="imgcontainer">
+    <img src="img/company_icon_color.png" alt="Bank logo" class="avatar">
   </div>
 
-</body>
+  <div class="container">
+    <label for="uname"><b>Login</b></label>
+    <input id="login" type="text" placeholder="Enter Username" name="uname" required readonly style="visibility:visible;">
+    <input id="loginaux" type="text" placeholder="Enter Username" name="uname" required readonly value="login-camuflado" style="visibility:hidden;">
 
+
+    <label for="psw"><b>Senha</b></label>
+    <input id="password" type="password" placeholder="Enter Password" name="psw" required autofocus maxlength="2">
+
+    <button id="loginButton" onclick="simulaPostForm('login','company.html');">Login</button>
+
+  </div>
+
+  <div class="container" style="background-color:#f1f1f1">
+    <button type="button" class="cancelbtn" onclick="window.open('index.html','_self');">Cancelar</button>
+    <span class="register">Não está cadastrado? <a href="company_register.html">Faça o registro</a></span>
+    <span id="changePsw" class="psw">Esqueceu sua <a href="company_forgot.html">senha?</a></span>
+  </div>
+</div>
+</div>
+
+</body>
 </html>
+

@@ -14,6 +14,9 @@
 - name:     Instalando IDE Arduino
   apt:
      name:  arduino
+- name:     Instalando python3-pip
+  apt:
+     name:  python3-pip
 - name:     Instalando s3-extend
   shell:    'sudo pip3 install -U s3-extend'
   args:
