@@ -77,6 +77,14 @@
      attributes: +i
      mode:       0755
   when:          not scratch2_folder.stat.exists
+- name:          Copiando atalho sphero.desktop
+  copy:
+     src:        files/teacher/cybersecurity.desktop
+     dest:       "{{ path2desktop }}/cybersecurity.desktop"
+     owner:      pi
+     group:      pi
+     attributes: +i
+     mode:       0755
 ##################
 - name:          Copiando demais atalhos para o Desktop
   copy:
