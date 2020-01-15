@@ -77,7 +77,8 @@
      attributes: +i
      mode:       0755
   when:          not scratch2_folder.stat.exists
-- name:          Copiando atalho sphero.desktop
+
+- name:          Copiando atalho cybersecurity.desktop
   copy:
      src:        files/teacher/cybersecurity.desktop
      dest:       "{{ path2desktop }}/cybersecurity.desktop"
