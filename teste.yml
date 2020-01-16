@@ -73,28 +73,30 @@
          src:          files/icons
          dest:         /usr/share
          mode:         0777
-    - name:            Trocando imagem de fundo e posicionando ícones padrões do Desktop
-      copy:
-         src:          files/pcmanfm/LXDE-pi/desktop-items-0.conf
-         dest:         /home/pi/.config/pcmanfm/LXDE-pi
-         mode:         0755
+    # - name:            Trocando imagem de fundo e posicionando ícones padrões do Desktop
+    #   copy:
+    #      src:          files/pcmanfm/LXDE-pi/desktop-items-0.conf
+    #      dest:         /home/pi/.config/pcmanfm/LXDE-pi
+    #      mode:         0755
     - name:            Copiando programs
       copy:
          src:          files/programs
          dest:         /home/mindmakers
          mode:         0755
+    # - include:         tasks/final-version-copies-en.yml
+    - include:         tasks/version_update.yml
 
 
-    - name:            Copiando vw
-      copy:
-         src:          files/programs/vw
-         dest:         /home/mindmakers/programs
-         mode:         0755
-    - name:            Copiando cli
-      copy:
-         src:          files/programs/mmiotcli.js
-         dest:         /home/mindmakers/programs
-         mode:         0755
+    # - name:            Copiando vw
+    #   copy:
+    #      src:          files/programs/vw
+    #      dest:         /home/mindmakers/programs
+    #      mode:         0755
+    # - name:            Copiando cli
+    #   copy:
+    #      src:          files/programs/mmiotcli.js
+    #      dest:         /home/mindmakers/programs
+    #      mode:         0755
     #
     #
     # - name:            Instalando pacote do npm "cors"
@@ -135,4 +137,4 @@
     #     warn:          no
 
 
-    - include:         tasks/reboot.yml
+    #- include:         tasks/reboot.yml

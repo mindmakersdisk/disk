@@ -2,6 +2,7 @@
 
 Versão 3.8 14/01/2020
 - Nova versão dos serviço de interação de sala para possibilitar projetos MT3, MT6 e MK7.
+- Novo cadastro para estações utilizadas no módulo MT6 usando os pinos GPIO do Raspberry Pi.
 
 Versão 3.7 03/12/2019
 - Nova versão dos serviço de interação de sala para possibilitar projetos MT3, MT6 e MK7.
