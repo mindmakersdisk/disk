@@ -126,7 +126,7 @@ app.get('/usrxtml111kkkxxvyi812902134lk', (request, response) => {
   // Se enviou pontos, soma
    if (request.query.xtml111kkkxxv!=null && request.query.xtml111kkkxxv != 'zera' && request.query.xtml111kkkxxv.indexOf('$')>-1) {
      var pontosRetorno = request.query.xtml111kkkxxv.split('$');
-     console.log('vai somar '+pontosRetorno[1]+' pontos para ' + pontosRetorno[0]);
+     console.log('vai setar '+pontosRetorno[1]+' pontos para ' + pontosRetorno[0]);
      if (!Number.isNaN(parseInt(pontosRetorno[1])))
           pontos.set(pontosRetorno[0], parseInt(pontosRetorno[1]));
   } else if (request.query.xtml111kkkxxv == 'zera' ) {

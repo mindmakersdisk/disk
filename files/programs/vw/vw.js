@@ -10,7 +10,7 @@ var contaTentativas = new Map();
 var ultimaDataHoraTentativa = new Map();
 const url = 'http://localhost:800/' + URL_VW;
 const urlPonto = 'http://localhost:800/' + URL_VW + "?" + URL_ARG + '=';
-const urlSenha = 'http://localhost:800/' + URL_PWD + "?" + URL_PWDARG + '=';
+const urlSenha = URL_PWD + "?" + URL_PWDARG + '=';
 // Essa sala é atualizada logo na inicialização quando acessando o serviço local
 var salaGlobal = '1';
 
@@ -36,9 +36,12 @@ var contadorColeta = 0;
 
 function obtemLoginCorrente(chamador) {
 
-  // Neste caso, formado por "usuario_eXX", onde eXX é o numero da estacao corrente se usando localhost
+  // Neste caso, formado por "usuario_eXX", onde eXX é o numero da estacao corrente se usando localhost. Usa e1, e2,...,e10,e11,...
+
+  var urlBase = window.location.href.substring(0, window.location.href.lastIndexOf(':800') + 4) + "/";
+
   var Http = new XMLHttpRequest();
-  Http.open("GET", url);
+  Http.open("GET", urlBase + URL_VW);
   Http.send();
 
   Http.onreadystatechange = (e) => {
@@ -84,8 +87,11 @@ function getPontoApp(tipoApp) {
 // Recupera total de pontos correntes no servidor, por tipo de aplicacao
 function getPontosServico() {
 
+  // pega URL corrente
+  var urlBase = window.location.href.substring(0, window.location.href.lastIndexOf(':800') + 4) + "/";
+
   var Http = new XMLHttpRequest();
-  Http.open("GET", url);
+  Http.open("GET", urlBase + URL_VW);
   Http.send();
 
   Http.onreadystatechange = (e) => {
@@ -113,10 +119,12 @@ function getPontosServico() {
 
 }
 
-function setPontoApp(url, tipoApp, pontosTotais) {
+
+// Recupera total de pontos sem setar valor local
+function setPontosServicoLocalhostSemAlterarMapaLocal(aplicacao, pontosParaAcrescentar) {
 
   var Http = new XMLHttpRequest();
-  Http.open("GET", url + tipoApp + "$" + pontosTotais);
+  Http.open("GET", "http://localhost:800/" + URL_VW);
   Http.send();
 
   Http.onreadystatechange = (e) => {
@@ -124,6 +132,49 @@ function setPontoApp(url, tipoApp, pontosTotais) {
     if (Http.readyState != 4 || Http.status != 200)
       return;
 
+    if (Http && Http.responseText) {
+
+      var retorno = JSON.parse(Http.responseText);
+      var pontosAtuaisDoHackerAplicacaoCorrente = 0;
+      //console.log(retorno);
+      //{"user":"1","personal":200,"company":20000,"bank":20000}
+
+      if (aplicacao == "personal")
+        pontosAtuaisDoHackerAplicacaoCorrente = retorno.personal;
+      else if (aplicacao == "bank")
+        pontosAtuaisDoHackerAplicacaoCorrente = retorno.bank;
+      else if (aplicacao == "company")
+        pontosAtuaisDoHackerAplicacaoCorrente = retorno.company;
+
+
+      console.log("O hacker tinha " + pontosAtuaisDoHackerAplicacaoCorrente + " como hackeou " + pontosParaAcrescentar + " ao final vai ficar com " + pontosAtuaisDoHackerAplicacaoCorrente + pontosParaAcrescentar);
+      setPontoApp(urlPonto, aplicacaoCorrente, pontosAtuaisDoHackerAplicacaoCorrente + pontosParaAcrescentar);
+      document.getElementById('pontos').innerHTML = '0';
+
+    }
+  }
+
+}
+
+// usado para setar pontos
+function setPontoApp(urlArg, tipoApp, pontosTotais) {
+
+  console.log('vai setar ' + pontosTotais + ' da aplicacao ' + tipoApp + ' com URL ' + urlArg);
+
+  var Http = new XMLHttpRequest();
+  Http.open("GET", urlArg + tipoApp + "$" + pontosTotais);
+  Http.send();
+
+  Http.onreadystatechange = (e) => {
+
+    if (Http.readyState != 4 || Http.status != 200)
+      return;
+
+    // Se for negativo esta hackeando de outro usuario.
+    if (pontosTotais < 0)
+      return;
+
+    console.log('registrou ' + pontosTotais + " no mapa local para " + tipoApp);
     pontos.set(tipoApp, pontosTotais);
 
     var pontoLocal = localStorage.getItem(tipoApp + "patrimonioAtual");
@@ -132,15 +183,28 @@ function setPontoApp(url, tipoApp, pontosTotais) {
       pontoLocalInt = parseInt(pontoLocal);
 
     localStorage.setItem(tipoApp + "patrimonioAtual", (pontoLocalInt + pontosTotais) + '');
+    console.log('ao final armazenou ' + (pontoLocalInt + pontosTotais) + " no local storagelocal");
   }
 }
 
 
 function getSenha(tipoApp, login, next) {
 
+  // pega URL corrente
+  var urlBase = window.location.href.substring(0, window.location.href.lastIndexOf(':800') + 4) + "/";
+
+  // Se acessar outra estacao, usa o usuario dela
+  if (urlBase.indexOf('localhost') == -1) {
+    var usuarioAux = urlBase.substring(urlBase.indexOf('.local') - 2, urlBase.indexOf('.local'));
+    var usuarioAuxInt = parseInt(usuarioAux);
+    login = "usuario_e" + usuarioAuxInt;
+  }
+
   var Http = new XMLHttpRequest();
-  Http.open("GET", urlSenha + tipoApp + login);
+  Http.open("GET", urlBase + urlSenha + tipoApp + login);
   Http.send();
+
+  //console.log('Vai pegar senha em '+urlBase+urlSenha+tipoApp+login);
 
   Http.onreadystatechange = (e) => {
 
@@ -151,6 +215,7 @@ function getSenha(tipoApp, login, next) {
       var retorno = JSON.parse(Http.responseText);
 
       if (retorno && retorno != null) {
+        //	console.log('pegou senha = '+retorno.senha);
         return next(null, retorno.senha);
       }
 
@@ -165,8 +230,16 @@ function getSenha(tipoApp, login, next) {
 
 function setSenha(tipoApp, login, senha) {
 
+  // pega URL corrente
+  var urlBase = window.location.href.substring(0, window.location.href.lastIndexOf(':800') + 4) + "/";
+
+  if (urlBase.indexOf('localhost') == -1) {
+    alertify.alert("Alerta de Segurança", "Você não é apto a se registrar neste site!");
+    return;
+  }
+
   var Http = new XMLHttpRequest();
-  Http.open("GET", urlSenha + tipoApp + login + "-" + senha);
+  Http.open("GET", urlBase + urlSenha + tipoApp + login + "-" + senha);
   Http.send();
 
 }
@@ -630,7 +703,7 @@ var ganhoBank = ["Seu cliente pagou!#20000#https://www.bancodigital.com.br/ibank
   "Seu imposto de renda foi devolvido.#10000#https://www.bancodigital.com.br/ir/f?t=xdfd#S#Banco Digital",
   "Seu investimento rendeu juros!#5000#https://bancodigital.com.br/invest?i=3#S#Banco Digital",
   "Seu 13o salário foi depositado!.#5000#https://www.bancodigital.com.br/ibanking/sal?id=409#S#Banco Digital",
-  "Você ganhou na loteria!!! Que sorte Hein?!#200000#https://www.bancodigitali.com.br#p1#Banco Digital",
+  "Você ganhou na loteria!!! Que sorte Hein?!#15000#https://www.bancodigitali.com.br#p1#Banco Digital",
   "Olá, aqui é a Marcela! Depositei na sua conta o que estava te devendo.#8000#https://www.bancodigital.com.br/trnsf?t=100#S#Face Social"
 ];
 var ganhoCompany = ["Confidencial! Armazene as 10 plantas industriais deste mês.#10000#https://www.acme.cc?pi=009#S#ACME LTDA",
@@ -639,7 +712,7 @@ var ganhoCompany = ["Confidencial! Armazene as 10 plantas industriais deste mês
   "5 novas patentes da empresa precisam ser armazenadas.#5000#https://www.acme.cc?patentes=06930,05906820,302342#S#ACME LTDA",
   "Seus trabalhos deste mês subiram para a plataforma da empresa.#5000#https://acme.cc?t=1#S#ACME LTDA",
   "Os projetos do nosso principal cliente foram aprovados e estão no site#15000#https://www.acme.cc/#S#ACME LTDA",
-  "Mais 10 projetos confidenciais estão sob sua responsabilidade.#10000#https://acme.cc/projeto/conf?p=p1ppo2i32#S#ACME LTDA",
+  "Você foi promovido a presidente da ACME! Entre agora para ser efetivado!!#20000#https://acme.cc/projeto/conf?p=p1ppo2i32#p1#ACME LTDA",
   "Você foi promovido e assumiu 20 projetos muito importantes. Confira!#20000#https://www.acme.cc?projs=a203021#S#ACME LTDA"
 ];
 
@@ -943,7 +1016,7 @@ function rotinaHacker() {
   document.getElementById('transferir').style.display = 'block';
   var senhaDescoberta = localStorage.getItem('vwSenha');
   alertify.alert('Hacker', 'Site violado com senha <b>' + senhaDescoberta + '</b>. ' +
-    'Clique no botão para tranferir valores para sua conta. <p>' +
+    'Clique no botão para transferir valores para sua conta. <p>' +
     'Dica de hacker para hacker: tente usar essa mesma senha em outros sites do usuário.');
 
 }
@@ -959,12 +1032,13 @@ function transfereParaMim() {
   var fim = window.location.href.indexOf('800');
   var servicoHackeado = window.location.href.substring(0, fim + 3);
   var urlPontoHackeado = servicoHackeado + '/' + URL_VW + "?" + URL_ARG + '=';
-  //	console.log(urlPontoHackeado);
-  setPontoApp(urlPontoHackeado, aplicacaoCorrente, -valorHackeadoInt);
 
-  // Acrescenta pontos para o hacker
-  setPontoApp(urlPonto, aplicacaoCorrente, valorHackeadoInt);
-  document.getElementById('pontos').innerHTML = '0';
+  setPontoApp(urlPontoHackeado, aplicacaoCorrente, getPontoApp(aplicacaoCorrente) - valorHackeadoInt);
+
+  // Acrescenta pontos para o hacker, que está no localhost
+  var pontosAtuaisDoHackerAplicacaoCorrente = setPontosServicoLocalhostSemAlterarMapaLocal(aplicacaoCorrente, valorHackeadoInt);
+
+
 }
 
 // quando as mensagens padroes hackeiam o aluno

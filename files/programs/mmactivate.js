@@ -440,41 +440,42 @@ function executaRegistros() {
       perguntasCurtas = questionsLoginSimplificadoTeachers;
     }
 
-    inquirer.prompt(perguntasCurtas).then(answers => {
+    inquirer.prompt(perguntasCurtas)
+      .then(answers => {
 
-      if (answers.loginSimplificado != null && answers.loginSimplificado.toString().indexOf('Não') == -1) {
+        if (answers.loginSimplificado != null && answers.loginSimplificado.toString().indexOf('Não') == -1) {
 
-        atualizaAtalhoLoginSimplificadoEscola(answers);
+          atualizaAtalhoLoginSimplificadoEscola(answers);
 
-      }
+        }
 
-      sala_informado = answers.sala;
+        sala_informado = answers.sala;
 
-      if (isNaN(answers.codigo)) {
-        answers.codigo = answers.codigo + '';
-        estacao_informado = answers.codigo.toUpperCase() + answers.codigo.toUpperCase();
-        estacaoInt = estacao_informado;
-        //console.log('isNaN=true; codigo=' + answers.codigo + '; estacao_informado=' + estacao_informado)
+        if (isNaN(answers.codigo)) {
+          answers.codigo = answers.codigo + '';
+          estacao_informado = answers.codigo.toUpperCase() + answers.codigo.toUpperCase();
+          estacaoInt = estacao_informado;
+          //console.log('isNaN=true; codigo=' + answers.codigo + '; estacao_informado=' + estacao_informado)
 
-      } else {
-        estacao_informado = answers.codigo;
-        estacaoInt = parseInt(estacao_informado);
+        } else {
+          estacao_informado = answers.codigo;
+          estacaoInt = parseInt(estacao_informado);
 
-        if (verificaInstrutor())
-          estacao_informado = '0';
+          if (verificaInstrutor())
+            estacao_informado = '0';
 
-      }
+        }
 
-      salaInt = parseInt(sala_informado);
+        salaInt = parseInt(sala_informado);
 
-      atualizaVersaoEstacao(escolaid, pi_identificado, sd_identificado, versaoImagemDisco, salaInt, estacaoInt, verificaInstrutor());
+        atualizaVersaoEstacao(escolaid, pi_identificado, sd_identificado, versaoImagemDisco, salaInt, estacaoInt, verificaInstrutor());
 
-      totalAcessosPlataformaPendentes = 0;
-      servicoRecorrente = setInterval(monitoraAcessosAssincronosPlataforma, 2000);
+        totalAcessosPlataformaPendentes = 0;
+        servicoRecorrente = setInterval(monitoraAcessosAssincronosPlataforma, 2000);
 
-      modoregistro = false;
+        modoregistro = false;
 
-    });
+      });
 
 
   } else {
@@ -490,46 +491,47 @@ function executaRegistros() {
     }
 
     modoregistro = true;
-    inquirer.prompt(perguntas).then(answers => {
+    inquirer.prompt(perguntas)
+      .then(answers => {
 
-      if (answers.opcao) {
+        if (answers.opcao) {
 
-        idescola_informado = escolaid;
-        escolanome_recuperado = escolanome;
+          idescola_informado = escolaid;
+          escolanome_recuperado = escolanome;
 
-        sala_informado = answers.sala;
-        //console.log('sala = '+sala_informado);
+          sala_informado = answers.sala;
+          //console.log('sala = '+sala_informado);
 
-        if (isNaN(answers.codigo)) {
-          answers.codigo = answers.codigo + '';
-          estacao_informado = answers.codigo.toUpperCase() + answers.codigo.toUpperCase();
-          //console.log('isNaN=true; codigo=' + answers.codigo + '; estacao_informado=' + estacao_informado)
+          if (isNaN(answers.codigo)) {
+            answers.codigo = answers.codigo + '';
+            estacao_informado = answers.codigo.toUpperCase() + answers.codigo.toUpperCase();
+            estacaoInt = estacao_informado;
+
+          } else {
+            estacao_informado = answers.codigo;
+            estacaoInt = parseInt(estacao_informado);
+
+            if (verificaInstrutor())
+              estacao_informado = '0';
+
+          }
+
+          registraAtivosEscolaPlataforma(answers);
+
+          if (perguntas === questions)
+            atualizaAtalhoLoginSimplificadoEscola(answers);
+
+          totalAcessosPlataformaPendentes = 2;
+          servicoRecorrente = setInterval(monitoraAcessosAssincronosPlataforma, 2000);
 
         } else {
-          estacao_informado = answers.codigo;
-          estacaoInt = parseInt(estacao_informado);
-
-          if (verificaInstrutor())
-            estacao_informado = '0';
-
+          console.log('');
+          process.exit(0);
         }
 
-        registraAtivosEscolaPlataforma(answers);
+        modoregistro = false;
 
-        if (perguntas === questions)
-          atualizaAtalhoLoginSimplificadoEscola(answers);
-
-        totalAcessosPlataformaPendentes = 2;
-        servicoRecorrente = setInterval(monitoraAcessosAssincronosPlataforma, 2000);
-
-      } else {
-        console.log('');
-        process.exit(0);
-      }
-
-      modoregistro = false;
-
-    });
+      });
   }
 }
 
