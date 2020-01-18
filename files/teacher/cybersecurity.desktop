@@ -1,6 +1,7 @@
 [Desktop Entry]
 Version=1.0
 Name=Cyber Security
+Name[pt_BR]=Cibersegurança
 Exec=chromium-browser http://localhost:800/vw/gamemanagement.html --allow-control-allow-origin --start-fullscreen --allow-running-insecure-content --incognito --disable-popup-blocking
 Terminal=false
 X-MultipleArgs=false
