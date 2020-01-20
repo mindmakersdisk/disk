@@ -21,18 +21,18 @@
   shell:    'sudo pip3 install -U s3-extend'
   args:
     warn:   no
-# - name:     Copiando arquivo de inicialização do s3r
+# - name:   Copiando arquivo de inicialização do s3r
 #   copy:
-#      src:   files/mqtt/mmgpio
-#      dest:  /etc/init.d
-#      mode:  0644
-# - name:     Copiando arquivo de inicialização do s3r
+#      src: files/mqtt/mmgpio
+#      dest: /etc/init.d
+#      mode: 0644
+# - name:   Copiando arquivo de inicialização do s3r
 #   copy:
-#      src:   files/arduino/s3_extend
-#      dest:  /usr/local/lib/python3.7/dist-packages/
+#      src: files/arduino/s3_extend
+#      dest: /usr/local/lib/python3.7/dist-packages/
 #      owner: root
 #      group: staff
-#      mode:  0644
+#      mode: 0644
 
 - name:     Copiando arquivo de inicialização do s3r
   copy:
@@ -40,6 +40,9 @@
      dest:  /etc/init.d
      mode:  0755
 - shell:    'sudo update-rc.d mmgpio defaults'
+  args:
+    warn:   no
+- shell:    'sudo systemctl daemon-reload'
   args:
     warn:   no
 - name:     update chomium
