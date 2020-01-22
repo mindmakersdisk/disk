@@ -262,6 +262,12 @@ function formInit(chamador) {
 
   obtemLoginCorrente(chamador);
 
+  // Se está iniciando um novo form e tem este flag, saiu do SPOOF sem clicar em nada, portanto está livre
+  if (localStorage.getItem('indAbriuSiteFake') != null) {
+    retornaSituacaoSpam("SPOOFING", false);
+    localStorage.removeItem('indAbriuSiteFake');
+  }
+
   if ((window.location.href.indexOf('localhost') > -1)) {
     try {
       document.getElementById('login').style.visibility = "visible";
@@ -422,7 +428,7 @@ var momentoCorrente = null;
 var conta = 0;
 
 function validaLogin(urlFinal) {
-  conta = 0;
+  //conta=0;
   //event.preventDefault()
   // Salva nova senha do aluno e ultima hora para evitar excesso de troca.
   var login = document.getElementById('login').value;
@@ -431,6 +437,7 @@ function validaLogin(urlFinal) {
   //var senhaRegistrada = localStorage.getItem('vw_senha_'+aplicacaoCorrente+login);
   getSenha(aplicacaoCorrente, login, function(erro, senhaRegistrada) {
     //console.log('senha registrada='+senhaRegistrada);
+
     if ((!senhaInformada || senhaInformada == null || !senhaRegistrada || senhaRegistrada == null ||
         senhaInformada != senhaRegistrada) && !bloqueioTentativa && !bloqueioRobo) {
 
@@ -438,25 +445,29 @@ function validaLogin(urlFinal) {
 
         contaTentativas.set(aplicacaoCorrente, contaTentativas.get(aplicacaoCorrente) + 1);
         conta++;
-        if (conta % 4 == 0)
-          momentoCorrente = new Date();
+        //if (conta % 2 == 0)
+        momentoCorrente = new Date();
 
-        if (aplicacaoCorrente == 'bank' && contaTentativas.get(aplicacaoCorrente) > 20) {
+        // console.log('app corrente = '+aplicacaoCorrente+' momento '+momentoCorrente+' ultima='+ultimaDataHoraTentativa.get(aplicacaoCorrente));
+        if (aplicacaoCorrente == 'bank' && contaTentativas.get(aplicacaoCorrente) > 16) {
           document.getElementById('loginButton').style.display = "none";
-          ultimaDataHoraTentativa.set(aplicacaoCorrente, new Date());
           bloqueioTentativa = true;
-          alertify.alert("Segurança Bancária!", "Você foi bloqueado por excesso de tentativas com erro (mais de 20)!");
+          alertify.alert("Segurança Bancária!", "Você foi bloqueado por excesso de tentativas com erro (mais de 16)!");
         }
         if (aplicacaoCorrente == 'company' && (momentoCorrente != null &&
             ultimaDataHoraTentativa.get(aplicacaoCorrente) != null &&
-            momentoCorrente - ultimaDataHoraTentativa.get(aplicacaoCorrente) < 500)) {
-          alertify.alert("Segurança Corporativa!", "Você foi bloqueado por fazer tentativas seguidas com rapidez que indicam o uso de robô!");
+            (momentoCorrente - ultimaDataHoraTentativa.get(aplicacaoCorrente)) <= 600)) {
+          alertify.alert("Segurança Corporativa!",
+            "Você foi bloqueado por fazer tentativas seguidas com rapidez que indicam o uso de robô (duas ou mais chamadas por segundo)! ");
           document.getElementById('loginButton').style.display = "none";
           bloqueioRobo = true;
         } else {
+
+          //alert(conta+' nulo? '+momentoCorrente);
           if (!bloqueioTentativa && !bloqueioRobo) {
+            if (momentoCorrente != null)
+              ultimaDataHoraTentativa.set(aplicacaoCorrente, momentoCorrente);
             alertify.alert("Erro na Autenticação", "O login e senha não conferem!");
-            ultimaDataHoraTentativa.set(aplicacaoCorrente, new Date());
           }
 
         }
@@ -465,7 +476,7 @@ function validaLogin(urlFinal) {
 
       return false;
     }
-    if (!(aplicacaoCorrente == 'bank' && contaTentativas.get(aplicacaoCorrente) > 20) && !bloqueioRobo && !bloqueioTentativa) {
+    if (!(aplicacaoCorrente == 'bank' && contaTentativas.get(aplicacaoCorrente) > 16) && !bloqueioRobo && !bloqueioTentativa) {
       //console.log(urlFinal);
       localStorage.setItem('vwSenha', senhaInformada);
       window.location.href = urlFinal;
@@ -778,11 +789,14 @@ function notificaGanho(indiceGanho) {
         var indiceTipo = Math.floor(Math.random() * 3);
 
         indClicou = false;
-        var notification = alertify.notify(decodificaNotificacao(spamCorrenteMensagem), tipoMsg[indiceTipo], 10, function() {
-          // entra também primeiro na funcao quando clica, mas nao indica
-
-          setTimeout(verificaSeClicouSPAM, 100);
-
+        var notification = alertify.notify(decodificaNotificacao(spamCorrenteMensagem), tipoMsg[indiceTipo], 10, function(isClicked) {
+          // Se não clicou no link mas clico na caixa de mensagem, tem o mesmo efeito
+          if (isClicked) {
+            indClicou = true;
+          } else {
+            indClicou = false;
+          }
+          trataReacaoSPAM();
         });
 
       } else {
@@ -792,7 +806,7 @@ function notificaGanho(indiceGanho) {
         // se havia um SPAM corrente e nao clicou, então remove SPAM e comunica que usuario nao clicou
         if (localStorage.getItem('spamCorrenteUsuario')) {
 
-          retornaSituacaoSpam(false);
+          retornaSituacaoSpam('', false);
 
         }
 
@@ -859,28 +873,26 @@ function verificaSeClicouGanho(indiceSite) {
 
 }
 
-function verificaSeClicouSPAM() {
-
+function trataReacaoSPAM() {
 
   if (!indClicou) {
 
-    retornaSituacaoSpam(false);
+    retornaSituacaoSpam('', false);
 
   } else {
 
     var aux = spamCorrenteMensagem.split('#');
     if (aux[3] == 'p2') {
 
-      // PHISHING NA HORA
-      window.open("hackeadousuario.html", "_self");
-      retornaSituacaoSpam(true);
-      localStorage.removeItem('spamCorrenteUsuario');
-      localStorage.removeItem('spamCorrenteMensagem');
+      // PHISHING
+      retornaSituacaoSpam('PHISHING', true);
+
 
     } else {
       var link = aux[2];
       // SPOOFING VAI PRA SITE PRIMEIRO
       // Mandar conforme o link, para o site mais proximo
+
       if (link.indexOf('bancodigital'))
         window.open("ban_fake.html", "_self");
       else if (link.indexOf('acme'))
@@ -904,7 +916,7 @@ function verificaSeClicouSPAM() {
 const URL_SPAM_RECEIVE_UPDATE = "phishingspoofingreceiveupdate";
 const URL_SPAM_RECEIVE_UPDATE_ACAO = "acao";
 
-function retornaSituacaoSpam(indFuncionouSpam) {
+function retornaSituacaoSpam(tipo, indFuncionouSpam) {
   //console.log('ENTROU');
 
   if (!localStorage.getItem('spamCorrenteUsuario'))
@@ -918,6 +930,10 @@ function retornaSituacaoSpam(indFuncionouSpam) {
   var spamCorrenteUsuario = localStorage.getItem('spamCorrenteUsuario');
   //	console.log('vai atualizar situacao = '+spamCorrenteUsuario);
 
+  localStorage.removeItem('spamCorrenteUsuario');
+  localStorage.removeItem('spamCorrenteMensagem');
+
+
   var url = 'http://localhost:800/' + URL_SPAM_RECEIVE_UPDATE + "?" + URL_SPAM_RECEIVE_UPDATE_ACAO + "=" + spamCorrenteUsuario + "@@" + acao;
   var Http = new XMLHttpRequest();
   Http.open("GET", url);
@@ -930,14 +946,25 @@ function retornaSituacaoSpam(indFuncionouSpam) {
 
     var retorno = JSON.parse(Http.responseText);
 
+    //alert(retorno);
+
     if (retorno && retorno.status == "OK") {
       console.log('atualizou status de ' + spamCorrenteUsuario + "@@" + acao);
+      // Após atualizar o status, programa o desvio
+      // alert('entrou '+tipo);
+      if (tipo == "PHISHING") {
+        setTimeout(abreJanelaHacker, 2000);
+      }
     } else {
       console.log('erro ao atualizar status de ' + spamCorrenteUsuario + "@@" + acao);
     }
 
   }
 
+}
+
+function abreJanelaHacker() {
+  window.open("hackeadousuario.html", "_self");
 }
 
 function decodificaNotificacao(notificacaoCodificada) {
@@ -950,7 +977,7 @@ function decodificaNotificacao(notificacaoCodificada) {
       '</a><p><span class="link-message" style="font-size:12px">[' + topicos[1] + ']</span>';
   } else if (topicos[3] == 'p2') {
     // phishing manual de aluno
-    return '<b>' + topicos[4] + '</b><p><a style="text-decoration:none;" class="link-message" href="/vw/hackeadousuario.html" title="' + topicos[2] + '">' + topicos[0] +
+    return '<b>' + topicos[4] + '</b><p><a style="text-decoration:none;" onclick="trataClicouSPAM(\'PHISHING\',event)" class="link-message" href="' + topicos[2] + '" title="' + topicos[2] + '">' + topicos[0] +
       '</a><p><span class="link-message" style="font-size:12px">[' + topicos[1] + ']</span>';
   } else if (topicos[3] == 'p4') {
     // spoofing manual de aluno
@@ -959,13 +986,36 @@ function decodificaNotificacao(notificacaoCodificada) {
       siteFake = "per_fake";
     else if (topicos[2].indexOf('acme'))
       siteFake = "com_fake";
-    return '<b>' + topicos[4] + '</b><p><a style="text-decoration:none;" class="link-message" href="/vw/' + siteFake + '.html" title="' + topicos[2] + '">' + topicos[0] +
+    return '<b>' + topicos[4] + '</b><p><a style="text-decoration:none;" onclick="trataClicouSPAM(\'SPOFFING\',event,\'' + siteFake + '\')"  class="link-message" href="' + topicos[2] + '" title="' + topicos[2] + '">' + topicos[0] +
       '</a><p><span class="link-message" style="font-size:12px">[' + topicos[1] + ']</span>';
   } else {
     // ganha pontos
     return '<b>' + topicos[4] + '</b><p><a style="text-decoration:none;" href="#" class="link-message" title="' + topicos[2] + '">' + topicos[0] +
       '</a><p><span class="link-message" style="font-size:12px">[' + topicos[1] + ']</span>';
   }
+}
+
+/*
+ * Tratamento de mensagens de SPAM,apos cliques.
+ * Se for SPOOFING, só retorna resultado após clique no site.
+ */
+function trataClicouSPAM(tipo, e, siteFake) {
+
+  // Evita ir pro link que nao existe
+  e.preventDefault();
+
+  // De qualquer modo somente delega. TODO REFATORAR
+  // if (tipo=='PHISHING') {
+  //alert('PHI '+tipo);
+  //	indClicou=true;
+
+  //} else {
+  // SPOOFING
+  indClicou = true;
+  //	}
+
+  trataReacaoSPAM();
+
 }
 
 function coletaOferta() {
@@ -1070,6 +1120,14 @@ function verificaCaiuSpoof() {
 
   if (getParameterByName('t') == 'p4') {
 
+    // Remove indicador de que abriuSite
+    localStorage.removeItem('indAbriuSiteFake');
+
+
+    //alert('vai remover mensagem de SPOOF');
+    // Remove o spoof para nao enviar duplicata
+    retornaSituacaoSpam("SPOOFING", true);
+
     // spoofing , entao envia senhas
     //console.log('vai enviar senha para hacker');
     var urlEnviaSenha = "http://localhost:800/vw/enviasenha?user=" + localStorage.getItem('spamCorrenteUsuario');
@@ -1082,10 +1140,18 @@ function verificaCaiuSpoof() {
       if (Http.readyState != 4 || Http.status != 200)
         return;
 
+
+
     }
 
   }
 
+}
+
+// Marca que o usuário abriu. Se não clicar em nenhum link, no FORMINIT (inicio de qualquer form) considera que desistiu
+function abriuSiteFake() {
+
+  localStorage.setItem('indAbriuSiteFake', 'SPOOF');
 
 }
 

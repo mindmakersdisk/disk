@@ -412,8 +412,14 @@ app.get('/vw/enviasenha', (request, response) => {
   //console.log('entrou com '+request.query.user);
   if (request.query.user != null) {
 
-    enviaMsgParaTodosClientes("hacker:" + request.query.user + "@@" +
-      "Sua mensagem de spoofing e seu site falso enganaram o usuário. Senhas obtidas: " + senhasFormatadas(senha));
+    if (senha.size > 0)
+      enviaMsgParaTodosClientes("hacker:" + request.query.user + "@@" +
+        "Sua mensagem de spoofing e site falso enganaram o usuário. Senhas obtidas: " + senhasFormatadas(senha));
+    else
+      enviaMsgParaTodosClientes("hacker:" + request.query.user + "@@" +
+        "Sua mensagem de spoofing e site falso enganaram o usuário. Mas ele ainda não possui senhas definidas!");
+
+
 
   }
 })

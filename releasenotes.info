@@ -1,5 +1,8 @@
 ########### IMAGEM DE DISCO MIND MAKERS ###########
 
+Versão 4.1 22/01/2020
+- Melhoras para novo projeto de cibersegurança
+
 Versão 4.0 20/01/2020
 - Nova versão dos serviço de interação de sala para possibilitar projetos MT3, MT6 e MK7.
 - Novo cadastro para estações utilizadas no módulo MT6 usando os pinos GPIO do Raspberry Pi.
