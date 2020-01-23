@@ -31,7 +31,6 @@
     - include:         tasks/copies.yml
     - include:         tasks/packages.yml
     - include:         tasks/packages-uninstall.yml
-    #- include:        tasks/3dslash.yml
     - include:         tasks/hide-games.yml
     - include:         tasks/install-extension.yml
     - include:         tasks/mt6.yml
@@ -41,11 +40,6 @@
     - include:         tasks/avahi.yml
     - include:         tasks/raspi-config.yml
 
-# - import_playbook:   student.yml
-#
-# - hosts:             localhost
-#   remote_user:       root
-#   tasks:
 
     - include:         tasks/copies-student.yml
     - include:         tasks/3dslash.yml
