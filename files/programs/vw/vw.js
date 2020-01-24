@@ -1035,9 +1035,19 @@ function rotinaHacker() {
 	document.getElementById('transferir').style.display='block';
 	var senhaDescoberta = localStorage.getItem('vwSenha');
 	alertify.alert('Hacker','Site violado com senha <b>'+senhaDescoberta+'</b>. '+
-	'Clique no botão para transferir valores para sua conta. <p>'+
-	'Dica de hacker para hacker: tente usar essa mesma senha em outros sites do usuário.');
-	
+	'Feche este diálogo para transferir valores para sua conta. <p>'+
+	'Dica de hacker para hacker: <b><i>tente usar essa mesma senha em outros sites do usuário</i></b>.',
+	 function(){ 
+		setTimeout(transferir,1000); });
+
+}
+
+function transferir() {
+	document.getElementById('transferir').click();	
+}
+
+function sair() {
+	document.getElementById('ok').click();	
 }
 
 // quando um aluno hackeia o outro
@@ -1045,7 +1055,9 @@ function transfereParaMim() {
 
 	var valorHackeadoInt = parseInt(document.getElementById('pontos').innerHTML);
 
-	alertify.alert('Hacker','<b>'+valorHackeadoInt+'</b> créditos do site <b>'+aplicacaoCorrente+'</b> trasferidos para sua conta!');
+	alertify.alert('Hacker','<b>'+valorHackeadoInt+'</b> créditos do site <b>'+aplicacaoCorrente+'</b> trasferidos para sua conta!',
+	 function(){ 
+		setTimeout(sair,1000); });
 
 	// Retira pontos do hackeado
 	var fim = window.location.href.indexOf('800');
@@ -1121,7 +1133,7 @@ function verificaCaiuSpoof() {
 function abriuSiteFake() {
 				
 	localStorage.setItem('indAbriuSiteFake','SPOOF');
-	setTimeout(clicaAutomatico,5000);
+	setTimeout(clicaAutomatico,7000);
 	
 }
 
