@@ -3,7 +3,7 @@
   Paulo Alvim 19/16/2019
   Copyright(c) Mind Makers Editora Educacional Ltda. Todos os direitos reservados
 */
-
+const VERSAO = "1"
 var shell = require('shelljs');
 
 // Registrados
@@ -140,7 +140,8 @@ app.get('/usrxtml111kkkxxvyi812902134lk', (request, response) => {
     user: estacao_registrado,
     personal: pontos.get('personal'),
     company: pontos.get('company'),
-    bank: pontos.get('bank')
+    bank: pontos.get('bank'),
+    versao: VERSAO
   })
 
 
