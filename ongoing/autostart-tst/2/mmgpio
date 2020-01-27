@@ -1,0 +1,79 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          mmgpio
+# Required-Start:    $remote_fs $syslog $network
+# Required-Stop:     $remote_fs $syslog $network
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# X-Interactive:     true
+# Short-Description: mmgpio s3r start
+# Description:       mmgpio autostart and keep runing
+### END INIT INFO
+
+# Source function library.
+. /lib/lsb/init-functions
+
+NAME=mmgpio
+DAEMON="/usr/local/bin/s3r"
+PIDFILE="/var/run/$NAME.pid"
+LOGFILE="/var/log/$NAME.log"
+
+[ -x $DAEMON ] || exit 0
+
+start() {
+  touch $PIDFILE
+
+  for pid in $(cat $PIDFILE); do
+     if ( kill -0 $pid > /dev/null 2>&1 ); then
+      echo "mmgpio-s3r is already running.";
+      status;
+      return 0;
+    fi
+  done;
+
+  log_daemon_msg "Starting mmgpio-s3r"
+  LC_ALL=C nice -n 19 $DAEMON -b $PIDFILE $CONFFILE -l $LOGFILE
+  log_end_msg $?
+}
+
+stop() {
+  touch $PIDFILE
+  log_daemon_msg "Stopping mmgpio-s3r"
+  kill -15 $(cat $PIDFILE) > /dev/null 2>&1
+  log_end_msg $?
+  rm $PIDFILE
+}
+
+restart() {
+  stop
+  sleep 2
+  start
+}
+
+status(){
+  log_daemon_msg "mmgpio-s3r status"
+  kill -0 $(cat $PIDFILE 2> /dev/null) > /dev/null 2>&1
+  log_end_msg $?
+}
+
+
+case "$1" in
+  start)
+    sleep 2
+    start
+  ;;
+  stop)
+    stop
+  ;;
+  status)
+    status
+  ;;
+  restart)
+    restart
+  ;;
+  *)
+    echo "Usage: $0 {start|stop|restart|status}"
+  ;;
+esac
+
+exit 0

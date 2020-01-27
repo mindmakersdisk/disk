@@ -1,4 +1,4 @@
-- hosts:               localhost
+- hosts:               alls1
 
   tasks:
 
@@ -78,25 +78,27 @@
     #      src:          files/pcmanfm/LXDE-pi/desktop-items-0.conf
     #      dest:         /home/pi/.config/pcmanfm/LXDE-pi
     #      mode:         0755
-    - name:            Copiando programs
-      copy:
-         src:          files/programs
-         dest:         /home/mindmakers
-         mode:         0755
+
+
+    # - name:            Copiando programs
+    #   copy:
+    #      src:          files/programs
+    #      dest:         /home/mindmakers
+    #      mode:         0755
     # - include:         tasks/final-version-copies-en.yml
-    - include:         tasks/version_update.yml
+    # - include:         tasks/version_update.yml
 
 
-    # - name:            Copiando vw
-    #   copy:
-    #      src:          files/programs/vw
-    #      dest:         /home/mindmakers/programs
-    #      mode:         0755
-    # - name:            Copiando cli
-    #   copy:
-    #      src:          files/programs/mmiotcli.js
-    #      dest:         /home/mindmakers/programs
-    #      mode:         0755
+    - name:            Copiando vw
+      copy:
+         src:          files/programs/vw
+         dest:         /home/mindmakers/programs
+         mode:         0755
+    - name:            Copiando cli
+      copy:
+         src:          files/programs/mmiotcli.js
+         dest:         /home/mindmakers/programs
+         mode:         0755
     #
     #
     # - name:            Instalando pacote do npm "cors"
@@ -135,6 +137,24 @@
     #   shell:           'sudo chattr +i /home/pi/Desktop/classroom_test.desktop'
     #   args:
     #     warn:          no
+
+
+
+
+    # - name:            Copiando arquivo de inicialização do mmgpio
+    #   copy:
+    #      src:          ongoing/autostart-tst/2/mmgpio
+    #      dest:         /etc/init.d
+    #      mode:         0755
+    # - shell:           'sudo update-rc.d mmgpio defaults'
+    #   args:
+    #     warn:          no
+    # - name:            Copiando arquivo de inicialização do mmgpio
+    #   copy:
+    #      src:          ongoing/autostart-tst/mmgpio.service.d
+    #      dest:         /home/pi/Desktop
+    #      mode:         0755
+
 
 
     - include:         tasks/reboot.yml
