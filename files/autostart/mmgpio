@@ -6,8 +6,8 @@
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
 # X-Interactive:     true
-# Short-Description: mmgpio s3r start
-# Description:       mmgpio autostart and keep runing
+# Short-Description: service mmgpio s3r
+# Description:       autostart mmgpio and keep runing
 ### END INIT INFO
 
 # Source function library.
@@ -42,9 +42,9 @@ is_running() {
 case "$1" in
     start)
     if is_running; then
-        echo "Already started"
+        echo "Já iniciado"
     else
-        echo "Starting $name"
+        echo "Iniciando $name"
         if [ -z "$user" ]; then
             sudo $cmd >> "$stdout_log" 2>> "$stderr_log" &
         else
@@ -52,14 +52,14 @@ case "$1" in
         fi
         echo $! > "$pid_file"
         if ! is_running; then
-            echo "Unable to start, see $stdout_log and $stderr_log"
+            echo "Não foi capaz de iniciar, veja $stdout_log e $stderr_log"
             exit 1
         fi
     fi
     ;;
     stop)
     if is_running; then
-        echo -n "Stopping $name.."
+        echo -n "Parando $name.."
         kill `get_pid`
         for i in 1 2 3 4 5 6 7 8 9 10
         # for i in `seq 10`
@@ -74,19 +74,19 @@ case "$1" in
         echo
 
         if is_running; then
-            echo "Not stopped; may still be shutting down or shutdown may have failed"
+            echo "Não parou; serviço pode estar parando ou comando de parar falhou"
             exit 1
         else
-            echo "Stopped"
+            echo "Parou"
             if [ -f "$pid_file" ]; then
                 rm "$pid_file"
             fi
         fi
     else
-        echo "Not running"
+        echo "Não está rodando"
     fi
     if is_running2; then
-        echo -n "Stopping pigpiod..2"
+        echo -n "2-Parando pigpiod.."
         kill `get_pid2`
         for i in 1 2 3 4 5 6 7 8 9 10
         # for i in `seq 10`
@@ -101,36 +101,36 @@ case "$1" in
         echo
 
         if is_running2; then
-            echo "Not stopped; may still be shutting down or shutdown may have failed2"
+            echo "2-Não parou; serviço pode estar parando ou comando de parar falhou"
             exit 1
         else
-            echo "Stopped2"
+            echo "2-Parou"
             if [ -f "$pid_file2" ]; then
                 rm "$pid_file2"
             fi
         fi
     else
-        echo "Not running2"
+        echo "2-Não está rodando"
     fi
     ;;
     restart)
     $0 stop
     if is_running; then
-        echo "Unable to stop, will not attempt to start"
+        echo "Não conseguiu parar, e não vai tentar start"
         exit 1
     fi
     $0 start
     ;;
     status)
     if is_running; then
-        echo "Running"
+        echo "Rodando"
     else
-        echo "Stopped"
+        echo "Parado"
         exit 1
     fi
     ;;
     *)
-    echo "Usage: $0 {start|stop|restart|status}"
+    echo "Uso: $0 {start|stop|restart|status}"
     exit 1
     ;;
 esac

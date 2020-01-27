@@ -84,7 +84,7 @@
      mode:         0755
 - name:            Copiando arquivo de inicialização do mqtt
   copy:
-     src:          files/mqtt/mqttbot
+     src:          files/autostart/mqttbot
      dest:         /etc/init.d
      mode:         0755
 - shell:           'sudo update-rc.d mqttbot defaults'
@@ -92,7 +92,7 @@
     warn:          no
 - name:            Copiando arquivo de inicialização do mmiotjs
   copy:
-     src:          files/mqtt/mmiotjs
+     src:          files/autostart/mmiotjs
      dest:         /etc/init.d
      mode:         0755
 - shell:           'sudo update-rc.d mmiotjs defaults'

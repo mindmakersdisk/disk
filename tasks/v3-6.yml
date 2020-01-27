@@ -21,11 +21,7 @@
   shell:    'sudo pip3 install -U s3-extend'
   args:
     warn:   no
-# - name:   Copiando arquivo de inicialização do s3r
-#   copy:
-#      src: files/mqtt/mmgpio
-#      dest: /etc/init.d
-#      mode: 0644
+
 # - name:   Copiando arquivo de inicialização do s3r
 #   copy:
 #      src: files/arduino/s3_extend
@@ -36,8 +32,13 @@
 
 - name:     Copiando arquivo de inicialização do s3r
   copy:
-     src:   files/mqtt/mmgpio
+     src:   files/autostart/mmgpio
      dest:  /etc/init.d
+     mode:  0755
+- name:     Configurando reinicio automático do serviço mmgpio
+  copy:
+     src:   files/autostart/mmgpio.service.d
+     dest:  /etc/systemd/system
      mode:  0755
 - shell:    'sudo update-rc.d mmgpio defaults'
   args:

@@ -1,4 +1,4 @@
-- hosts:               alls1
+- hosts:               localhost
 
   tasks:
 
@@ -89,16 +89,18 @@
     # - include:         tasks/version_update.yml
 
 
-    - name:            Copiando vw
-      copy:
-         src:          files/programs/vw
-         dest:         /home/mindmakers/programs
-         mode:         0755
-    - name:            Copiando cli
-      copy:
-         src:          files/programs/mmiotcli.js
-         dest:         /home/mindmakers/programs
-         mode:         0755
+    # - name:            Copiando vw
+    #   copy:
+    #      src:          files/programs/vw
+    #      dest:         /home/mindmakers/programs
+    #      mode:         0755
+    # - name:            Copiando cli
+    #   copy:
+    #      src:          files/programs/mmiotcli.js
+    #      dest:         /home/mindmakers/programs
+    #      mode:         0755
+
+
     #
     #
     # - name:            Instalando pacote do npm "cors"
@@ -140,21 +142,23 @@
 
 
 
+    - name:     Copiando arquivo de inicialização do s3r
+      copy:
+         src:   files/autostart/mmgpio
+         dest:  /etc/init.d
+         mode:  0755
+    - name:     Configurando reinicio automático do serviço mmgpio
+      copy:
+         src:   files/autostart/mmgpio.service.d
+         dest:  /etc/systemd/system
+         mode:  0755
+    - shell:    'sudo update-rc.d mmgpio defaults'
+      args:
+        warn:   no
+    - shell:    'sudo systemctl daemon-reload'
+      args:
+        warn:   no
 
-    # - name:            Copiando arquivo de inicialização do mmgpio
-    #   copy:
-    #      src:          ongoing/autostart-tst/2/mmgpio
-    #      dest:         /etc/init.d
-    #      mode:         0755
-    # - shell:           'sudo update-rc.d mmgpio defaults'
-    #   args:
-    #     warn:          no
-    # - name:            Copiando arquivo de inicialização do mmgpio
-    #   copy:
-    #      src:          ongoing/autostart-tst/mmgpio.service.d
-    #      dest:         /home/pi/Desktop
-    #      mode:         0755
 
 
-
-    - include:         tasks/reboot.yml
+    # - include:         tasks/reboot.yml
