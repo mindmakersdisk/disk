@@ -1,5 +1,5 @@
 // MMVW - MIND MAKERS VIRTUAL WORLD
-const VERSAO = "1.01";
+const VERSAO = "1.02";
 const URL_VW = "usrxtml111kkkxxvyi812902134lk";
 const URL_ARG = "xtml111kkkxxv";
 const URL_PWD = "usrxtml111mmsdskkkdk112399s";
@@ -14,6 +14,9 @@ const urlPonto = 'http://localhost:800/' + URL_VW + "?" + URL_ARG + '=';
 const urlSenha = URL_PWD + "?" + URL_PWDARG + '=';
 // Essa sala é atualizada logo na inicialização quando acessando o serviço local
 var salaGlobal = '1';
+
+var jogoCorrente = "CYBER-1";
+var situacaoJogoCorrente = "r";
 
 String.prototype.replaceAll = function(search, replacement) {
   var target = this;
@@ -462,15 +465,23 @@ function validaLogin(urlFinal) {
         if (aplicacaoCorrente == 'bank' && contaTentativas.get(aplicacaoCorrente) > 16) {
           document.getElementById('loginButton').style.display = "none";
           bloqueioTentativa = true;
+          // retornar msg javascript para parar blockly.
+          parent.postMessage('PAREBLOCKLY', '*');
           alertify.alert("Segurança Bancária!", "Você foi bloqueado por excesso de tentativas com erro (mais de 16)!");
+
+
         }
         if (aplicacaoCorrente == 'company' && (momentoCorrente != null &&
             ultimaDataHoraTentativa.get(aplicacaoCorrente) != null &&
             (momentoCorrente - ultimaDataHoraTentativa.get(aplicacaoCorrente)) <= 600)) {
+          // retornar msg javascript para parar blockly.
+          parent.postMessage('PAREBLOCKLY', '*');
           alertify.alert("Segurança Corporativa!",
             "Você foi bloqueado por fazer tentativas seguidas com rapidez que indicam o uso de robô (duas ou mais chamadas por segundo)! ");
           document.getElementById('loginButton').style.display = "none";
           bloqueioRobo = true;
+
+
         } else {
 
           //alert(conta+' nulo? '+momentoCorrente);
@@ -712,29 +723,29 @@ function geraGanhoPorAplicacao() {
 var ganhoPersonal = ["Seus 200 livros digitais chegaram!#2000#https://mycloud.com.br?b=2312#S#Amazônia Livros",
   "Você ganhou licença para 500 músicas!#5000#https://mycloud.com.br/#S#Amazônia Music",
   "Seu amigo lhe presenteou com 1000 séries de TV!#1000#https://www.mycloud.com.br/#S#Net Filmes",
-  "Oi, é aqui de casa! Me passa a senha da internet.#1500#https://www.facesocial.com.br/#p1#Face Social",
-  "Aqui é seu professor. Este é um bônus extra não divulgado! Clique pra ganhar a disputa!#500#https://www.micloud.com.br/#p1#Face Social",
   "Promoção Net Filmes! 500 sessões de filmes inéditos!#5000#https://www.mycloud.com.br/#S#Amazônia Filmes",
   "Somente hoje! 1500 livros narrados em oferta#1500#https://mycloud.com.br?b=482#S#Amazônia Livros",
-  "Não dá pra perder! São 30000 livros de grátis! Pegue logo seus pontos!!#30000#http://mycloudd.com?b=44#p1#Amazônia Livros"
+  "O licenciamento de 30 jogos digitais está liberado!#3000#http://mycloud.com.br?t=jogos#S#Games Max",
+  "Oi, é aqui de casa! Me passa a senha da internet.#15000#https://cloud.com.br/#p1#Face Social",
+  "Aqui é seu professor. Este é um bônus extra não divulgado! Clique pra ganhar a disputa!#500#https://www.micloud.com.br/#p1#Sua Escola"
 ];
 var ganhoBank = ["Seu cliente pagou!#20000#https://www.bancodigital.com.br/ibanking/x13kd#S#Banco Digital",
   "Seu salário foi depositado!#5000#https://www.bancodigital.com.br/ibanking/sal?id=132#S#Banco Digital",
-  "Olá, aqui é seu gerente! Você ganhou um seguro gratuito no valor de R$ 50.000,00, basta depositar a taxa de R$ 50,00 na conta ACE213.#50000#https://www.facesocial.com.br/#p1#Face Social",
   "Seu imposto de renda foi devolvido.#10000#https://www.bancodigital.com.br/ir/f?t=xdfd#S#Banco Digital",
   "Seu investimento rendeu juros!#5000#https://bancodigital.com.br/invest?i=3#S#Banco Digital",
   "Seu 13o salário foi depositado!.#5000#https://www.bancodigital.com.br/ibanking/sal?id=409#S#Banco Digital",
+  "Olá, aqui é a Marcela! Depositei na sua conta o que estava te devendo.#8000#https://www.bancodigital.com.br/trnsf?t=100#S#Face Social",
   "Você ganhou na loteria!!! Que sorte Hein?!#15000#https://www.bancodigitali.com.br#p1#Banco Digital",
-  "Olá, aqui é a Marcela! Depositei na sua conta o que estava te devendo.#8000#https://www.bancodigital.com.br/trnsf?t=100#S#Face Social"
+  "Olá, aqui é seu gerente! Você ganhou um seguro gratuito no valor de R$ 50.000,00, basta depositar a taxa de R$ 50,00 na conta ACE213.#50000#https://www.banco.com.br/#p1#Face Social"
 ];
 var ganhoCompany = ["Confidencial! Armazene as 10 plantas industriais deste mês.#10000#https://www.acme.cc?pi=009#S#ACME LTDA",
-  "Aqui é o presidente da ACME!! Me passe seus dados para atualização do nosso RH. Agradeço antecipadamente!#50000#https://acmee.cc/#p1#ACME LTDA",
   "Você recebeu 5 projetos confidenciais.#5000#https://www.acme.cc/projeto/conf?p=9949499399388493994348343#S#ACME LTDA",
   "5 novas patentes da empresa precisam ser armazenadas.#5000#https://www.acme.cc?patentes=06930,05906820,302342#S#ACME LTDA",
   "Seus trabalhos deste mês subiram para a plataforma da empresa.#5000#https://acme.cc?t=1#S#ACME LTDA",
   "Os projetos do nosso principal cliente foram aprovados e estão no site#15000#https://www.acme.cc/#S#ACME LTDA",
+  "Você foi promovido e assumiu 20 projetos muito importantes. Confira!#20000#https://www.acme.cc?projs=a203021#S#ACME LTDA",
   "Você foi promovido a presidente da ACME! Entre agora para ser efetivado!!#20000#https://acme.cc/projeto/conf?p=p1ppo2i32#p1#ACME LTDA",
-  "Você foi promovido e assumiu 20 projetos muito importantes. Confira!#20000#https://www.acme.cc?projs=a203021#S#ACME LTDA"
+  "Aqui é o presidente da ACME!! Me passe seus dados para atualização do nosso RH. Agradeço antecipadamente!#50000#https://acmee.cc/#p1#ACME LTDA"
 ];
 
 const URL_SPAM_RECEIVE = "phishingspoofingreceive";
@@ -778,6 +789,11 @@ function notificaGanho(indiceGanho) {
 
     if (retorno && retorno != null) {
 
+      // de qualquer maneira, atualiza o tipo de jogo e situacao
+
+      jogoCorrente = retorno.jogo;
+      situacaoJogoCorrente = retorno.situacao;
+
       //	console.log('entrou para receber msg com '+retorno);
 
       if (retorno.status == "OK") {
@@ -785,7 +801,7 @@ function notificaGanho(indiceGanho) {
         var mensagem = retorno.msg.split('@@');
         spamCorrenteUsuario = mensagem[0];
 
-        // mensagem trafegou na URL com caracter adapatado - desfaz
+        // mensagem trafegou na URL com caracter adaptado - desfaz
         spamCorrenteMensagem = mensagem[1]
 
         console.log(spamCorrenteMensagem);
@@ -825,6 +841,14 @@ function notificaGanho(indiceGanho) {
         localStorage.removeItem('spamCorrenteMensagem');
 
         ganho = Math.floor(Math.random() * 8);
+
+        // evita spam geral quando alunos jogam como hackers
+        if (jogoCorrente != 'CYBER-1') {
+          // se caiu em spam geral, sorteia novamente entre os primeiros que nao sao SPAM
+          console.log('entrou para sortear sem SPAM ' + jogoCorrente);
+          ganho = Math.floor(Math.random() * 6);
+        }
+
 
         indClicou = false;
         if (indiceGanho == 0) {
@@ -1083,6 +1107,7 @@ function rotinaHacker() {
 
   document.getElementById('transferir').style.display = 'block';
   var senhaDescoberta = localStorage.getItem('vwSenha');
+  parent.postMessage('PAREBLOCKLY', '*');
   alertify.alert('Hacker', 'Site violado com senha <b>' + senhaDescoberta + '</b>. ' +
     'Feche este diálogo para transferir valores para sua conta. <p>' +
     'Dica de hacker para hacker: <b><i>tente usar essa mesma senha em outros sites do usuário</i></b>.',
@@ -1274,7 +1299,12 @@ var estacoesFalha = '';
 
 function montaMapaEstacoes() {
 
+  console.log('Entrou para montar mapa estacoes');
+
   estacoes = new Map();
+  // Limpa placar
+  equipesAtaque = new Map();
+  equipesDefesa = new Map();
 
   // Inicializa as 20 estacoes conforme configuradas
 
@@ -1306,7 +1336,7 @@ function montaMapaEstacoes() {
 
     estacao = estacoes.get(key);
 
-    if (estacao.grupo != '' && estacao.grupo != '0') {
+    if (estacao.grupo != '' && estacao.grupo != '0' && estacao.status == 'ok') {
 
       recuperaViaServico(key);
 
@@ -1343,7 +1373,7 @@ function recuperaViaServico(estacao) {
   				  estacoes.get(estacao).pontos=parseInt(pontosCorrentes);
   	}
   */
-
+  console.log('entrou para recuperar via servico');
   var urlEnviaSenha = "http://s" + salaGlobal + "e" + estacao + ".local:800/usrxtml111kkkxxvyi812902134lk";
   var Http = new XMLHttpRequest();
   Http.open("GET", urlEnviaSenha);
@@ -1356,11 +1386,21 @@ function recuperaViaServico(estacao) {
     if (Http.readyState != 4 || Http.status != 200) {
 
       if (Http.status == 0) {
-        console.log("Ocorreu algum erro ao tentar recuperar os pontos da estacao: " + estacao);
-        document.getElementById('pt' + estacao).innerHTML = '<span style="color:red;">' +
-          document.getElementById('pt' + estacao).innerHTML + 'x</span>';
-        estacoesFalha = estacoesFalha + estacao + ",";
-        estacoes.get(estacao).status = "naoOk";
+        console.log("Ocorreu algum erro ao tentar recuperar os pontos da estacao 1: " + estacao);
+        if (document.getElementById('pt' + estacao).innerHTML.indexOf('x') > -1) {
+          // já marcou como falha, entao tira do jogo
+          document.getElementById('g' + estacao).value = "0";
+          document.getElementById('g' + estacao).parentElement.parentElement.style.backgroundColor = "white";
+          document.getElementById('e' + estacao).style.color = "white";
+        } else {
+          document.getElementById('pt' + estacao).innerHTML = '<span style="color:red;">' +
+            document.getElementById('pt' + estacao).innerHTML + 'x</span>';
+          estacoesFalha = estacoesFalha + estacao + ",";
+          estacoes.get(estacao).status = "naoOk";
+          document.getElementById('g' + estacao).value = "0";
+          document.getElementById('g' + estacao).parentElement.parentElement.style.backgroundColor = "white";
+          document.getElementById('e' + estacao).style.color = "white";
+        }
       }
 
       return;
@@ -1378,11 +1418,21 @@ function recuperaViaServico(estacao) {
 
     } else {
       // Torna vermelho o ponto existente como exemplo de falha
-      console.log("Ocorreu algum erro ao tentar recuperar os pontos da estacao: " + estacao);
-      document.getElementById('pt' + estacao).innerHTML = '<span style="color:red;">' +
-        document.getElementById('pt' + estacao).innerHTML + 'x</span>';
-      estacoesFalha = estacoesFalha + estacao + ",";
-      estacoes.get(estacao).status = "naoOk";
+      console.log("Ocorreu algum erro ao tentar recuperar os pontos da estacao 2: " + estacao);
+      if (document.getElementById('pt' + estacao).innerHTML.indexOf('x') > -1) {
+        // já marcou como falha, entao tira do jogo
+        document.getElementById('g' + estacao).value = "0";
+        document.getElementById('g' + estacao).parentElement.parentElement.style.backgroundColor = "white";
+        document.getElementById('e' + estacao).style.color = "white";
+      } else {
+        document.getElementById('pt' + estacao).innerHTML = '<span style="color:red;">' +
+          document.getElementById('pt' + estacao).innerHTML + 'x</span>';
+        estacoesFalha = estacoesFalha + estacao + ",";
+        estacoes.get(estacao).status = "naoOk";
+        document.getElementById('g' + estacao).value = "0";
+        document.getElementById('g' + estacao).parentElement.parentElement.style.backgroundColor = "white";
+        document.getElementById('e' + estacao).style.color = "white";
+      }
     }
 
   }
@@ -1398,23 +1448,40 @@ var atualizaPlacarIntervalo = null;
 function iniciaDisputa() {
 
   var jogo = document.getElementById('selecionaJogo').value;
-
-  // essas chamadas nao devem chamar pontuacao
-  var validado = false;
-  if (jogo == "1") {
-    validado = validaDisputaUsuarios();
-  } else if (jogo == "2" || jogo == "3") {
-    validado = validaDisputaIndividual();
-  } else if (jogo == "4") {
-    validado = validaDisputaPares();
-  } else if (jogo == "5" || jogo == "6") {
-    validado = validaDisputaEquipes();
+  if (jogo == '') {
+    alert('Para iniciar disputas, selecione antes uma modalidade e inicialize as estações');
+    return;
   }
 
-  if (!validado)
+  if (estacoes.size == 0) {
+    alert('Para iniciar disputas, inicialize antes as estações. Uma disputa requer ao menos duas estações inicializadas corretamente.');
     return;
+  }
 
-  if (document.getElementById('inicia').innerHTML == "Iniciar Disputa!") {
+  if (document.getElementById('inicia').innerHTML == "Inicie a Disputa!") {
+
+
+    // essas chamadas nao devem chamar pontuacao
+    var validado = false;
+
+    if (jogo == "1") {
+      validado = validaDisputaUsuarios();
+    } else if (jogo == "2" || jogo == "3") {
+      validado = validaDisputaIndividual();
+    } else if (jogo == "4") {
+      validado = validaDisputaPares();
+    } else if (jogo == "5" || jogo == "6") {
+      validado = validaDisputaEquipes();
+    }
+
+    if (!validado)
+      return;
+
+    // Registra o tipo do jogo antes da confirmaçao, para que aconteça antes do inicio
+    registraTipoJogoEstacoes(jogo);
+
+    if (!confirm('Todos prontos para iniciarem a disputa?'))
+      return;
 
     sw.reset();
     sw.start();
@@ -1471,6 +1538,31 @@ function limpaPlacar() {
   document.getElementById('d8').innerHTML = "";
   document.getElementById('d9').innerHTML = "";
   document.getElementById('d10').innerHTML = "";
+
+}
+
+function limpaPontos() {
+  // Limpa placar das equipes
+  document.getElementById('pt01').innerHTML = "";
+  document.getElementById('pt02').innerHTML = "";
+  document.getElementById('pt03').innerHTML = "";
+  document.getElementById('pt04').innerHTML = "";
+  document.getElementById('pt05').innerHTML = "";
+  document.getElementById('pt06').innerHTML = "";
+  document.getElementById('pt07').innerHTML = "";
+  document.getElementById('pt08').innerHTML = "";
+  document.getElementById('pt09').innerHTML = "";
+  document.getElementById('pt10').innerHTML = "";
+  document.getElementById('pt11').innerHTML = "";
+  document.getElementById('pt12').innerHTML = "";
+  document.getElementById('pt13').innerHTML = "";
+  document.getElementById('pt14').innerHTML = "";
+  document.getElementById('pt15').innerHTML = "";
+  document.getElementById('pt16').innerHTML = "";
+  document.getElementById('pt17').innerHTML = "";
+  document.getElementById('pt18').innerHTML = "";
+  document.getElementById('pt19').innerHTML = "";
+  document.getElementById('pt20').innerHTML = "";
 
 }
 
@@ -1700,6 +1792,54 @@ function validaDisputaEquipes() {
 
 }
 
+
+// Registra o tipo de jogo nas estacoes
+// Cibersegurança é CYBER-<codigo jogo>
+function registraTipoJogoEstacoes(tipoJogo) {
+
+  for (var key of estacoes.keys()) {
+
+    estacao = estacoes.get(key);
+
+    if (estacao.grupo && estacao.grupo != '' && estacao.grupo != '0' && estacao.status == "ok") {
+
+      // Participa de algum modo, então atualiza pontos
+      registraTipoJogoViaServico(key, tipoJogo);
+
+    }
+
+  }
+
+}
+
+
+function registraTipoJogoViaServico(estacao, tipoJogo) {
+
+  // URL para registrar o jogo em modo 'r' rodando
+  //alert('vai registrar jogo '+tipoJogo+' para estcao '+estacao);
+  var urlRegistraJogo = "http://s" + salaGlobal + "e" + estacao + ".local:800/jogoconfig?msg=CYBER-" + tipoJogo + "@@r";
+  var Http = new XMLHttpRequest();
+  Http.open("GET", urlRegistraJogo);
+  Http.send();
+
+  Http.onreadystatechange = (e) => {
+
+    // console.log('retornou para '+estacao+ ' estado '+Http.readyState+' status '+Http.status);
+
+    if (Http.readyState != 4 || Http.status != 200)
+      return
+
+    var retorno = JSON.parse(Http.responseText);
+
+    if (!retorno || retorno == null) {
+      console.log("Ocorreu algum erro ao tentar registrar o jogo na estacao: " + estacao);
+
+    }
+
+  }
+
+}
+
 // Key=1,2,3,4 value=int<pontos>
 var equipesAtaque = new Map();
 var equipesDefesa = new Map();
@@ -1707,7 +1847,7 @@ var equipesDefesa = new Map();
 // Atualiza pontos de todos individualmente, na origem, e depois agrupa conforme modalidade.
 function atualizaPlacar(tipoJogo) {
 
-  //console.log('entrou para atualizar pontos');
+  console.log('entrou para atualizar placar');
 
   for (var key of estacoes.keys()) {
 
@@ -1777,8 +1917,12 @@ function atualizaPlacarEquipe(tipo) {
   for (var key of mapaRankingAtaqueOrdenado.keys()) {
     ordem++;
     chave = key;
-    if (tipo == "Dupla ")
-      chave = chave.substring(1, 2);
+    if (tipo == "Dupla ") {
+      if (chave == 'd10')
+        chave = '10';
+      else
+        chave = chave.substring(1, 2);
+    }
     document.getElementById('a' + ordem).innerHTML = tipo + chave + ": <b>" + mapaRankingAtaqueOrdenado.get(key) + "</b>";
   }
 
@@ -1789,8 +1933,12 @@ function atualizaPlacarEquipe(tipo) {
   for (var key of mapaRankingDefesaOrdenado.keys()) {
     ordem++;
     chave = key;
-    if (tipo == "Dupla ")
-      chave = chave.substring(1, 2);
+    if (tipo == "Dupla ") {
+      if (chave == 'd10')
+        chave = '10';
+      else
+        chave = chave.substring(1, 2);
+    }
     document.getElementById('d' + ordem).innerHTML = tipo + chave + ": <b>" + mapaRankingDefesaOrdenado.get(key) + "</b>";
   }
 
@@ -1857,30 +2005,54 @@ function atualizaPlacarIndividual() {
 
 function zeraLoginPontosTodasEstacoes() {
 
-  if (!confirm('Tem certeza de que deseja limpar todos os registros de senhas e zerar pontos de todas as estações?'))
+  if (!confirm('Tem certeza de que deseja limpar todos os registros de senhas e zerar pontos de todas as estações? ' +
+      'Estações não disponíveis serão verificadas e desabilitadas após 15 segundos...'))
     return;
 
   montaMapaEstacoes();
 
   //alert(estacoes.keys().length);
 
+  clearInterval(atualizaPlacarIntervalo);
+  atualizaPlacarIntervalo = null;
+
+  setTimeout(zeraTodasEstacoesConfiguradas, 13000);
+
+  setTimeout(exibeBotaoInicio, 15000);
+
+}
+
+function exibeBotaoInicio() {
+  document.getElementById('inicia').style.visibility = "visible"
+}
+
+function zeraTodasEstacoesConfiguradas() {
+
+  console.log('entrou para zerar ' + estacoes.size);
+
   for (var key of estacoes.keys()) {
 
     estacao = estacoes.get(key);
 
-    if (estacao.grupo && estacao.grupo != '' && estacao.grupo != '0') {
-
+    if (estacao.grupo && estacao.grupo != '' && estacao.grupo != '0' && estacao.status == 'ok') {
+      console.log('vai zerar estacao ' + key);
+      document.getElementById('pt' + key).innerHTML = "0";
+      estacao.pontos = 0;
       var url = 'http://s' + salaGlobal + 'e' + key + '.local:800/vw/registrado?limpa=s';
       var Http = new XMLHttpRequest();
       Http.open("GET", url);
       Http.send();
 
+      Http.onreadystatechange = (e) => {
+
+        if (Http.readyState != 4 || Http.status != 200)
+          return;
+
+      }
+
     }
 
   }
-
-  // Um pouco depois, para dar tempo da reinicialização finalizar
-  setTimeout(atualizaPlacar, 5000);
 
 }
 
@@ -1918,8 +2090,10 @@ function recuperaSalaEstacaoServidorLocal() {
 
 function configuraJogo(selecaoJogo) {
 
-  document.getElementById('inicia').innerHTML == "Iniciar Disputa!"
-
+  document.getElementById('inicia').innerHTML = "Iniciar Disputa!";
+  document.getElementById('inicia').style.visibility = "hidden";
+  limpaPontos();
+  estacoes = new Map();
   if (selecaoJogo.value == "") {
     document.getElementById('ataque').innerHTML = "Ataque";
     modificaElementoPorClasse('.pares', 'visible');
@@ -1977,6 +2151,11 @@ function configuraJogo(selecaoJogo) {
   decoraHackers();
   sw.reset();
   sw.stop();
+
+  clearInterval(atualizaPlacarIntervalo);
+  atualizaPlacarIntervalo = null;
+
+  document.getElementById('inicia').innerHTML = "Inicie a Disputa!";
 
 }
 
@@ -2104,6 +2283,8 @@ function decoraHackers() {
     } else {
       document.getElementById('p' + estacao).parentElement.parentElement.style.backgroundColor = "lightgreen";
     }
+
+    document.getElementById('e' + estacao).style.color = "black";
 
   }
 

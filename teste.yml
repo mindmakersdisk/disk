@@ -1,4 +1,4 @@
-- hosts:               localhost
+- hosts:               s3e04
 
   tasks:
 
@@ -140,25 +140,33 @@
     #   args:
     #     warn:          no
 
-
-
-    - name:     Copiando arquivo de inicialização do s3r
+    #arquivo original
+    - name:            Copiando arquivo de inicialização do mmiotjs
       copy:
-         src:   files/autostart/mmgpio
-         dest:  /etc/init.d
-         mode:  0755
-    - name:     Configurando reinicio automático do serviço mmgpio
-      copy:
-         src:   files/autostart/mmgpio.service.d
-         dest:  /etc/systemd/system
-         mode:  0755
-    - shell:    'sudo update-rc.d mmgpio defaults'
+         src:          files/autostart/mmiotjs
+         dest:         /etc/init.d
+         mode:         0755
+    - shell:           'sudo update-rc.d mmiotjs defaults'
       args:
-        warn:   no
-    - shell:    'sudo systemctl daemon-reload'
-      args:
-        warn:   no
+        warn:          no
+
+    # - name:     Copiando arquivo de inicialização do s3r
+    #   copy:
+    #      src:   ongoing/autostart-tst/mmiotjs/mmiotjs
+    #      dest:  /etc/init.d
+    #      mode:  0755
+    # - name:     Configurando reinicio automático do serviço mmgpio
+    #   copy:
+    #      src:   ongoing/autostart-tst/mmiotjs/mmiotjs.service.d
+    #      dest:  /etc/systemd/system
+    #      mode:  0755
+    # - shell:    'sudo update-rc.d mmiotjs defaults'
+    #   args:
+    #     warn:   no
+    # - shell:    'sudo systemctl daemon-reload'
+    #   args:
+    #     warn:   no
 
 
 
-    # - include:         tasks/reboot.yml
+    - include:         tasks/reboot.yml

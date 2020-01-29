@@ -32,7 +32,7 @@
     </select>
   </div>
 
-  <div class="configPanel" style="float:left;height:600px;width:400px;background-color:lightgreen;padding:3px 3px 3px 3px;">
+  <div class="configPanel" style="float:left;height:600px;width:400px;background-color:lightgrey;padding:3px 3px 3px 3px;">
     <table width="100%" style="text-align:center;font-size:18px;">
       <tr>
         <th>Estação</th>
@@ -41,7 +41,7 @@
         <th>Pontos</th>
       </tr>
       <tr>
-        <td>1</td>
+        <td id="e01">1</td>
         <td><select onchange="mudouConfig(this,this.value);" id="g01">
             <option value="0"></option>
             <option value="i">individual</option>
@@ -67,7 +67,7 @@
         <td id="pt01"></td>
       </tr>
       <tr>
-        <td>2</td>
+        <td id="e02">2</td>
         <td><select onchange="mudouConfig(this,this.value);" id="g02">
             <option value="0"></option>
             <option value="i">individual</option>
@@ -93,7 +93,7 @@
         <td id="pt02"></td>
       </tr>
       <tr>
-        <td>3</td>
+        <td id="e03">3</td>
         <td><select onchange="mudouConfig(this,this.value);" id="g03">
             <option value="0"></option>
             <option value="i">individual</option>
@@ -119,7 +119,7 @@
         <td id="pt03"></td>
       </tr>
       <tr>
-        <td>4</td>
+        <td id="e04">4</td>
         <td><select onchange="mudouConfig(this,this.value);" id="g04">
             <option value="0"></option>
             <option value="i">individual</option>
@@ -145,7 +145,7 @@
         <td id="pt04"></td>
       </tr>
       <tr>
-        <td>5</td>
+        <td id="e05">5</td>
         <td><select onchange="mudouConfig(this,this.value);" id="g05">
             <option value="0"></option>
             <option value="i">individual</option>
@@ -171,7 +171,7 @@
         <td id="pt05"></td>
       </tr>
       <tr>
-        <td>6</td>
+        <td id="e06">6</td>
         <td><select onchange="mudouConfig(this,this.value);" id="g06">
             <option value="0"></option>
             <option value="i">individual</option>
@@ -197,7 +197,7 @@
         <td id="pt06"></td>
       </tr>
       <tr>
-        <td>7</td>
+        <td id="e07">7</td>
         <td><select onchange="mudouConfig(this,this.value);" id="g07">
             <option value="0"></option>
             <option value="i">individual</option>
@@ -223,7 +223,7 @@
         <td id="pt07"></td>
       </tr>
       <tr>
-        <td>8</td>
+        <td id="e08">8</td>
         <td><select onchange="mudouConfig(this,this.value);" id="g08">
             <option value="0"></option>
             <option value="i">individual</option>
@@ -249,7 +249,7 @@
         <td id="pt08"></td>
       </tr>
       <tr>
-        <td>9</td>
+        <td id="e09">9</td>
         <td><select onchange="mudouConfig(this,this.value);" id="g09">
             <option value="0"></option>
             <option value="i">individual</option>
@@ -275,7 +275,7 @@
         <td id="pt09"></td>
       </tr>
       <tr>
-        <td>10</td>
+        <td id="e10">10</td>
         <td><select onchange="mudouConfig(this,this.value);" id="g10">
             <option value="0"></option>
             <option value="i">individual</option>
@@ -301,7 +301,7 @@
         <td id="pt10"></td>
       </tr>
       <tr>
-        <td>11</td>
+        <td id="e11">11</td>
         <td><select onchange="mudouConfig(this,this.value);" id="g11">
             <option value="0"></option>
             <option value="i">individual</option>
@@ -327,7 +327,7 @@
         <td id="pt11"></td>
       </tr>
       <tr>
-        <td>12</td>
+        <td id="e12">12</td>
         <td><select onchange="mudouConfig(this,this.value);" id="g12">
             <option value="0"></option>
             <option value="i">individual</option>
@@ -353,7 +353,7 @@
         <td id="pt12"></td>
       </tr>
       <tr>
-        <td>13</td>
+        <td id="e13">13</td>
         <td><select onchange="mudouConfig(this,this.value);" id="g13">
             <option value="0"></option>
             <option value="i">individual</option>
@@ -379,7 +379,7 @@
         <td id="pt13"></td>
       </tr>
       <tr>
-        <td>14</td>
+        <td id="e14">14</td>
         <td><select onchange="mudouConfig(this,this.value);" id="g14">
             <option value="0"></option>
             <option value="i">individual</option>
@@ -405,7 +405,7 @@
         <td id="pt14"></td>
       </tr>
       <tr>
-        <td>15</td>
+        <td id="e15">15</td>
         <td><select onchange="mudouConfig(this,this.value);" id="g15">
             <option value="0"></option>
             <option value="i">individual</option>
@@ -431,7 +431,7 @@
         <td id="pt15"></td>
       </tr>
       <tr>
-        <td>16</td>
+        <td id="e16">16</td>
         <td><select onchange="mudouConfig(this,this.value);" id="g16">
             <option value="0"></option>
             <option value="i">individual</option>
@@ -457,7 +457,7 @@
         <td id="pt16"></td>
       </tr>
       <tr>
-        <td>17</td>
+        <td id="e17">17</td>
         <td><select onchange="mudouConfig(this,this.value);" id="g17">
             <option value="0"></option>
             <option value="i">individual</option>
@@ -483,7 +483,7 @@
         <td id="pt17"></td>
       </tr>
       <tr>
-        <td>18</td>
+        <td id="e18">18</td>
         <td><select onchange="mudouConfig(this,this.value);" id="g18">
             <option value="0"></option>
             <option value="i">individual</option>
@@ -509,7 +509,7 @@
         <td id="pt18"></td>
       </tr>
       <tr>
-        <td>19</td>
+        <td id="e19">19</td>
         <td><select onchange="mudouConfig(this,this.value);" id="g19">
             <option value="0"></option>
             <option value="i">individual</option>
@@ -535,7 +535,7 @@
         <td id="pt19"></td>
       </tr>
       <tr>
-        <td>20</td>
+        <td id="e20">20</td>
         <td><select onchange="mudouConfig(this,this.value);" id="g20">
             <option value="0"></option>
             <option value="i">individual</option>
@@ -571,55 +571,55 @@
         <th id="ataque">Ataque</th>
       </tr>
       <tr>
-        <td>1o</td>
+        <td>1º</td>
         <td id="d1"></td>
         </td>
         <td id="a1"></td>
       </tr>
       <tr>
-        <td>2o</td>
+        <td>2º</td>
         <td id="d2"></td>
         <td id="a2"></td>
       </tr>
       <tr>
-        <td>3o</td>
+        <td>3º</td>
         <td id="d3"></td>
         <td id="a3"></td>
       </tr>
       <tr>
-        <td>4o</td>
+        <td>4º</td>
         <td id="d4"></td>
         <td id="a4"></td>
       </tr>
       <tr class="pares">
-        <td>5o</td>
+        <td>5º</td>
         <td id="d5"></td>
         </td>
         <td id="a5"></td>
       </tr>
       <tr class="pares">
-        <td>6o</td>
+        <td>6º</td>
         <td id="d6"></td>
         <td id="a6"></td>
       </tr>
       <tr class="pares">
-        <td>7o</td>
+        <td>7º</td>
         <td id="d7"></td>
         <td id="a7"></td>
       </tr>
       <tr class="pares">
-        <td>8o</td>
+        <td>8º</td>
         <td id="d8"></td>
         <td id="a8"></td>
       </tr>
       <tr class="pares">
-        <td>9o</td>
+        <td>9º</td>
         <td id="d9"></td>
         </td>
         <td id="a9"></td>
       </tr>
       <tr class="pares">
-        <td>10o</td>
+        <td>10º</td>
         <td id="d10"></td>
         <td id="a10"></td>
       </tr>
@@ -629,7 +629,7 @@
 
   <div id="iniciaJogo" style="margin-left:420px;margin-top:5px;">
 
-    <button type="button" onclick="zeraLoginPontosTodasEstacoes();" style="width:250px;background-color:orange;height:50px;margin-left:30px;margin-top:30px;">Zerar Pontos e Limpar Registros</button>
+    <button type="button" onclick="zeraLoginPontosTodasEstacoes();" style="width:250px;background-color:orange;height:50px;margin-left:30px;margin-top:30px;">Inicialize as Estações</button>
 
     <div style="margin-top:30px;text-align:center;">
       <p>Defina o cronômetro:
@@ -647,7 +647,7 @@
       <input type="button" value="Reset" id="sw-rst" disabled style="visibility:hidden;height:1px;" />
       <input type="button" value="Start" id="sw-go" disabled style="visibility:hidden;height:1px;" />
     </div>
-    <button id="inicia" type="button" onclick="iniciaDisputa();" style="width:160px;height:50px;margin-left:70px;margin-top:30px;">Iniciar Disputa!</button>
+    <button id="inicia" type="button" onclick="iniciaDisputa();" style="width:160px;height:50px;margin-left:70px;margin-top:30px;">Inicie a Disputa!</button>
 
   </div>
 

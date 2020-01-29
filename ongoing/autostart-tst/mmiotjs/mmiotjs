@@ -1,0 +1,112 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          mmiotjs
+# Required-Start:    $local_fs $network $named $time $syslog
+# Required-Stop:     $local_fs $network $named $time $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# X-Interactive:     true
+# Short-Description: service mmiotjs avahi network
+# Description:       autostart mmiotjs avahi network and keep runing
+### END INIT INFO
+
+# Source function library.
+. /lib/lsb/init-functions
+
+cmd="nodejs /home/mindmakers/programs/mmiotcli.js"
+user="pi"
+
+name=mmiotjs
+pid_file="/var/run/$name.pid"
+stdout_log="/var/log/$name.log"
+stderr_log="/var/log/$name.err"
+
+is_activated() {
+    [ "$(sudo grep -wc "#host-name" /etc/avahi/avahi-daemon.conf)" -gt 0 ] > /dev/null 2>&1
+}
+
+get_pid() {
+    cat "$pid_file"
+}
+
+is_running() {
+    [ -f "$pid_file" ] && ps -p `get_pid` > /dev/null 2>&1
+}
+
+case "$1" in
+    start)
+    if is_activated; then
+        echo "Imagem não ativada, ative-a para utilizar este serviço."
+        sleep 9999
+        exit 1
+    else
+        if is_running; then
+            echo "Já iniciado"
+        else
+            echo "Iniciando $name"
+            $cmd >> "$stdout_log" 2>> "$stderr_log" &
+            # if [ -z "$user" ]; then
+            #     sudo $cmd >> "$stdout_log" 2>> "$stderr_log" &
+            # else
+            #     sudo -u "$user" $cmd >> "$stdout_log" 2>> "$stderr_log" &
+            # fi
+            echo $! > "$pid_file"
+            if ! is_running; then
+                echo "Não foi capaz de iniciar, veja $stdout_log e $stderr_log"
+                exit 1
+            fi
+        fi
+    fi
+    ;;
+    stop)
+    if is_running; then
+        echo -n "Parando $name.."
+        kill `get_pid`
+        for i in 1 2 3 4 5 6 7 8 9 10
+        # for i in `seq 10`
+        do
+            if ! is_running; then
+                break
+            fi
+
+            echo -n "."
+            sleep 1
+        done
+        echo
+
+        if is_running; then
+            echo "Não parou; serviço pode estar parando ou comando de parar falhou"
+            exit 1
+        else
+            echo "Parou"
+            if [ -f "$pid_file" ]; then
+                rm "$pid_file"
+            fi
+        fi
+    else
+        echo "Não está rodando"
+    fi
+    ;;
+    restart)
+    $0 stop
+    if is_running; then
+        echo "Não conseguiu parar, e não vai tentar start"
+        exit 1
+    fi
+    $0 start
+    ;;
+    status)
+    if is_running; then
+        echo "Rodando"
+    else
+        echo "Parado"
+        exit 1
+    fi
+    ;;
+    *)
+    echo "Uso: $0 {start|stop|restart|status}"
+    exit 1
+    ;;
+esac
+
+exit 0

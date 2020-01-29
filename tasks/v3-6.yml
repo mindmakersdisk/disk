@@ -75,3 +75,7 @@
      owner: pi
      group: pi
      mode:  0755
+
+- shell:    'sudo systemctl daemon-reload'
+  args:
+    warn:   no
