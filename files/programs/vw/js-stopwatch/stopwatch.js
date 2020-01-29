@@ -1,11 +1,11 @@
 var sw = {
   /* [INIT] */
-  etime : null, // holds HTML time display
-  erst : null, // holds HTML reset button
-  ego : null, // holds HTML start/stop button
-  timer : null, // timer object
-  now : 0, // current timer
-  init : function () {
+  etime: null, // holds HTML time display
+  erst: null, // holds HTML reset button
+  ego: null, // holds HTML start/stop button
+  timer: null, // timer object
+  now: 0, // current timer
+  init: function() {
     // Get HTML elements
     sw.etime = document.getElementById("sw-time");
     sw.erst = document.getElementById("sw-rst");
@@ -19,8 +19,8 @@ var sw = {
   },
 
   /* [ACTIONS] */
-  tick : function () {
-  // tick() : update display if stopwatch running
+  tick: function() {
+    // tick() : update display if stopwatch running
 
     // Calculate hours, mins, seconds
     sw.now++;
@@ -33,19 +33,26 @@ var sw = {
 
     if (mins == minutosMaximos) {
       sw.stop();
+      finalizaJogo();
     }
-  
+
     // Update the display timer
-    if (hours<10) { hours = "0" + hours; }
-    if (mins<10) { mins = "0" + mins; }
-    if (secs<10) { secs = "0" + secs; }
+    if (hours < 10) {
+      hours = "0" + hours;
+    }
+    if (mins < 10) {
+      mins = "0" + mins;
+    }
+    if (secs < 10) {
+      secs = "0" + secs;
+    }
     sw.etime.innerHTML = mins + ":" + secs;
   },
 
-  start : function () {
-  // start() : start the stopwatch
-    if (sw.timer!=null)
-        return;
+  start: function() {
+    // start() : start the stopwatch
+    if (sw.timer != null)
+      return;
 
     sw.timer = setInterval(sw.tick, 1000);
     sw.ego.value = "Stop";
@@ -53,8 +60,8 @@ var sw = {
     sw.ego.addEventListener("click", sw.stop);
   },
 
-  stop  : function () {
-  // stop() : stop the stopwatch
+  stop: function() {
+    // stop() : stop the stopwatch
 
     clearInterval(sw.timer);
     sw.timer = null;
@@ -63,11 +70,13 @@ var sw = {
     sw.ego.addEventListener("click", sw.start);
   },
 
-  reset : function () {
-  // reset() : reset the stopwatch
+  reset: function() {
+    // reset() : reset the stopwatch
 
     // Stop if running
-    if (sw.timer != null) { sw.stop(); }
+    if (sw.timer != null) {
+      sw.stop();
+    }
 
     // Reset time
     sw.now = -1;

@@ -1,5 +1,5 @@
 // MMVW - MIND MAKERS VIRTUAL WORLD
-const VERSAO = "1.02";
+const VERSAO = "1.04";
 const URL_VW = "usrxtml111kkkxxvyi812902134lk";
 const URL_ARG = "xtml111kkkxxv";
 const URL_PWD = "usrxtml111mmsdskkkdk112399s";
@@ -16,6 +16,7 @@ const urlSenha = URL_PWD + "?" + URL_PWDARG + '=';
 var salaGlobal = '1';
 
 var jogoCorrente = "CYBER-1";
+// pode ser r=rodando (default) ou p=pausa (quando zera, pausa ou finaliza disputa)
 var situacaoJogoCorrente = "r";
 
 String.prototype.replaceAll = function(search, replacement) {
@@ -662,7 +663,7 @@ function ganhos() {
   }
 
 
-  var primeira = Math.floor(Math.random() * 40) + 15;
+  var primeira = Math.floor(Math.random() * 30) + 15;
 
   setTimeout(geraGanhoPorAplicacao, primeira, aplicacaoCorrente);
 
@@ -733,7 +734,7 @@ var ganhoBank = ["Seu cliente pagou!#20000#https://www.bancodigital.com.br/ibank
   "Seu salário foi depositado!#5000#https://www.bancodigital.com.br/ibanking/sal?id=132#S#Banco Digital",
   "Seu imposto de renda foi devolvido.#10000#https://www.bancodigital.com.br/ir/f?t=xdfd#S#Banco Digital",
   "Seu investimento rendeu juros!#5000#https://bancodigital.com.br/invest?i=3#S#Banco Digital",
-  "Seu 13o salário foi depositado!.#5000#https://www.bancodigital.com.br/ibanking/sal?id=409#S#Banco Digital",
+  "Seu 13º salário foi depositado!.#5000#https://www.bancodigital.com.br/ibanking/sal?id=409#S#Banco Digital",
   "Olá, aqui é a Marcela! Depositei na sua conta o que estava te devendo.#8000#https://www.bancodigital.com.br/trnsf?t=100#S#Face Social",
   "Você ganhou na loteria!!! Que sorte Hein?!#15000#https://www.bancodigitali.com.br#p1#Banco Digital",
   "Olá, aqui é seu gerente! Você ganhou um seguro gratuito no valor de R$ 50.000,00, basta depositar a taxa de R$ 50,00 na conta ACE213.#50000#https://www.banco.com.br/#p1#Face Social"
@@ -793,6 +794,9 @@ function notificaGanho(indiceGanho) {
 
       jogoCorrente = retorno.jogo;
       situacaoJogoCorrente = retorno.situacao;
+      //   	alert('situacao do jogo ='+situacaoJogoCorrente);
+      if (situacaoJogoCorrente == 'p')
+        return;
 
       //	console.log('entrou para receber msg com '+retorno);
 
@@ -1108,6 +1112,10 @@ function rotinaHacker() {
   document.getElementById('transferir').style.display = 'block';
   var senhaDescoberta = localStorage.getItem('vwSenha');
   parent.postMessage('PAREBLOCKLY', '*');
+
+  document.getElementById('transferir').style.visibility = "hidden";
+  document.getElementById('ok').style.visibility = "hidden";
+
   alertify.alert('Hacker', 'Site violado com senha <b>' + senhaDescoberta + '</b>. ' +
     'Feche este diálogo para transferir valores para sua conta. <p>' +
     'Dica de hacker para hacker: <b><i>tente usar essa mesma senha em outros sites do usuário</i></b>.',
@@ -1232,6 +1240,7 @@ var estacaoObj = {
   pontos: 0,
   status: 'ok'
 };
+var audioHack;
 
 function mudouConfig(select, valor) {
 
@@ -1447,6 +1456,8 @@ var atualizaPlacarIntervalo = null;
 
 function iniciaDisputa() {
 
+  audioHack = new Audio('hack.mp3');
+
   var jogo = document.getElementById('selecionaJogo').value;
   if (jogo == '') {
     alert('Para iniciar disputas, selecione antes uma modalidade e inicialize as estações');
@@ -1478,7 +1489,7 @@ function iniciaDisputa() {
       return;
 
     // Registra o tipo do jogo antes da confirmaçao, para que aconteça antes do inicio
-    registraTipoJogoEstacoes(jogo);
+    registraTipoJogoEstacoes(jogo, 'r');
 
     if (!confirm('Todos prontos para iniciarem a disputa?'))
       return;
@@ -1498,13 +1509,18 @@ function iniciaDisputa() {
 
   } else if (document.getElementById('inicia').innerHTML == "Pausar") {
 
+    // nao atualiza mais pontos
+    registraTipoJogoEstacoes(jogo, 'p');
+
     sw.stop();
     clearInterval(atualizaPlacarIntervalo);
     atualizaPlacarIntervalo = null;
     document.getElementById('inicia').innerHTML = "Continuar";
 
+
   } else if (document.getElementById('inicia').innerHTML == "Continuar") {
 
+    registraTipoJogoEstacoes(jogo, 'r');
     sw.start();
     document.getElementById('inicia').innerHTML = "Pausar";
     // e depois de 5 em 5 segundos.
@@ -1795,7 +1811,7 @@ function validaDisputaEquipes() {
 
 // Registra o tipo de jogo nas estacoes
 // Cibersegurança é CYBER-<codigo jogo>
-function registraTipoJogoEstacoes(tipoJogo) {
+function registraTipoJogoEstacoes(tipoJogo, status) {
 
   for (var key of estacoes.keys()) {
 
@@ -1804,7 +1820,7 @@ function registraTipoJogoEstacoes(tipoJogo) {
     if (estacao.grupo && estacao.grupo != '' && estacao.grupo != '0' && estacao.status == "ok") {
 
       // Participa de algum modo, então atualiza pontos
-      registraTipoJogoViaServico(key, tipoJogo);
+      registraTipoJogoViaServico(key, tipoJogo, status);
 
     }
 
@@ -1813,11 +1829,14 @@ function registraTipoJogoEstacoes(tipoJogo) {
 }
 
 
-function registraTipoJogoViaServico(estacao, tipoJogo) {
+function registraTipoJogoViaServico(estacao, tipoJogo, status) {
+
+  if (!status)
+    status = "r";
 
   // URL para registrar o jogo em modo 'r' rodando
-  //alert('vai registrar jogo '+tipoJogo+' para estcao '+estacao);
-  var urlRegistraJogo = "http://s" + salaGlobal + "e" + estacao + ".local:800/jogoconfig?msg=CYBER-" + tipoJogo + "@@r";
+  //alert('vai registrar jogo '+tipoJogo+' para estacao '+estacao+' com situacao '+status);
+  var urlRegistraJogo = "http://s" + salaGlobal + "e" + estacao + ".local:800/jogoconfig?msg=CYBER-" + tipoJogo + "@@" + status;
   var Http = new XMLHttpRequest();
   Http.open("GET", urlRegistraJogo);
   Http.send();
@@ -1890,6 +1909,10 @@ function atualizaPlacarEquipe(tipo) {
         // Se já existe grupo, acumula pontos, senao cria e inicializa
 
         if (equipesAtaque.get(estacao.grupo)) {
+
+          hack.loop = false;
+          hack.play();
+
           equipesAtaque.get(estacao.grupo).pontos = equipesAtaque.get(estacao.grupo).pontos + estacao.pontos;
         } else {
           equipesAtaque.set(estacao.grupo, estacao.pontos);
@@ -1970,6 +1993,10 @@ function atualizaPlacarIndividual() {
     if (estacao.grupo && estacao.grupo == 'i' && estacao.papel == 'h' && estacao.status == "ok") {
 
       if (ataque.get("Estação " + key)) {
+
+        hack.loop = false;
+        hack.play();
+
         ataque.get("Estação " + key).pontos = ataque.get("Estação " + key).pontos + estacao.pontos;
       } else {
         ataque.set("Estação " + key, estacao.pontos);
@@ -2028,7 +2055,7 @@ function exibeBotaoInicio() {
 
 function zeraTodasEstacoesConfiguradas() {
 
-  console.log('entrou para zerar ' + estacoes.size);
+  console.log('entrou para zerar ' + estacoes.size + ' e pausar jogo');
 
   for (var key of estacoes.keys()) {
 
@@ -2038,7 +2065,7 @@ function zeraTodasEstacoesConfiguradas() {
       console.log('vai zerar estacao ' + key);
       document.getElementById('pt' + key).innerHTML = "0";
       estacao.pontos = 0;
-      var url = 'http://s' + salaGlobal + 'e' + key + '.local:800/vw/registrado?limpa=s';
+      var url = 'http://s' + salaGlobal + 'e' + key + '.local:800/vw/registrado?limpa=s&status=p';
       var Http = new XMLHttpRequest();
       Http.open("GET", url);
       Http.send();
@@ -2080,6 +2107,9 @@ function recuperaSalaEstacaoServidorLocal() {
       } catch (e) {
         console.log('Erro ao registrar sala em variaveis globais ' + e);
       }
+
+      exibeVersao(VERSAO, retorno.versao);
+
     } else {
       retornaMensagem("Ocorreu algum erro ao tentar recuperar sala. Reconfira as configurações e tente novamente. ");
     }
@@ -2090,7 +2120,7 @@ function recuperaSalaEstacaoServidorLocal() {
 
 function configuraJogo(selecaoJogo) {
 
-  document.getElementById('inicia').innerHTML = "Iniciar Disputa!";
+  document.getElementById('inicia').innerHTML = "Inicie a Disputa!";
   document.getElementById('inicia').style.visibility = "hidden";
   limpaPontos();
   estacoes = new Map();
@@ -2299,7 +2329,18 @@ function cronometro(minutos) {
     sw.start();
 }
 
-function pausaJogo() {
-  // nao atualiza mais pontos
+/*
+ * workflow p=inicia em pausa (nao manda msg); r=rodando, p=em pausa
+ */
+function finalizaJogo() {
+
+  var jogo = document.getElementById('selecionaJogo').value;
+  registraTipoJogoEstacoes(jogo, 'p');
+
+  document.getElementById('inicia').innerHTML = "Inicie a Disputa!";
+  document.getElementById('inicia').style.visibility = "hidden";
+
+  clearInterval(atualizaPlacarIntervalo);
+  atualizaPlacarIntervalo = null;
 
 }

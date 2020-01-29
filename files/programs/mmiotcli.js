@@ -3,7 +3,7 @@
   Paulo Alvim 19/16/2019
   Copyright(c) Mind Makers Editora Educacional Ltda. Todos os direitos reservados
 */
-const VERSAO = "2"
+const VERSAO = "3"
 var shell = require('shelljs');
 
 // Registrados
@@ -155,7 +155,8 @@ app.get('/id', (request, response) => {
 
   response.json({
     estacao: estacao_registrado,
-    sala: sala_registrado
+    sala: sala_registrado,
+    versao: VERSAO
   })
 
 })
@@ -348,7 +349,7 @@ app.get('/phishingspoofingreceive', (request, response) => {
 
 
 
-// Registra tipo de jogo e situacao='r' (rodando), 'p' (em pausa) ou 'f' (finalizado)
+// Registra tipo de jogo e situacao='r' (rodando), 'p' (em pausa)
 // Ex.: /jogoconfig?msg=<tipo>@@<situacao> ou /jogoconfig?msg=CYBER-1@@r
 app.get('/jogoconfig', (request, response) => {
 
@@ -431,6 +432,9 @@ app.get('/vw/registrado', (request, response) => {
       registrado: "NAO",
       estacao: estacao_registrado
     });
+
+    if (request.query.status != null)
+      situacaoJogoCorrente = request.query.status;
 
   } else {
 
