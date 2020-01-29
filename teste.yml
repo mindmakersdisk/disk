@@ -1,4 +1,4 @@
-- hosts:               localhost
+- hosts:               alls1
 
   tasks:
 
@@ -85,7 +85,7 @@
          src:          files/programs
          dest:         /home/mindmakers
          mode:         0755
-    - include:         tasks/v3-6.yml
+    # - include:         tasks/v3-6.yml
     - include:         tasks/final-version-copies-en.yml
     - include:         tasks/version_update.yml
 
@@ -170,4 +170,4 @@
 
 
 
-    - include:         tasks/reboot.yml
+    # - include:         tasks/reboot.yml
