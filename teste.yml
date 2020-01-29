@@ -1,4 +1,4 @@
-- hosts:               s3e04
+- hosts:               localhost
 
   tasks:
 
@@ -7,11 +7,11 @@
     # - include:         tasks/ansibleVirtualENV.yml
     # - include:         tasks/reboot.yml
     #
-    # - set_fact:
-    #      path2desktop: "/home/pi/Desktop"
+    - set_fact:
+         path2desktop: "/home/pi/Desktop"
 
     # - include:         tasks/student-en.yml
-    # - include:         tasks/v3-6.yml
+
     #
     # - file:
     #     path:          /home/pi/sketchbook
@@ -80,13 +80,14 @@
     #      mode:         0755
 
 
-    # - name:            Copiando programs
-    #   copy:
-    #      src:          files/programs
-    #      dest:         /home/mindmakers
-    #      mode:         0755
-    # - include:         tasks/final-version-copies-en.yml
-    # - include:         tasks/version_update.yml
+    - name:            Copiando programs
+      copy:
+         src:          files/programs
+         dest:         /home/mindmakers
+         mode:         0755
+    - include:         tasks/v3-6.yml
+    - include:         tasks/final-version-copies-en.yml
+    - include:         tasks/version_update.yml
 
 
     # - name:            Copiando vw
@@ -141,14 +142,14 @@
     #     warn:          no
 
     #arquivo original
-    - name:            Copiando arquivo de inicialização do mmiotjs
-      copy:
-         src:          files/autostart/mmiotjs
-         dest:         /etc/init.d
-         mode:         0755
-    - shell:           'sudo update-rc.d mmiotjs defaults'
-      args:
-        warn:          no
+    # - name:            Copiando arquivo de inicialização do mmiotjs
+    #   copy:
+    #      src:          files/autostart/mmiotjs
+    #      dest:         /etc/init.d
+    #      mode:         0755
+    # - shell:           'sudo update-rc.d mmiotjs defaults'
+    #   args:
+    #     warn:          no
 
     # - name:     Copiando arquivo de inicialização do s3r
     #   copy:
