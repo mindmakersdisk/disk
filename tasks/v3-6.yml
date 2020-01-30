@@ -76,6 +76,12 @@
      group: pi
      mode:  0755
 
-- shell:    'sudo systemctl daemon-reload'
+- shell:    'sudo apt-mark hold arandr'
   args:
     warn:   no
+- shell:    'sudo apt-mark hold bluealsa'
+  args:
+    warn:   no
+# - shell:    'sudo apt-mark hold arandr'
+#   args:
+#     warn:   no
