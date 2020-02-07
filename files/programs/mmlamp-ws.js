@@ -4,6 +4,7 @@
   Interaçao com lampada flydea blueooth gabriel
 */
 const PORTA_LampBLE = 8090;
+const VERSAO = "2.0"
 
 var noble = require('/home/mindmakers/programs/node_modules/noble/index.js')
 const readline = require('readline');
@@ -33,8 +34,8 @@ fs.readFile('/home/mindmakers/school.info', function(err, data) {
 // var ks = require('node-key-sender');
 // var inquirer = require('inquirer');
 
-const maclampada1 = 'ff:ff:f0:02:d1:14';
-const maclampada2 = 'ff:ff:80:05:5d:90';
+// const maclampada1 = 'ff:ff:f0:02:d1:14';
+// const maclampada2 = 'ff:ff:80:05:5d:90';
 
 /*************************************************************
  * Comandos
@@ -72,7 +73,7 @@ function procuraLampada() {
   noble.on('stateChange', (state) => {
     if (state === "poweredOn") {
       console.log('---------------------------------------------------------------');
-      console.log('                    Serviço Bluetooth Ativo                    ');
+      console.log('                    Serviço Bluetooth Ativo v' + VERSAO);
       console.log('---------------------------------------------------------------');
       console.log('Procurando por uma LampadaBLE a menos de 2m para configurar...');
       noble.startScanning();
@@ -106,25 +107,25 @@ function procuraLampada() {
       conectaLampada(peripheral);
     }
 
-    if (numeroScans >= 15) {
-      console.error('\x1b[31m', 'Não foi possível encontrar um LampadaBLE ligado para Conectar.');
-      console.error('\x1b[31m', 'Confira se ela está ligada.');
-      console.error('\x1b[31m', 'Se tudo estiver ok, tente desligar e religá-la');
-      console.error('\x1b[31m', 'e chame o serviço novamente.');
-      console.error('\x1b[0m', '----------------------------------------------------------------------------');
-      // Encerra com falha
-      noble.stopScanning();
-      setTimeout(encerraAposLeitura, 10000);
-    }
+    // if (numeroScans >= 15) {
+    //   console.error('\x1b[31m', 'Não foi possível encontrar um LampadaBLE ligado para Conectar.');
+    //   console.error('\x1b[31m', 'Confira se ela está ligada.');
+    //   console.error('\x1b[31m', 'Se tudo estiver ok, tente desligar e religá-la');
+    //   console.error('\x1b[31m', 'e chame o serviço novamente.');
+    //   console.error('\x1b[0m', '----------------------------------------------------------------------------');
+    //   // Encerra com falha
+    //   noble.stopScanning();
+    //   setTimeout(encerraAposLeitura, 10000);
+    // }
 
   });
 }
 
-function encerraAposLeitura() {
-
-  process.exit(1)
-
-}
+// function encerraAposLeitura() {
+//
+//   process.exit(1)
+//
+// }
 
 function erroConexao(error) {
 
@@ -213,6 +214,15 @@ function conectaLampada(peripheral) {
 
     console.log('Desconectou. ', error);
     //erroConexao(error)
+    var shouldReconnect = setInterval(() => {
+      //console.log(peripheral.state);
+      //tenta reconexão a cada 3 segundos até conectar
+      if (peripheral.state == 'disconnected')
+        conectaLampada(peripheral);
+      else
+        clearInterval(shouldReconnect);
+
+    }, 2000);
 
   });
 

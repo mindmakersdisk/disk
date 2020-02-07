@@ -5,6 +5,7 @@
  Copyright(c) Mind Makers Editora Educacional Ltda. Todos os direitos reservados
 */
 // Registrados
+const VERSAO = "2.0"
 var escolainfo = ''
 var escolaid = '';
 var escolanome = '';
@@ -23,6 +24,8 @@ const request = require('request')
 var noble = require('/home/mindmakers/programs/node_modules/noble/index.js')
 var inquirer = require('inquirer');
 var fs = require('fs');
+//var KalmanFilter = require('kalmanjs');
+
 /******************************************************************
  *  Perguntas, configuração do macaddress e registro na plataforma
  ******************************************************************/
@@ -288,7 +291,7 @@ function procurarNovoMbot() {
     //console.log('Estado = '+state);
     if (state === 'poweredOn') {
       console.log('---------------------------------------------------------------');
-      console.log('                    Serviço Bluetooth Ativo                    ');
+      console.log('                    Serviço Bluetooth Ativo v' + VERSAO);
       console.log('---------------------------------------------------------------');
 
       console.log('Procurando pelo mBot com módulo BLE para conectar: ' + macaddressArg);
@@ -566,13 +569,13 @@ var monitoriaTask = null;
 function controlaMbot() {
   modoRegistro = false;
 
-  //console.log(noble.state)
+  // console.log(noble.stateChange)
 
   noble.on('stateChange', function(state) {
 
     if (state === 'poweredOn') {
       console.log('---------------------------------------------------------------');
-      console.log('                    Serviço Bluetooth Ativo                    ');
+      console.log('                    Serviço Bluetooth Ativo v' + VERSAO);
       console.log('---------------------------------------------------------------');
 
       console.log('Procurando pelo mBot com módulo BLE para conectar: ' + macaddressArg);
@@ -625,7 +628,7 @@ function controlaMbot() {
 
     console.log('mBot desconectado' + data);
 
-    notificaClienteDesconexao('');
+    notificaClienteDesconexao('bluetooth desconectado');
 
     notificouClienteConexao = false;
     macaddressConectado = null;
@@ -756,6 +759,10 @@ process.stdin.on('keypress', (str, key) => {
 
 function notificaClienteDesconexao(error) {
 
+  contClient = 0;
+
+  //podeConectar=false;
+
   if (error = null) error = '';
 
   console.log('');
@@ -769,11 +776,78 @@ function notificaClienteDesconexao(error) {
 
 }
 
-
+/**
+ * ENVIA VALORES DE SENSORES E OUTROS COMANDOS PARA MMBLOCKLY
+ */
 function notificaCliente(componente, valor) {
 
-  if (temClienteConectado()) {
-    enviaMsgParaTodosClientes(componente + "," + valor);
+  if (temClienteConectado() && !desprezaSinal(componente, valor)) {
+    enviaMsgParaTodosClientes(componente + "," + sinalEstavel(componente, valor));
+  }
+
+}
+
+let ultimoSinalSom = 0;
+let ultimoSinalLuz = 0;
+
+function desprezaSinal(componente, valor) {
+
+  if (componente == ULTRASOUNDSENSOR) {
+
+
+    if (valor != 400 && Math.abs(Math.round(valor) - ultimoSinalSom) <= 2)
+      return true;
+
+    ultimoSinalSom = Math.round(valor);
+
+    if (valor < 400 || (valor == 400 && cont400 == 10)) {
+      cont400 = 0;
+      return false;
+    } else {
+      cont400++;
+
+      return true;
+    }
+  } else if (componente == LIGHTSENSOR) {
+
+    if (Math.abs(Math.round(valor) - ultimoSinalLuz) <= 40)
+      return true;
+
+    ultimoSinalLuz = Math.round(valor);
+
+  }
+
+  return false;
+
+}
+
+/**
+ *ESTABILIZA SINAIS, NO CASO DOS SENSORES DE SOM E LUZ
+ */
+// var kfLuz = new KalmanFilter({R:0.01,Q:3});
+// var kfUltrassom = new KalmanFilter({R:1.0,Q:10});
+let cont400 = 0;
+
+function sinalEstavel(componente, valor) {
+
+  if (componente != LIGHTSENSOR && componente != ULTRASOUNDSENSOR)
+    return Math.round(valor);
+
+  // Se for sensor de luz ou ultrasom, estabiliza sinal com filtro kalman e só envia se for diferente do último enviado
+  // caso tenha se passado menos de 1 segundo.
+  if (componente == LIGHTSENSOR) {
+    //console.log('valor original '+Math.round(valor));
+    return Math.round(valor);
+  }
+
+  if (componente == ULTRASOUNDSENSOR) {
+
+    // valorFiltrado = Math.round(kfUltrassom.filter(valor));
+    // console.log('valor original '+Math.round(valor));
+    if (valor == 400)
+      return 400;
+    else
+      return Math.round(valor);
   }
 
 }
@@ -803,6 +877,7 @@ function connectTombot(peripheral) {
     if (error) {
       console.log('Erro ao tentar conectar: ' + error);
       notificaClienteDesconexao(error);
+      podeConectar = false;
       return;
     }
 
@@ -870,6 +945,9 @@ function connectTombot(peripheral) {
 
     console.error('\x1b[0m', '');
 
+    notificaClienteDesconexao('mBot foi desconectado');
+    podeConectar = false;
+
     var shouldReconnect = setInterval(() => {
       //console.log(peripheral.state);
       //tenta reconexão a cada 5 segundos até conectar
@@ -897,7 +975,7 @@ function monitoraDispositivoConectado() {
     ultimoContador = contadorIntervalo;
 
     // Assume que conexão está congelada
-    notificaClienteDesconexao();
+    notificaClienteDesconexao('congelado');
 
     clearInterval(monitoriaTask);
 
@@ -911,6 +989,7 @@ function monitoraDispositivoConectado() {
 
 var sensoresUtilizados = [];
 
+var podeConectar = null;
 
 function mbotReadDataDriver(error, services, characteristics) {
 
@@ -925,6 +1004,7 @@ function mbotReadDataDriver(error, services, characteristics) {
       if (error) {
         console.error('Erro ao subscrever para ouvir características do mbot BLE');
         notificaClienteDesconexao(error);
+        podeConectar = false;
       } else {
         console.log('\x1b[0m\x1b[32m', 'Leitura de componentes digitais do mBot via bluetooth ativada');
         console.log('\x1b[0m', '-------------------------------------------------------------');
@@ -943,6 +1023,7 @@ function mbotReadDataDriver(error, services, characteristics) {
         console.log('\x1b[0m', '-------------------------------------------------------------');
         console.log('\x1b[0m', '--- Se for o primeiro uso, teste todos os comandos acima! ---');
         console.log('\x1b[0m', '-------------------------------------------------------------');
+        podeConectar = true;
         monitoriaTask = setInterval(monitoraDispositivoConectado, 3000);
 
       }
@@ -1010,12 +1091,14 @@ function mbotReadDataDriver(error, services, characteristics) {
 
           if (sensoresUtilizados && sensoresUtilizados.length > 0 && sensoresUtilizados[1] && data[2] == 0x18) {
             // Despreza zeros porque ocorre eventualmente por algum motivo
-            if (v.getFloat32(0) > 0)
+            // Vai de 0 a 1000
+            if (v.getFloat32(0) > 0 && v.getFloat32(0) <= 1000)
               notificaCliente(LIGHTSENSOR, v.getFloat32(0))
             //poolSensor = 2;
           }
 
           if (sensoresUtilizados && sensoresUtilizados.length > 0 && sensoresUtilizados[2] && data[2] == 0x00) {
+            // Vai de 0 a 400
             if (v.getFloat32(0) > 4 && v.getFloat32(0) <= 400)
               notificaCliente(ULTRASOUNDSENSOR, v.getFloat32(0))
             // poolSensor = 0;
@@ -1272,7 +1355,7 @@ function escreveParaMBot(comando, valor) {
 
         veldir = parseInt(valor);
         if (veldir > 240) veldir = 240;
-        console.log('vel left = ' + veldir);
+        //console.log('vel left = ' + veldir);
         //ambos motores viram a esquerda a 100
         // referencia esquerda a 100  var motor_turnleft100 =  new Buffer( [0xFF, 0X55, 0x07, 0x00, 0x02, 0x05, 0x55, 0x00, 0x55, 0x00]);
 
@@ -1529,7 +1612,22 @@ wsServer = new WebSocketServer({
   autoAcceptConnections: false
 });
 
+let contClient = 0;
+
 function originIsAllowed(origin) {
+  if (contClient > 0) {
+    console.log('Já existe uma instância de MMBlocly enviando comandos para este mBot. Apenas uma é permitida.');
+    return false;
+  }
+
+  if (!podeConectar) {
+    if (podeConectar != null)
+      console.log('mBot ainda não está totalmente inicializado.');
+    return false;
+  }
+
+  contClient++;
+
   // console.log('entrou para permitir origin');
   // put logic here to detect whether the specified origin is allowed.
   return true;
@@ -1568,6 +1666,7 @@ wsServer.on('request', function(request) {
   });
 
   connection.on('close', function(reasonCode, description) {
+    notificaClienteDesconexao('fechada pelo usuário');
     console.log((new Date().toLocaleString()) + ' Conexão ' + connection.remoteAddress + ' finalizada.');
   });
 });
