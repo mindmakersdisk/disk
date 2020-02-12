@@ -5,7 +5,7 @@
  Copyright(c) Mind Makers Editora Educacional Ltda. Todos os direitos reservados
 */
 // Registrados
-const VERSAO = "2.0"
+const VERSAO = "2.9"
 var escolainfo = ''
 var escolaid = '';
 var escolanome = '';
@@ -25,6 +25,7 @@ var noble = require('/home/mindmakers/programs/node_modules/noble/index.js')
 var inquirer = require('inquirer');
 var fs = require('fs');
 //var KalmanFilter = require('kalmanjs');
+//require('events').EventEmitter.defaultMaxListeners = 100;
 
 /******************************************************************
  *  Perguntas, configuração do macaddress e registro na plataforma
@@ -281,14 +282,16 @@ var numeroScans = 0;
 var numeroTentativas = 0;
 
 function procurarNovoMbot() {
-
+  noble.removeAllListeners('stateChange');
+  noble.removeAllListeners('discover');
+  noble.removeAllListeners('disconnect');
   //console.log('Procurando por um mBot próximo para configurar...');
 
   // Procura por bluetooth
 
   noble.on('stateChange', function(state) {
 
-    //console.log('Estado = '+state);
+    console.log('Estado = ' + state);
     if (state === 'poweredOn') {
       console.log('---------------------------------------------------------------');
       console.log('                    Serviço Bluetooth Ativo v' + VERSAO);
@@ -333,7 +336,7 @@ function procurarNovoMbot() {
 
     }
 
-    if (numeroScans >= 10) {
+    if (numeroScans >= 50) {
 
       console.error('\x1b[31m', 'Não foi possível encontrar um mBot ligado para registrar.');
       console.error('\x1b[31m', 'Confira se ele está ligado com a placa BLE e luz branca piscando.');
@@ -567,12 +570,14 @@ var monitoriaTask = null;
 
 
 function controlaMbot() {
-  modoRegistro = false;
 
-  // console.log(noble.stateChange)
+  modoRegistro = false;
+  noble.removeAllListeners('stateChange');
+  noble.removeAllListeners('discover');
+  noble.removeAllListeners('disconnect');
 
   noble.on('stateChange', function(state) {
-
+    console.log('mudou estado para ' + state)
     if (state === 'poweredOn') {
       console.log('---------------------------------------------------------------');
       console.log('                    Serviço Bluetooth Ativo v' + VERSAO);
@@ -585,7 +590,7 @@ function controlaMbot() {
       console.error('\x1b[31m', 'O Bluetooth não está ativado! Ative no ícone superior direito em seu computador e tente novamente.');
       console.error('\x1b[0m', '');
       noble.stopScanning();
-      process.exit(1);
+      // process.exit(1);
     }
   });
 
@@ -603,11 +608,10 @@ function controlaMbot() {
 
       //     console.log('! Found device with local name: ' + localName );
       //     console.log('- Connecting to ' + localName + ' ['+ peripheral.id + ']');
+
       connectTombot(peripheral);
 
-    }
-
-    if (numeroScans >= 10) {
+    } else if (numeroScans >= 50) {
 
       console.error('\x1b[31m', 'Não foi possível encontrar o mBot registrado para conectar.');
       console.error('\x1b[31m', 'Confira se ele está ligado com a placa BLE e luz branca piscando.');
@@ -620,13 +624,13 @@ function controlaMbot() {
 
     }
 
-
-
   });
 
   noble.on('disconnect', function(data) {
 
     console.log('mBot desconectado' + data);
+
+    podeConectar = false;
 
     notificaClienteDesconexao('bluetooth desconectado');
 
@@ -641,12 +645,21 @@ function controlaMbot() {
   process.stdin.resume();
   process.stdin.setEncoding('utf8');
 
+
+  console.log("Finalizou controle");
+
 }
 
 
 process.stdin.on('keypress', (str, key) => {
 
   //console.log(modoRegistro);
+
+  if (macaddressConectado == null && podeConectar) {
+    console.log('Não aceita comandos de tecla porque mBot está sem conexão bluetooth.');
+    return;
+  }
+
 
   if (key.ctrl && key.name === 'c') {
 
@@ -761,12 +774,12 @@ function notificaClienteDesconexao(error) {
 
   contClient = 0;
 
-  //podeConectar=false;
+  // podeConectar=false;
 
   if (error = null) error = '';
 
   console.log('');
-  console.error('\x1b[31m', 'Perdeu a conexão com o circuito eletrônico digital...');
+  console.error('\x1b[31m', 'Notificou MMBlockly...');
   console.error('\x1b[0m', '');
 
 
@@ -824,8 +837,8 @@ function desprezaSinal(componente, valor) {
 /**
  *ESTABILIZA SINAIS, NO CASO DOS SENSORES DE SOM E LUZ
  */
-// var kfLuz = new KalmanFilter({R:0.01,Q:3});
-// var kfUltrassom = new KalmanFilter({R:1.0,Q:10});
+//var kfLuz = new KalmanFilter({R:0.01,Q:3});
+//var kfUltrassom = new KalmanFilter({R:1.0,Q:10});
 let cont400 = 0;
 
 function sinalEstavel(componente, valor) {
@@ -836,7 +849,7 @@ function sinalEstavel(componente, valor) {
   // Se for sensor de luz ou ultrasom, estabiliza sinal com filtro kalman e só envia se for diferente do último enviado
   // caso tenha se passado menos de 1 segundo.
   if (componente == LIGHTSENSOR) {
-    //console.log('valor original '+Math.round(valor));
+    // console.log('valor original '+Math.round(valor));
     return Math.round(valor);
   }
 
@@ -869,19 +882,23 @@ const charReadUUIDs = [mbotReadEndPointUUID];
 const charWriteUUIDs = [mbotWriteEndPointUUID];
 var mbotService;
 var characteristics;
+let reconectouUmaVez = false;
 
 function connectTombot(peripheral) {
+
+  peripheral.removeAllListeners('servicesDiscover');
+  peripheral.removeAllListeners('connect');
+  peripheral.removeAllListeners('disconnect');
 
   peripheral.connect(error => {
 
     if (error) {
       console.log('Erro ao tentar conectar: ' + error);
       notificaClienteDesconexao(error);
-      podeConectar = false;
       return;
     }
 
-    console.log('\x1b[0m\x1b[32m', 'Comunicação com robô mBot via bluetooth ativada: ' + peripheral.address);
+    // console.log('\x1b[0m\x1b[32m', 'Comunicação com robô mBot via bluetooth ativada: ' + peripheral.address);
     // console.log('\x1b[0m',        '-------------------------------------------------');
 
     macaddressConectado = peripheral.uuid;
@@ -893,76 +910,99 @@ function connectTombot(peripheral) {
 
     // Serviço e caracteristicas a serem descobertas
     const serviceUUIDs = [mbotServiceUUID];
+    var allowDuplicates = true; // default: false
+
     //const charReadUUIDs  = [mbotReadEndPointUUID];
     // const charWriteUUIDs = [mbotWriteEndPointUUID];
 
     // Caracteristica BLE que queremos encontrar
     // Se especificar as características read e write como um array, noble retorna um array vazio.
     // Então filtra após descobrir.
+
     peripheral.discoverSomeServicesAndCharacteristics(serviceUUIDs, [], function(error, services, chars) {
+      //  console.log('error='+error+" services = "+services+' chars='+chars+' repetiu='+repetiu);
 
       mbotService = services[0];
-      //            console.log("Characte: " , chars[0].uuid);
-      //            console.log("Characte: " , chars[1].uuid);
+      //  console.log("Characte: " , chars[0].uuid);
+      //  console.log("Characte: " , chars[1].uuid);
 
       characteristics = chars;
 
-      contadorIntervalo++;
-
       // Se não notificou cliente da conexão notifica agora
-      if (temClienteConectado() && (contadorIntervalo == 300 || !notificouClienteConexao)) {
-        console.log('Entrou para notificar conexao');
+      if (temClienteConectado() && !notificouClienteConexao) {
+        //console.log('Entrou para notificar conexao');
         enviaMsgParaTodosClientes('conectado:' + peripheral.uuid);
         notificouClienteConexao = true;
-        contadorIntervalo = 0;
+
       }
 
       if (!error) {
-        // console.log("Descobriu serviços do mBot...");
+        //  console.log("Descobriu serviços do mBot...");
 
         for (var i in chars) {
+          // console.log("vai comparar "+chars[i].uuid+" com "+mbotReadEndPointUUID);
           if (chars[i].uuid == mbotReadEndPointUUID)
             mbotReadDataDriver(error, mbotService, chars[i]);
-
+          //console.log("vai comparar "+chars[i].uuid+" com "+mbotWriteEndPointUUID);
           if (chars[i].uuid == mbotWriteEndPointUUID)
             mbotWriteDataDriver(error, mbotService, chars[i]);
         }
 
-        //  console.log("- End scanning BLE characteristics.");
+        // console.log("- End scanning BLE characteristics.");
       } else {
-        console.log("Não encontrou servições BLE para o mBot...");
+        console.log("Não encontrou serviços BLE para o mBot...");
       }
     });
 
 
   });
 
+
   peripheral.on('disconnect', () => {
 
-    console.error('\x1b[31m', 'mBot foi desconectado, tentando reconexão... ');
-    console.error('\x1b[31m', 'Se não reconectar corretamente mostrando as informações de TESTE e CONTROLE,');
-    console.error('\x1b[31m', 'feche este serviço com "control+C" e reinicie novamente.');
 
-    console.error('\x1b[0m', '');
+    macaddressConectado = null;
 
     notificaClienteDesconexao('mBot foi desconectado');
+
     podeConectar = false;
+
+    if (reconectouUmaVez) {
+      console.error('\x1b[0m', '');
+      console.error('\x1b[0m', '');
+      console.error('\x1b[31m', 'mBot foi desconectado.');
+      console.error('\x1b[31m', 'Feche a janela e inicie novamente.');
+      console.error('\x1b[0m', '');
+      console.error('\x1b[0m', '');
+      process.exit(1);
+    } else {
+      console.error('\x1b[31m', 'mBot foi desconectado. Tentando reconexão');
+      setTimeout(recuperaConexao, 3000);
+    }
+
+
+    /*
+    let tentativas=0;
 
     var shouldReconnect = setInterval(() => {
       //console.log(peripheral.state);
-      //tenta reconexão a cada 5 segundos até conectar
-      if (peripheral.state == 'disconnected')
+      //tenta reconexão a cada 5 segundos por 10 vezes, senao aborta
+      tentativas++;
+      if (peripheral.state == 'disconnected' && tentativas<=20)
         connectTombot(peripheral);
       else
-        clearInterval(shouldReconnect);
+        process.exit(1);
 
-    }, 3000);
-
+    }, 5000);
+*/
     //noble.startScanning();
   });
 }
 
-
+function recuperaConexao() {
+  reconectouUmaVez = true;
+  noble.startScanning();
+}
 
 var ultimoContador = -1;
 
@@ -994,19 +1034,21 @@ var podeConectar = null;
 function mbotReadDataDriver(error, services, characteristics) {
 
   var mbotRComms = characteristics;
-
-  //   console.log('! mbot READ BLE characteristic found.');
+  //  console.log('services='+services);
+  //  console.log('! mbot READ BLE characteristic found.'+mbotRComms);
   // subscribe to be notified whenever the peripheral update the characteristic
   //garantir nao subscreve mais de uma vez (maxEventLisners)
   mbotRComms.unsubscribe(() => {
+    // console.log('unsubscreveu');
     mbotRComms.subscribe(error => {
-      console.log(' .');
+      //  console.log('subscreveu');
+      //  console.log(' .');
       if (error) {
         console.error('Erro ao subscrever para ouvir características do mbot BLE');
         notificaClienteDesconexao(error);
-        podeConectar = false;
       } else {
-        console.log('\x1b[0m\x1b[32m', 'Leitura de componentes digitais do mBot via bluetooth ativada');
+        console.log('\x1b[0m', '-------------------------------------------------------------');
+        console.log('\x1b[0m\x1b[32m', '                Controlador mBot Ativo v' + VERSAO);
         console.log('\x1b[0m', '-------------------------------------------------------------');
         console.log('\x1b[0m', '------------  TESTE E CONTROLE POR TECLADO   ----------------');
         console.log('\x1b[0m', '------------                                 ----------------');
@@ -1032,7 +1074,7 @@ function mbotReadDataDriver(error, services, characteristics) {
 
   });
 
-
+  //console.log('vai ouvir data');
 
   //var bufAnterior=new Buffer(4);
   // data callback receives notifications
@@ -1040,21 +1082,23 @@ function mbotReadDataDriver(error, services, characteristics) {
 
     // console.log('> mbot data received: "' + data.toString('hex') + '"');
 
-    contadorIntervalo++;
+    //contadorIntervalo++;
 
-    // Se não notificou cliente da conexão notifica agora
+    /* Se não notificou cliente da conexão notifica agora
     if (temClienteConectado() && (contadorIntervalo == 300 || !notificouClienteConexao)) {
       //console.log('Entrou para notificar conexao');
       enviaMsgParaTodosClientes('conectado:' + macaddressConectado);
       notificouClienteConexao = true;
       contadorIntervalo = 0;
     }
+    * */
 
+    // ENVIA-DADOS-SENSORES
 
     // This doesn't work all the time.
     // We are epecting that the received data is a complete answer starting by 0xff and 0x55
     // To be perfect we need to "slide" the buffer looking for 0xff0x55
-    //console.log(data.length);
+    //console.log(data);
     if (data[0] == 0xff && data.length >= 10) // Command header
       if (data[1] == 0x55)
         if (data[3] == 0x2) { // Float value
@@ -1063,7 +1107,7 @@ function mbotReadDataDriver(error, services, characteristics) {
           buf[2] = data[5];
           buf[1] = data[6];
           buf[0] = data[7];
-          //console.log(data);
+          // console.log('passou '+data);
           //console.log(data.length);
 
           // if (buf!=bufAnterior) {
@@ -1113,19 +1157,31 @@ function mbotReadDataDriver(error, services, characteristics) {
 var mbotWComms = null;
 
 const SUBSCRICAO = 'subscricao';
+const REMOVESUBSCRICAO = 'removesubscricao';
 var usaSensorLinha = false;
 var usaSensorLuz = false;
 var usaSensorUltrasom = false;
+let leituraSensoresIntervalo = null;
 
 function mbotWriteDataDriver(error, services, characteristics) {
   mbotWComms = characteristics;
 
-  //console.log('! mbot WRITE BLE characteristic found.');
+  //console.log('! mbot WRITE BLE characteristic found.'+error+ 'caract='+characteristics );
+
+  // SOLICITA-DADO-SENSOR
 
   // create an interval to send data to the service
   let count = 0;
-  setInterval(() => {
+
+  leituraSensoresIntervalo = setInterval(() => {
     count++;
+
+    // Se somente usa sensor de linha, evita fazer pooling com os demais.
+    if (sensoresUtilizados[0] && !sensoresUtilizados[1] && !sensoresUtilizados[2])
+      cont = 1;
+
+    let par = (count % 2) == 0;
+
     //const message = new Buffer('hello, ble ' + count, 'utf-8');
 
     // Lê dados do sensor de luz
@@ -1135,26 +1191,24 @@ function mbotWriteDataDriver(error, services, characteristics) {
     //resposta 1, apenas direito em cima da linha
     //resposta 0, ambos  em cima da linha
     //
-    if (sensoresUtilizados && sensoresUtilizados.length > 0 && sensoresUtilizados[0]) {
-      //console.log("Lendo dados do sensor de segue linha...");
-      mbotWComms.write(readLineFollower, true, function(error) {
-
-      });
+    if (sensoresUtilizados && sensoresUtilizados.length > 0 && sensoresUtilizados[0] && !par) {
+      // console.log("Lendo dados do sensor de segue linha...");
+      mbotWComms.write(readLineFollower, true, function(error) {});
 
     }
 
-    if (sensoresUtilizados && sensoresUtilizados.length > 0 && sensoresUtilizados[1]) {
-      // console.log("Lendo dados do sensor de luz...");
-      // Lê dados do sensor de luz
+    if (sensoresUtilizados && sensoresUtilizados.length > 0 && sensoresUtilizados[1] && par) {
+      //  console.log("Lendo dados do sensor de luz...");
+
       mbotWComms.write(readLightSensor, true, function(error) {
 
       });
 
     }
 
-    if (sensoresUtilizados && sensoresUtilizados.length > 0 && sensoresUtilizados[2]) {
-      // console.log("Lendo dados do sensor ultrassom...");
-      // Lê dados do sensor ultrassom
+    if (sensoresUtilizados && sensoresUtilizados.length > 0 && sensoresUtilizados[2] && par) {
+      //  console.log("Lendo dados do sensor ultrassom...");
+
       mbotWComms.write(readUS, true, function(error) {
 
         }
@@ -1163,11 +1217,7 @@ function mbotWriteDataDriver(error, services, characteristics) {
 
     }
 
-
-    //loop = ++loop % 2;
-
-    //if ( (count % 5) == 0) console.log(".");
-  }, 20);
+  }, 50);
 }
 
 
@@ -1213,9 +1263,22 @@ function retornaFim() {
 // Recebe comando obtido do Blockly e envia para mBot.
 function escreveParaMBot(comando, valor) {
 
+  // Se nao está conectado no bluetooth, nao tenta enviar
+  if (macaddressConectado == null && podeConectar) {
+    console.log('Evitou comando ' + comando + '=' + valor + ' porque identificou que o mBot está sem conexão bluetooth.');
+    return;
+  }
+
   if (comando == COMANDO_FINAL) {
     // Devolve mensagem após 5 segundos, avisando que execução finalizou.
     setTimeout(retornaFim, 2000);
+  }
+
+  // Para de ouvir sensores
+  if (comando == REMOVESUBSCRICAO) {
+    sensoresUtilizados[0] = false;
+    sensoresUtilizados[1] = false;
+    sensoresUtilizados[2] = false;
   }
 
   // Comando que apenas restringe a captura de sensores
@@ -1548,6 +1611,7 @@ function escreveParaMBot(comando, valor) {
       buzzBase.writeUInt8(0x0D, 7);
     } else if (nota == 'B7') {
       buzzBase.writeUInt8(0x6F, 6);
+      buzzBase.writeUInt8(0x6F, 6);
       buzzBase.writeUInt8(0x0F, 7);
     } else if (nota == 'C8') {
       buzzBase.writeUInt8(0x5A, 6);
@@ -1621,9 +1685,10 @@ function originIsAllowed(origin) {
   }
 
   if (!podeConectar) {
-    if (podeConectar != null)
+    if (podeConectar != null) {
       console.log('mBot ainda não está totalmente inicializado.');
-    return false;
+      return false;
+    }
   }
 
   contClient++;
@@ -1653,6 +1718,9 @@ wsServer.on('request', function(request) {
     contadorIntervalo = 0;
   }
 
+  let ultimoComando = null;
+  let ultimoValor = null;
+
   connection.on('message', function(comandoValorStr) {
 
     // console.log('RECEBEU MENSAGEM ',comandoValorStr.utf8Data);
@@ -1661,13 +1729,22 @@ wsServer.on('request', function(request) {
 
     //  console.log('RECEBEU MENSAGEM ',comandoValor.valor);
 
-    escreveParaMBot(comandoValor.comando, comandoValor.valor);
+    if (comandoValor.comando != ultimoComando || comandoValor.valor != ultimoValor) {
+      escreveParaMBot(comandoValor.comando, comandoValor.valor);
+      ultimoComando = comandoValor.comando;
+      ultimoValor = comandoValor.valor;
+    } else {
+      // console.log('desprezou repetido'+comandoValor.comando+' com valor '+comandoValor.valor);
+    }
+
+
 
   });
 
   connection.on('close', function(reasonCode, description) {
     notificaClienteDesconexao('fechada pelo usuário');
     console.log((new Date().toLocaleString()) + ' Conexão ' + connection.remoteAddress + ' finalizada.');
+
   });
 });
 
@@ -1675,7 +1752,7 @@ function enviaMsgParaTodosClientes(evento) {
 
   var i;
   for (i = 0; i < wsServer.connections.length; i++) {
-
+    //console.log('vai comunicar ao mmblockly o evento = '+evento);
     wsServer.connections[i].send(evento);
 
   }
