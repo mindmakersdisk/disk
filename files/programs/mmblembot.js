@@ -1000,7 +1000,7 @@ function connectTombot(peripheral) {
 }
 
 function recuperaConexao() {
-  reconectouUmaVez = true;
+  //reconectouUmaVez = true;
   noble.startScanning();
 }
 
