@@ -5,7 +5,7 @@
  Copyright(c) Mind Makers Editora Educacional Ltda. Todos os direitos reservados
 */
 // Registrados
-const VERSAO = "2.9"
+const VERSAO = "3.0"
 var escolainfo = ''
 var escolaid = '';
 var escolanome = '';
@@ -728,12 +728,12 @@ process.stdin.on('keypress', (str, key) => {
 
     if (key.name == '1') {
       mbotWComms.write(ledColor1, true, function(error) {
-        //   console.log("Write Led Color1 OK");
+        // console.log("Write Led Color1 OK");
       });
     }
     if (key.name == '2') {
       mbotWComms.write(ledColor2, true, function(error) {
-        // console.log("Write Led Color2 OK");
+        //console.log("Write Led Color2 OK");
       });
     }
     if (key.name == '3') {
@@ -1000,7 +1000,7 @@ function connectTombot(peripheral) {
 }
 
 function recuperaConexao() {
-  //reconectouUmaVez = true;
+  reconectouUmaVez = true;
   noble.startScanning();
 }
 
@@ -1156,8 +1156,6 @@ function mbotReadDataDriver(error, services, characteristics) {
 
 var mbotWComms = null;
 
-const SUBSCRICAO = 'subscricao';
-const REMOVESUBSCRICAO = 'removesubscricao';
 var usaSensorLinha = false;
 var usaSensorLuz = false;
 var usaSensorUltrasom = false;
@@ -1221,39 +1219,6 @@ function mbotWriteDataDriver(error, services, characteristics) {
 }
 
 
-
-
-const BUZZER = 'buzzer';
-
-const DCMOTORM1 = 'dcmotorm1';
-const DCMOTORM2 = 'dcmotorm2';
-const DCMOTOR_FORWARD = 'forward';
-const DCMOTOR_BACK = 'back';
-
-// Velocidade na posição 8
-const DCMOTORS = 'dcmotors';
-const DCMOTORS_BACK = 'dcmotorsBack';
-const DCMOTORS_RIGHT = 'dcmotorsRight';
-const DCMOTORS_LEFT = 'dcmotorsLeft';
-
-const SERVOMOTOR = 'servomotor';
-const LEDLEFT = 'ledleft';
-const LEDRIGHT = 'ledright';
-const LEDBOTH = 'ledboth';
-const PLAYNOTE = 'playnote';
-
-const LINESENSOR = 'linesensor';
-const ULTRASOUNDSENSOR = 'ultrasoundsensor';
-const LIGHTSENSOR = 'lightsensor';
-
-const BUTTON = 'button';
-const BUTTON_PRESSED = 'pressed';
-const BUTTON_RELEASED = 'released';
-
-const IRSENSOR = 'irsensor';
-
-const COMANDO_FINAL = "comandoFinal";
-
 function retornaFim() {
 
   notificaCliente(COMANDO_FINAL, "");
@@ -1287,20 +1252,29 @@ function escreveParaMBot(comando, valor) {
     // console.log('valor subscricao = '+valor);
     sensoresUtilizadosStr = valor.split(',');
 
-    if (sensoresUtilizadosStr[0] == "true")
+    if (sensoresUtilizadosStr[0] == "true") {
+      console.log('Sensor de linha: usa');
       sensoresUtilizados[0] = true;
-    else
+    } else {
       sensoresUtilizados[0] = false;
+      console.log('Sensor de linha: não usa');
+    }
 
-    if (sensoresUtilizadosStr[1] == "true")
+    if (sensoresUtilizadosStr[1] == "true") {
+      console.log('Sensor de luz: usa');
       sensoresUtilizados[1] = true;
-    else
+    } else {
       sensoresUtilizados[1] = false;
+      console.log('Sensor de luz: não usa');
+    }
 
-    if (sensoresUtilizadosStr[2] == "true")
+    if (sensoresUtilizadosStr[2] == "true") {
+      console.log('Sensor de ultrassom: usa');
       sensoresUtilizados[2] = true;
-    else
+    } else {
       sensoresUtilizados[2] = false;
+      console.log('Sensor de ultrassom: não usa');
+    }
 
     // console.log('recebeu = '+sensoresUtilizados);
   }
@@ -1374,7 +1348,7 @@ function escreveParaMBot(comando, valor) {
 
     if (parseInt(valor) == 0) {
       mbotWComms.write(DCMOTORS_STOP, true, function(error) {
-        //    console.log("para motores ");
+        //console.log("para motores ");
       });
     } else {
       // Cada motor gira para um sentido oposto ao do outro e não podem ser 0 (mínimo 1)
@@ -1418,7 +1392,7 @@ function escreveParaMBot(comando, valor) {
 
         veldir = parseInt(valor);
         if (veldir > 240) veldir = 240;
-        //console.log('vel left = ' + veldir);
+        console.log('vel left = ' + veldir);
         //ambos motores viram a esquerda a 100
         // referencia esquerda a 100  var motor_turnleft100 =  new Buffer( [0xFF, 0X55, 0x07, 0x00, 0x02, 0x05, 0x55, 0x00, 0x55, 0x00]);
 
@@ -1452,7 +1426,7 @@ function escreveParaMBot(comando, valor) {
     servoMotorsBaseBuffer180Max.writeUInt8(angulo, 8);
 
     mbotWComms.write(servoMotorsBaseBuffer180Max, true, function(error) {
-      // console.log("servo no angulo"+valor,servoMotorsBaseBuffer180Max);
+      //console.log("servo no angulo"+valor,servoMotorsBaseBuffer180Max);
     });
 
   } else if (comando == LEDLEFT || comando == LEDRIGHT || comando == LEDBOTH) {
@@ -1460,19 +1434,23 @@ function escreveParaMBot(comando, valor) {
     var ledBase = new Buffer([0xff, 0x55, 0x09, 0x00, 0x02, 0x08, 0x07, 0x02, 0x02, 0xff, 0xFF, 0xff]);
     var rgb = valor.split(',');
 
-    if (comando == LEDLEFT)
+    if (comando == LEDLEFT) {
+      //console.log("Esquerdo");
       ledBase.writeUInt8(2, 8);
-    else if (comando == LEDRIGHT)
+    } else if (comando == LEDRIGHT) {
+      // console.log("Direito");
       ledBase.writeUInt8(1, 8);
-    else
+    } else {
+      // console.log("Ambos");
       ledBase.writeUInt8(0, 8);
+    }
 
     ledBase.writeUInt8(parseInt(rgb[0]), 9);
     ledBase.writeUInt8(parseInt(rgb[1]), 10);
     ledBase.writeUInt8(parseInt(rgb[2]), 11);
 
     mbotWComms.write(ledBase, true, function(error) {
-      //console.log("LED"+valor,ledBase);
+      //  console.log("LED"+valor,ledBase);
     });
 
 
@@ -1698,6 +1676,44 @@ function originIsAllowed(origin) {
   return true;
 }
 
+
+// COMANDOS VALIDOS
+const DCMOTORM1 = 'dcmotorm1';
+const DCMOTORM2 = 'dcmotorm2';
+const DCMOTOR_FORWARD = 'forward';
+const DCMOTOR_BACK = 'back';
+const DCMOTORS = 'dcmotors';
+const DCMOTORS_BACK = 'dcmotorsBack';
+const DCMOTORS_RIGHT = 'dcmotorsRight';
+const DCMOTORS_LEFT = 'dcmotorsLeft';
+// Chave para armazenar o ultimo valor enviado para qualquer comando de motores
+const DCMOTORS_COMANDOS = 'dcmotorsComandos';
+
+const LEDLEFT = 'ledleft';
+const LEDRIGHT = 'ledright';
+const LEDBOTH = 'ledboth';
+// Chave para armazenar o ultimo valor enviado para qualquer LED
+const LED_COMANDOS = 'ledComandos';
+
+const SERVOMOTOR = 'servomotor';
+
+// Sempre executam
+const SUBSCRICAO = 'subscricao';
+const REMOVESUBSCRICAO = 'removesubscricao';
+const BUZZER = 'buzzer';
+const PLAYNOTE = 'playnote';
+const LINESENSOR = 'linesensor';
+const ULTRASOUNDSENSOR = 'ultrasoundsensor';
+const LIGHTSENSOR = 'lightsensor';
+const IRSENSOR = 'irsensor';
+const BUTTON = 'button';
+const BUTTON_PRESSED = 'pressed';
+const BUTTON_RELEASED = 'released';
+const COMANDO_FINAL = "comandoFinal";
+
+let ultimoValorPorTipoComando = new Map();
+let ultimoComandoPorTipo = new Map();
+
 wsServer.on('request', function(request) {
 
   //console.log('UM CLIENTE ENTROU EM REQUEST');
@@ -1718,26 +1734,38 @@ wsServer.on('request', function(request) {
     contadorIntervalo = 0;
   }
 
-  let ultimoComando = null;
-  let ultimoValor = null;
-
   connection.on('message', function(comandoValorStr) {
 
     // console.log('RECEBEU MENSAGEM ',comandoValorStr.utf8Data);
 
     var comandoValor = JSON.parse(comandoValorStr.utf8Data);
 
-    //  console.log('RECEBEU MENSAGEM ',comandoValor.valor);
-
-    if (comandoValor.comando != ultimoComando || comandoValor.valor != ultimoValor) {
+    //  console.log('RECEBEU MENSAGEM ',comandoValor.comando+"="+comandoValor.valor);
+    let ultimoValor = obtemUltimoValorPorTipoComando(comandoValor.comando);
+    let ultimoComandoDoTipo = obtemUltimoComandoDoTipo(comandoValor.comando);
+    // Se não tem ultimo valor para o tipo de comando ou
+    // se for servo e mudou em relacao ao ultimo valor ou
+    // se for LED e mudou valor ou tipo do ultimo comando ou
+    // se for DCMotor e mudou valor ou tipo do ultimo comando ou
+    // se forem os outros comandos
+    if (!ultimoValor ||
+      (comandoValor.comando == SERVOMOTOR && ultimoValor != comandoValor.valor) ||
+      ((comandoValor.comando == LEDBOTH || comandoValor.comando == LEDLEFT || comandoValor.comando == LEDRIGHT) &&
+        (ultimoValor != comandoValor.valor || ultimoComandoDoTipo != comandoValor.comando)) ||
+      ((comandoValor.comando == DCMOTORM1 || comandoValor.comando == DCMOTORM2 || comandoValor.comando == DCMOTORS || comandoValor.comando == DCMOTORS_BACK ||
+          comandoValor.comando == DCMOTORS_LEFT || comandoValor.comando === DCMOTORS_RIGHT || comandoValor.comando == DCMOTOR_FORWARD) &&
+        (ultimoValor != comandoValor.valor || ultimoComandoDoTipo != comandoValor.comando)) ||
+      (comandoValor.comando == BUZZER || comandoValor.comando == PLAYNOTE || comandoValor.comando == COMANDO_FINAL ||
+        comandoValor.comando == LINESENSOR || comandoValor.comando == ULTRASOUNDSENSOR || comandoValor.comando == LIGHTSENSOR ||
+        comandoValor.comando == IRSENSOR || comandoValor.comando == BUTTON_PRESSED || comandoValor.comando == BUTTON_RELEASED ||
+        comandoValor.comando == SUBSCRICAO || comandoValor.comando == REMOVESUBSCRICAO)
+    ) {
       escreveParaMBot(comandoValor.comando, comandoValor.valor);
-      ultimoComando = comandoValor.comando;
-      ultimoValor = comandoValor.valor;
+      setaUltimoComandoDoTipo(comandoValor.comando);
+      setaUltimoValorPorTipoComando(comandoValor.comando, comandoValor.valor);
     } else {
-      // console.log('desprezou repetido'+comandoValor.comando+' com valor '+comandoValor.valor);
+      //console.log('desprezou comando repetido '+comandoValor.comando+' com valor '+comandoValor.valor);
     }
-
-
 
   });
 
@@ -1747,6 +1775,56 @@ wsServer.on('request', function(request) {
 
   });
 });
+
+function obtemUltimoValorPorTipoComando(comandoNovo) {
+
+  if (comandoNovo == LEDBOTH || comandoNovo == LEDLEFT || comandoNovo == LEDRIGHT)
+    comandoNovo = LED_COMANDOS;
+
+  if (comandoNovo == DCMOTORM1 || comandoNovo == DCMOTORM2 || comandoNovo == DCMOTORS || comandoNovo == DCMOTORS_BACK ||
+    comandoNovo == DCMOTORS_LEFT || comandoNovo == DCMOTORS_RIGHT || comandoNovo == DCMOTOR_FORWARD)
+    comandoNovo = DCMOTORS_COMANDOS;
+
+  return ultimoValorPorTipoComando.get(comandoNovo);
+
+}
+
+function obtemUltimoComandoDoTipo(comandoNovo) {
+
+  if (comandoNovo == LEDBOTH || comandoNovo == LEDLEFT || comandoNovo == LEDRIGHT)
+    comandoNovo = LED_COMANDOS;
+
+  if (comandoNovo == DCMOTORM1 || comandoNovo == DCMOTORM2 || comandoNovo == DCMOTORS || comandoNovo == DCMOTORS_BACK ||
+    comandoNovo == DCMOTORS_LEFT || comandoNovo == DCMOTORS_RIGHT || comandoNovo == DCMOTOR_FORWARD)
+    comandoNovo = DCMOTORS_COMANDOS;
+
+  return ultimoComandoPorTipo.get(comandoNovo);
+
+}
+
+function setaUltimoValorPorTipoComando(comandoNovo, valor) {
+
+  if (comandoNovo == LEDBOTH || comandoNovo == LEDLEFT || comandoNovo == LEDRIGHT)
+    ultimoValorPorTipoComando.set(LED_COMANDOS, valor);
+  else if (comandoNovo == DCMOTORM1 || comandoNovo == DCMOTORM2 || comandoNovo == DCMOTORS || comandoNovo == DCMOTORS_BACK ||
+    comandoNovo == DCMOTORS_LEFT || comandoNovo == DCMOTORS_RIGHT || comandoNovo == DCMOTOR_FORWARD)
+    ultimoValorPorTipoComando.set(DCMOTORS_COMANDOS, valor);
+  else
+    ultimoValorPorTipoComando.set(comandoNovo, valor);
+
+}
+
+function setaUltimoComandoDoTipo(comandoNovo) {
+
+  if (comandoNovo == LEDBOTH || comandoNovo == LEDLEFT || comandoNovo == LEDRIGHT)
+    ultimoComandoPorTipo.set(LED_COMANDOS, comandoNovo);
+  else if (comandoNovo == DCMOTORM1 || comandoNovo == DCMOTORM2 || comandoNovo == DCMOTORS || comandoNovo == DCMOTORS_BACK ||
+    comandoNovo == DCMOTORS_LEFT || comandoNovo == DCMOTORS_RIGHT || comandoNovo == DCMOTOR_FORWARD)
+    ultimoComandoPorTipo.set(DCMOTORS_COMANDOS, comandoNovo);
+  else
+    ultimoComandoPorTipo.set(comandoNovo, comandoNovo);
+
+}
 
 function enviaMsgParaTodosClientes(evento) {
 
