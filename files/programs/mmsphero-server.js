@@ -11,6 +11,7 @@
 */
 
 // Registrados
+const VERSAO = "2.0"
 var escolainfo = ''
 var escolaid = '';
 var escolanome = '';
@@ -294,6 +295,7 @@ function procurarNovoSphero() {
 
   noble.on('stateChange', function(state) {
     if (state === 'poweredOn') {
+      console.log('         Serviço Bluetooth Ativo v' + VERSAO);
       console.log('Procurando por Sphero SPRK+ a menos de 20cm...');
       noble.startScanning();
     } else {
@@ -448,6 +450,7 @@ function controlaSphero() {
       } else {
 
         console.log('\x1b[0m\x1b[32m', 'Leitura de componentes digitais do SPHERO via bluetooth ativada');
+        console.log('\x1b[0m\x1b[32m', '                Controlador SPHERO Ativo v' + VERSAO);
         console.log('\x1b[0m', '---------------------------------------------------------------');
         console.log('\x1b[0m', '---------        TESTE E CONTROLE POR TECLADO        ----------');
         console.log('\x1b[0m', '---------                                            ----------');

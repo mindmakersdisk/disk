@@ -749,6 +749,13 @@ wsServer.on('request', function(request) {
   }
 
   connection.on('message', function(message) {
+    var message = JSON.parse(message.utf8Data);
+
+    if(message.code == "desligaMonitor"){
+      desligaMonitor(message.religar,message.time)
+    }else if(message.code == "ligarMonitor"){
+      ligarMonitor()
+    }
 
     // Implementa envios para Sphero por aqui.
     console.log((new Date().toLocaleString()) + ' message recebida ' + message);
@@ -823,7 +830,7 @@ function exibeImagem(request, response, imagemComPath) {
           error: "Erro ao tentar exibir imagem "+imagemComPath
        })
 
-      
+
     }
     */
   shell.exec("sudo fbi -T 10 --noverbose -t 10 --once -a " + imagemComPath, function(code, output) {
@@ -838,4 +845,39 @@ function exibeImagem(request, response, imagemComPath) {
     }
   });
 
+}
+
+function desligaMonitor (develigar,time) {
+  //tempo para ligar novamente de 5 segundos padrao
+  time ? time : 5000;
+  console.log(time)
+
+  shell.exec("sudo vcgencmd display_power 0", function(code, output) {
+    if (code != 0) {
+      response.json({
+        error: "Erro ao tentar desligar estação " + output
+      })
+    } else {
+      if(develigar)
+        setTimeout(ligaMonitor, time);
+
+      response.json({
+        msg: ""
+      })
+    }
+  });
+}
+
+function ligarMonitor () {
+  shell.exec("sudo vcgencmd display_power 1", function(code, output) {
+    if (code != 0) {
+      response.json({
+        error: "Erro ao tentar ligar estação " + output
+      })
+    } else {
+      response.json({
+        msg: "ok"
+      })
+    }
+  });
 }
