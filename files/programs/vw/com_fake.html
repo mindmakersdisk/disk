@@ -1,41 +1,54 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="utf-8" />
+    <title>ACME</title>
+    <link rel="icon" type="image/png" href="img/company_icon_color.png" />
+    <script src="msg/pt-br.js"></script>
+    <script src="vw.js"></script>
+    <script src="./alertifyjs/alertify.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="vw.css" />
+    <link rel="stylesheet" href="./alertifyjs/css/alertify.min.css" />
+    <link rel="stylesheet" href="./alertifyjs/css/themes/default.min.css" />
+  </head>
+  <body onload="abriuSiteFake()">
+    <div id="tela">
+      <form action="">
+        <div class="container" style="background-color:#f1f1f1">
+          ACME
+        </div>
+        <div class="imgcontainer">
+          <img
+            src="img/company_icon_color.png"
+            alt="Bank logo"
+            class="avatar"
+          />
+        </div>
 
-<head>
-  <meta charset="utf-8">
-  <title>ACME</title>
-  <link rel="icon" type="image/png" href="img/company_icon_color.png">
-  <script src="msg/pt-br.js"></script>
-  <script src="vw.js"></script>
-  <script src="./alertifyjs/alertify.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="vw.css">
-  <link rel="stylesheet" href="./alertifyjs/css/alertify.min.css" />
-  <link rel="stylesheet" href="./alertifyjs/css/themes/default.min.css" />
-</head>
+        <div class="container">
+          <label for="uname"
+            >Você tem <b><span id="pontos">22000</span></b> documentos
+            confidenciais e patentes</label
+          >
+        </div>
+        <button
+          id="spoofingButton"
+          type="button"
+          onclick="window.open('hackeadousuario.html?t=p4','_self');"
+        >
+          Clique Aqui! Automático em 7 segundos...
+        </button>
 
-<body onload="abriuSiteFake()">
-
-  <div id="tela">
-
-    <form action="">
-      <div class="container" style="background-color:#f1f1f1">
-        ACME
-      </div>
-      <div class="imgcontainer">
-        <img src="img/company_icon_color.png" alt="Bank logo" class="avatar">
-      </div>
-
-      <div class="container">
-        <label for="uname">Você tem <b><span id="pontos">22000</span></b> documentos confidenciais e patentes</label>
-      </div>
-      <button id="spoofingButton" type="button" onclick="window.open('hackeadousuario.html?t=p4','_self');">Clique Aqui! Automático em 7 segundos...</button>
-
-      <div class="container" style="background-color:#f1f1f1">
-        <button type="button" class="cancelbtn" onclick="window.open('index.html','_self');">Retornar</button>
-      </div>
-    </form>
-  </div>
-
-</body>
-
+        <div class="container" style="background-color:#f1f1f1">
+          <button
+            type="button"
+            class="cancelbtn"
+            onclick="window.open('index.html','_self');"
+          >
+            Retornar
+          </button>
+        </div>
+      </form>
+    </div>
+  </body>
 </html>

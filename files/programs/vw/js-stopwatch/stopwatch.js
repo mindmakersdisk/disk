@@ -51,8 +51,7 @@ var sw = {
 
   start: function() {
     // start() : start the stopwatch
-    if (sw.timer != null)
-      return;
+    if (sw.timer != null) return;
 
     sw.timer = setInterval(sw.tick, 1000);
     sw.ego.value = "Stop";
