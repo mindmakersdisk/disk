@@ -156,7 +156,8 @@ app.get('/id', (request, response) => {
   response.json({
     estacao: estacao_registrado,
     sala: sala_registrado,
-    versao: VERSAO
+    versao: VERSAO,
+    escola: escolaid
   })
 
 })
