@@ -1,4 +1,4 @@
-- hosts:               alls1
+- hosts:               gabrielPi
 
   tasks:
 
@@ -80,14 +80,17 @@
     #      mode:         0755
 
 
-    - name:            Copiando programs
-      copy:
-         src:          files/programs
-         dest:         /home/mindmakers
-         mode:         0755
-    # - include:         tasks/v3-6.yml
+    # - name:            Copiando programs
+    #   copy:
+    #      src:          files/programs
+    #      dest:         /home/mindmakers
+    #      mode:         0755
+    - include:         tasks/v4-4-package-update.yml
+    - include:         tasks/avahi.yml
+    - include:         tasks/raspi-config.yml
     - include:         tasks/final-version-copies-en.yml
     - include:         tasks/version_update.yml
+    - include:         tasks/reboot.yml
 
 
     # - name:            Copiando vw
