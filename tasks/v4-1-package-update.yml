@@ -4,11 +4,11 @@
       [
         ffmpeg,
         file,
-        firmware-atheros,
-        firmware-brcm80211,
-        firmware-libertas,
-        firmware-misc-nonfree,
-        firmware-realtek,
+        # firmware-atheros,
+        # firmware-brcm80211,
+        # firmware-libertas,
+        # firmware-misc-nonfree,
+        # firmware-realtek,
         gtk2-engines-pixflat,
         libarchive13,
         libavcodec58,
@@ -92,7 +92,7 @@
         libpangoxft-1.0-0,
         libpostproc55,
         libpq5,
-        libpulse0,
+        # libpulse0,
         libpython2.7-dev,
         libpython2.7-minimal,
         libpython2.7-stdlib,
@@ -148,8 +148,8 @@
   apt:
     name:
       [
-        pi-bluetooth,
-        pimixer,
+        # pi-bluetooth,
+        # pimixer,
         pipanel,
         pishutdown,
         piwiz,
