@@ -44,6 +44,7 @@
     - include:         tasks/copies-student.yml
     - include:         tasks/mt6.yml
     - include:         tasks/v3-6.yml
+    - include:         tasks/v4-1-package-update.yml
     #- include:        tasks/rpimonitor.yml
     - include:         tasks/avahi.yml
     - include:         tasks/raspi-config.yml
