@@ -7,10 +7,11 @@
   shell:      'sudo raspi-config nonint do_camera 0'
   args:
     warn:     no
-- name:       Configurando saída de audio padrão para Analógico
-  shell:      'amixer cset numid=3 1'
-  args:
-    warn:     no
+#TODO - FIX this. link possivel solucao https://www.raspberrypi.org/blog/latest-raspberry-pi-os-update-may-2020/
+# - name:       Configurando saída de audio padrão para Analógico
+#   shell:      'amixer cset numid=3 1'
+#   args:
+#     warn:     no
 - name:       Configurando memória swap
   lineinfile:
     path:     /etc/dphys-swapfile
