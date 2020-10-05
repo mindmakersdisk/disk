@@ -48,6 +48,7 @@
     #- include:        tasks/rpimonitor.yml
     - include:         tasks/avahi.yml
     - include:         tasks/raspi-config.yml
+    - include:         tasks/sound-change.yml
 # Copia as notas de liberação e o atalho com nome da versão atualizados
     - include:         tasks/final-version-copies-en.yml
     - include:         tasks/version_update.yml
