@@ -44,11 +44,8 @@
 
     - include:         tasks/copies-student.yml
     - include:         tasks/3dslash.yml
+    - include:         tasks/sound-change-teacher.yml
 
-    #TODO - FIX this. link possivel solucao https://www.raspberrypi.org/blog/latest-raspberry-pi-os-update-may-2020/
-    # - shell:           'amixer cset numid=3 2'
-    #   args:
-    #     warn:     no
 # Copia as notas de liberação e o atalho com nome da versão atualizados
     - include:         tasks/final-version-copies-en.yml
     - include:         tasks/version_update.yml
