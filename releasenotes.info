@@ -1,5 +1,10 @@
 ########### IMAGEM DE DISCO MIND MAKERS ###########
 
+Versão 4.6 17/11/2020
+- Novas imagens para apresentações de linha do tempo otimizadas
+- Possibilidade de apresentação de imagens permanentes em programação usando a sala
+- Correção de bug do Chromium no Raspberry-OS - inversão de telas em canvas.
+
 Versão 4.5 05/10/2020
 - Alterando padrão de saída de som para alunos de HDMI para Analog
 
