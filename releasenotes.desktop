@@ -1,7 +1,7 @@
 [Desktop Entry]
 Encoding=UTF-8
-Name=Desktop v4.5
-Name[pt_BR]=Ambiente v4.5
+Name=Desktop v4.6
+Name[pt_BR]=Ambiente v4.6
 Type=Application
 Terminal=false
 Exec=leafpad /home/mindmakers/releasenotes.info
