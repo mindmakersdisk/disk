@@ -1,5 +1,8 @@
 ########### IMAGEM DE DISCO MIND MAKERS ###########
 
+Versão 4.7 10/02/2021
+- Correção de bug do som em estações de Facilitador não funcionando corretamente via HDMI, requer ativação manual do HDMI na inteface grafica após atualização.
+
 Versão 4.6 17/11/2020
 - Novas imagens para apresentações de linha do tempo otimizadas
 - Possibilidade de apresentação de imagens permanentes em programação usando a sala

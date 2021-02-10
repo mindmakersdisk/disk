@@ -1,6 +1,6 @@
 - name: Verificando se as configurações de som ja foram alteradas
   stat:
-    path: /home/mindmakers/programs/verify/alterasomTeacher
+    path: /home/mindmakers/programs/verify/alterasomTeacher1
   register: alterasomTeacher
 - name: Alterando configuracao de som para analog
   copy:
@@ -10,6 +10,6 @@
   when: not alterasomTeacher.stat.exists
 - name: Criando pasta de verificação da alteração de configuração de som
   file:
-    path: /home/mindmakers/programs/verify/alterasomTeacher
+    path: /home/mindmakers/programs/verify/alterasomTeacher1
     state: directory
     mode: 0444
