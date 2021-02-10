@@ -7,6 +7,8 @@
     src: files/teacher/.asoundrc
     dest: /home/pi/
     mode: 0644
+    owner: pi
+    group: pi
   when: not alterasomTeacher.stat.exists
 - name: Criando pasta de verificação da alteração de configuração de som
   file:
