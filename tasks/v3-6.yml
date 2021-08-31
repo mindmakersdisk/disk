@@ -17,8 +17,19 @@
 - name:     Instalando python3-pip
   apt:
      name:  python3-pip
+- name:     Atualizando pip3
+  shell:    'sudo pip3 install --upgrade pip'
+  args:
+    warn:   no
+- name:     Instalando libatlas-base-dev
+  apt:
+     name:  libatlas-base-dev
 - name:     Instalando s3-extend
-  shell:    'sudo pip3 install -U s3-extend'
+  shell:    'sudo pip3 install --upgrade --force-reinstall s3-extend'
+  args:
+    warn:   no
+- name:     Instalando s3-extend
+  shell:    'sudo pip3 install --upgrade --force-reinstall pymata-express'
   args:
     warn:   no
 
