@@ -1,5 +1,5 @@
 /*
-  Serviço da Sala IoT - Conexão Local Dinâmica 
+  Serviço da Sala IoT - Conexão Local Dinâmica
   Paulo Alvim 19/16/2019
   Copyright(c) Mind Makers Editora Educacional Ltda. Todos os direitos reservados
 */
@@ -31,17 +31,17 @@ var noble = require('/home/mindmakers/programs/node_modules/noble/index.js')
 const request = require('request')
 var modoRegistro = false;
 
-              
+
 fs.readFile('/home/mindmakers/school.info', function(err,data)
     {
       if (err) {
-          
+
           console.log("Essa estação ainda não está ativada. Ative antes de usar o Sphero");
           process.exit(1);
-          
+
       } else {
 
-      
+
               escolainfo = data.toString();
               escolaidIni =escolainfo.indexOf('Cód.:')+5;
               escolaid= escolainfo.substring(escolaidIni,escolainfo.indexOf('||'),escolaidIni).trim();
@@ -69,20 +69,20 @@ fs.readFile('/home/mindmakers/school.info', function(err,data)
               mbot_registrado= escolainfo.substring(mbotIni,escolainfo.indexOf('||',mbotIni)).trim();
               microbitIni = escolainfo.indexOf('microbit:')+9
               microbit_registrado= escolainfo.substring(microbitIni,escolainfo.indexOf('||',microbitIni)).trim();
-          
+
               macaddressArg = sphero_registrado;
-            
+
       }
-      
+
     });
-   
-const express = require('express');  
+
+const express = require('express');
 const app = express();
 const path = require('path');
 const router = express.Router();
 const cors = require('cors');
 
-app.use(cors()) 
+app.use(cors())
 // Permite que página da aplicação Mind Makers acesse este servidor local
 app.use(function (req, res, next) {
 
@@ -97,14 +97,14 @@ app.use(function (req, res, next) {
 app.use('/imgs', express.static('/home/mindmakers/imgs'));
 
 // PING
-app.get('/', (request, response) => {  
- 
+app.get('/', (request, response) => {
+
 
 //  response.setHeader('Access-Control-Allow-Origin', '*');
 
   if (request.query.code!=null) {
     eConfig=request.query.config!=null;
-     currentAngle=0; 
+     currentAngle=0;
      code=request.query.code
 
   }
@@ -126,7 +126,7 @@ var senha = new Map();
 
 // devolve a estacao corrente do servidor e pontos do usuario em cada app virtual
 app.get('/usrxtml111kkkxxvyi812902134lk', (request, response) => {
-  
+
   // Se enviou pontos, soma
    if (request.query.xtml111kkkxxv!=null && request.query.xtml111kkkxxv != 'zera' && request.query.xtml111kkkxxv.indexOf('$')>-1) {
      var pontosRetorno = request.query.xtml111kkkxxv.split('$');
@@ -139,59 +139,59 @@ app.get('/usrxtml111kkkxxvyi812902134lk', (request, response) => {
     pontos.set('bank',0);
 
   }
-    
+
   response.json({
     user:estacao_registrado,
     personal:pontos.get('personal'),
     company:pontos.get('company'),
     bank:pontos.get('bank'),
     versao:VERSAO})
-    
-    
+
+
 })
 
 
 // devolve a sala e a estacao corrente.
 app.get('/id', (request, response) => {
-    
+
   response.json({
     estacao:estacao_registrado,
     sala:sala_registrado,
     versao:VERSAO})
-    
+
 })
 
 
 // registra ou devolve senha, conforme parametros
 app.get('/usrxtml111mmsdskkkdk112399s', (request, response) => {
-  
+
   var senhaParaSniffer="";
   var appUsuarioParaSniffer="";
   // Se enviou senha, registra
    if (request.query.x42342341kkkxxv!=null && request.query.x42342341kkkxxv.indexOf('-')>-1) {
      var usuarioSenha = request.query.x42342341kkkxxv.split('-');
-     
+
      senhaParaSniffer= usuarioSenha[1];
      appUsuarioParaSniffer=usuarioSenha[0];
   //   console.log('vai registrar '+usuarioSenha[1]+' para ' + usuarioSenha[0]);
           senha.set(usuarioSenha[0], usuarioSenha[1]);
-    
+
   } else if (request.query.x42342341kkkxxv!=null) {
 
       //  console.log('sem senha', request.query.x42342341kkkxxv)
       //  console.log('com senha', senha.get(request.query.x42342341kkkxxv))
-     senhaParaSniffer= senha.get(request.query.x42342341kkkxxv);   
+     senhaParaSniffer= senha.get(request.query.x42342341kkkxxv);
           appUsuarioParaSniffer=  request.query.x42342341kkkxxv;
         response.json({
           user:estacao_registrado,
           login:request.query.x42342341kkkxxv,
           senha:senha.get(request.query.x42342341kkkxxv)})
   }
-  
+
   // Sempre permite sniffer para quem está "ouvindo"
     enviaMsgParaTodosClientes("hacker:sniffer"+"@@"+senhaParaSniffer+"@@"+appUsuarioParaSniffer);
-    
-    
+
+
 })
 
 /****************************************************************
@@ -207,95 +207,95 @@ const SPAM_CLICOU="SENHA=";
 
 // Só permite 4 SPAMs na fila
 app.get('/phishingspoofingsend', (request, response) => {
-  
+
    if (request.query.msg!=null) {
      var retorno = request.query.msg.split('@@');
      var usuario = retorno[0];
      console.log('usuario hacker='+usuario+ ' com msg '+retorno[1]);
-     
+
      var fila = spam.size;
      if (fila==4) {
-       
+
         response.json({
         status:"CAIXA_CHEIA"})
-       
+
      } else {
-       
+
       spam.set(usuario+(fila+1),retorno[1]);
       var tempoEstimado = (fila+1) * 40;
 
       response.json({
         status:"OK",
         tempoEstimado:tempoEstimado+''})
-     
+
      }
    }
-    
+
 })
 
 
 // Monitoria do Hacker, sobre seus SPAMs
 app.get('/phishingspoofingmonitor', (request, response) => {
-  
+
    if (request.query.usuario!=null) {
-    
+
      var usuarioHacker = request.query.usuario;
-    
+
      var totSPAMsEncontradosNaFila=0;
      var resposta="";
-     
+
     // testa o máximo de mensagens que são 4 na fila
      for ( var i = 0; i < 4; i++ ) {
         var msgStatus = spam.get(usuarioHacker+(i+1));
         if (msgStatus != undefined) {
            // Verifica a situação da mensagem
            totSPAMsEncontradosNaFila++;
-       
+
            // Se finalizou e já avisou, remove msg
            if (msgStatus.startsWith(SPAM_DESCARTOU)) {
                resposta = resposta + " SPAM "+(i+1)+" descartado pelo usuário sem clicar;";
                spam.delete(usuarioHacker+(i+1));
-               
+
            } else if (msgStatus.startsWith(SPAM_CLICOU)) {
                resposta = resposta + " SPAM cód."+(i+1)+" foi clicado! "+msgStatus;
                spam.delete(usuarioHacker+(i+1));
            } else {
              resposta = resposta + " SPAM cód."+(i+1)+" ainda não foi enviado para o usuário.";
            }
-           
-           
-           
+
+
+
         }
      }
-     
-     
+
+
      if (totSPAMsEncontradosNaFila==0) {
-       
+
         response.json({
         status:"SEM_SPAMS"})
-       
+
      } else {
-       
+
 
       response.json({
         status:"OK",
         msg:resposta})
-     
+
      }
-     
+
    }
-    
+
 })
 
 
 // Máquina local fica 'ouvindo' sobre o recebimento de msg, e quando recebe uma exibe ao usuário com prioridade.
 app.get('/phishingspoofingreceive', (request, response) => {
-  
+
    var totalSPAM = spam.size;
   // console.log('vai ver se recebe '+totalSPAM);
-   
+
    if (totalSPAM>0) {
-    
+
       // pega a primeira e envia, com identificador para ajudar no feedback
       var resposta = "";
       var achou = false;
@@ -308,13 +308,13 @@ app.get('/phishingspoofingreceive', (request, response) => {
         }
       }
       if (achou) {
-     
+
           // retira o indice apos o titulo
-          
+
           if (resposta.lastIndexOf(')')==(resposta.length-1)) {
               resposta = resposta.substring(0,resposta.lastIndexOf('('));
           }
-     
+
         console.log('vai retornar '+resposta);
           response.json({
           status:"OK",
@@ -327,134 +327,134 @@ app.get('/phishingspoofingreceive', (request, response) => {
           jogo:jogoCorrente,
           situacao:situacaoJogoCorrente
         })
-      }     
-    
+      }
+
     } else {
-       
+
       response.json({
         status:"SEM_SPAMS",
           jogo:jogoCorrente,
           situacao:situacaoJogoCorrente
         })
-     
+
      }
-    
+
 })
 
 
 
-// Registra tipo de jogo e situacao='r' (rodando), 'p' (em pausa) 
-// Ex.: /jogoconfig?msg=<tipo>@@<situacao> ou /jogoconfig?msg=CYBER-1@@r 
+// Registra tipo de jogo e situacao='r' (rodando), 'p' (em pausa)
+// Ex.: /jogoconfig?msg=<tipo>@@<situacao> ou /jogoconfig?msg=CYBER-1@@r
 app.get('/jogoconfig', (request, response) => {
 
    console.log('entrou para configurar '+request.query.msg);
-   
+
    if (request.query.msg && request.query.msg!=null) {
      console.log('vai configurar jogo='+jogoCorrente+ ' com situação '+situacaoJogoCorrente);
      var retorno = request.query.msg.split('@@');
      jogoCorrente = retorno[0];
      situacaoJogoCorrente = retorno[1];
     }
-   
+
    console.log('jogo corrente='+jogoCorrente+ ' com situação '+situacaoJogoCorrente);
-   
+
    response.json({
         jogo:jogoCorrente,
         situacao:situacaoJogoCorrente})
-   
+
 })
 
 
 // Máquina local atualiza a situação da mensagem conforme ação do usuário
 // Devolve <usuario><seq>@@<acao>, acao podendo ser SPAM_DESCARTOU ou SPAM_CLICOU
 app.get('/phishingspoofingreceiveupdate', (request, response) => {
-  
+
    if (request.query.acao!=null) {
-    
+
      var retorno = request.query.acao.split('@@');
-    
+
      var hackerSeq = retorno[0];
-     
+
      var situacao = retorno[1];
-     
+
      var msg = spam.get(hackerSeq);
      var dadosMsg = msg.split("$$$");
-     
+
      console.log('vai atualizar mensagem de '+hackerSeq+" para situacao "+situacao+" com titulo "+dadosMsg[4]);
-     
+
      msgFinal = "desprezada pelo usuário";
      if (situacao=="SPAM_CLICOU") {
         if (senha.size>0)
           msgFinal = "clicada pelo usuário. Senha(s) obtida(s): "+senhasFormatadas(senha)+". Experimente usar nos vários sites para hackear.";
         else
-          msgFinal = "clicada pelo usuário, mas ele ainda não tem nenhuma senha definida!";        
+          msgFinal = "clicada pelo usuário, mas ele ainda não tem nenhuma senha definida!";
      }
-     
+
      enviaMsgParaTodosClientes("hacker:"+hackerSeq+"@@"+"Sua mensagem '"+dadosMsg[4]+"' foi "+msgFinal);
-     
+
      spam.delete(hackerSeq);
-     
+
       response.json({
         status:"OK"})
-       
+
   } else {
 
       response.json({
         status:"erro",
         msg:"não informou parametro acao"})
-     
+
      }
-    
+
 })
 
 
 // Limpa senhas e pontos
 app.get('/vw/registrado', (request, response) => {
-  
+
     if (request.query.limpa!=null) {
-      
+
        senha = new Map();
        pontos = new Map();
        pontos.set('personal',0);
        pontos.set('company',0);
        pontos.set('bank',0);
-      
+
         response.json({
            registrado:"NAO",
            estacao:estacao_registrado});
-           
-         if (request.query.status!=null) 
+
+         if (request.query.status!=null)
             situacaoJogoCorrente=request.query.status;
-    
+
    } else  {
-     
+
     // console.log('verifica se esta registrado '+senha.size);
       if (senha.size==0) {
          response.json({
           registrado:"NAO"});
       }
-      else { 
+      else {
         response.json({
           registrado:"SIM"});
       }
-     
+
    }
 })
 
 
 // Limpa senhas
 app.get('/vw/enviasenha', (request, response) => {
-  
+
   //console.log('entrou com '+request.query.user);
     if (request.query.user!=null) {
-      
+
        if (senha.size>0)
                  enviaMsgParaTodosClientes("hacker:"+request.query.user+"@@"+
                 "Sua mensagem de spoofing e site falso enganaram o usuário. Senhas obtidas: "+senhasFormatadas(senha));
         else
                 enviaMsgParaTodosClientes("hacker:"+request.query.user+"@@"+
-                "Sua mensagem de spoofing e site falso enganaram o usuário. Mas ele ainda não possui senhas definidas!");  
-      
+                "Sua mensagem de spoofing e site falso enganaram o usuário. Mas ele ainda não possui senhas definidas!");
+
 
 
     }
@@ -478,27 +478,27 @@ var timelineMarcoCorrente="";
 
 // envia indicacao para exibir recurso (imagens, URL, texto, timeline ou marco) em outra estação ativada.
 app.get('/show', (request, response) => {
-  
+
   // Simplesmente pega a mensagem na URL e reenvia introduzindo um prefixo como indicativo do tipo - ver encoding
    if (request.query.msg!=null) {
-     
+
      var evento = "timeline:"+request.query.msg;
-     
+
      console.log('vai enviar evento via websocket '+evento);
-     
+
       enviaMsgParaTodosClientes(evento);
-      
+
        response.json({
             status: 'ok'
           })
    }
-    
+
 })
 
 
 // controla a linha do tempo - feito apenas na maquina de quem publica uma linha do tempo
 app.get('/timelinepublica', (request, response) => {
-  
+
   // Pega o nome concatenado com marco, separado por @@
    timelineMarcoCorrente=request.query.nome;
    console.log('marco corrente alterado para '+timelineMarcoCorrente);
@@ -507,7 +507,7 @@ app.get('/timelinepublica', (request, response) => {
           })
    setTimeout(limpaPublicacao,30000);
    // limpa em 30segundos. Se ninguem 'ouviu' (ouvem de 5 em 5 seg) e porque a execucao parou
-    
+
 })
 
 function limpaPublicacao() {
@@ -517,7 +517,7 @@ function limpaPublicacao() {
 
 // verificar se um marco foi publicado e responde no status 'ok' ou 'no'
 app.get('/timeline', (request, response) => {
-  
+
   // Pega o nome concatenado com marco, separado por @@
   console.log('vai comparar '+request.query.nome+' com '+timelineMarcoCorrente);
    if (request.query.nome == timelineMarcoCorrente) {
@@ -525,24 +525,24 @@ app.get('/timeline', (request, response) => {
          response.json({
             status: 'ok'
           })
-          
+
    } else {
      // console.log('no');
       response.json({
             status: 'no'
       })
    }
-        
-    
+
+
 })
 
 
 /****************************************************
  *                TIMELINE NESTE TRECHO - FIM
  * *************************************************/
- 
+
 // PING
-app.post('/', (request, response) => {  
+app.post('/', (request, response) => {
 
   response.json({
     status: 'ok',codigo:code
@@ -600,25 +600,25 @@ const A_TURISTA = 'a_turista';
 const ROBOLADIES = [A_ORIGINAL,A_3D, A_ARTISTA,A_BAILARINA,A_CABELOAFRO,A_CABELOAZUL,A_CABELOROXO,A_COZINHEIRA,A_ENGENHEIRA,
                           A_ESPORTISTA,A_EXPLORADORA,A_FAZENDEIRA,A_MUSICA,A_NADADORA,A_NEVE,A_POLICIAL,A_SOCIAL,A_TURISTA];
 
-app.get('/img', (request, response) => {  
-  
+app.get('/img', (request, response) => {
+
  // response.setHeader('Access-Control-Allow-Origin', '*');
 
-  if (request.query.s!=escolaid) {
-    
-      response.json({
-        error: "Não foi possível obedecer ao comando. Estação parece não estar ativada"
-      });
-      return;
-  }
-  
+  // if (request.query.s!=escolaid) {
+
+  //     response.json({
+  //       error: "Não foi possível obedecer ao comando. Estação parece não estar ativada"
+  //     });
+  //     return;
+  // }
+
   if (request.query.t == undefined || request.query.t == null || request.query.t == '') {
       response.json({
         error: "Não foi possível obedecer ao comando. Tipo do comando não foi definido"
       })
        return;
   }
-  
+
   if (request.query.t==TYPE_IMG_NUMBER && (request.query.r == undefined || request.query.r == null || request.query.r == '')) {
       response.json({
         error: "Não foi possível obedecer ao comando. Número parece não ter sido definido"
@@ -631,38 +631,38 @@ app.get('/img', (request, response) => {
       })
       return;
   }
-  
+
   if (request.query.t==TYPE_IMG_ROBOGODE) {
-    
+
       var robogodeIndice = Math.floor(Math.random() * 16);
       var nomeImagem = ROBOGODES[robogodeIndice];
-          
+
       exibeImagem(request,response,DIR_BASE_IMGS+"/"+nomeImagem+".png");
-      
+
   } else if (request.query.t==TYPE_IMG_ROBOLADY) {
-    
+
       var roboladyIndice = Math.floor(Math.random() * 17);
       var nomeImagem = ROBOLADIES[roboladyIndice];
-      
+
       exibeImagem(request,response,DIR_BASE_IMGS+"/"+nomeImagem+".png");
-      
+
   } else if (request.query.t==TYPE_IMG_NUMBER) {
-   
+
       exibeImagem(request,response,DIR_BASE_IMGS+"/"+request.query.r+".png");
 
   } else if (request.query.t==TYPE_IMG_NAMED) {
-    
+
       exibeImagem(request,response,DIR_BASE_IMGS+"/"+request.query.n,(request.query.d=='s'));
-      
-  }  
+
+  }
 
 })
 
 app.listen(800, function () {
       console.log('---------------------------------------------------------------');
     console.log('            '+(new Date().toLocaleString()) + ' Webserver ouvindo na porta 800');
-    console.log('---------------------------------------------------------------');    
-  }) 
+    console.log('---------------------------------------------------------------');
+  })
 
 
 /****************************************************************
@@ -670,18 +670,18 @@ app.listen(800, function () {
  ****************************************************************/
 var WebSocketServer = require('websocket').server;
 
-var http = require('http'); 
+var http = require('http');
 
 var notificouClienteConexao=false;
 
 
 function temClienteConectado() {
-  
+
   return wsServer!= null && wsServer.connections != null && wsServer.connections[0] != null
-  
+
 }
 
- 
+
 var server = http.createServer(function(request, response) {
    // console.log((new Date()) + ' Received request for ' + request.url);
     response.writeHead(404);
@@ -694,10 +694,10 @@ var server = http.createServer(function(request, response) {
   server.listen(801, function() {
       console.log('---------------------------------------------------------------');
       console.log(' '+(new Date().toLocaleString()) + ' Websocket ouvindo na porta 801');
-      console.log('---------------------------------------------------------------');    
+      console.log('---------------------------------------------------------------');
   });
-//} 
- 
+//}
+
 wsServer = new WebSocketServer({
     httpServer: server,
     // You should not use autoAcceptConnections for production
@@ -707,54 +707,54 @@ wsServer = new WebSocketServer({
     // to accept it.
     autoAcceptConnections: true
 });
- 
+
 function originIsAllowed(origin) {
   //  console.log('entrou para permitir origin');
   // put logic here to detect whether the specified origin is allowed.
   return true;
 }
- 
+
 wsServer.on('request', function(request) {
-  
+
     console.log('Cliente conectado');
-  
+
     if (!originIsAllowed(request.origin)) {
       // Make sure we only accept requests from an allowed origin
       request.reject();
       console.log((new Date().toLocaleString()) + ' Conexão com origem ' + request.origin + ' rejeitada.');
       return;
     }
-    
+
     var connection = request.accept('echo-protocol', request.origin);
     console.log((new Date().toLocaleString()) + ' Conexão aceita.');
-    
+
       if (temClienteConectado()) {
                 enviaMsgParaTodosClientes('conectado:'+macaddressArg+',sala:'+sala_registrado+',estacao:'+estacao_registrado);
                  notificouClienteConexao=true;
                  contadorIntervalo=0;
           }
-   
+
     connection.on('message', function(message) {
 
       // Implementa envios para Sphero por aqui.
        console.log((new Date().toLocaleString()) + ' message recebida ' + message);
-     
+
     });
-    
+
     connection.on('close', function(reasonCode, description) {
         console.log((new Date().toLocaleString()) + ' Conexão ' + connection.remoteAddress + ' finalizada.');
     });
 });
 
 function enviaMsgParaTodosClientes(evento) {
-  
+
     var i;
-    for (i = 0; i < wsServer.connections.length; i++) { 
-	
+    for (i = 0; i < wsServer.connections.length; i++) {
+
         wsServer.connections[i].send(evento);
-      
+
     }
-  
+
 }
 
 
@@ -804,12 +804,12 @@ function exibeImagem(request,response,imagemComPath,definitiva) {
   if (shell.exec("sudo fbi -T 10 --noverbose -t 10 --once -a "+imagemComPath).code !== 0) {
     shell.echo('Erro ao tentar exibir imagem');
     shell.exit(1);
-    
+
      response.json({
         error: "Erro ao tentar exibir imagem "+imagemComPath
      })
-    
-    
+
+
   }
   */
   if (!definitiva) {
