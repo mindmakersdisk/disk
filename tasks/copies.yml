@@ -111,5 +111,6 @@
   copy:
      src:          files/imgs/sala
      dest:         /home/mindmakers/imgs
+     attributes:   -r
      mode:         0755
   when:            not imgs.stat.exists
