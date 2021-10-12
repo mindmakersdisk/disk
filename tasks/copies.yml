@@ -103,13 +103,13 @@
   register:        imgs
 - name:            Copiando imagens
   copy:
-     src:          files/imgs
+     src:          ~/files/imgs
      dest:         /home/mindmakers
      mode:         0755
   when:            not imgs.stat.exists
 - name:            Copiando imagens de apresentações da linha do tempo
   copy:
-     src:          files/imgs/sala
+     src:          ~/files/imgs/sala
      dest:         /home/mindmakers/imgs
      attributes:   -r
      mode:         0755
