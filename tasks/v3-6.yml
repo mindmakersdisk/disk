@@ -57,7 +57,7 @@
 - shell:    'sudo systemctl daemon-reload'
   args:
     warn:   no
-- name:     update chomium
+- name:     update chromium
   apt:
     name:   chromium-browser
     state:  latest
