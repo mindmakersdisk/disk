@@ -206,3 +206,4 @@
 - name:            Instalando speedtest-cli
   apt:
      name:         speedtest-cli
+     state:  latest
