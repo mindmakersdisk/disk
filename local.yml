@@ -10,11 +10,12 @@
       shell:           'sudo apt update -y'
       args:
         warn:          no
-      when:            ansible_facts.lsb.codename == "buster"
-    - apt:
-         update_cache: yes
-      changed_when:    False
       when:            not ansible_facts.lsb.codename == "buster"
+    - apt:
+         update_cache: true
+         cache_valid_time: 86400
+      changed_when:    False
+      when:            ansible_facts.lsb.codename == "buster"
 
   tasks:
     - name:            Verificando versão do Ansible.

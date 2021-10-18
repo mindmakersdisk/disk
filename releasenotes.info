@@ -1,4 +1,7 @@
 ########### IMAGEM DE DISCO MIND MAKERS ###########
+Versão 5.1 18/10/2021
+- Melhorias configuração Ansible e Log de erros.
+
 Versão 5.0 13/10/2021
 - Acerto do diretório e otimização de novas imagens de apresentaçãoes da linha do tempo
 - Acerto de regressão na programação de envio de imagens entre estações

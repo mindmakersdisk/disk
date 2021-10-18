@@ -12,3 +12,8 @@
   args:
     chdir:      /home/mindmakers/programs
   when:         semregistro.matched > 0
+
+- name:         Limpando Log Ansible
+  file:
+    path:         /var/log/ansible.log
+    state:        absent

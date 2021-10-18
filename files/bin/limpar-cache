@@ -1,0 +1,6 @@
+#!/bin/bash
+
+sudo pip cache purge
+pip cache purge
+sudo apt clean
+sudo apt autoclean

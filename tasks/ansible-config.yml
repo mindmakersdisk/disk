@@ -7,13 +7,19 @@
   stat:
      path:     /home/mindmakers/school.info
   register:    school
-- copy:
+- name:        Copiando arquivo hosts
+  copy:
      src:      hosts
+     dest:     /etc/ansible/
+     mode:     0644
+- name:        Copiando arquivo ansible.cfg
+  copy:
+     src:      ansible.cfg
      dest:     /etc/ansible/
      mode:     0644
 - name:        Configurando hosts
   blockinfile:
     path:      /etc/ansible/hosts
     block:     |
-      [local]
-      localhost ansible_connection=local
+      [localhost]
+      127.0.0.1 ansible_connection=local
