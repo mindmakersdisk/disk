@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Smartlamp Connection
+Name[pt_BR]=Conexão Smartlamp
+Comment=BLE Smartlamp
+Icon=/usr/share/icons/smartlamp.png
+Exec=bash /home/mindmakers/programs/shells/smartlamp-connect.sh
+Type=Application
+Encoding=UTF-8
+Terminal=true
+Categories=None;
