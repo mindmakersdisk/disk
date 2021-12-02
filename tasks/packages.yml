@@ -205,5 +205,5 @@
     name:          logging
 - name:            Instalando speedtest-cli
   apt:
-     name:         speedtest-cli
-     state:  latest
+    name:         speedtest-cli
+    state:  latest
