@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Name=Scratch 3 Templates
+Comment=Modelos iniciais de projetos do Scratch 3
+Exec=/usr/bin/scratch3
+Terminal=false
+Type=Application
+Icon=scratch2
+Categories=Application;Game;
+StartupNotify=true
