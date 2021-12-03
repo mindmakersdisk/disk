@@ -83,32 +83,6 @@
      group: pi
      attributes: +i
      mode: 0755
-- name: Tornando ícones dentro da pasta Scratch2 mutáveis
-  file:
-    path: /home/mindmakers/Scratch2
-    state: directory
-    attributes: -i
-    recurse: yes
-- name: Copiando pasta Scratch2 - Gabaritos
-  copy:
-     src: files/teacher/Gabaritos
-     dest: /home/mindmakers/Scratch2/portuguese
-     owner: pi
-     group: pi
-     mode: 0755
-- name: Copiando pasta Scratch2 - Answer-Sheet
-  copy:
-     src: files/teacher/Answer-Sheet
-     dest: /home/mindmakers/Scratch2/english
-     owner: pi
-     group: pi
-     mode: 0755
-- name: Tornando ícones dentro da pasta Scratch2 imutáveis
-  file:
-    path: /home/mindmakers/Scratch2
-    state: directory
-    attributes: +i
-    recurse: yes
 - file:
     path: /usr/local/bin/alocar-para-instrutor.sh
     state: touch
@@ -116,33 +90,10 @@
 - file:
     path: /usr/local/bin/alocar-para-instrutor.sh
     state: absent
-- file:
-    path: "/home/pi/Área de Trabalho/scratch2_folder.desktop"
-    state: touch
-    attributes: -i
-  when: "'en_' in ansible_facts.env.LANGUAGE"
-- name: Alterando atalho da pasta Scratch2
-  lineinfile:
-    path: "/home/pi/Área de Trabalho/scratch2_folder.desktop"
-    regexp: '^Exec=pcmanfm /home/mindmakers/Scratch2/portuguese'
-    line: 'Exec=pcmanfm /home/mindmakers/Scratch2/english'
-    backrefs: yes
-  when: "'en_' in ansible_facts.env.LANGUAGE"
 # - file:
 #     path: "/home/pi/Área de Trabalho/scratch2_folder.desktop"
 #     state: touch
 #     attributes: +i
-- file:
-    path: /home/pi/Scratch2
-    state: absent
-- shell: 'sudo ln -s /home/mindmakers/Scratch2/english /home/pi/Scratch2'
-  args:
-    warn: no
-  when: "'en_' in ansible_facts.env.LANGUAGE"
-- shell: 'sudo ln -s /home/mindmakers/Scratch2/portuguese /home/pi/Scratch2'
-  args:
-    warn: no
-  when: "'pt_BR' in ansible_facts.env.LANGUAGE"
 - file:
     path: /home/pi/Fotos
     state: absent
