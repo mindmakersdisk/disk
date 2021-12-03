@@ -29,24 +29,6 @@
     line:       'wallpaper=/home/mindmakers/fundo-en.png'
     backrefs:   yes
   when:         "'en_' in ansible_facts.env.LANGUAGE"
-- file:
-    path:       /home/mindmakers/Scratch2
-    state:      directory
-    attributes: -i
-    recurse:    yes
-- name:         Copiando pasta Scratch2
-  copy:
-     src:       files/Scratch2
-     dest:      /home/mindmakers
-     owner:     pi
-     group:     pi
-     mode:      0755
-- name:         Tornando ícones dentro da pasta Scratch2 imutáveis
-  file:
-    path:       /home/mindmakers/Scratch2
-    state:      directory
-    attributes: +i
-    recurse:    yes
 - shell:        'sudo bash /home/mindmakers/programs/shells/change-shortcut2.sh'
   args:
     warn:       no
