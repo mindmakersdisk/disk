@@ -2,7 +2,7 @@
 Type=Application
 Version=1.0
 Name=Scratch 3
-Comment=Scratch 3 programming environment
+Comment=Scratch 3 Ambiente de Programação Local
 TryExec=/usr/lib/scratch3/scratch-desktop
 Exec=/usr/lib/scratch3/scratch-desktop
 Icon=scratch-desktop
