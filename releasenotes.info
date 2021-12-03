@@ -6,7 +6,6 @@ Versão 5.5 03/12/2021
 sudo apt-get update
 sudo apt-get install scratch3
 
-
 Versão 5.1 18/10/2021
 - Melhorias configuração Ansible e Log de erros.
 
