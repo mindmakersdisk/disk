@@ -49,3 +49,7 @@
 #    path:      /home/pi/.config/pcmanfm/LXDE-pi/desktop-items-0.conf
 #    state:     touch
 #    attributes: +i
+- name: Remove diretorio de projetos do Scratch2
+  ansible.builtin.file:
+    path: /home/mindmakers/Scratch2
+    state: absent
