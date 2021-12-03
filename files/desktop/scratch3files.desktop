@@ -2,7 +2,7 @@
 Version=1.0
 Name=Scratch 3 Arquivos
 Comment=Modelos iniciais de projetos do Scratch 3
-Exec=pcmanfm /home/Mind Makers/programs/Scratch3
+Exec=pcmanfm  /home/mindmakers/Scratch3
 Terminal=false
 Type=Application
 Icon=folder
