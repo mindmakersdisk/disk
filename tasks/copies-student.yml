@@ -25,20 +25,20 @@
     backrefs:   yes
   when:         "'en_' in ansible_facts.env.LANG"
 - file:
-    path:       /home/mindmakers/Scratch2
+    path:       /home/mindmakers/Scratch3
     state:      directory
     attributes: -i
     recurse:    yes
-- name:         Copiando pasta Scratch2
+- name:         Copiando pasta Scratch3
   copy:
-     src:       files/Scratch2
+     src:       files/Scratch3
      dest:      /home/mindmakers
      owner:     pi
      group:     pi
      mode:      0755
-- name:         Tornando ícones dentro da pasta Scratch2 imutáveis
+- name:         Tornando ícones dentro da pasta Scratch3 imutáveis
   file:
-    path:       /home/mindmakers/Scratch2
+    path:       /home/mindmakers/Scratch3
     state:      directory
     attributes: +i
     recurse:    yes
