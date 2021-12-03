@@ -1,6 +1,6 @@
 [Desktop Entry]
 Version=1.0
-Name=Scratch 3 Arquivos
+Name=Scratch3
 Comment=Modelos iniciais de projetos do Scratch 3
 Exec=pcmanfm  /home/mindmakers/Scratch3
 Terminal=false
