@@ -62,6 +62,9 @@
   ansible.builtin.file:
     path: /home/pi/Desktop/scratch2.desktop
     state: absent  
+- file:
+    path: /home/pi/Desktop/scratch2_folder.desktop
+    attributes:    -i
 - name: Remove atalho de pastas para projetos Scratch2
   ansible.builtin.file:
     path: /home/pi/Desktop/scratch2_folder.desktop
