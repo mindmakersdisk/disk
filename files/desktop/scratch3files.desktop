@@ -1,10 +1,9 @@
 [Desktop Entry]
 Version=1.0
-Name=Scratch 3 Templates
+Name=Scratch 3 Arquivos
 Comment=Modelos iniciais de projetos do Scratch 3
-Exec=/usr/bin/scratch3
+Exec=pcmanfm /home/Mind Makers/programs/Scratch3
 Terminal=false
 Type=Application
-Icon=scratch2
-Categories=Application;Game;
-StartupNotify=true
+Icon=folder
+Categories=None;
