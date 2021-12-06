@@ -65,18 +65,18 @@
      attributes: +i
      mode:       0755
   when:          not classroom_testdesk.stat.exists
-# - name:          Verificando ícone scratch2_folder.desktop
-#   stat:
-#      path:       "{{ path2desktop }}/scratch2_folder.desktop"
-#   register:      scratch2_folder
-# - copy:
-#      src:        files/scratch2_folder.desktop
-#      dest:       "{{ path2desktop }}/scratch2_folder.desktop"
-#      owner:      pi
-#      group:      pi
-#      attributes: +i
-#      mode:       0755
-#   when:          not scratch2_folder.stat.exists
+- name:          Verificando ícone scratch2_folder.desktop
+  stat:
+     path:       "{{ path2desktop }}/scratch2_folder.desktop"
+  register:      scratch2_folder
+- copy:
+     src:        files/scratch2_folder.desktop
+     dest:       "{{ path2desktop }}/scratch2_folder.desktop"
+     owner:      pi
+     group:      pi
+     attributes: +i
+     mode:       0755
+  when:          not scratch2_folder.stat.exists
 
 - name:          Copiando atalho cybersecurity.desktop
   copy:
@@ -127,38 +127,38 @@
     state:       directory
     attributes:  +i
     recurse:     yes
-# - name:          Alterando atributos do atalho da pasta scratch2
-#   shell:         'sudo chattr -i /home/pi/Desktop/scratch2_folder.desktop'
-#   args:
-#     warn:        no
-# - name:          Alterando atalho da pasta Scratch2
-#   lineinfile:
-#     path:        "{{ path2desktop }}/scratch2_folder.desktop"
-#     regexp:      '^Exec=pcmanfm /home/mindmakers/Scratch2/portuguese'
-#     line:        'Exec=pcmanfm /home/mindmakers/Scratch2/english'
-#     backrefs:    yes
-#   when:          "'en_' in ansible_facts.env.LANGUAGE"
-# - lineinfile:
-#     path:        "{{ path2desktop }}/scratch2_folder.desktop"
-#     regexp:      '^Exec=pcmanfm /home/mindmakers/Scratch2/english'
-#     line:        'Exec=pcmanfm /home/mindmakers/Scratch2/portuguese'
-#     backrefs:    yes
-#   when:          "'pt_BR' in ansible_facts.env.LANGUAGE"
-# - name:          Alterando atributos do atalho da pasta scratch2
-#   shell:         'sudo chattr +i /home/pi/Desktop/scratch2_folder.desktop'
-#   args:
-#     warn:        no
+- name:          Alterando atributos do atalho da pasta scratch2
+  shell:         'sudo chattr -i /home/pi/Desktop/scratch2_folder.desktop'
+  args:
+    warn:        no
+- name:          Alterando atalho da pasta Scratch2
+  lineinfile:
+    path:        "{{ path2desktop }}/scratch2_folder.desktop"
+    regexp:      '^Exec=pcmanfm /home/mindmakers/Scratch2/portuguese'
+    line:        'Exec=pcmanfm /home/mindmakers/Scratch2/english'
+    backrefs:    yes
+  when:          "'en_' in ansible_facts.env.LANGUAGE"
+- lineinfile:
+    path:        "{{ path2desktop }}/scratch2_folder.desktop"
+    regexp:      '^Exec=pcmanfm /home/mindmakers/Scratch2/english'
+    line:        'Exec=pcmanfm /home/mindmakers/Scratch2/portuguese'
+    backrefs:    yes
+  when:          "'pt_BR' in ansible_facts.env.LANGUAGE"
+- name:          Alterando atributos do atalho da pasta scratch2
+  shell:         'sudo chattr +i /home/pi/Desktop/scratch2_folder.desktop'
+  args:
+    warn:        no
 - file:
     path:        /home/pi/Scratch2
     state:       absent
-# - shell:         'sudo ln -s /home/mindmakers/Scratch2/english /home/pi/Scratch2'
-#   args:
-#     warn:        no
-#   when:          "'en_' in ansible_facts.env.LANGUAGE"
-# - shell:         'sudo ln -s /home/mindmakers/Scratch2/portuguese /home/pi/Scratch2'
-#   args:
-#     warn:        no
-#   when:          "'pt_BR' in ansible_facts.env.LANGUAGE"
+- shell:         'sudo ln -s /home/mindmakers/Scratch2/english /home/pi/Scratch2'
+  args:
+    warn:        no
+  when:          "'en_' in ansible_facts.env.LANGUAGE"
+- shell:         'sudo ln -s /home/mindmakers/Scratch2/portuguese /home/pi/Scratch2'
+  args:
+    warn:        no
+  when:          "'pt_BR' in ansible_facts.env.LANGUAGE"
 - file:
     path:        /home/pi/Fotos
     state:       absent
