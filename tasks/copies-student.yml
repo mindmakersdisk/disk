@@ -45,6 +45,24 @@
 - shell:        'sudo bash /home/mindmakers/programs/shells/change-shortcut2.sh'
   args:
     warn:       no
+- file:
+    path:       /home/mindmakers/AppInventor
+    state:      directory
+    attributes: -i
+    recurse:    yes
+- name:         Copiando pasta App Inventor
+  copy:
+     src:       files/AppInventor
+     dest:      /home/mindmakers
+     owner:     pi
+     group:     pi
+     mode:      0755
+- name:         Tornando itens dentro da pasta AppInventor imutáveis
+  file:
+    path:       /home/mindmakers/AppInventor
+    state:      directory
+    attributes: +i
+    recurse:    yes
 #- file:
 #    path:      /home/pi/.config/pcmanfm/LXDE-pi/desktop-items-0.conf
 #    state:     touch
