@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=App Inventor
+Comment=Modelos iniciais de projetos do App Inventor
+Exec=pcmanfm  /home/mindmakers/AppInventor
+Terminal=false
+Type=Application
+Icon=folder
+Categories=None;
