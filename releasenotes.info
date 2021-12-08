@@ -1,10 +1,11 @@
 ########### IMAGEM DE DISCO MIND MAKERS ###########
 Versão 5.5 03/12/2021
 - Instalação da extensão de otimização do Google Chromium - The Marvellous Suspender. Atenção: ativar manualmente, em todas as estações.
-- Pasta de projetos template Scratch3, contendo todos os arquivos ".sb3" para os alunos usarem. organizados por módulo e liçao. 
+- Pasta de projetos template Scratch3, contendo todos os arquivos ".sb3" para os alunos usarem como partida dos projetos, organizados por módulo e liçao. 
    Obs.: para instalação do Scratch3 local, abrir um Terminal e executar:
 sudo apt-get update
 sudo apt-get install scratch3
+- Pasta de projetos template AppInventor, contendo todos os arquivos ".aia" para os alunos usarem como partida dos projetos, organizados por módulo e liçao. 
 
 Versão 5.1 18/10/2021
 - Melhorias configuração Ansible e Log de erros.
