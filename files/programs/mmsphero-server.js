@@ -1,6 +1,6 @@
 /*
   Serviço Node para controle do robô Sphero  - usar somente para o Sphero Cinza SPRK, bluetooth 2.x
-  Paulo Alvim 20/12/2016
+  Paulo Alvim 20/12/2016. Atualizado em 27/12/2021
 
   1. Certificar-se que o bluetooth do PI está ligado
   2. Rodar com "sudo node app.js [macaddress]", onde macaddress é de um sphero visível pelo bluetooth. Ex.: sudo node mmsphero-server.js E8:8A:B4:69:69:99
