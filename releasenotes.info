@@ -1,4 +1,6 @@
 ########### IMAGEM DE DISCO MIND MAKERS ###########
+Versão 5.6 28/12/2021
+- Configuração bluetooth.service para uso experimental de webbluetooth no Chromium.
 Versão 5.5 03/12/2021
 - Instalação da extensão de otimização do Google Chromium - The Marvellous Suspender. Atenção: ativar manualmente, em todas as estações.
 - Pasta de projetos template Scratch3, contendo todos os arquivos ".sb3" para os alunos usarem como partida dos projetos, organizados por módulo e liçao. 
