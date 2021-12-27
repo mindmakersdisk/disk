@@ -6,6 +6,7 @@ ConditionPathIsDirectory=/sys/class/bluetooth
 [Service]
 Type=dbus
 BusName=org.bluez
+# adiciona -E para uso experimental que suporta webbluetooth
 ExecStart=/usr/lib/bluetooth/bluetoothd -E &
 NotifyAccess=main
 #WatchdogSec=10
