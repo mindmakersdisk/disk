@@ -1,3 +1,16 @@
+- name: Verifica se existe o arquivo scratch2_folder
+  ansible.builtin.stat:
+    path:  /home/pi/Desktop/scratch2_folder.desktop
+  register: p
+- file:
+    path: /home/pi/Desktop/scratch2_folder.desktop
+    attributes:    -i
+    when: p.stat.exists is defined and p.stat.exists
+- name: Remove atalho de pastas para projetos Scratch2
+  ansible.builtin.file:
+    path: /home/pi/Desktop/scratch2_folder.desktop
+    state: absent
+    when: p.stat.exists is defined and p.stat.exists
 - name:         Criando pastas de configuração
   file:
     path:       /home/pi/.config/pcmanfm
@@ -80,16 +93,3 @@
   ansible.builtin.file:
     path: /home/pi/Desktop/scratch2.desktop
     state: absent
-- name: Verifica se existe o arquivo scratch2_folder
-  ansible.builtin.stat:
-    path:  /home/pi/Desktop/scratch2_folder.desktop
-  register: st
-- file:
-    path: /home/pi/Desktop/scratch2_folder.desktop
-    attributes:    -i
-    when: st.stat.exists
-- name: Remove atalho de pastas para projetos Scratch2
-  ansible.builtin.file:
-    path: /home/pi/Desktop/scratch2_folder.desktop
-    state: absent
-    when: st.stat.exists
