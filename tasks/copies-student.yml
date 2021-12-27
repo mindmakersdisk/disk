@@ -80,16 +80,16 @@
 #    path:      /home/pi/.config/pcmanfm/LXDE-pi/desktop-items-0.conf
 #    state:     touch
 #    attributes: +i
-- file:
-    path:          /home/mindmakers/Scratch2
-    state:         directory
-    attributes:    -i
-    recurse:       yes
-- name: Remove diretorio de projetos do Scratch2
-  ansible.builtin.file:
-    path: /home/mindmakers/Scratch2
-    state: absent
-- name: Remove atalho para executar o Scratch2
-  ansible.builtin.file:
-    path: /home/pi/Desktop/scratch2.desktop
-    state: absent
+#- file:
+#    path:          /home/mindmakers/Scratch2
+#    state:         directory
+#    attributes:    -i
+#    recurse:       yes
+#- name: Remove diretorio de projetos do Scratch2
+#  ansible.builtin.file:
+#    path: /home/mindmakers/Scratch2
+#    state: absent
+#- name: Remove atalho para executar o Scratch2
+#  ansible.builtin.file:
+#    path: /home/pi/Desktop/scratch2.desktop
+#    state: absent
