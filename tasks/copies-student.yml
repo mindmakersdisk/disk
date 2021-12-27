@@ -80,7 +80,8 @@
   ansible.builtin.file:
     path: /home/pi/Desktop/scratch2.desktop
     state: absent  
-- name: Verifica se existe o arquivo scratch2_folder.desktop
+- name: Verifica se existe o arquivo scratch2_folder
+    ansible.builtin.file:
     stat:
       path: /home/pi/Desktop/scratch2_folder.desktop
     register: scratch2folder
