@@ -27,26 +27,7 @@
     - set_fact:
         path2desktop:  "{{ adt.stat.path }}"
       when:            adt.stat.exists
-      
-    - name: Verifica se existe o arquivo scratch2_folder
-       ansible.builtin.stat:
-        path:  /home/pi/Desktop/scratch2_folder.desktop
-       register: p
-    - file:
-      path: /home/pi/Desktop/scratch2_folder.desktop
-      attributes:    -i
-      when: p.stat.exists is defined and p.stat.exists
-    - name: Verifica se existe o arquivo scratch2_folder novamente
-      ansible.builtin.stat:
-       path:  /home/pi/Desktop/scratch2_folder.desktop
-      register: p
-    - name: Remove atalho de pastas para projetos Scratch2
-      ansible.builtin.file:
-        path: /home/pi/Desktop/scratch2_folder.desktop
-      state: absent
-      when: p.stat.exists is defined and p.stat.exists      
-      
-      
+    - include:         tasks/copies-student.yml
     - include:         tasks/teacher-en.yml
     - include:         tasks/copies.yml
     - include:         tasks/packages.yml
@@ -61,8 +42,6 @@
     - include:         tasks/avahi.yml
     - include:         tasks/raspi-config.yml
 
-
-    - include:         tasks/copies-student.yml
     - include:         tasks/3dslash.yml
     - include:         tasks/sound-change-teacher.yml
 
