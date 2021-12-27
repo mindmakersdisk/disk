@@ -18,7 +18,7 @@
       when:            not ansible_facts.lsb.codename == "buster"
 
   tasks:
-  - name: Verifica se existe o arquivo scratch2_folder
+ - name: Verifica se existe o arquivo scratch2_folder
   ansible.builtin.stat:
     path:  /home/pi/Desktop/scratch2_folder.desktop
   register: p
@@ -26,12 +26,16 @@
     path: /home/pi/Desktop/scratch2_folder.desktop
     attributes:    -i
     when: p.stat.exists is defined and p.stat.exists
+ - name: Verifica se existe o arquivo scratch2_folder
+  ansible.builtin.stat:
+    path:  /home/pi/Desktop/scratch2_folder.desktop
+  register: p
 - name: Remove atalho de pastas para projetos Scratch2
   ansible.builtin.file:
     path: /home/pi/Desktop/scratch2_folder.desktop
     state: absent
     when: p.stat.exists is defined and p.stat.exists
-    - set_fact:
+ - set_fact:
         path2desktop:  "/home/pi/Desktop"
     - name:            Verificando se diretório Área de Trabalho existe
       stat:
