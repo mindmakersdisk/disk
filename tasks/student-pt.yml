@@ -110,17 +110,17 @@
 #     path: "/home/pi/Área de Trabalho/scratch2_folder.desktop"
 #     state: touch
 #     attributes: +i
-- file:
-    path: /home/pi/Scratch2
-    state: absent
-- shell: 'sudo ln -s /home/mindmakers/Scratch2/english /home/pi/Scratch2'
-  args:
-    warn: no
-  when: "'en_' in ansible_facts.env.LANGUAGE"
-- shell: 'sudo ln -s /home/mindmakers/Scratch2/portuguese /home/pi/Scratch2'
-  args:
-    warn: no
-  when: "'pt_BR' in ansible_facts.env.LANGUAGE"
+#- file:
+#    path: /home/pi/Scratch2
+#    state: absent
+#- shell: 'sudo ln -s /home/mindmakers/Scratch2/english /home/pi/Scratch2'
+#  args:
+#    warn: no
+#  when: "'en_' in ansible_facts.env.LANGUAGE"
+#- shell: 'sudo ln -s /home/mindmakers/Scratch2/portuguese /home/pi/Scratch2'
+#  args:
+#    warn: no
+#  when: "'pt_BR' in ansible_facts.env.LANGUAGE"
 - file:
     path: /home/pi/Fotos
     state: absent
