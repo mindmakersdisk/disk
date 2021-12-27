@@ -113,3 +113,8 @@
      dest:         /home/mindmakers/imgs
      remote_src:   yes
      mode:         0755
+- name:            Copiando arquivo de configuracao experimental para webbluetooth
+  copy:
+     src:          files/bluetooth.service
+     dest:         /lib/systemd/system
+     mode:         0755
