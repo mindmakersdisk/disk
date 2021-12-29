@@ -415,32 +415,19 @@ var WebSocketServer = require('websocket').server;
 
 var http = require('http');
 
+var intervalComandos=null;
 
 function controlaSphero() {
 
-  //console.log("Entrou no controlador do Sphero: "+macaddressArg);
+  console.log("################# Entrou no controlador do Sphero: "+macaddressArg);
 
   var sphero = require("spherobolt"),
     bb8 = sphero(macaddressArg, {
       emitPacketErrors: false
     });
- 
-
-  // submete comandos dinamicamente, para o SPRK+
-  bb8.connect(function() {
-     console.log('########### Entrou em bb8.connect');
-    bb8.ping(function(err, data) {
-      if (err)
-        console.log(err);
-    }); // Importante: evita travamentos inesperados
-
-    bb8.version(function(err, data) {
-      if (err) {
-        console.error((new Date().toLocaleString()) + " err:", err);
-      } else {
-
-        console.log('\x1b[0m\x1b[32m', 'Leitura de componentes digitais do SPHERO via bluetooth ativada');
-        console.log('\x1b[0m\x1b[32m', '                Controlador SPHERO Ativo v' + VERSAO);
+    
+        console.log('\x1b[0m\x1b[32m', 'Leitura de componentes digitais do SPHERO BOLT via bluetooth ativada');
+        console.log('\x1b[0m\x1b[32m', '                Controlador SPHERO BOLT Ativo v' + VERSAO);
         console.log('\x1b[0m', '---------------------------------------------------------------');
         console.log('\x1b[0m', '---------        TESTE E CONTROLE POR TECLADO        ----------');
         console.log('\x1b[0m', '---------                                            ----------');
@@ -458,93 +445,131 @@ function controlaSphero() {
         console.log('\x1b[0m', '---- Se for o primeiro uso, teste todos os comandos acima! ----');
         console.log('\x1b[0m', '---------------------------------------------------------------');
         console.log('');
-        console.log('\x1b[0m', (new Date().toLocaleString()) + " Versão:" + data.msaVer + '.' + data.msaRev);
         console.log('');
-      }
-    });
+        
+      count = 0;
 
-    // console.log('Conectou com sucesso!! Aguardando comandos em http://localhost?code=')
+    intervalComandos = setInterval(function() {
+      
+       if (bb8 && bb8.connection && bb8.connection.peripheral) {
+      
+        if (count % 60 == 0) {
+          //console.log('####### Conexao = '+bb8+' bb8.connection =',bb8.connection);
+          if (bb8.connection.peripheral.state == "connected") {
+            estado = 'conectado'
+          } else {
+            estado = bb8.connection.peripheral.state;
+          }
+          console.log('\x1b[32m', (new Date().toLocaleString()) + ' Sphero ' + estado + '. Verificando comandos ...');
+
+          //console.log(bb8);
+
+        }
+
+        //console.log(bb8.busy);
+        //console.log(bb8.connection.peripheral.state);
+
+        if (count % 5 == 0) {
+
+          if (bb8.connection.peripheral.state != "connected") {
+            console.log('\x1b[31m', '-----------------------------------------------------------------------');
+            console.log('\x1b[31m', (new Date().toLocaleString()) + " Sphero desonectou! Caso não tenha sido intencional,");
+            console.log('\x1b[31m', "                   feche esta janela e reinicie o serviço.");
+            console.log('\x1b[0m\x1b[31m', '-----------------------------------------------------------------------');
+            modoRegistro = true;
+
+            process.exit();
+
+          };
+        }
+        count++;
+
+        if (count == 1) {
+       //   code = 'bb8.setInactivityTimeout(1500);';
+        //  bb8.setDefaultSettings();
+
+        }
+
+
+        if (code != '') {
+
+          try {
+
+            console.log('\x1b[32m', '### Vai executar: ' + code)
+
+            eval(code);
+
+            if (!eConfig) {}
+
+          } catch (e) {
+
+            console.log((new Date().toLocaleString()) + '### Erro ao tentar executar comando. Erro: ' + e)
+
+            if (temNodeRedConectado()) {
+
+              ipc.server.emit(
+                socket,
+                'error.message', {
+                  id: ipc.config.id,
+                  message: e
+                }
+              );
+
+            }
+
+
+          }
+          code = ''
+
+        }
+      }
+
+    }, 1000);
+    
+ 
+  //console.log('##########bb8',bb8);
+
+  // submete comandos dinamicamente, para o SPRK+
+  bb8.connect(function() {
+     console.log('########### Entrou em bb8.connect');
+    
+    bb8.ping(function(err, data) {
+          console.log('########### Entrou em ping');
+      if (err)
+        console.log(err);
+      else {
+        /*
+        console.log('\x1b[0m\x1b[32m', 'Leitura de componentes digitais do SPHERO BOLT via bluetooth ativada');
+        console.log('\x1b[0m\x1b[32m', '                Controlador SPHERO BOLT Ativo v' + VERSAO);
+        console.log('\x1b[0m', '---------------------------------------------------------------');
+        console.log('\x1b[0m', '---------        TESTE E CONTROLE POR TECLADO        ----------');
+        console.log('\x1b[0m', '---------                                            ----------');
+        console.log('\x1b[0m', '--------- SETAS > MOVIMENTO                          ----------');
+        console.log('\x1b[0m', '--------- BARRA DE ESPAÇO > COMEÇAR/PARAR CALIBRAGEM ----------');
+        console.log('\x1b[0m', '--------- R > LUZ VERMELHA                           ----------');
+        console.log('\x1b[0m', '--------- G > LUZ VERDE                              ----------');
+        console.log('\x1b[0m', '--------- B > LUZ AZUL                               ----------');
+        console.log('\x1b[0m', '--------- Y > LUZ AMARELA                            ----------');
+        console.log('\x1b[0m', '--------- 1 > LUZ BRANCA                             ----------');
+        console.log('\x1b[0m', '--------- 0 > DESLIGAR LUZ                           ----------');
+        console.log('\x1b[0m', '--------- CTRL + C > FINALIZA PROGRAMA               ----------');
+        console.log('\x1b[0m', '---------                                            ----------');
+        console.log('\x1b[0m', '---------------------------------------------------------------');
+        console.log('\x1b[0m', '---- Se for o primeiro uso, teste todos os comandos acima! ----');
+        console.log('\x1b[0m', '---------------------------------------------------------------');
+        console.log('');
+        console.log('');
+        */
+      }
+    }); // Importante: evita travamentos inesperados
+
+    //console.log('Conectou com sucesso!! Aguardando comandos em http://localhost?code=')
 
     // console.error('\x1b[32m', '---------------------------------------------------');
     // console.error('\x1b[0m\x1b[32m', '-- Conectou com sucesso!! Aguardando comandos  ----');
     // console.error('\x1b[0m\x1b[32m', '---------------------------------------------------');
 
-    count = 0;
-
-    setInterval(function() {
-
-      if (count % 60 == 0) {
-        console.log('####### Conexao = '+bb8+' bb8.connection ='+bb8.connection);
-        if (bb8.connection.peripheral.state == "connected") {
-          estado = 'conectado'
-        } else {
-          estado = bb8.connection.peripheral.state;
-        }
-        console.log('\x1b[32m', (new Date().toLocaleString()) + ' Sphero ' + estado + '. Verificando comandos ...');
-
-        //console.log(bb8);
-
-      }
-
-      //console.log(bb8.busy);
-      //console.log(bb8.connection.peripheral.state);
-
-      if (count % 5 == 0) {
-
-        if (bb8.connection.peripheral.state != "connected") {
-          console.log('\x1b[31m', '-----------------------------------------------------------------------');
-          console.log('\x1b[31m', (new Date().toLocaleString()) + " Sphero desonectou! Caso não tenha sido intencional,");
-          console.log('\x1b[31m', "                   feche esta janela e reinicie o serviço.");
-          console.log('\x1b[0m\x1b[31m', '-----------------------------------------------------------------------');
-          modoRegistro = true;
-
-          process.exit();
-
-        };
-      }
-      count++;
-
-      if (count == 1) {
-        code = 'bb8.setInactivityTimeout(1500);';
-        bb8.setDefaultSettings();
-
-      }
-
-
-      if (code != '') {
-
-        try {
-
-          console.log('\x1b[32m', (new Date().toLocaleString()) + ' Vai executar: ' + code)
-
-          eval(code);
-
-          if (!eConfig) {}
-
-        } catch (e) {
-
-          console.log((new Date().toLocaleString()) + ' Erro ao tentar executar comando. Erro: ' + e)
-
-          if (temNodeRedConectado()) {
-
-            ipc.server.emit(
-              socket,
-              'error.message', {
-                id: ipc.config.id,
-                message: e
-              }
-            );
-
-          }
-
-
-        }
-        code = ''
-
-      }
-
-    }, 1000);
-
+  
     //tentativa diminuir eventos de colisão que estavam sendo disparados somente por movimento
     //var opts = {
     //device: "bb8",
@@ -669,7 +694,7 @@ function controlaSphero() {
 
   bb8.once('disconnect', function() {
 
-    console.log('\x1b[0m', (new Date().toLocaleString()) + " desonectou");
+    console.log('\x1b[0m', (new Date().toLocaleString()) + " desconectou");
 
   });
 
@@ -681,6 +706,7 @@ function controlaSphero() {
 
   process.on('SIGHUP', function() {
     //tentativa desconexão ao fechar a janela, funciona em ubuntu. estava SIGINT antes.
+     console.log('INTERCEPTOU SIGHUP!');
     bb8.sleep(10, 0, 0, function(err, data) {
       console.log((new Date().toLocaleString()) + 'Obrigado, até a próxima!');
       console.log(err || "data: " + JSON.stringify(data));
@@ -702,10 +728,17 @@ function controlaSphero() {
 
     if (key.ctrl && key.name === 'c') {
 
+      console.log("############ COMANDO DE control+C VIA CONSOLE DETECTADO. SAINDO EM 5 SEGS!");
+      
       bb8.sleep(10, 0, 0, function(err, data) {
-        //console.log(err || "data: " + JSON.stringify(data));
-        process.exit();
+        console.log(err || "erro ao tentar adormecer o Bolt - data: " + JSON.stringify(data));
       });
+      
+      clearInterval(intervalComandos)
+      intervalComandos=null;
+      
+      setTimeout(function(){process.exit();},5000);
+      
 
     } else if (key.ctrl && key.name === 'q') {
 
@@ -776,10 +809,12 @@ function controlaSphero() {
         if (key.name == 'space') {
 
           if (calli == false) {
-            bb8.startCalibration();
+            bb8.setBackLed(255);
+           // bb8.startCalibration();
             calli = true;
           } else if (calli == true) {
-            bb8.finishCalibration();
+            bb8.setBackLed(0);
+           // bb8.finishCalibration();
             calli = false;
           }
         }
@@ -806,15 +841,18 @@ function controlaSphero() {
         }
         if (key.name == 'r') {
           bb8.color("red");
+          //bb8.colorMatrix("red");
         }
         if (key.name == 'y') {
           bb8.color("yellow");
         }
         if (key.name == 'g') {
           bb8.color("green");
+         // bb8.colorMatrix("green");
         }
         if (key.name == 'b') {
-          bb8.color("blue");
+         bb8.color("blue");
+          //bb8.colorMatrix("blue");
         }
         if (key.name == 'w') {
           bb8.color("white");
@@ -1041,7 +1079,8 @@ wsServer.on('request', function(request) {
   console.log((new Date().toLocaleString()) + ' Conexão aceita.');
 
   if (temClienteConectado()) {
-    enviaMsgParaTodosClientes('conectado:' + macaddressArg + ',sala:' + sala_registrado + ',estacao:' + estacao_registrado + ',escola:' + escolaid);
+    enviaMsgParaTodosClientes('conectado:' + macaddressArg + ',sala:' + sala_registrado + ',estacao:' 
+            + estacao_registrado + ',escola:' + escolaid+',indBolt:1');
     notificouClienteConexao = true;
     contadorIntervalo = 0;
   }
