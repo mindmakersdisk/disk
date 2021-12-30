@@ -3,7 +3,7 @@ sudo fuser -k 80/tcp
 
 echo "********************************************************************************"
 echo "*                                                                              *"
-echo "*                 Serviço de configuração e conexão do Sphero BOLT!            *"
+echo "*                 Serviço de registro do Sphero BOLT!                          *"
 echo "*                                                                              *"
 echo "********************************************************************************"
 
