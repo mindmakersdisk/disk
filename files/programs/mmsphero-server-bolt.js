@@ -133,7 +133,7 @@ var questionsConfigurado = [{
 var questionsNaoConfigurado = [{
   type: 'list',
   name: 'configurar',
-  message: "Aproxime um Sphero carregado e aperte enter para configurá-lo nesta estação",
+  message: "Aproxime um Sphero Bolt carregado e aperte enter para configurá-lo nesta estação",
   default: REGISTRAR,
   choices: [REGISTRAR]
 }];
@@ -263,7 +263,7 @@ function registraAposConferirAtivacao(login, senha) {
           }
           setTimeout(encerraAposLeitura, 15000);
         } else {
-          console.log('\x1b[32m', 'Sphero registrado na plataforma com sucesso! ');
+          console.log('\x1b[32m', 'Sphero Bolt registrado na plataforma com sucesso! ');
           // Modifica o atalho e variável
           atualizaAtalhoSphero();
           setTimeout(encerraAposLeitura, 10000);
@@ -419,7 +419,22 @@ var intervalComandos=null;
 
 function controlaSphero() {
 
+    console.log('\x1b[0m\x1b[32m', 'ATENÇÃO! O SPHERO BOLT utiliza Webbluetooth');
+    console.log('\x1b[0m\x1b[32m', 'Apenas o registro do SPHERO BOLT é feito neste serviço');
+    console.log('\x1b[0m\x1b[32m', 'A conexão e controle são feitos diretamente no Navegador');
+    console.log('\x1b[0m', '---------------------------------------------------------------');
+    console.log('\x1b[0m', '---------   CLIQUE NO ÍCONE DE BLUETOOTH NO TOPO     ----------');
+    console.log('\x1b[0m', '---------   DO AMBIENTE DE PROGRAMAÇÃO               ----------');
+    console.log('\x1b[0m', '---------   E SIGA AS INSTRUÇÕES                     ----------');
+    console.log('\x1b[0m', '---------------------------------------------------------------');
+    console.log('');
+    console.log('');
+    process.exit();
+
+/*
   console.log("################# Entrou no controlador do Sphero: "+macaddressArg);
+
+   AJUSTE EM DEZ/2021 - PENDENTE HOMOLOGAR SPHERO BOLT NO CONTROLADOR PI
 
   var sphero = require("spherobolt"),
     bb8 = sphero(macaddressArg, {
@@ -473,7 +488,7 @@ function controlaSphero() {
 
           if (bb8.connection.peripheral.state != "connected") {
             console.log('\x1b[31m', '-----------------------------------------------------------------------');
-            console.log('\x1b[31m', (new Date().toLocaleString()) + " Sphero desonectou! Caso não tenha sido intencional,");
+            console.log('\x1b[31m', (new Date().toLocaleString()) + " Sphero desconectou! Caso não tenha sido intencional,");
             console.log('\x1b[31m', "                   feche esta janela e reinicie o serviço.");
             console.log('\x1b[0m\x1b[31m', '-----------------------------------------------------------------------');
             modoRegistro = true;
@@ -532,64 +547,6 @@ function controlaSphero() {
   // submete comandos dinamicamente, para o SPRK+
   bb8.connect(function() {
      console.log('########### Entrou em bb8.connect');
-    
-    bb8.ping(function(err, data) {
-          console.log('########### Entrou em ping');
-      if (err)
-        console.log(err);
-      else {
-        /*
-        console.log('\x1b[0m\x1b[32m', 'Leitura de componentes digitais do SPHERO BOLT via bluetooth ativada');
-        console.log('\x1b[0m\x1b[32m', '                Controlador SPHERO BOLT Ativo v' + VERSAO);
-        console.log('\x1b[0m', '---------------------------------------------------------------');
-        console.log('\x1b[0m', '---------        TESTE E CONTROLE POR TECLADO        ----------');
-        console.log('\x1b[0m', '---------                                            ----------');
-        console.log('\x1b[0m', '--------- SETAS > MOVIMENTO                          ----------');
-        console.log('\x1b[0m', '--------- BARRA DE ESPAÇO > COMEÇAR/PARAR CALIBRAGEM ----------');
-        console.log('\x1b[0m', '--------- R > LUZ VERMELHA                           ----------');
-        console.log('\x1b[0m', '--------- G > LUZ VERDE                              ----------');
-        console.log('\x1b[0m', '--------- B > LUZ AZUL                               ----------');
-        console.log('\x1b[0m', '--------- Y > LUZ AMARELA                            ----------');
-        console.log('\x1b[0m', '--------- 1 > LUZ BRANCA                             ----------');
-        console.log('\x1b[0m', '--------- 0 > DESLIGAR LUZ                           ----------');
-        console.log('\x1b[0m', '--------- CTRL + C > FINALIZA PROGRAMA               ----------');
-        console.log('\x1b[0m', '---------                                            ----------');
-        console.log('\x1b[0m', '---------------------------------------------------------------');
-        console.log('\x1b[0m', '---- Se for o primeiro uso, teste todos os comandos acima! ----');
-        console.log('\x1b[0m', '---------------------------------------------------------------');
-        console.log('');
-        console.log('');
-        */
-      }
-    }); // Importante: evita travamentos inesperados
-
-    //console.log('Conectou com sucesso!! Aguardando comandos em http://localhost?code=')
-
-    // console.error('\x1b[32m', '---------------------------------------------------');
-    // console.error('\x1b[0m\x1b[32m', '-- Conectou com sucesso!! Aguardando comandos  ----');
-    // console.error('\x1b[0m\x1b[32m', '---------------------------------------------------');
-
-  
-    //tentativa diminuir eventos de colisão que estavam sendo disparados somente por movimento
-    //var opts = {
-    //device: "bb8",
-    //meth: 0x01,
-    //xt: 0xff,
-    //yt: 0xff,
-    //xs: 0xff,
-    //ys: 0xff,
-    //dead: 0xf0
-    //}
-    //bb8.detectCollisions(opts);
-
-
-    // bb8.detectCollisions({
-    //   device: "bb8"
-    // });
-
-
-    //ver se da pra diminuir falso-positivo com detectFreefall
-    //bb8.detectFreefall();
 
     bb8.on("freefall", function(data) {
       //console.log("freefall detected");
@@ -683,7 +640,7 @@ function controlaSphero() {
 
   bb8.on("error", function(err, data) {
     // Do something with the err or just ignore.
-    console.log('\x1b[0m', (new Date().toLocaleString()) + "bb8.onerro");
+    console.log('\x1b[0m', (new Date().toLocaleString()) + "bb8.onerror");
     if (err) {
       console.log('\x1b[0m', (new Date().toLocaleString()) + " error: ", err);
     } else {
@@ -728,7 +685,9 @@ function controlaSphero() {
 
     if (key.ctrl && key.name === 'c') {
 
-      console.log("############ COMANDO DE control+C VIA CONSOLE DETECTADO. SAINDO EM 5 SEGS!");
+      console.log("###############################################################################");
+      console.log("############ COMANDO DE control+C VIA CONSOLE DETECTADO. SAINDO EM 5 SEGS! ####");
+      console.log("###############################################################################");
       
       bb8.sleep(10, 0, 0, function(err, data) {
         console.log(err || "erro ao tentar adormecer o Bolt - data: " + JSON.stringify(data));
@@ -821,6 +780,7 @@ function controlaSphero() {
         if (key.name == '2') {
           //bb8.stop();
           bb8.roll(0, lastdir);
+          
         }
 
         if (key.name == 'up') {
@@ -872,6 +832,8 @@ function controlaSphero() {
       }
     }
   });
+  * 
+  * */
 }
 
 
