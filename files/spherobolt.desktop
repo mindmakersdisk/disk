@@ -1,7 +1,7 @@
 [Desktop Entry]
-Name=Sphero Bolt Connection
-Name[pt_BR]=Conexão Bolt
-Comment=Servidor Node.js que controla o Sphero Bolt. Para ser chamado do Mind Makers Blockly na porta 80
+Name=Bolt Register
+Name[pt_BR]=Registro Bolt
+Comment=Servidor Node.js que registra o Sphero Bolt. Para ser chamado do Mind Makers Blockly na porta 80
 Icon=/usr/share/icons/spherobolt.png
 Exec=bash /home/mindmakers/programs/shells/sphero-connect-bolt.sh
 Type=Application
