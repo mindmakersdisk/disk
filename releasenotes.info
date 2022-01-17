@@ -1,4 +1,7 @@
 ########### IMAGEM DE DISCO MIND MAKERS ###########
+Versão 5.7 17/01/2022
+- Criação da shell /home/mindmakers/programs/shells/chromium-update.sh para retroceder a versão do do Google Chromium para 88*, devido ao bug introduzido para execução do Scratch3. Executar "sudo bash chromium-update.sh" no diretório de shells acima.
+- Suspensão temporária da atualização automática do Google Chromium, devido ao bug acima.
 Versão 5.6 28/12/2021
 - Configuração bluetooth.service para uso experimental de webbluetooth no Chromium.
 - Serviço de registro do Sphero Bolt (Obs.: não funciona como controlador. Uso deve ser por webbluetooth via navegador)
