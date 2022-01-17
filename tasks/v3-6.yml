@@ -60,7 +60,7 @@
 - name:     update chromium
   apt:
     name:   chromium-browser
-    state:  latest
+    state:  88
 
 - name:     Instalando pigpio
   apt:
