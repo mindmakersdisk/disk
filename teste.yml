@@ -1,5 +1,6 @@
-- hosts:               gabrielPi
-
+- hosts:       all
+  remote_user: root
+  
   tasks:
 
     # - include:         tasks/rpimonitor.yml
@@ -7,8 +8,8 @@
     # - include:         tasks/ansibleVirtualENV.yml
     # - include:         tasks/reboot.yml
     #
-    - name:     update chromium para release 88.
-        apt:
+    - name:     update chromium para release 88
+       apt:
             name:   chromium-browser=88.0.4324.187*
             state:  fixed
 
