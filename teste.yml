@@ -8,10 +8,10 @@
     # - include:         tasks/ansibleVirtualENV.yml
     # - include:         tasks/reboot.yml
     #
-    - name:     update chromium para release 88
-       apt:
-            name:   chromium-browser=88.0.4324.187*
-            state:  fixed
+- name:     update chromium para release 88.
+  apt:
+    name:   chromium-browser=88.0.4324.187
+    state:  fixed
 
     # - include:         tasks/student-en.yml
 
