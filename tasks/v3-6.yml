@@ -57,7 +57,7 @@
 - shell:    'sudo systemctl daemon-reload'
   args:
     warn:   no
-- name:     update chromium
+- name:     update chromium teste
   apt:
     name:   chromium-browser
     state:  88
