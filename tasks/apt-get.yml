@@ -6,10 +6,6 @@
 #  apt:
 #     name:     chromium-browser
 #     state:    latest
-# - name:       Atualizando o Scratch2
-#   apt:
-#      name:    scratch2
-#      state:   latest
 
 - name:         Removendo pacotes desnecessários do cache
   apt:
