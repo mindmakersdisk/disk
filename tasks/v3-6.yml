@@ -57,10 +57,10 @@
 - shell:    'sudo systemctl daemon-reload'
   args:
     warn:   no
-- name:     update chromium teste
+- name:     update chromium para release 88.
   apt:
-    name:   chromium-browser
-    state:  88
+    name:   chromium-browser=88*
+    state:  fixed
 
 - name:     Instalando pigpio
   apt:
