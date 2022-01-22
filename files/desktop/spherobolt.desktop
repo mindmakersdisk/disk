@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Bolt Register
+Name[pt_BR]=Registro Bolt
+Comment=Servidor Node.js que registra o Sphero Bolt. Para ser chamado do Mind Makers Blockly na porta 80
+Icon=/usr/share/icons/spherobolt.png
+Exec=bash /home/mindmakers/programs/shells/sphero-connect-bolt.sh
+Type=Application
+Encoding=UTF-8
+Terminal=true
+Categories=None;

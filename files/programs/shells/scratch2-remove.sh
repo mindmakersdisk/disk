@@ -13,4 +13,10 @@ sudo chattr -i -R /home/pi/Desktop/scratch2_folder.desktop
 sudo rm /home/pi/Desktop/scratch2_folder.desktop
 fi
 
+if [ -e /home/pi/Desktop/scratch2.desktop ]
+then
+sudo chattr -i -R /home/pi/Desktop/scratch2.desktop
+sudo rm /home/pi/Desktop/scratch2.desktop
+fi
+
 $SHELL
