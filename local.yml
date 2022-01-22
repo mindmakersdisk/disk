@@ -18,7 +18,7 @@
       when:            ansible_facts.lsb.codename == "buster"
 
   tasks:
-    - name:            Verificando versão do Ansible.
+    - name:            Verificando versão do Ansible em local.yml
       stat:
         path:          /home/mindmakers/programs/verify/ansible27
       register:        ansb
@@ -50,8 +50,9 @@
     - include:         tasks/avahi.yml
     - include:         tasks/raspi-config.yml
     - include:         tasks/sound-change.yml
+    - include:         tasks/scratch2-remove.yml
 # Copia as notas de liberação e o atalho com nome da versão atualizados
     - include:         tasks/final-version-copies-en.yml
     - include:         tasks/version_update.yml
-    - include:         tasks/reboot.yml
+#    - include:         tasks/reboot.yml
 # Não acrescentar tarefas após estas últimas.
