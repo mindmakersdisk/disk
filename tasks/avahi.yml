@@ -34,7 +34,7 @@
     backrefs:   yes
   when:         semregistro.matched > 0 and estacao.stdout >= "10"
 
-- name:         Alterando atributos do atalho da pasta scratch2
+- name:         Alterando atributos de atalhos para proteger
   shell:        'sudo bash /home/mindmakers/programs/shells/change-shortcut.sh'
   args:
     warn:       no
@@ -51,7 +51,7 @@
     line:       'Icon=/usr/share/icons/{{sala.stdout}}.png'
     backrefs:   yes
   when:         semregistro.matched > 0
-- name:         Alterando atributos do atalho da pasta scratch2
+- name:         Alterando atributos do atalho 
   shell:        'sudo bash /home/mindmakers/programs/shells/change-shortcut2.sh'
   args:
     warn:       no

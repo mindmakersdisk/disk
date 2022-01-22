@@ -1,0 +1,4 @@
+- name:         Remove subdiretorios, arquivos e atalho scratch2
+  shell:        'sudo bash /home/mindmakers/programs/shells/scratch2-remove.sh'
+  args:
+    warn:       no

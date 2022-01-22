@@ -1,5 +1,6 @@
 ########### IMAGEM DE DISCO MIND MAKERS ###########
 Versão 5.8 19/01/2022
+- Remoção de subpastas, arquivos e atalhdo do Scratch2, se existirem (permanece apenas a pasta vazia Scratch2)
 - Fix para bug introduzido em releases 92.* em diante do Chromium, que impede execução do Scratch3: criação da shell /home/mindmakers/programs/shells/chromium-fix-88.sh para retroceder a versão do do Google Chromium para 88*. Executar "sudo bash chromium-fix-88.sh" de uma janela de terminal aberta no diretório /home/mindmakers/programs/shells.
 Versão 5.7 17/01/2022
 - Suspensão temporária da atualização automática do Google Chromium, devido ao bug acima.
