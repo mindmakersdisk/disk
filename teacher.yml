@@ -44,9 +44,10 @@
 
     - include:         tasks/3dslash.yml
     - include:         tasks/sound-change-teacher.yml
-
+    - include:         tasks/remove-scratch2.yml
+    
 # Copia as notas de liberação e o atalho com nome da versão atualizados
     - include:         tasks/final-version-copies-en.yml
     - include:         tasks/version_update.yml
-    - include:         tasks/reboot.yml
+#    - include:         tasks/reboot.yml
 # Não acrescentar tarefas após estas últimas.
