@@ -2072,6 +2072,7 @@ function configuraJogo(selecaoJogo) {
 	    defineModalidade("i");	
 	    document.getElementById('selecionaPorteEquipe').style.visibility="hidden";	
 		document.getElementById('cronometro').value="10";	
+		cronometro("10");
 	} else if (selecaoJogo.value=="2") {
 		document.getElementById('ataque').innerHTML="Ataque";
 	    modificaElementoPorClasse('.pares','visible');				
@@ -2080,6 +2081,7 @@ function configuraJogo(selecaoJogo) {
 	    defineModalidade("i");	
 	    document.getElementById('selecionaPorteEquipe').style.visibility="hidden";	
 		document.getElementById('cronometro').value="4";	
+		cronometro("4");
 	} else if (selecaoJogo.value=="3") {
 		document.getElementById('ataque').innerHTML="Ataque";
 	    modificaElementoPorClasse('.pares','visible');				
@@ -2087,7 +2089,8 @@ function configuraJogo(selecaoJogo) {
 	    definePapel("h","impar");	
 	    defineModalidade("i");	
 	    document.getElementById('selecionaPorteEquipe').style.visibility="hidden";
-	    document.getElementById('cronometro').value="4";		
+	    document.getElementById('cronometro').value="4";
+	    		cronometro("4");		
 	} else if (selecaoJogo.value=="4") {
 		document.getElementById('ataque').innerHTML="Ataque";		
 	    modificaElementoPorClasse('.pares','visible');
@@ -2096,18 +2099,21 @@ function configuraJogo(selecaoJogo) {
    	    defineDuplas();	
 	    document.getElementById('selecionaPorteEquipe').style.visibility="hidden";	
    		document.getElementById('cronometro').value="10";	
+   				cronometro("10");
 	} else if (selecaoJogo.value=="5") {
 		document.getElementById('ataque').innerHTML="Ataque";		
 	    modificaElementoPorClasse('.pares','hidden');
 		defineEquipes(parseInt(document.getElementById('selecionaPorteEquipe').value));		
 	    document.getElementById('selecionaPorteEquipe').style.visibility="visible";	
-   		document.getElementById('cronometro').value="15";	
+   		document.getElementById('cronometro').value="15";
+   				cronometro("15");	
 	} else if (selecaoJogo.value=="6") {
 		document.getElementById('ataque').innerHTML="Ataque";	
 	    modificaElementoPorClasse('.pares','hidden');
 	    defineEquipes(parseInt(document.getElementById('selecionaPorteEquipe').value));					
 	    document.getElementById('selecionaPorteEquipe').style.visibility="visible";	
    		document.getElementById('cronometro').value="12";	
+   				cronometro("12");
 	} 
 	
 	decoraHackers();
@@ -2252,7 +2258,7 @@ function decoraHackers() {
 
 }
 
-var minutosMaximos=5;
+var minutosMaximos=15;
 function cronometro(minutos) {
 	minutosMaximos=parseInt(minutos);
 	
