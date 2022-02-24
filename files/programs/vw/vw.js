@@ -1470,52 +1470,52 @@ function iniciaDisputa() {
 
 function limpaPlacar() {
 	// Limpa placar das equipes
-	document.getElementById('a1').innerHTML="";
-	document.getElementById('a2').innerHTML="";
-	document.getElementById('a3').innerHTML="";
-	document.getElementById('a4').innerHTML="";
-	document.getElementById('a5').innerHTML="";
-	document.getElementById('a6').innerHTML="";
-	document.getElementById('a7').innerHTML="";
-	document.getElementById('a8').innerHTML="";
-	document.getElementById('a9').innerHTML="";
-	document.getElementById('a10').innerHTML="";
+	if (document.getElementById('a1')) document.getElementById('a1').innerHTML="";
+	if (document.getElementById('a2')) document.getElementById('a2').innerHTML="";
+	if (document.getElementById('a3')) document.getElementById('a3').innerHTML="";
+	if (document.getElementById('a4')) document.getElementById('a4').innerHTML="";
+	if (document.getElementById('a5')) document.getElementById('a5').innerHTML="";
+	if (document.getElementById('a6')) document.getElementById('a6').innerHTML="";
+	if (document.getElementById('a7')) document.getElementById('a7').innerHTML="";
+	if (document.getElementById('a8')) document.getElementById('a8').innerHTML="";
+	if (document.getElementById('a9')) document.getElementById('a9').innerHTML="";
+	if (document.getElementById('a10')) document.getElementById('a10').innerHTML="";
 
-	document.getElementById('d1').innerHTML="";
-	document.getElementById('d2').innerHTML="";
-	document.getElementById('d3').innerHTML="";
-	document.getElementById('d4').innerHTML="";
-	document.getElementById('d5').innerHTML="";
-	document.getElementById('d6').innerHTML="";
-	document.getElementById('d7').innerHTML="";
-	document.getElementById('d8').innerHTML="";
-	document.getElementById('d9').innerHTML="";
-	document.getElementById('d10').innerHTML="";
+	if (document.getElementById('d1')) document.getElementById('d1').innerHTML="";
+	if (document.getElementById('d2')) document.getElementById('d2').innerHTML="";
+	if (document.getElementById('d3')) document.getElementById('d3').innerHTML="";
+	if (document.getElementById('d4')) document.getElementById('d4').innerHTML="";
+	if (document.getElementById('d5')) document.getElementById('d5').innerHTML="";
+	if (document.getElementById('d6')) document.getElementById('d6').innerHTML="";
+	if (document.getElementById('d7')) document.getElementById('d7').innerHTML="";
+	if (document.getElementById('d8')) document.getElementById('d8').innerHTML="";
+	if (document.getElementById('d9')) document.getElementById('d9').innerHTML="";
+	if (document.getElementById('d10')) document.getElementById('d10').innerHTML="";
 		
 }
 
 function limpaPontos() {
 	// Limpa placar das equipes
-	document.getElementById('pt01').innerHTML="";
-	document.getElementById('pt02').innerHTML="";
-	document.getElementById('pt03').innerHTML="";
-	document.getElementById('pt04').innerHTML="";
-	document.getElementById('pt05').innerHTML="";
-	document.getElementById('pt06').innerHTML="";
-	document.getElementById('pt07').innerHTML="";
-	document.getElementById('pt08').innerHTML="";
-	document.getElementById('pt09').innerHTML="";
-	document.getElementById('pt10').innerHTML="";
-	document.getElementById('pt11').innerHTML="";
-	document.getElementById('pt12').innerHTML="";
-	document.getElementById('pt13').innerHTML="";
-	document.getElementById('pt14').innerHTML="";
-	document.getElementById('pt15').innerHTML="";
-	document.getElementById('pt16').innerHTML="";
-	document.getElementById('pt17').innerHTML="";
-	document.getElementById('pt18').innerHTML="";
-	document.getElementById('pt19').innerHTML="";
-	document.getElementById('pt20').innerHTML="";
+	if (document.getElementById('pt01')) document.getElementById('pt01').innerHTML="";
+	if (document.getElementById('pt02')) document.getElementById('pt02').innerHTML="";
+	if (document.getElementById('pt03')) document.getElementById('pt03').innerHTML="";
+	if (document.getElementById('pt04')) document.getElementById('pt04').innerHTML="";
+	if (document.getElementById('pt05')) document.getElementById('pt05').innerHTML="";
+	if (document.getElementById('pt06')) document.getElementById('pt06').innerHTML="";
+	if (document.getElementById('pt07')) document.getElementById('pt07').innerHTML="";
+	if (document.getElementById('pt08')) document.getElementById('pt08').innerHTML="";
+	if (document.getElementById('pt09')) document.getElementById('pt09').innerHTML="";
+	if (document.getElementById('pt10')) document.getElementById('pt10').innerHTML="";
+	if (document.getElementById('pt11')) document.getElementById('pt11').innerHTML="";
+	if (document.getElementById('pt12')) document.getElementById('pt12').innerHTML="";
+	if (document.getElementById('pt13')) document.getElementById('pt13').innerHTML="";
+	if (document.getElementById('pt14')) document.getElementById('pt14').innerHTML="";
+	if (document.getElementById('pt15')) document.getElementById('pt15').innerHTML="";
+	if (document.getElementById('pt16')) document.getElementById('pt16').innerHTML="";
+	if (document.getElementById('pt17')) document.getElementById('pt17').innerHTML="";
+	if (document.getElementById('pt18')) document.getElementById('pt18').innerHTML="";
+	if (document.getElementById('pt19')) document.getElementById('pt19').innerHTML="";
+	if (document.getElementById('pt20')) document.getElementById('pt20').innerHTML="";
 		
 }
 
