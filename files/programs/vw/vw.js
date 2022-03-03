@@ -1494,7 +1494,7 @@ function limpaPlacar() {
 		
 }
 
-function limpaPontos() {
+function limpaPontosPlacar() {
 	// Limpa placar das equipes
 	if (document.getElementById('pt01')) document.getElementById('pt01').innerHTML="";
 	if (document.getElementById('pt02')) document.getElementById('pt02').innerHTML="";
@@ -2054,7 +2054,7 @@ function configuraJogo(selecaoJogo) {
 	
 	document.getElementById('inicia').innerHTML="Inicie a Disputa!";
 	document.getElementById('inicia').style.visibility="hidden";
-	limpaPontos();
+	limpaPontosPlacar();
 	estacoes = new Map();
 	if (selecaoJogo.value=="") {
 		document.getElementById('ataque').innerHTML="Ataque";
