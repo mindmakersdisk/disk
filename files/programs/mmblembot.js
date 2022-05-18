@@ -808,7 +808,7 @@ function desprezaSinal(componente, valor) {
   if (componente == ULTRASOUNDSENSOR) {
 
 
-    if (valor != 400 && Math.abs(Math.round(valor) - ultimoSinalSom) <= 2)
+    if (valor != 400 && Math.abs(Math.round(valor) - ultimoSinalSom) <= 4)
       return true;
 
     ultimoSinalSom = Math.round(valor);
@@ -823,7 +823,7 @@ function desprezaSinal(componente, valor) {
     }
   } else if (componente == LIGHTSENSOR) {
 
-    if (Math.abs(Math.round(valor) - ultimoSinalLuz) <= 40)
+    if (Math.abs(Math.round(valor) - ultimoSinalLuz) <= 10)
       return true;
 
     ultimoSinalLuz = Math.round(valor);
@@ -1054,6 +1054,7 @@ function mbotReadDataDriver(error, services, characteristics) {
         console.log('\x1b[0m', '------------                                 ----------------');
         console.log('\x1b[0m', '------------      SETAS > MOTORES            ----------------');
         console.log('\x1b[0m', '------------      BARRA DE ESPAÇO > PARE     ----------------');
+        console.log('\x1b[0m', '------------      0 > LUZ APAGADA            ----------------');
         console.log('\x1b[0m', '------------      1 > LUZ AMARELA            ----------------');
         console.log('\x1b[0m', '------------      2 > LUZ AZUL               ----------------');
         console.log('\x1b[0m', '------------      3 > BUZINA                 ----------------');
@@ -1215,7 +1216,7 @@ function mbotWriteDataDriver(error, services, characteristics) {
 
     }
 
-  }, 50);
+  }, 25);
 }
 
 
