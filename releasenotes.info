@@ -1,4 +1,6 @@
 ########### IMAGEM DE DISCO MIND MAKERS ###########
+Versão 5.9 31/05/2022
+- Controlador Sphero com passos do laboratório MK0 corrigidos
 Versão 5.8.5 18/05/2022
 - Controlador mBot com ligeiro aumento de frequencia e atalho para comando "zero" para apagar luzes.
 Versão 5.8.4 03/03/2022

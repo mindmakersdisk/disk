@@ -523,6 +523,21 @@ function controlaSphero() {
       if (code != '') {
 
         try {
+          
+          // movimentos do MK0 sao discretos e precisam aumentar a forca na diagonal, por isso mandam este flag
+          if (code.indexOf('bb8.rollMK0')>-1) {
+              //console.log(' recebeu '+code);
+              var vel = parseFloat(code.substring(12,code.indexOf(',')));
+              //console.log(code.substring(12,code.indexOf(',')))
+              var angulo = parseInt(code.substring(code.indexOf(',')+1,code.indexOf(')')));
+
+              if (angulo!=0 && angulo!=90 && angulo!=270 && angulo!=180)
+                  vel = (vel*1.30).toFixed(1);
+              else
+                  vel = vel.toFixed(1);
+                  
+              code = "bb8.roll("+vel+","+angulo+")";
+          }
 
           console.log('\x1b[32m', (new Date().toLocaleString()) + ' Vai executar: ' + code)
 
