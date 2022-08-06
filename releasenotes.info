@@ -1,25 +1,32 @@
 ########### IMAGEM DE DISCO MIND MAKERS ###########
+Release 6.0.1 06/08/2022
+- Controlador microbit do Raspberry Pi retornando valores de acelerômetro x,y,z entre -1056 e +1056 em vez de decimais, para equalização dos valores com o retorno via webbluetooth
 Versão 6.0 12/07/2022
 - Acerto nas informações do controlador Arduino
+
 Versão 5.9 31/05/2022
 - Controlador Sphero com passos do laboratório MK0 corrigidos
-Versão 5.8.5 18/05/2022
+
+Release 5.8.5 18/05/2022
 - Controlador mBot com ligeiro aumento de frequencia e atalho para comando "zero" para apagar luzes.
-Versão 5.8.4 03/03/2022
+Release 5.8.4 03/03/2022
 - Acerto na limpeza de pontos ao ser hackeado, durante o Cybersecurity.
 - Acerto na limpeza de pontuação após hackeamento durante o Cybersecurity.
 - Acerto no tempo do cronometro do Cybersecurity, quando alterado o limite em função da alteração do jogo.
-Versão 5.8.1 09/02/2022
+Release 5.8.1 09/02/2022
 - Correção do projeto template do Scratch 3 na pasta MK6 em português: licao_1_jogo_da_etica_online_remixavel_MK6.sb3
 Versão 5.8 19/01/2022
 - Remoção de pastas e atalhos do Scratch2, se existirem
 - Organização de ícones no Desktop.
 - Fix para bug introduzido em releases 92.* em diante do Chromium, que impede execução do Scratch3: criação da shell /home/mindmakers/programs/shells/chromium-fix-88.sh para retroceder a versão do do Google Chromium para 88*. Executar "sudo bash chromium-fix-88.sh" de uma janela de terminal aberta no diretório /home/mindmakers/programs/shells.
+
 Versão 5.7 17/01/2022
 - Suspensão temporária da atualização automática do Google Chromium, devido ao bug acima.
+
 Versão 5.6 28/12/2021
 - Configuração bluetooth.service para uso experimental de webbluetooth no Chromium.
 - Serviço de registro do Sphero Bolt (Obs.: não funciona como controlador. Uso deve ser por webbluetooth via navegador)
+
 Versão 5.5 03/12/2021
 - Instalação da extensão de otimização do Google Chromium - The Marvellous Suspender. Atenção: ativar manualmente, em todas as estações.
 - Pasta de projetos template Scratch3, contendo todos os arquivos ".sb3" para os alunos usarem como partida dos projetos, organizados por módulo e liçao. 

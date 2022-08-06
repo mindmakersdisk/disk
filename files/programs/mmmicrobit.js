@@ -579,19 +579,19 @@ function controlaMicrobit() {
       microbitGlobal.on('accelerometerChange', function(x, y, z) {
         //console.log('\ton -> accelerometer change: accelerometer = %d %d %d G', x.toFixed(1), y.toFixed(1), z.toFixed(1));
 
-        if (x.toFixed(1) != last_x || y.toFixed(1) != last_y || z.toFixed(1) != last_z) {
+        if (x.toFixed(1) != last_x.toFixed(1) || y.toFixed(1) != last_y.toFixed(1) || z.toFixed(1) != last_z.toFixed(1)) {
 
 
           // Envia para Websocket se houverem conexões
           if (temClienteConectado()) {
 
-            notificaCliente(ACAO_ACELER, 'x:' + x.toFixed(1) + ' y:' + y.toFixed(1) + ' z:' + z.toFixed(1));
+            notificaCliente(ACAO_ACELER, 'x:' + x*1000 + ' y:' + y*1000+ ' z:' + z*1000);
 
           }
 
-          last_x = x.toFixed(1);
-          last_y = y.toFixed(1);
-          last_z = z.toFixed(1);
+          last_x = x;
+          last_y = y;
+          last_z = z;
 
         }
 
