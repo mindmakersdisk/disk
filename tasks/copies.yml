@@ -122,3 +122,13 @@
      src:          files/bluetooth.service
      dest:         /lib/systemd/system
      mode:         0755
+- name:            Verificando se existe arquivos do MT3
+  stat:
+     path:         /home/pi/Documents/mt3_meus_arquivos.zip
+  register:        mt3files
+- copy:
+     src:          files/mt3_meus_arquivos.zip
+     dest:         /home/pi/Documents/
+     mode:         0755
+  when:            not mt3files.stat.exists     
+     
