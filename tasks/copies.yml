@@ -124,10 +124,10 @@
      mode:         0755
 - name:            Verificando se existe arquivos do MT3
   stat:
-     path:         /home/pi/Documents/mt3_meus_arquivos.zip
+     path:         /home/pi/Documents/meus_arquivos/documentos/lembrete.txt
   register:        mt3files
 - copy:
-     src:          files/mt3_meus_arquivos.zip
+     src:          files/meus_arquivos_mt3
      dest:         /home/pi/Documents/
      mode:         0755
   when:            not mt3files.stat.exists     

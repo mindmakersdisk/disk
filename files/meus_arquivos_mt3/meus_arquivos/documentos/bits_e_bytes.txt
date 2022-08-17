@@ -1,0 +1,56 @@
+it40. Bits e Bytes 
+
+Você já aprendeu sobre o sistema binário, também conhecido na matemática como sistema "de base 2". 
+
+Ele nos permite representar qualquer número usando apenas os dígitos "zero" e "um".
+
+Também já sabe que computadores sempre representam todos os conteúdos que manipula em binário, não somente os números.
+
+Por exemplo, letras e símbolos são representados como dígitos binários por meio de técnicas como a tabela ASCII.
+
+Mas já pensou por que os computadores preferem o sistema binário e nós humanos, preferimos o sistema decimal?
+
+Bom, nós temos dez dedos nas mãos, então já era mais fácil para os humanos primitivos contarem "de dez em dez". 
+
+E os hindus, criadores do sistema decimal, inventaram também um símbolo para o "vazio", há cerca de 2.600 anos atrás, chamado de "zero", gerando assim os dez dígitos hoje conhecidos.
+
+Já os computadores representam seus dados através de circuitos eletrônicos que integram componentes microscópicos chamados de "transistores". 
+
+Os transistores atuais são feitos de silicio, um material que pode ser modificado facilmente para manter dois estados: ligado e desligado.
+
+De modo que cada dígito "um" do código binário existe no computador como um único transistor minúsculo energizado, ou seja, ligado.
+
+E cada dígito "zero" existe no computador como um transistor sem energia elétrica, ou seja, desligado.
+
+Se por um lado representar números, letras, imagens, fotos e vídeos em sistema binário requer muito espaço...
+
+...por outro os computadores atuais conseguem manter bilhões de transistores em um único "chip" que mede poucos centímetros. E esse número está sempre crescendo.
+
+Cada dígito binário no computador ganhou até um nome próprio: Bit, que vem de Binary Digit.
+
+Quando os cientistas da computação criaram a tabela ASCII, decidiram usar agrupamentos de 8 bits para representar cada caracter ou letra.
+
+Criando o conceito chamado de "byte", ou octeto.
+
+Metade de um byte, ou quatro dígitos binários, é também chamado de "nibble", ou semiocteto.
+
+Mas foi o byte, agrupamento de 8 bits, que acabou sendo usado como unidade para indicar o tamanho de arquivos e outras medidas do mundo digital.
+
+Quando falamos que o tamanho de um arquivo digital é de 10 "bytes", por exemplo, significa que ele agrupa 80 dígitos binários, ocupando 80 transistores na memória do computador.
+
+Mas os arquivos de hoje, contendo sons, imagens, e vídeos, ocupam milhares, milhões ou mesmo bilhões de bytes. 
+
+Por este motivo, usamos símbolos para abreviar o tamanho dos arquivos:
+
+"K" do ingles "Kilo" como símbolo de milhares, 
+"M" do ingles "Mega" como simbolo de milhões, 
+"G" do ingles "Giga" como simbolo de bilhões, 
+"T" do ingles "Tera" como simbolo de trilhões.
+
+Por exemplo, um arquivo de 1 "Kbyte" ocupa 1.000 bytes ou 8.000 bits. 
+
+Um video de 10 megabytes ocupa 10 milhões de bytes ou 80 milhões de bits.
+
+E um disco capaz de armazenar 1 terabyte é capaz de armazenar até 1 trilhão de bytes de arquivos diversos...
+
+Entender e controlar bem tamanho de arquivos digitais vai te ajudar em muitas tarefas. Vamos praticar?
