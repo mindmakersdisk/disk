@@ -1,4 +1,6 @@
 ########### IMAGEM DE DISCO MIND MAKERS ###########
+Release 6.0.2 19/08/2022
+- Arquivos para práticas do MT3 disponibilizados na pasta /home/pi/Documents/meus_arquivos/
 Release 6.0.1 06/08/2022
 - Controlador microbit do Raspberry Pi retornando valores de acelerômetro x,y,z entre -1056 e +1056 em vez de decimais, para equalização dos valores com o retorno via webbluetooth
 Versão 6.0 12/07/2022
