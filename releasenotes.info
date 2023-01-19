@@ -1,4 +1,8 @@
 ########### IMAGEM DE DISCO MIND MAKERS ###########
+
+Versão 6.1 19/01/2023
+- Atualiza suporte a certificados digitais SSL para resolver problema de interrompeu serviços de alocação e registro de dispositivos.
+
 Release 6.0.2 19/08/2022
 - Arquivos para práticas do MT3 disponibilizados na pasta /home/pi/Documents/meus_arquivos/
 Release 6.0.1 06/08/2022
