@@ -255,8 +255,8 @@ function registraAposConferirAtivacao(login, senha) {
         //   console.log(response);
         //  console.log('BODY---------------------------');
         //  console.log(body);
-        if (!body.success || error) {
-          if (!body.success) {
+        if ((body && !body.success) || error) {
+          if (body && !body.success) {
             console.error('\x1b[31m', 'Erro ao registrar Sphero: ' + JSON.stringify(body.err));
           } else {
             console.error('\x1b[31m', 'Erro ao registrar Sphero: ' + error);

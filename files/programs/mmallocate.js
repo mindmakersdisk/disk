@@ -284,7 +284,7 @@ function recuperaImagemEscola(resposta) {
   request('https://mindmakers.cc/api/Escolas/logo/publico?id=' + resposta.idescola,
     function(error, response, body) {
 
-      if (!body.success) {
+      if (body && !body.success) {
         console.log('Erro ao recuperar logo: ' + JSON.stringify(body.err));
         console.log(body);
 
