@@ -198,7 +198,8 @@ function recuperaCodigoNomeEscola(resposta) {
       form: {
         'username': resposta.login,
         'password': resposta.senha
-      }
+      },
+	  strictSSL:false
     },
     function(error, response, body) {
       bodyJ = JSON.parse(body);

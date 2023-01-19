@@ -238,7 +238,8 @@ function registraAposConferirAtivacao(login, senha) {
           'chaveNatural': macaddressArg,
           'acao': 'registrar',
           'observacao': 'ativação automática'
-        }
+        },
+	  strictSSL:false
       },
       function(error, response, body) {
         // console.log('ERROR ---------------------------');

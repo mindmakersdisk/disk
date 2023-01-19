@@ -104,7 +104,8 @@ function atualizaVersaoEstacao() {
         'sala': sala_registrado,
         'codigo': estacao_registrado,
         'indinstrutor': indInstrutor
-      }
+      },
+	  strictSSL:false
     },
     function(error, response, body) {
       if (!body.success || error) {

@@ -560,7 +560,8 @@ function registraAtivosEscolaPlataforma(resposta) {
         'chaveNatural': pi_identificado,
         'acao': 'registrar',
         'observacao': 'ativação automática'
-      }
+      },
+	  strictSSL:false 
     },
     function(error, response, body) {
       if (!body.success || error) {
@@ -590,7 +591,8 @@ function registraAtivosEscolaPlataforma(resposta) {
         'chaveNatural': sd_identificado,
         'acao': 'registrar',
         'observacao': 'ativação automática'
-      }
+      },
+	  strictSSL:false
     },
     function(error, response, body) {
       if (!body.success || error) {
@@ -660,7 +662,8 @@ function atualizaEstacao(login, senha, pi, sd, escolaid, versao, sala, estacao, 
         'sala': sala,
         'codigo': estacao,
         'indinstrutor': indInstrutor
-      }
+      },
+	  strictSSL:false
     },
     function(error, response, body) {
       if (!body.success || error) {
@@ -718,7 +721,8 @@ function atualizaVersaoEstacao(escolaid, pi, sd, versao, sala, estacao, indInstr
         'sala': sala,
         'codigo': estacao,
         'indinstrutor': indInstrutor
-      }
+      },
+	  strictSSL:false
     },
     function(error, response, body) {
       if (!body.success || error) {
