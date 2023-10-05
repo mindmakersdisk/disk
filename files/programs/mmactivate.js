@@ -958,7 +958,7 @@ function atualizaSchoolInfo() {
 
     }
 
-    gcloudRegistry.criaIoTDevice(escolaid, pi_registrado, sala_registrado, estacao_registrado);
+  //  gcloudRegistry.criaIoTDevice(escolaid, pi_registrado, sala_registrado, estacao_registrado);
 
   });
 }

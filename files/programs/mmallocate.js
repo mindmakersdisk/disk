@@ -323,7 +323,7 @@ function atualizaSchoolInfo() {
   }
 
   // Cria Registry para escola
-  gcloudRegistry.criaIoTRegistry(escolaid);
+ // gcloudRegistry.criaIoTRegistry(escolaid);
 
   escolainfoatualizada = "----- Identificação de Desktop Mind Makers ------\n" +
     "Cód.: " + escolaid + "||\n" +
