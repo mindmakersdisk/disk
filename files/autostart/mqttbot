@@ -20,22 +20,22 @@ start() {
   if [ "$pi" = '' ] || [ "$pi"  = 'Não registrado' ]
   then
     echo "Imagem não registrada, registre-a para utilizar este serviço."
-  else
+ # else
 
-    sudo bash /home/mindmakers/programs/shells/mqttbot.sh &>/var/log/mqttbot.log
-    echo 'Starting service…' >&2
-    sudo python /home/mindmakers/programs/mmiotcli.py &>/var/log/mqttbot.log & echo \$!
+   # sudo bash /home/mindmakers/programs/shells/mqttbot.sh &>/var/log/mqttbot.log
+   # echo 'Starting service…' >&2
+   # sudo python /home/mindmakers/programs/mmiotcli.py &>/var/log/mqttbot.log & echo \$!
 
-    sleep 15
-    if pgrep -f mmiotcli.py > /dev/null
-    then
-      echo "$NAME is now running"
-    else
-      echo ''
-      echo "Error! Could not start $NAME!"
-      echo "trying again"
-      sudo python /home/mindmakers/programs/mmiotcli.py &>/var/log/mqttbot.log & echo \$!
-    fi
+  #  sleep 15
+   # if pgrep -f mmiotcli.py > /dev/null
+  #  then
+   #   echo "$NAME is now running"
+  #  else
+   #   echo ''
+   #   echo "Error! Could not start $NAME!"
+  #    echo "trying again"
+  #    sudo python /home/mindmakers/programs/mmiotcli.py &>/var/log/mqttbot.log & echo \$!
+  #  fi
   fi
 }
 

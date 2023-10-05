@@ -1,5 +1,8 @@
 ########### IMAGEM DE DISCO MIND MAKERS ###########
 
+Versão 6.2 05/10/2023
+- Remoção do Client MQTT Google
+
 Versão 6.1 19/01/2023
 - Atualiza suporte a certificados digitais SSL para resolver problema de interrompeu serviços de alocação e registro de dispositivos.
 

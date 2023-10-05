@@ -1,7 +1,7 @@
 [Desktop Entry]
 Encoding=UTF-8
-Name=Desktop v6.1
-Name[pt_BR]=Ambiente v6.1
+Name=Desktop v6.2
+Name[pt_BR]=Ambiente v6.2
 Type=Application
 Terminal=false
 Exec=mousepad /home/mindmakers/releasenotes.info
