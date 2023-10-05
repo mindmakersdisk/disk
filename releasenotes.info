@@ -2,6 +2,7 @@
 
 Versão 6.2 05/10/2023
 - Remoção do Client MQTT Google, e suas chamadas na ativação e alocação.
+- Criados limitadores de crescimento de log, no journald.conf.
 
 Versão 6.1 19/01/2023
 - Atualiza suporte a certificados digitais SSL para resolver problema de interrompeu serviços de alocação e registro de dispositivos.

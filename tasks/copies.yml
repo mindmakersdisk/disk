@@ -18,6 +18,10 @@
      mode:         0755
   when:            not sphero.stat.exists
 - copy:
+     src:          files/journald.conf
+     dest:         /etc/systemd/
+     mode:         0755
+- copy:
      src:          files/sphero-connect-bolt.sh
      dest:         /home/mindmakers/programs/shells/
      mode:         0755
