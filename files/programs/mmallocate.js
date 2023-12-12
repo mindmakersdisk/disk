@@ -193,47 +193,6 @@ function recuperaNomeEscola(resposta) {
 function recuperaCodigoNomeEscola(resposta) {
   // console.log('vai recuperar escola:'+resposta.idescola);
   request({
-      url: 'https://mindmakers.cc/api/Escolas/listaEscolas/publico?username=${resposta.login}&password=${resposta.senha}',
-      method: 'GET',
-      strictSSL: false
-    },
-    function(error, response, body) {
-      // Primeiro, verifique se houve um erro na solicitação
-      if (error) {
-        console.log('Erro na solicitação:', error);
-        process.exit(1);
-      }
-
-      try {
-        // Tenta analisar a resposta como JSON
-        var bodyJ = JSON.parse(body);
-
-        if (!bodyJ.success) {
-          console.log('Erro ao recuperar escola: ' + bodyJ.err);
-          console.log('Reconfira seu usuário/senha e sua conexão. Caso o problema persista contate o suporte da Mind Makers em suporte@mindmakers.cc para obter apoio');
-          process.exit(1);
-        } else {
-          adaptaListaEscolas(bodyJ.listaEscolas);
-
-          inquirer.prompt(questions2).then(answers => {
-            configuraEscola(answers.escola);
-
-            atualizaSchoolInfo();
-            atualizaIconeAtalhos();
-          });
-        }
-      } catch (e) {
-        // Se ocorrer um erro no parse, presumivelmente por não ser um JSON válido, exibe o HTML
-        console.log('Erro ao analisar resposta como JSON. Resposta HTML:', body);
-        process.exit(1);
-      }
-    });
-}
-
-/*
-function recuperaCodigoNomeEscola(resposta) {
-  // console.log('vai recuperar escola:'+resposta.idescola);
-  request({
       url: 'https://mindmakers.cc/api/Escolas/listaEscolas/publico',
       method: 'POST',
       form: {
@@ -274,7 +233,7 @@ function recuperaCodigoNomeEscola(resposta) {
       }
     });
 }
-*/
+
 
 function adaptaListaEscolas(listaEscolasRecuperada) {
 
