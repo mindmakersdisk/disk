@@ -193,7 +193,7 @@ function recuperaNomeEscola(resposta) {
 function recuperaCodigoNomeEscola(resposta) {
   // console.log('vai recuperar escola:'+resposta.idescola);
   request({
-      url: 'https://plataforma.mindmakers.cc/api/Escolas/listaEscolas/publico',
+      url: 'https://mindmakers.cc/api/Escolas/listaEscolas/publico',
       method: 'POST',
       form: {
         'username': resposta.login,
