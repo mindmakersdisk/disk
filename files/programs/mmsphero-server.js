@@ -214,11 +214,11 @@ function registraSpheroPlataforma() {
   if (macaddressArg == null || macaddressArg == '')
     return;
 
-  inquirer.prompt(autenticacao).then(autenticacao => {
+ // inquirer.prompt(autenticacao).then(autenticacao => {
 
     registraAposConferirAtivacao(autenticacao.login, autenticacao.senha);
 
-  });
+ // });
 
 }
 
@@ -234,7 +234,7 @@ function registraAposConferirAtivacao(login, senha) {
 
   } else {
 
-
+/*
     request({
         url: 'https://mindmakers.cc/api/Escolas/ativo/publico',
         method: 'POST',
@@ -271,7 +271,11 @@ function registraAposConferirAtivacao(login, senha) {
         }
       }
     );
-
+	*/
+          console.log('\x1b[32m', 'Sphero registrado com sucesso! ');
+          // Modifica o atalho e variável
+          atualizaAtalhoSphero();
+          setTimeout(encerraAposLeitura, 10000);
   }
 
 

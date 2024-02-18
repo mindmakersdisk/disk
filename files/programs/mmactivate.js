@@ -129,6 +129,7 @@ var questions = [{
     name: 'opcao',
     message: "Deseja ativar essa estação?"
   },
+  /*
   {
     type: 'input',
     name: 'login',
@@ -145,6 +146,7 @@ var questions = [{
       return answers.opcao;
     }
   },
+  */
   {
     type: 'list',
     name: 'loginSimplificado',
@@ -206,6 +208,7 @@ var questionsTeacher = [{
     name: 'opcao',
     message: "Estação de FACILITADOR: Deseja ativar essa estação"
   },
+  /*
   {
     type: 'input',
     name: 'login',
@@ -222,6 +225,7 @@ var questionsTeacher = [{
       return answers.opcao;
     }
   },
+  */
   {
     type: 'list',
     name: 'loginSimplificado',
@@ -273,6 +277,7 @@ var questionsHeadless = [{
     name: 'opcao',
     message: "Deseja ativar essa estação?"
   },
+  /*
   {
     type: 'input',
     name: 'login',
@@ -288,7 +293,9 @@ var questionsHeadless = [{
     when: function(answers) {
       return answers.opcao;
     }
+
   }
+  	*/
 ];
 
 var questionsLoginSimplificado = [{
@@ -521,7 +528,7 @@ function executaRegistros() {
           if (perguntas === questions)
             atualizaAtalhoLoginSimplificadoEscola(answers);
 
-          totalAcessosPlataformaPendentes = 2;
+        //  totalAcessosPlataformaPendentes = 2;
           servicoRecorrente = setInterval(monitoraAcessosAssincronosPlataforma, 2000);
 
         } else {
@@ -548,7 +555,7 @@ function tudoOk() {
 function registraAtivosEscolaPlataforma(resposta) {
   //console.log(resposta)
   // Registra PI
-
+/*
   request({
       url: 'https://mindmakers.cc/api/Escolas/ativo/publico',
       method: 'POST',
@@ -608,9 +615,9 @@ function registraAtivosEscolaPlataforma(resposta) {
       }
 
     });
-
+*/
   // Registra Estação somente se está ativando para uma escola informada.
-
+  console.log('PI registrado com sucesso! ');
   if (escolaid != null && escolaid != '') {
 
     salaInt = parseInt(sala_informado);
@@ -648,7 +655,7 @@ function atualizaEstacao(login, senha, pi, sd, escolaid, versao, sala, estacao, 
   } else {
     estacao = parseInt(estacao);
   }
-
+/*
   request({
       url: 'https://mindmakers.cc/api/Escolas/estacao/publico',
       method: 'POST',
@@ -682,6 +689,7 @@ function atualizaEstacao(login, senha, pi, sd, escolaid, versao, sala, estacao, 
       }
 
     });
+	*/
 }
 
 function atualizaVersaoEstacao(escolaid, pi, sd, versao, sala, estacao, indInstrutor) {
@@ -709,7 +717,7 @@ function atualizaVersaoEstacao(escolaid, pi, sd, versao, sala, estacao, indInstr
   } else {
     estacao = parseInt(estacao);
   }
-
+/*
   request({
       url: 'https://mindmakers.cc/api/Escolas/atualizaVersaoEstacao/publico',
       method: 'POST',
@@ -740,6 +748,7 @@ function atualizaVersaoEstacao(escolaid, pi, sd, versao, sala, estacao, indInstr
       }
 
     });
+	*/
 }
 
 

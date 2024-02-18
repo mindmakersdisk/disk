@@ -205,11 +205,11 @@ function registraMbotPlataforma() {
   if (macaddressArg == null || macaddressArg == '')
     return;
 
-  inquirer.prompt(autenticacao).then(autenticacao => {
+//  inquirer.prompt(autenticacao).then(autenticacao => {
 
     registraAposConferirAtivacao(autenticacao.login, autenticacao.senha);
 
-  });
+//  });
 
 }
 
@@ -224,7 +224,7 @@ function registraAposConferirAtivacao(login, senha) {
     console.error('\x1b[31m', '----------------------------------------------------------------');
 
   } else {
-
+/*
 
     request({
         url: 'https://mindmakers.cc/api/Escolas/ativo/publico',
@@ -264,6 +264,12 @@ function registraAposConferirAtivacao(login, senha) {
         }
       }
     );
+*/
+	  console.log('\x1b[32m', 'mBot registrado com sucesso! ');
+	  // Modifica o atalho e variável
+	  atualizaAtalhoMbot();
+	  noble.stopScanning();
+	  setTimeout(encerraAposLeitura, 10000);
 
   }
 

@@ -1,4 +1,6 @@
 ########### IMAGEM DE DISCO MIND MAKERS ###########
+Versão 6.3 19/02/2024
+- Remoção da necessidade de login e senha na ativação e registro de dispositivos.
 
 Versão 6.2 05/10/2023
 - Remoção do Client MQTT Google, e suas chamadas na ativação e alocação.
