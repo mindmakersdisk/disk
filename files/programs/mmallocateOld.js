@@ -144,32 +144,6 @@ var questions2 = [{
 ];
 
 
-var questions3 = [
-{
-    type: 'confirm',
-    name: 'opcao',
-    message: "Deseja alocar este disco para uma escola manualmente?"
-  },
-  {
-    type: 'input',
-    name: 'idescola',
-    message: "Cole o id da sua escola na Plataforma MM usando o mouse (copie o id no rodapé das páginas da plataforma, após seu login):",
-    when: function (answers) {
-      return answers.opcao;
-    }
-  },
-  {
-    type: 'input',
-    name: 'escolanome',
-    message: "Informe o nome da sua escola:",
-    when: function(answers) {
-      return answers.opcao;
-    }
-  },
-
-];
-
-
 function rotinaAlocacao() {
 
   inquirer.prompt(questions).then(answers => {
@@ -183,30 +157,6 @@ function rotinaAlocacao() {
 
       // recuperaNomeEscola(answers);
       recuperaCodigoNomeEscola(answers);
-
-    }
-
-  });
-}
-
-
-function rotinaAlocacaoManual() {
-
- // console.log('rotina alocacao manual ');
-  
-  inquirer.prompt(questions3).then(answers => {
- // console.log('rotina alocacao manual 2 ',answers);
-    if (answers.opcao) {
-
-      // Testa se imagem está configurada
-      obtemVersaoImagemDisco();
-
-      idescola_informado = answers.idescola.trim();
-
-      escolanome_recuperado = answers.escolanome;
-
-       atualizaSchoolInfo();
-       atualizaIconeAtalhos();
 
     }
 
@@ -250,15 +200,12 @@ function recuperaCodigoNomeEscola(resposta) {
         'password': resposta.senha
       },
       strictSSL: false
-      
     },
     function(error, response, body) {
       // Primeiro, verifique se houve um erro na solicitação
       if (error) {
-        console.log('Erro ao tentar acesso online, mudando para alocação manual',error);
-        console.log('Vai comutar para alocação manual...');
-        rotinaAlocacaoManual();
-      //  console.log('Erro na solicitação:', error);
+        console.log('Erro na solicitação:', error);
+        process.exit(1);
       }
 
       try {
@@ -266,15 +213,13 @@ function recuperaCodigoNomeEscola(resposta) {
         var bodyJ = JSON.parse(body);
 
         if (!bodyJ.success) {
-          console.log('Erro ao recuperar escola', bodyJ);
-//          console.log('Reconfira seu usuário/senha e sua conexão. Caso o problema persista contate o suporte da Mind Makers em suporte@mindmakers.cc para obter apoio');
-          //process.exit(1);
-          console.log('Vai comutar para alocação manual...');
-          rotinaAlocacaoManual();
+          console.log('Erro ao recuperar escola: ' + bodyJ.err);
+          console.log('Reconfira seu usuário/senha e sua conexão. Caso o problema persista contate o suporte da Mind Makers em suporte@mindmakers.cc para obter apoio');
+          process.exit(1);
         } else {
-            adaptaListaEscolas(bodyJ.listaEscolas);
+          adaptaListaEscolas(bodyJ.listaEscolas);
 
-            inquirer.prompt(questions2).then(answers => {
+          inquirer.prompt(questions2).then(answers => {
             configuraEscola(answers.escola);
 
             atualizaSchoolInfo();
