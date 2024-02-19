@@ -283,7 +283,7 @@ function recuperaCodigoNomeEscola(resposta) {
         }
       } catch (e) {
         // Se ocorrer um erro no parse, presumivelmente por não ser um JSON válido, exibe o HTML
-        console.log('Erro ao analisar resposta como JSON. Resposta HTML:', body);
+        console.log('Erro inesperado. Confira sua conexão com a internet. Para alocar, automática ou manualmente, você precisa de uma conexão ativa...');
         process.exit(1);
       }
     });
